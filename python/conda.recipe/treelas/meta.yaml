@@ -1,0 +1,33 @@
+package:
+  name: treelas
+  version: "0.5"
+
+source:
+  # git_rev: v0.4
+  # git_url: https://github.com/eqt/treelas
+  path: ../../..
+
+requirements:
+  build:
+    - python=3.6.4 # [win]
+    - python       # [not win]
+    - setuptools
+    - py-boost
+    - {{ compiler('cxx') }}
+    - cmake
+  run:
+    - python=3.6.4 # [win]
+    - python       # [not win]
+    - py-boost
+    - libgcc-ng    # [linux]
+    - libstdcxx-ng # [linux]
+    - h5py
+    - numba
+test:
+  imports:
+    - treelas.tree
+
+about:
+  home: https://github.com/eqt/treelas
+  license: MIT
+  # license_file: LICENSE
