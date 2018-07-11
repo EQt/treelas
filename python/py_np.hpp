@@ -1,11 +1,11 @@
 #pragma once
-#include <boost/python/numpy.hpp>
+#include <pybind11/numpy.h>
 
-namespace py = boost::python;
-namespace np = boost::python::numpy;
+namespace py = pybind11;
 
+/*
 template<typename T = double>
-np::ndarray
+py::array<T>
 create_array(T *x, size_t n)
 {
     np::dtype dtype = np::dtype::get_builtin<T>();
@@ -18,7 +18,7 @@ create_array(T *x, size_t n)
 
 
 template<typename T>
-np::ndarray
+py::array<T>
 empty_array()
 {
     const np::dtype dtype = np::dtype::get_builtin<T>();
@@ -48,9 +48,9 @@ copy_vector(const std::vector<T> &x)
     std::memcpy(xdat, x.data(), sizeof(double) * n);
     return create_array(xdat, n);
 }
+*/
 
-
-np::ndarray
+np::array<double>
 test_create_array()
 {
     double *x = new double[3];
