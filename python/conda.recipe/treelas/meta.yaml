@@ -9,11 +9,11 @@ source:
 
 requirements:
   build:
-    - pybind11
     - {{ compiler('cxx') }}
   host:
     - python
     - setuptools
+    - pybind11 >=2.2
   # run:
   #   - h5py
   #   - numba
