@@ -11,7 +11,7 @@ requirements:
   build:
     - python
     - setuptools
-    - pybind11
+    - pybind11     # from conda-forge
     - cmake
     - {{ compiler('cxx') }}
   run:

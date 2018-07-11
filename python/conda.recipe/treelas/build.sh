@@ -12,5 +12,5 @@ cmake -G "$CMAKE_GENERATOR" \
       -DPYBIND_CMAKE=~/.miniconda/share/cmake/pybind11 \
       "$SRC_DIR"
 
-make -j $CPU_COUNT pyinstall
+make -j $CPU_COUNT _treelas
 $STRIP $SP_DIR/treelas/_treelas*
