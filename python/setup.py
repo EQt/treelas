@@ -25,7 +25,7 @@ _treelas = Extension("treelas._treelas",
 
 
 setup(name="treelas",
-      version="0.5",
+      version="0.6",
       author="Elias Kuthe",
       author_email="elias.kuthe@tu-dortmund.de",
       license="MIT",

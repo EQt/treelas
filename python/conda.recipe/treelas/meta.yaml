@@ -1,9 +1,9 @@
 package:
   name: treelas
-  version: v0.5
+  version: v0.6
 
 source:
-  # git_rev: v0.4
+  # git_rev: v0.6
   # git_url: https://github.com/eqt/treelas
   git_url: ../../..
 
