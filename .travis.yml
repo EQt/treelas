@@ -1,3 +1,4 @@
 # https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
+# https://github.com/astrofrog/example-travis-conda/blob/master/.travis.yml
 git:
   submodules: false

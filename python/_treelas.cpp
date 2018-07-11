@@ -45,11 +45,24 @@ np_glm_line(const np::ndarray &y,
 }
 
 
-BOOST_PYTHON_MODULE(_treelas)
+PYBIND11_MODULE(python_example, m)
 {
-    using py::arg;
-    np::initialize();
-    py::def("__compiler__", compiler_info);
+     m.doc() = R"pbdoc(
+        Treelas C++ Implementation
+        --------------------------
+
+        https://github.com/eqt/treelas
+
+        .. currentmodule:: _treelas
+
+        .. autosummary::
+           :toctree: _generate
+
+    )pbdoc";
+
+    m.attr("__compiler__", compiler_info);
+
+    /*
     py::def("_test_create_array", test_create_array);
     py::def("prufer2parent", np_prufer2parent, (
                 arg("prufer"),
@@ -116,4 +129,5 @@ BOOST_PYTHON_MODULE(_treelas)
             "Compute the DFS post order starting at root "
             "on the tree given by parent");
     py::register_exceptions();
+    */
 }
