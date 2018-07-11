@@ -36,8 +36,6 @@ if (BUILD_PYEXT)
   pybind11_add_module(_treelas python/_treelas.cpp)
 endif()
 
-configure_file(cxx/config.hpp.in config.hpp)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
 

@@ -1,8 +1,4 @@
 #pragma once
-
-#define COMPILER_ID  "@CMAKE_CXX_COMPILER_ID@"
-#define COMPILER_VER "@CMAKE_CXX_COMPILER_VERSION@"
-
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
 

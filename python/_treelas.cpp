@@ -9,7 +9,7 @@
 // #include "../cxx/dp_tree.hpp"
 // #include "../cxx/dp_line.hpp"
 // #include "../cxx/prufer.hpp"
-#include "config.hpp"
+#include "../cxx/utils/compiler.hpp"
 // #include "py_np.hpp"
 
 namespace py = pybind11;
