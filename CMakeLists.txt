@@ -8,16 +8,31 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
 endif()
 
 option(BUILD_TESTS "Build unit tests using googletest" ON)
-option(BUILD_PYEXT "Build python extension" ON)
+option(BUILD_PYEXT "Build python extension module"     ON)
+
+set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11"
+    CACHE STRING "Directory where pybind is located")
+set(PYBIND_CMAKE "${PYBIND_DIR}/tools"
+    CACHE STRING "Directory where to find pybind11 cmake's tools")
+message("-- pybind cmake ${PYBIND_CMAKE}")
+
 
 add_subdirectory(extern/glmgen)
 
 if (BUILD_PYEXT)
-  if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11/CMakeLists.txt")
-    execute_process(COMMAND git submodule update --init extern/pybind11
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  # download?
+  # if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11/CMakeLists.txt")
+  #   execute_process(COMMAND git submodule update --init extern/pybind11
+  #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+  # endif()
+  if (EXISTS "${PYBIND_DIR}/CMakeLists.txt")
+    add_subdirectory(${PYBIND_DIR})
+  else()
+    list(APPEND CMAKE_MODULE_PATH "${PYBIND_CMAKE}")
+    include(pybind11Config)
+    include(pybind11Tools)
   endif()
-  add_subdirectory(extern/pybind11)
+
   pybind11_add_module(_treelas python/_treelas.cpp)
 endif()
 
