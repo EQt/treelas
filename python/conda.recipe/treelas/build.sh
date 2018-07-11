@@ -1,4 +1,4 @@
 #/bin/bash
 
-cd treelas
+cd python
 $PYTHON setup.py install
