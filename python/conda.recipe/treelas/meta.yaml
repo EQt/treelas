@@ -1,6 +1,6 @@
 package:
   name: treelas
-  version: "0.5"
+  version: v0.5
 
 source:
   # git_rev: v0.4
@@ -11,21 +11,18 @@ requirements:
   build:
     - python
     - setuptools
-    - pybind11     # from conda-forge
+    - pybind11
     - cmake
     - {{ compiler('cxx') }}
   run:
     - python
-    - py-boost
-    - libgcc-ng    # [linux]
-    - libstdcxx-ng # [linux]
     - h5py
     - numba
 test:
   imports:
-    - treelas.tree
+    - treelas._treelas
 
 about:
   home: https://github.com/eqt/treelas
   license: MIT
-  # license_file: LICENSE
+  license_file: LICENSE.md
