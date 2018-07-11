@@ -17,4 +17,5 @@ cmake -G "$CMAKE_GENERATOR" \
 make -j $CPU_COUNT _treelas
 $STRIP _treelas*
 mkdir -p $SP_DIR/treelas
+cp "$SRC_DIR/python/treelas/*.py" $SP_DIR/treelas
 cp _treelas* $SP_DIR/treelas/

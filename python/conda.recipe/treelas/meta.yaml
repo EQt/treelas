@@ -4,8 +4,8 @@ package:
 
 source:
   # git_rev: v0.4
-  git_url: https://github.com/eqt/treelas
-  # path: ../../..
+  # git_url: https://github.com/eqt/treelas
+  git_url: ../../..
 
 requirements:
   build:
