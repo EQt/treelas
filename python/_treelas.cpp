@@ -12,8 +12,8 @@
 #include "compiler.hpp"
 #include "py_np.hpp"
 
-
 namespace py = pybind11;
+
 
 np::ndarray
 np_glm_line(const np::ndarray &y,

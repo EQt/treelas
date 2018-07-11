@@ -61,9 +61,10 @@ test_create_array()
 }
 
 
+/** Return mutable pointer to the data of an py::array */
 template<typename T = double>
 inline T*
-check_data_mut(const np::ndarray &var, const std::string &var_str = "?")
+check_data_mut(const py::array<T> &var, const std::string &var_str = "?")
 {
     np::dtype dtype = np::dtype::get_builtin<T>();
     const auto vtype = var.get_dtype();
