@@ -18,6 +18,7 @@ if (BUILD_PYEXT)
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   endif()
   add_subdirectory(extern/pybind11)
+  pybind11_add_module(_treelas python/_treelas.cpp)
 endif()
 
 configure_file(cxx/config.hpp.in config.hpp)

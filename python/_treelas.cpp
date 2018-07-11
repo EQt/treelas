@@ -1,20 +1,20 @@
 #include <vector>
 #include <stdexcept>
 #include <pybind11/pybind11.h>
-#include <pybind11/stl.h>
-#include <pybind11/numpy.h>
+// #include <pybind11/stl.h>
+// #include <pybind11/numpy.h>
 
 #include "../extern/glmgen/tf.hpp"
 #include "../cxx/utils/timer.hpp"
 // #include "../cxx/dp_tree.hpp"
-#include "../cxx/dp_line.hpp"
+// #include "../cxx/dp_line.hpp"
 // #include "../cxx/prufer.hpp"
 #include "compiler.hpp"
-#include "py_np.hpp"
+// #include "py_np.hpp"
 
 namespace py = pybind11;
 
-
+/*
 np::ndarray
 np_glm_line(const np::ndarray &y,
             const double lam,
@@ -43,11 +43,11 @@ np_glm_line(const np::ndarray &y,
     return y;
 #endif
 }
+*/
 
-
-PYBIND11_MODULE(python_example, m)
+PYBIND11_MODULE(_treelas, m)
 {
-     m.doc() = R"pbdoc(
+    m.doc() = R"pbdoc(
         Treelas C++ Implementation
         --------------------------
 
@@ -60,7 +60,7 @@ PYBIND11_MODULE(python_example, m)
 
     )pbdoc";
 
-    m.attr("__compiler__", compiler_info);
+    m.attr("__compiler__") = compiler_info();
 
     /*
     py::def("_test_create_array", test_create_array);
