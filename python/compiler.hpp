@@ -4,7 +4,7 @@
 #define STR(x) STR_HELPER(x)
 
 
-const char*
+constexpr const char*
 compiler_info()
 {
     return "Compiled with "
