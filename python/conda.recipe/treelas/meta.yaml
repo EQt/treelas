@@ -13,8 +13,9 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
-    - vs2015_runtime # [win]
+    - vs2015_win-64 # [win]
   host:
+    - vs2015_runtime # [win]
     - python
     - setuptools
     - pybind11 >=2.2
