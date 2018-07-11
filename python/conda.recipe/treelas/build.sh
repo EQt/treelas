@@ -1,4 +1,6 @@
 #/bin/bash
+set -e
+set -x
 
 build_dir=build.conda.$BUILD
 config=Release
@@ -13,4 +15,6 @@ cmake -G "$CMAKE_GENERATOR" \
       "$SRC_DIR"
 
 make -j $CPU_COUNT _treelas
-$STRIP $SP_DIR/treelas/_treelas*
+$STRIP _treelas*
+mkdir -p $SP_DIR/treelas
+cp _treelas* $SP_DIR/treelas/
