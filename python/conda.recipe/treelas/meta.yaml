@@ -9,14 +9,14 @@ source:
 
 requirements:
   build:
-    - python
-    - setuptools
     - pybind11
     - {{ compiler('cxx') }}
-  run:
+  host:
     - python
-    - h5py
-    - numba
+    - setuptools
+  # run:
+  #   - h5py
+  #   - numba
 test:
   imports:
     - treelas._treelas
