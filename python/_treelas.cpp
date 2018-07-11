@@ -59,7 +59,7 @@ PYBIND11_MODULE(_treelas, m)
            :toctree: _generate
 
     )pbdoc";
-
+    m.attr("__author__") = "Elias Kuthe <elias.kuthe@tu-dortmund.de>";
     m.attr("__compiler__") = compiler_info();
 
     /*
