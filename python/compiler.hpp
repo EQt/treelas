@@ -7,7 +7,7 @@
 const char*
 compiler_info()
 {
-    return "Compiled with"
+    return "Compiled with "
 #ifdef __clang__
     "Clang++ " __clang_version__
 #elif defined __GNUC__
