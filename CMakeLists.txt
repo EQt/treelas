@@ -20,7 +20,7 @@ message("-- pybind cmake ${PYBIND_CMAKE}")
 add_subdirectory(extern/glmgen)
 
 if (BUILD_PYEXT)
-  # download?
+  # download as submodule?
   # if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11/CMakeLists.txt")
   #   execute_process(COMMAND git submodule update --init extern/pybind11
   #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
