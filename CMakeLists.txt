@@ -25,8 +25,8 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
-add_library(dp_line OBJECT cxx/dp_line.cpp)
-set_property(TARGET dp_line PROPERTY POSITION_INDEPENDENT_CODE ON)
+# add_library(dp_line OBJECT cxx/dp_line.cpp)
+# set_property(TARGET dp_line PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 
 find_package(HDF5 COMPONENTS C HL)
@@ -47,7 +47,7 @@ if (BUILD_TESTS)
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5)
   endif()
-  add_executable(tests cxx/postorder.cpp test/tests.cpp ${TESTS})
+  add_executable(tests test/tests.cpp ${TESTS})
   target_compile_definitions(tests PUBLIC _STACK_DEBUG=1)
   target_link_libraries(tests gtest_main "${CMAKE_THREAD_LIBS_INIT}")
   if (HDF5_FOUND)
