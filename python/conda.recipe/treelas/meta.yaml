@@ -12,7 +12,6 @@ requirements:
     - python
     - setuptools
     - pybind11
-    - cmake
     - {{ compiler('cxx') }}
   run:
     - python
