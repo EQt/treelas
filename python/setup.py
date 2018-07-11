@@ -1,6 +1,5 @@
 """
-Need Boost::Python, Boost::Numpy.
-Please install via `conda install boost`
+http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
 import sys
 import os
