@@ -38,6 +38,9 @@ before_install:
   - pip install pybind11
   - python -m pybind11 --include
 
+before_script:
+  - echo $CMAKE_CXX_COMPILER
+
 script:
   - mkdir -p build
   - cd build
