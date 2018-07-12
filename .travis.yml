@@ -7,8 +7,9 @@ matrix:
   include:
     - os: linux
       env: CMAKE_CXX_COMPILER=g++-7
-      apt:
-        packages:
+      addons:
+        apt:
+          packages:
           - g++-7
 
 ## https://docs.travis-ci.com/user/caching/
