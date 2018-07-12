@@ -14,23 +14,23 @@ class GetPyBindInc():
 
     Copied from github.com:pybind/pybind11_example/setup.py
     """
-     def __init__(self, user=False):
+    def __init__(self, user=False):
          self.user = user
 
     def __str__(self):
         import pybind11
-        return pybind11.get_include(self.user),
-                pybind11.get_include(user=True)]
+        return pybind11.get_include(self.user)
 
 
 _treelas = Extension("treelas._treelas",
                      ["_treelas.cpp",
                      ],
                      language='c++',
-                     include_dirs=[GetPyBindInc(),
+                     include_dirs=[GetPyBindInc(False),
                                    GetPyBindInc(True)]
 )
 
+print(list(map(str, _treelas.include_dirs)))
 
 setup(name="treelas",
       version="0.6",
