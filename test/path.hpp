@@ -1,6 +1,5 @@
 #pragma once
-#include <iostream>
-#include <cstdio>
+#include <fstream>
 #include <gtest/internal/gtest-filepath.h>
 
 
@@ -8,12 +7,8 @@ class path
 {
 public:
     static bool exists(const char *fname) {
-        std::FILE *io = fopen(fname, "r");
-        if (io) {
-            fclose(io);
-            return true;
-        }
-        return false;
+        std::ifstream f (fname);
+        return f.good();
     }
 
 
