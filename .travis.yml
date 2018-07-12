@@ -13,8 +13,8 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-    - env: CXX=clang++ CC=clang
-      os: osx
+    # - env: CXX=clang++ CC=clang
+    #   os: osx
 
 ## https://docs.travis-ci.com/user/caching/
 # cache:
