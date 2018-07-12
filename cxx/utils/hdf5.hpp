@@ -15,6 +15,7 @@
      https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.17/src/hdf5-1.8.17.zip
 */
 #pragma once
+#include <iostream>
 #include <cassert>
 #include <cstring>
 #include <stdexcept>
@@ -125,8 +126,8 @@ HDF5::~HDF5()
     if (file_id >= 0) {
         const auto err = H5Fclose(file_id);
         if (err != 0)
-            throw std::runtime_error(std::string("Error while closing ") +
-                                     std::to_string(err));
+          std::cerr << (std::string("HDF5: Error while closing ") +
+                        std::to_string(err));
     } else {
         // throw std::runtime_error("Should not happen");
     }
