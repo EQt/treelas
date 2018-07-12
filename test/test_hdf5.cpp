@@ -102,6 +102,7 @@ TEST_F(HDF5Test, compress_int)
 }
 
 
+#ifndef _MSC_VER
 TEST_F(HDF5Test, group)
 {
     const std::vector<int> x ({1, 2, 3});
@@ -127,6 +128,7 @@ TEST_F(HDF5Test, group)
         ASSERT_EQ(x, xr);
     }
 }
+#endif
 
 
 TEST_F(HDF5Test, read_not_exists)
