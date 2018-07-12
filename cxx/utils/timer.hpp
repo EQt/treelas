@@ -11,7 +11,7 @@
 inline bool
 endsnewline(const char *s)
 {
-    int n = std::strlen(s);
+    const auto n = std::strlen(s);
     if (n < 1)
         return false;
     return s[n-1] == '\n';
