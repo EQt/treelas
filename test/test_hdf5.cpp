@@ -35,6 +35,12 @@ protected:
 };
 
 
+TEST(HDF5lib, libversion)
+{
+    std::cerr << HDF5::libversion();
+}
+
+
 TEST_F(HDF5Test, create)
 {
     if (delete_after) {
