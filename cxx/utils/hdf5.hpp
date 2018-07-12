@@ -122,8 +122,12 @@ HDF5::HDF5(const char *fname, const char *mode, int compress)
 HDF5::~HDF5()
 {
     close_cid();
-    if (file_id >= 0)
-        H5Fclose(file_id);
+    if (file_id >= 0) {
+        const auto err = H5Fclose(file_id);
+        if (err != 0)
+            throw std::runtime_error(std::string("Error while closing ") +
+                                     std::to_string(err));
+    }
 }
 
 
