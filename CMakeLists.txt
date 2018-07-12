@@ -18,8 +18,11 @@ set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11"
     CACHE STRING "Directory where pybind is located")
 set(PYBIND_CMAKE "${PYBIND_DIR}/tools"
     CACHE STRING "Directory where to find pybind11 cmake's tools")
-message("-- pybind cmake ${PYBIND_CMAKE}")
+# message("-- pybind cmake ${PYBIND_CMAKE}")
 
+
+add_subdirectory(extern/glmgen)
+add_subdirectory(extern/condat)
 
 if (BUILD_PYEXT)
   # download as submodule?
