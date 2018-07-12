@@ -20,7 +20,8 @@ protected:
     virtual void TearDown() {
         if (delete_after) {
             if (path::exists(fname)) {
-                ASSERT_EQ(path::remove(fname), 0) << "errno=" << errno;
+                ASSERT_EQ(path::remove(fname), 0) << "errno=" << errno
+                                                  << ", EACCES=" << EACCES;
             }
             ASSERT_FALSE(path::exists(fname)) << "CWD=" << path::cwd()
                                               << ", fname=" << fname;
