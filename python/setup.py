@@ -36,7 +36,7 @@ setup(name="treelas",
       author="Elias Kuthe",
       author_email="elias.kuthe@tu-dortmund.de",
       license="MIT",
-      install_requires=['pybind11>=2.2'],
+      setup_requires=['pybind11>=2.2'],
       ext_modules=[_treelas],
       packages=['treelas']
 )
