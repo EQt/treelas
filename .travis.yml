@@ -5,6 +5,11 @@ git:
 
 sudo: false
 
+os:
+  - linux
+  - osx
+
+
 ## https://docs.travis-ci.com/user/caching/
 # cache:
 #   directories:
