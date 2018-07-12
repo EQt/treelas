@@ -37,11 +37,11 @@ if (BUILD_PYEXT)
 
   pybind11_add_module(_treelas python/_treelas.cpp)
 
-  add_custom_target(pysetup
-    DEPENDS _treelas
+  add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
-      $<TARGET_FILE_NAME:_treelas> ${CMAKE_SOURCE_DIR}/python/treelas
-  )
+      $<TARGET_FILE_NAME:_treelas> ${CMAKE_SOURCE_DIR}/python/treelas)
+  add_custom_target(pytest DEPENDS pysetup
+    COMMAND py.test ${CMAKE_SOURCE_DIR}/python/test VERBATIM)
 endif()
 
 
