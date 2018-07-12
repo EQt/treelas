@@ -50,7 +50,7 @@ public:
     int ndims(const char *data_name);
     Dims dimensions(const char *data_name);
     void dimensions(const char *data_name, Dims *dims, H5T_class_t *c = nullptr);
-    int size(const char *data_name);
+    size_t size(const char *data_name);
 
     template<typename T>
     std::vector<T> read(const char *data_name, Dims *dims = nullptr);
