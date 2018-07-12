@@ -21,7 +21,7 @@ before_install:
     fi
   - export PATH=$PWD/miniconda3/bin:$PATH;
   - which conda
-  - conda install py.test h5py numba
+  - conda install -y pytest h5py numba
   - which python
 
 script:
@@ -30,4 +30,7 @@ script:
   - cmake ..
   - make tests
   - ./tests
-  - make pytest
+  - cd ../python
+  - pwd
+  - python setup.py install
+  - py.test
