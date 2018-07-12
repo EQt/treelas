@@ -309,10 +309,10 @@ HDF5::size(const char *data_name)
 }
 
 
-int
+size_t
 HDF5::size(const Dims &dims)
 {
-    int s = 1;
+    size_t s = 1;
     for (const auto &d : dims)
         s *= d;
     return s;
