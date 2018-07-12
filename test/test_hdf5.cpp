@@ -13,8 +13,10 @@ public:
     static constexpr bool delete_after = true;
 protected:
     virtual void SetUp() {
-        if (delete_after)
-            ASSERT_FALSE(path::exists(fname)) << "CWD=" << path::cwd();
+        if (delete_after && path::exists(fname)) {
+            EXPECT_FALSE(true) << "fname=" << fname << " exists in CWD=" << path::cwd();
+            ASSERT_EQ(path::remove(fname), 0) << "errno=" << errno;
+        }
     }
 
     virtual void TearDown() {
