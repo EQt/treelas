@@ -1,4 +1,12 @@
 # https://conda.io/docs/user-guide/tasks/use-conda-with-travis-ci.html
 # https://github.com/astrofrog/example-travis-conda/blob/master/.travis.yml
+language: cpp
+
 git:
   submodules: false
+
+script:
+  - mkdir -p build
+  - cd build
+  - cmake ..
+  - make pytest
