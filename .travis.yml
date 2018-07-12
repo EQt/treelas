@@ -11,4 +11,6 @@ script:
   - mkdir -p build.travis
   - cd build.travis
   - cmake ..
+  - make tests
+  - ./tests
   - make pytest
