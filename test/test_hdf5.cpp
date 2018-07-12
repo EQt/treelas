@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <cerrno>
+#include <regex>
 
 #include "path.hpp"
 #include "../cxx/utils/hdf5.hpp"
@@ -37,7 +38,9 @@ protected:
 
 TEST(HDF5lib, libversion)
 {
-    std::cerr << HDF5::libversion();
+
+    ASSERT_TRUE(std::regex_match(HDF5::libversion(), std::regex("1\\.8\\..*")))
+        << "libversion=" << HDF5::libversion();
 }
 
 
