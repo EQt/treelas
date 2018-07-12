@@ -45,6 +45,15 @@ class HDF5
     };
 public:
     typedef std::vector<hsize_t> Dims;
+    static std::string libversion() {
+        unsigned major, minor, release;
+        H5get_libversion(&major, &minor, &release);
+        return
+            std::to_string(major) + "." +
+            std::to_string(minor) + "." +
+            std::to_string(release);
+    }
+
     HDF5(const char *fname, const char *mode = "r", int compress = 3);
     ~HDF5();
     bool has(const char *data_name);
