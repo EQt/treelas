@@ -11,15 +11,16 @@ public:
 protected:
     virtual void SetUp() {
         if (delete_after)
-            ASSERT_FALSE(path::exists(fname)) << path::abspath(fname);
+            ASSERT_FALSE(path::exists(fname)) << "CWD=" << path::cwd();
     }
 
     virtual void TearDown() {
         if (delete_after) {
             if (path::exists(fname)) {
-                path::remove(fname);
+                ASSERT_EQ(path::remove(fname), 0);
             }
-            ASSERT_FALSE(path::exists(fname));
+            ASSERT_FALSE(path::exists(fname)) << "CWD=" << path::cwd()
+                                              << ", fname=" << fname;
         } else {
             ASSERT_TRUE(path::exists(fname));
             fprintf(stderr, "Leaving %s/%s\n", path::cwd().c_str(), fname);
