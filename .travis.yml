@@ -5,16 +5,16 @@ git:
 
 matrix:
   include:
-    - os: linux
-      env: CXX=g++-7 CC=gcc-7
+    - env: CXX=g++-7 CC=gcc-7
+      os: linux
       addons:
         apt:
           sources:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
-    - os: osx
-      env: CXX=clang++ CC=clang
+    - env: CXX=clang++ CC=clang
+      os: osx
 
 ## https://docs.travis-ci.com/user/caching/
 # cache:
