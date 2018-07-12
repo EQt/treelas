@@ -9,6 +9,8 @@ elseif (MSVC)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
+add_subdirectory(extern/glmgen)
+
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
 
@@ -18,8 +20,6 @@ set(PYBIND_CMAKE "${PYBIND_DIR}/tools"
     CACHE STRING "Directory where to find pybind11 cmake's tools")
 message("-- pybind cmake ${PYBIND_CMAKE}")
 
-
-add_subdirectory(extern/glmgen)
 
 if (BUILD_PYEXT)
   # download as submodule?
@@ -48,7 +48,6 @@ add_library(argparser OBJECT cxx/utils/argparser.cpp)
 find_package(HDF5 COMPONENTS C HL)
 if (HDF5_FOUND)
   set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
-  # message("-- HDF5_LIBRARIES = ${HDF5_LIBRARIES}")
   if (MSVC)
     add_definitions(-DH5_BUILT_AS_DYNAMIC_LIB)
   endif()
