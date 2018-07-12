@@ -8,8 +8,8 @@ git:
 sudo: false
 
 script:
-  - mkdir -p build.travis
-  - cd build.travis
+  - mkdir -p build
+  - cd build
   - cmake ..
   - make tests
   - ./tests
