@@ -101,7 +101,8 @@ HDF5::HDF5(const char *fname, const char *mode, int compress)
         ShutUp _;
         file_id = H5Fcreate(fname,
                             hm,
-                            H5P_DEFAULT, H5P_DEFAULT);
+                            H5P_DEFAULT,
+                            H5P_DEFAULT);
     } else
         std::runtime_error(std::string("Unknown mode: '") + mode + "'");
 
