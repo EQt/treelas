@@ -8,7 +8,7 @@ git:
 sudo: false
 
 script:
-  - mkdir -p build
-  - cd build
+  - mkdir -p build.travis
+  - cd build.travis
   - cmake ..
   - make pytest
