@@ -26,8 +26,8 @@ matrix:
 
 install:
   - uname -a
-  - export CXX=$CXX_COMPILER
-  - export CC=$C_COMPILER
+  - export CXX=${CXX_COMPILER:-c++}
+  - export CC=${C_COMPILER:-cc}
   - echo $CXX
   - $CXX --version
   - echo $TRAVIS_OS_NAME
