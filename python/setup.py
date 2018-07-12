@@ -11,17 +11,25 @@ class GetPyBindInc():
     The purpose of this class is to postpone importing pybind11
     until it is actually installed, so that the ``get_include()``
     method can be invoked.
+
+    Copied from github.com:pybind/pybind11_example/setup.py
     """
+     def __init__(self, user=False):
+         self.user = user
+
     def __str__(self):
         import pybind11
-        return pybind11.get_include()
+        return pybind11.get_include(self.user),
+                pybind11.get_include(user=True)]
 
 
 _treelas = Extension("treelas._treelas",
                      ["_treelas.cpp",
                      ],
                      language='c++',
-                     include_dirs=[GetPyBindInc()])
+                     include_dirs=[GetPyBindInc(),
+                                   GetPyBindInc(True)]
+)
 
 
 setup(name="treelas",
