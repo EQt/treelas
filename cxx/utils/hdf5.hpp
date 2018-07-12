@@ -66,7 +66,7 @@ public:
     void owrite(const char *data_name, const std::vector<T> &data,
                Dims *dims = nullptr);
 
-    static int size(const Dims &dims);
+    static size_t size(const Dims &dims);
     static void shutup();
     // get and set group
     const std::string& group(const char *g = "/");
@@ -302,7 +302,7 @@ HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
 }
 
 
-int
+size_t
 HDF5::size(const char *data_name)
 {
     Dims dims = dimensions(abspath(data_name));
