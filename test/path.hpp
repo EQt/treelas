@@ -17,8 +17,8 @@ public:
     }
 
 
-    static void remove(const char *fname) {
-        ::remove(fname);
+    static int remove(const char *fname) {
+        return ::remove(fname);
     }
 
     static std::string cwd() {
