@@ -127,6 +127,8 @@ HDF5::~HDF5()
         if (err != 0)
             throw std::runtime_error(std::string("Error while closing ") +
                                      std::to_string(err));
+    } else {
+        // throw std::runtime_error("Should not happen");
     }
 }
 
