@@ -5,6 +5,8 @@ set(CMAKE_CXX_STANDARD 11)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
   add_definitions(-Wall -g -pedantic -O3)
   add_definitions(-mtune=native)
+elseif (MSVC)
+  add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
 
 option(BUILD_TESTS "Build unit tests using googletest" ON)
