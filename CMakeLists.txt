@@ -49,6 +49,9 @@ find_package(HDF5 COMPONENTS C HL)
 if (HDF5_FOUND)
   set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
   # message("-- HDF5_LIBRARIES = ${HDF5_LIBRARIES}")
+  if (MSVC)
+    add_definitions(-DH5_BUILT_AS_DYNAMIC_LIB)
+  endif()
 endif()
 
 
