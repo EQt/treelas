@@ -23,6 +23,8 @@ before_install:
   - which conda
   - conda install -y pytest h5py numba
   - which python
+  - pip install pybind11
+  - python -m pybind11 --include
 
 script:
   - mkdir -p build
