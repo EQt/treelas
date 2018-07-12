@@ -21,6 +21,8 @@ matrix:
 
 before_install:
   - uname -a
+  - echo $CMAKE_CXX_COMPILER
+  - $CMAKE_CXX_COMPILER --version
   - echo $TRAVIS_OS_NAME
   - pwd
   - if [[ ! -d $PWD/miniconda3 ]]; then
@@ -37,10 +39,6 @@ before_install:
   - which python
   - pip install pybind11
   - python -m pybind11 --include
-
-before_script:
-  - echo $CMAKE_CXX_COMPILER
-  - $CMAKE_CXX_COMPILER --version
 
 script:
   - mkdir -p build
