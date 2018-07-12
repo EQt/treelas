@@ -459,9 +459,9 @@ H5Ewalk_error(int n, H5E_error_t *err_desc, void *client_data)
              indent, "", n, err_desc->file_name, err_desc->line,
              err_desc->func_name, err_desc->desc);
     fprintf (stream, "%*smajor(%02d): %s\n",
-             indent*2, "", err_desc->maj_num, maj_str);
+             indent*2, "", int(err_desc->maj_num), maj_str);
     fprintf (stream, "%*sminor(%02d): %s\n",
-             indent*2, "", err_desc->min_num, min_str);
+             indent*2, "", int(err_desc->min_num), min_str);
 
     return 0;
 }
