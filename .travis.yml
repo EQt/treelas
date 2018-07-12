@@ -5,6 +5,8 @@ language: cpp
 git:
   submodules: false
 
+sudo: false
+
 script:
   - mkdir -p build
   - cd build
