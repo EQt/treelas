@@ -7,6 +7,13 @@ git:
 
 sudo: false
 
+# cache:
+#   directories:
+#     - $TRAVIS_BUILD_DIR/miniconda3
+
+# before_cache:
+#   - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
+
 before_install:
   - uname -a
   - echo $TRAVIS_OS_NAME
@@ -21,7 +28,8 @@ before_install:
     fi
   - export PATH=$PWD/miniconda3/bin:$PATH;
   - which conda
-  - conda install -y pytest h5py numba
+  - conda create -y -n testtl pytest h5py numba
+  - source activate testtl
   - which python
   - pip install pybind11
   - python -m pybind11 --include
