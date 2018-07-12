@@ -48,6 +48,7 @@ add_library(argparser OBJECT cxx/utils/argparser.cpp)
 find_package(HDF5 COMPONENTS C HL)
 if (HDF5_FOUND)
   set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
+  # message("-- HDF5_LIBRARIES = ${HDF5_LIBRARIES}")
 endif()
 
 
@@ -58,6 +59,7 @@ if (BUILD_TESTS)
   endif()
   set(BUILD_GMOCK OFF)
   set(BUILD_GTEST ON)
+  set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
   add_subdirectory(extern/googletest)
   include_directories(extern/googletest/googletest/include)
   set(TESTS
