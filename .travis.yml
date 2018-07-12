@@ -13,6 +13,8 @@ matrix:
             - ubuntu-toolchain-r-test
           packages:
             - g++-7
+    - os: osx
+      env: CMAKE_CXX_COMPILER=clang++
 
 ## https://docs.travis-ci.com/user/caching/
 # cache:
@@ -46,7 +48,7 @@ before_install:
 script:
   - mkdir -p build
   - cd build
-  - cmake .. -DCMAKE_CXX_COMPILER=g++-7
+  - cmake .. -DCMAKE_CXX_COMPILER=$CMAKE_CXX_COMPILER
   - make tests
   - ./tests
   - cd ../python
