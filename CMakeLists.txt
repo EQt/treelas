@@ -46,7 +46,9 @@ add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
 
 find_package(HDF5 COMPONENTS C HL)
-set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES} ${HDF5_C_HL_LIBRARIES})
+if (HDF5_FOUND)
+  set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
+endif()
 
 
 if (BUILD_TESTS)
