@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
+#include <cerrno>
+
 #include "path.hpp"
 #include "../cxx/utils/hdf5.hpp"
+
 
 // https://github.com/google/googletest/blob/master/googletest/docs/Primer.md
 class HDF5Test : public ::testing::Test
@@ -17,7 +20,7 @@ protected:
     virtual void TearDown() {
         if (delete_after) {
             if (path::exists(fname)) {
-                ASSERT_EQ(path::remove(fname), 0);
+                ASSERT_EQ(path::remove(fname), 0) << "errno=" << errno;
             }
             ASSERT_FALSE(path::exists(fname)) << "CWD=" << path::cwd()
                                               << ", fname=" << fname;
