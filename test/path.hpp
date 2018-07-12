@@ -24,4 +24,9 @@ public:
     static std::string cwd() {
         return ::testing::internal::FilePath::GetCurrentDir().string();
     }
+
+
+    static std::string abspath(const char *fname) {
+        return path::cwd() + "/" + fname;
+    }
 };
