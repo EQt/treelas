@@ -30,7 +30,6 @@ _treelas = Extension("treelas._treelas",
                                    GetPyBindInc(True)]
 )
 
-print(list(map(str, _treelas.include_dirs)))
 
 setup(name="treelas",
       version="0.6",
