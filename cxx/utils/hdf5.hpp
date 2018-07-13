@@ -122,6 +122,8 @@ private:
     void check_error(const std::string s) { check_error(s.c_str()); }
 
     bool read_only() const { return hm == (hid_t)H5F_ACC_RDONLY; }
+
+    hid_t find(const char *data_name);
 };
 
 
@@ -238,38 +240,57 @@ HDF5::group(const char *g)
 }
 
 
-bool
-HDF5::has(const char *data_name)
+hid_t
+HDF5::find(const char *data_name)
 {
-    // ShutUp _;
+   // ShutUp _;
     std::string owner (data_name);
     char *s = &owner.front();
     hid_t loc = data_name[0] == '/' ? file_id : group_id;
     char *part = strtok(s, "/");
     while (part != nullptr) {
-        if (H5Iget_type(loc) != H5I_GROUP || !_h5exists(loc, part)) {
+        const auto type = H5Iget_type(loc);
+        if ((type != H5I_GROUP && type != H5I_FILE) || !_h5exists(loc, part))
             break;
-        }
         status = H5Oopen(loc, part, H5P_DEFAULT);
-        check_error("H5Open");
+        check_error("find::H5Open");
         hid_t next_loc = status;
         if (loc != group_id && loc != file_id) {
             status = H5Gclose(loc);
-            check_error("has()::H5Gclose");
+            check_error("find::H5Gclose");
         }
         loc = next_loc;
         part = strtok(nullptr, "/");
     }
-    bool is_dataset = H5Iget_type(loc) == H5I_DATASET;
-    if (loc != group_id && loc != file_id) {
-        status = H5Oclose(loc);
-        check_error("H5Oclose");
-    } else {
-        if (part != nullptr) {
-            is_dataset = _h5exists(loc, part);
+    if (part != nullptr) {
+        if (_h5exists(loc, part)) {
+            status = H5Oopen(loc, part, H5P_DEFAULT);
+            check_error("find::H5Open, 2");
+            loc = status;
+            return loc;
         }
+        if (loc != group_id && loc != file_id) {
+            status = H5Oclose(loc);
+            check_error("find::H5Oclose");
+        }
+        return -1;
     }
-    return part == nullptr || is_dataset;
+    return loc;
+}
+
+
+bool
+HDF5::has(const char *data_name)
+{
+    hid_t loc = find(data_name);
+    if (loc >= 0) {
+        if (loc != group_id && loc != file_id) {
+            status = H5Oclose(loc);
+            check_error("has()::H5Oclose");
+        }
+        return true;
+    }
+    return false;
 }
 
 
