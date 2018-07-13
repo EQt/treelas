@@ -48,13 +48,10 @@ install:
   - python -m pybind11 --include
 
 script:
-  - mkdir -p build
-  - cd build
+  - mkdir -p build && cd build
   - cmake .. -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$CC
-  - make tests
-  - ./tests
-  - cd ../python
-  - pwd
+  - make tests && ./tests
+  - cd ../python && pwd
   - python setup.py install
   - py.test
 
