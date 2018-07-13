@@ -29,9 +29,12 @@ install:
 - "$CXX --version"
 - echo $TRAVIS_OS_NAME
 - pwd
-- if [[ ! -d $PWD/miniconda3/bin ]]; then url="https://repo.continuum.io/miniconda/Miniconda3-latest";
-  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then wget $url-Linux-x86_64.sh -O miniconda.sh;
-  elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then wget $url-MacOSX-x86_64.sh -O miniconda.sh;
+- if [[ ! -d $PWD/miniconda3/bin ]]; then
+    url="https://repo.continuum.io/miniconda/Miniconda3-latest";
+    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      wget $url-Linux-x86_64.sh -O miniconda.sh;
+    elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      wget $url-MacOSX-x86_64.sh -O miniconda.sh;
   fi; rm -fr miniconda3; bash miniconda.sh -b -p $PWD/miniconda3; fi
 - export PATH=$PWD/miniconda3/bin:$PATH;
 - which conda
