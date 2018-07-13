@@ -282,7 +282,7 @@ HDF5::read(const char *data_name, Dims *dims)
 
     Dims _dims;
     Dims *dims_ = &_dims;
-    H5T_class_t c;        
+    H5T_class_t c;
 
     if (dims != nullptr)
         dims_ = dims;
@@ -313,7 +313,7 @@ HDF5::check_error(const char *msg)
     if (status < 0)
         throw std::runtime_error(std::string("Error: ") + msg);
 }
-                                 
+
 
 HDF5::Dims
 HDF5::dimensions(const char *data_name)
