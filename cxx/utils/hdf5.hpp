@@ -333,6 +333,8 @@ void
 HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
 {
     data_name = abspath(data_name);
+    if (data_name[0] == '\0')
+        throw std::runtime_error("Internal error");
     dims->resize(ndims(data_name));
     status = H5LTget_dataset_info(file_id, data_name,
                                   dims->data(), c, NULL);
