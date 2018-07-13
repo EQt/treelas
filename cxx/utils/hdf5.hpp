@@ -213,6 +213,20 @@ HDF5::abspath(const std::string &data_name)
 }
 
 
+inline bool
+_h5exists(hid_t id, const char *name)
+{
+    // https://support.hdfgroup.org/HDF5/doc/RM/RM_H5L.html#Link-Exists
+    const auto status = H5Lexists(id, name, H5P_DEFAULT);
+    if (status > 0)
+        return true;
+    if (status < 0)
+        throw std::runtime_error(std::string("_h5exists(...") + name + ")");
+    return false;
+}
+
+
+
 bool
 HDF5::has(const char *data_name)
 {
@@ -223,15 +237,14 @@ HDF5::has(const char *data_name)
     // printf("abs = %s\n", data_name);
     std::size_t split = buf.rfind('/');
     if (split == std::string::npos || split == 0) {
-        return H5LTpath_valid(file_id, data_name, true) > 0;
+        return _h5exists(file_id, data_name);
     }
     buf[split] = '\0';
     const char *group_name = data_name;
     data_name = data_name + split + 1;
     // printf("g=%s, d=%s\n", group_name, data_name);
     hid_t group_id = H5Gopen1(file_id, group_name);
-    return H5LTpath_valid(group_id, data_name, true) > 0;
-    // return H5LTfind_dataset(file_id, abspath(data_name));
+    return _h5exists(group_id, data_name) > 0;
 }
 
 
