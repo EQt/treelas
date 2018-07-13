@@ -100,8 +100,8 @@ public:
     /** Disable libhdf5 warnings/errors */
     static void shutup();
 
-    /** Get and set, and, if not exists, create the current group */
-    const std::string& group(const char *g = "/");
+    /** Get (g = "") set (len(g) > 0)  and, if not exists, create the current group */
+    const std::string& group(const char *g = "");
     const std::string& group(const std::string &g) {  return group(g.c_str()); }
 
     /** Return the HDF5 liberary version */
