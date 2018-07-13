@@ -359,12 +359,13 @@ HDF5::dimensions(const char *data_name)
 void
 HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
 {
+    if (!_h5exists(group_id, data_name))
+        throw std::runtime_error(std::string("dimensions: '") +
+                                 data_name + "' does not exist");
     if (data_name[0] == '\0')
-        throw std::runtime_error("Internal error");
-    if (std::string(data_name) == "")
-        throw std::runtime_error("Internal error");
+        throw std::runtime_error("dimensions: Internal error");
     dims->resize(ndims(data_name));
-    status = _get_dataset_info(file_id, data_name,
+    status = _get_dataset_info(group_id, data_name,
                                dims->data(), c, NULL);
     check_error(std::string("H5LTget_dataset_info: '") +
                 data_name + "'");
