@@ -209,6 +209,22 @@ _h5exists(hid_t id, const char *name)
 }
 
 
+void
+HDF5::set_compression(int c)
+{
+    if (0 <= c && c < 10) {
+        if (c != compress) {
+            compress = c;
+            close_compression_filter();
+            cid = H5Pcreate(H5P_DATASET_CREATE);
+            // check_error("H5Pcreate");    // no effect
+        }
+    } else {
+        throw std::range_error(
+            std::string("compress must be in [0..9]"));
+    }
+}
+
 
 std::string
 HDF5::group(const char *g)
@@ -233,23 +249,6 @@ HDF5::group(const char *g)
         part = strtok(nullptr, "/");
     }
     return _group_name(group_id);
-}
-
-
-void
-HDF5::set_compression(int c)
-{
-    if (0 <= c && c < 10) {
-        if (c != compress) {
-            compress = c;
-            close_compression_filter();
-            cid = H5Pcreate(H5P_DATASET_CREATE);
-            // check_error("H5Pcreate");    // no effect
-        }
-    } else {
-        throw std::range_error(
-            std::string("compress must be in [0..9]"));
-    }
 }
 
 
