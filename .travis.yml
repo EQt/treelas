@@ -24,6 +24,10 @@ matrix:
 # before_cache:
 #   - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
 
+branches:
+  only:
+    - master
+
 install:
   - uname -a
   - export CXX=${CXX_COMPILER:-c++}
