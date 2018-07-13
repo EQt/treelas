@@ -36,7 +36,7 @@ protected:
 };
 
 
-TEST(HDF5lib, libversion)
+TEST(HDF5lib, DISABLED_libversion)
 {
 
     ASSERT_TRUE(std::regex_match(HDF5::libversion(), std::regex("1\\.8\\..*")))
