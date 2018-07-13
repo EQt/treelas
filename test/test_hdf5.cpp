@@ -57,7 +57,7 @@ TEST_F(HDF5Test, create)
 }
 
 
-TEST_F(HDF5Test, write_double)
+TEST_F(HDF5Test, DISABLED_write_double)
 {
     const std::vector<double> x ({1, 2, 3});
     {   // write
