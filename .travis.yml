@@ -56,7 +56,8 @@ deploy:
   provider: releases
   api_key:
     secure: HOBLUWsiBlKr3UpnSgsfYpLk47qvl8NBGtg+uzXU9iP0l3I3au0ZqI5NiJh2rE5ZqQJPCnDrF6XeyWISCo7YJe46M3jyqqwDuU/GWreFd0Ckd+sO8NTSGhZfCK90RY6f6kj65y/SjxzGIb4sYdj8nFSGRbrAfpEeHC1XFtW38GnLbKAW+ZtHYJSdRPBgfCGKP/rURErlTFFTSkfQGMa0MfZHMPj7DWSB2U2eQnOhqAk5zcw6vC5i54OMbpl4eoc/anVy/A6ywQDP5UWRaKzrsWS1ieEXaLKkN8SuY1tMbIg/1+BZ7BEavM7BmhGEELvIprcLo0gJgQjXyep0Y3vB/c1IPGc/5iBQeb7AGa5UHH/aafZiBAD81RU9qN2ZNKGkWmz5AlzPPBXPpiJ8RWzPbkHZL2e+ztBNQFzaJlZSiC0PuwSascQiCJhuIk0F1tQnw+DCoC8lULFaH+IDb0pmMlysiq8jYJBsD4uFlOzlBs13ZyNwZCta4Uy8u5FMiWRcVGESLCqsf5XhlFtgI5EgjZgXvrHis2H9094hSMRBAUTcWDrpD5TiAVaBpEy15P3B3eUh0LMkSDKAZAEU3NfCQhNaUxmjLZKnBmDJRd9HC6yylew6RzuidJ0wb9MwigzJRjeLSSBhn0FLFHnqBkmWAs/vXK7iYZUUD4hG8ccWp3Y=
-  file: $TRAVIS_BUILD_DIR/build/tests
+  file_glob: true
+  file: "${TRAVIS_BUILD_DIR}/build/tests"
   on:
     repo: EQt/treelas
     tags: true
