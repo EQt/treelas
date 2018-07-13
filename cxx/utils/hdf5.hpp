@@ -217,7 +217,7 @@ bool
 HDF5::has(const char *data_name)
 {
     // ShutUp _;
-    std::string buf (abspath(data_name));
+    std::string buf (data_name);
     data_name = buf.c_str();
     // printf("abs = %s\n", data_name);
     std::size_t split = buf.rfind('/');
@@ -228,7 +228,7 @@ HDF5::has(const char *data_name)
     const char *group_name = data_name;
     data_name = data_name + split + 1;
     // printf("g=%s, d=%s\n", group_name, data_name);
-    hid_t group_id = H5Gopen1(file_id, group_name);
+    hid_t group_id = H5Gopen2(file_id, group_name, H5P_DEFAULT);
     return _h5exists(group_id, data_name);
 }
 
@@ -252,7 +252,6 @@ template<typename T>
 std::vector<T>
 HDF5::read(const char *data_name, Dims *dims)
 {
-    data_name = abspath(data_name);
     if (!has(data_name))
         throw std::runtime_error(std::string("Does not exists \"") +
                                  data_name + "\"");
@@ -275,7 +274,6 @@ HDF5::read(const char *data_name, Dims *dims)
 int
 HDF5::ndims(const char *data_name)
 {
-    data_name = abspath(data_name);
     // printf("data_name --> %s\n", data_name);
     int ndims;
     status = H5LTget_dataset_ndims(file_id, data_name, &ndims);
@@ -304,7 +302,6 @@ HDF5::dimensions(const char *data_name)
 void
 HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
 {
-    data_name = abspath(data_name);
     throw std::runtime_error(std::string("data_name = ") + data_name);
     if (data_name[0] == '\0')
         throw std::runtime_error("Internal error");
@@ -321,7 +318,7 @@ HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
 size_t
 HDF5::size(const char *data_name)
 {
-    Dims dims = dimensions(abspath(data_name));
+    Dims dims = dimensions(data_name);
     return size(dims);
 }
 
@@ -351,7 +348,6 @@ template<typename T>
 void
 HDF5::write(const char *name, const std::vector<T> &data, Dims *dims)
 {
-    name = abspath(name);
     if (read_only()) {
         throw std::runtime_error(std::string("Cannot write\"") +
                                  name +
@@ -379,7 +375,6 @@ template<typename T>
 void
 HDF5::owrite(const char *name, const std::vector<T> &data, Dims *dims)
 {
-    name = abspath(name);
     if (hm == int(H5F_ACC_RDONLY))
         throw std::runtime_error("Can't write because opened with mode \"r\"");
     if (has(name))
