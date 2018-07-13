@@ -25,35 +25,33 @@
 #include "hdf5hl.hpp"
 
 
+/**
+   HDF5 file (and utility methods).
+*/
 class HDF5
 {
-    // https://support.hdfgroup.org/HDF5/doc/H5.user/Errors.html
+public:
+    /**
+       As long as an instance of this class exists, there won't be any HDF5
+       error/warning traces (e.g. when opening a non-existing file.
+
+       See: https://support.hdfgroup.org/HDF5/doc/H5.user/Errors.html
+    */
     struct ShutUp
     {
-        herr_t (*old_func)(hid_t, void*);
-        void *old_client_data = nullptr;
-        ShutUp() {
-            H5Eget_auto2(H5E_DEFAULT, &old_func, &old_client_data);
-            /* Turn off error handling */
-            H5Eset_auto2(H5E_DEFAULT, NULL, NULL);
+        herr_t (*old_func)(hid_t, void*);   // old handler
+        void *old_client_data = nullptr;    // old data
+
+        ShutUp() {  /* (1) save old handler, (2) replace by NULL */
+            H5Eget_auto2(H5E_DEFAULT, &old_func, &old_client_data);  // (1)
+            H5Eset_auto2(H5E_DEFAULT, NULL, NULL);                   // (2)
         }
 
-        ~ShutUp() {
-            /* Restore previous error handler */
+        ~ShutUp() {  /* Restore previous error handler */
             H5Eset_auto2(H5E_DEFAULT, old_func, old_client_data);
         }
     };
 
-public:
-    typedef std::vector<hsize_t> Dims;
-    static std::string libversion() {
-        unsigned major, minor, release;
-        H5get_libversion(&major, &minor, &release);
-        return
-            std::to_string(major) + "." +
-            std::to_string(minor) + "." +
-            std::to_string(release);
-    }
 
     HDF5(const char *fname, const char *mode = "r", int compress = 3);
  
@@ -62,6 +60,10 @@ public:
     bool has(const char *data_name);
  
     int ndims(const char *data_name);
+
+
+    /** Dimensions of an hdf5 array */
+    typedef std::vector<hsize_t> Dims;
 
     Dims dimensions(const char *data_name);
     void dimensions(const char *data_name, Dims *dims, H5T_class_t *c = nullptr);
@@ -90,6 +92,9 @@ public:
     const std::string& group(const std::string &g) {  return group(g.c_str()); }
 
     void set_compression(int c);
+
+    /** Return the HDF5 liberary version */
+    static std::string libversion();
 
 private:
     hid_t file_id, loc_id;
