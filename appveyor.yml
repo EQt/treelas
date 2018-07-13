@@ -23,10 +23,9 @@ install:
   - conda install -y cmake h5py pytest
 
 build_script:
-  - mkdir build
-  - cd build
-  - cmake -G "Visual Studio 14 2015 Win64" ..
-  - "cmake --build . --target tests --config %CONFIGURATION%"
+  - mkdir build.appveyor
+  - cd build.appveyor && cmake -G "Visual Studio 14 2015 Win64" ..
+  - cd build.appveyor && cmake --build . --target tests --config "%CONFIGURATION%"
 
 test_script:
-  - "%CONFIGURATION%/tests.exe"
+  - "build.appveyor\\%CONFIGURATION%\\tests.exe"
