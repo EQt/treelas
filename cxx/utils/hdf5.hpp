@@ -291,8 +291,6 @@ HDF5::read(const char *data_name, Dims *dims)
         dims_ = dims;
     // printf("dimensions(%s)\n", data_name);
     dimensions(data_name, dims_, &c);
-    status = c == H5T_INTEGER;
-    check_error("read_int: H5T_INTEGER");
     std::vector<T> buf (size(*dims_));
     H5LTread_dataset(file_id, data_name, h5t<T>(), buf.data());
     check_error("H5LTread_dataset");
