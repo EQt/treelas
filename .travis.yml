@@ -57,3 +57,8 @@ script:
 
 after_script:
   - pip uninstall -y treelas
+
+
+notifications:
+  email:
+    on_failure: change
