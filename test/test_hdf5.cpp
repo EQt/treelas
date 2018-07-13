@@ -57,7 +57,7 @@ TEST_F(HDF5Test, create)
 }
 
 
-TEST_F(HDF5Test, DISABLED_write_double)
+TEST_F(HDF5Test, write_double)
 {
     const std::vector<double> x ({1, 2, 3});
     {   // write
@@ -69,9 +69,10 @@ TEST_F(HDF5Test, DISABLED_write_double)
         HDF5 io (fname, "r");
         ASSERT_TRUE(io.has("x"));
         {
-            const auto dims = io.dimensions("x");
-            ASSERT_EQ(dims.size(), 1);
-            ASSERT_EQ(dims[0], 3);
+            ASSERT_THROW(io.dimensions("x"), std::runtime_error);
+            // const auto dims = io.dimensions("x");
+            // ASSERT_EQ(dims.size(), 1);
+            // ASSERT_EQ(dims[0], 3);
         }
         // auto xr = io.read<double>("x");
         // ASSERT_EQ(x, xr);
