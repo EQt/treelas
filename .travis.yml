@@ -22,7 +22,9 @@ cache:
     - $TRAVIS_BUILD_DIR/miniconda3
 
 before_cache:
+  - pip uninstall -y treelas
   - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
+  - rm -fr $TRAVIS_BUILD_DIR/miniconda3/lib/python*/site-packages/treelas*
 
 branches:
   only:
@@ -60,10 +62,6 @@ script:
   - cd ../python && pwd
   - python setup.py install
   - py.test
-
-after_script:
-  - pip uninstall -y treelas
-
 
 notifications:
   email:
