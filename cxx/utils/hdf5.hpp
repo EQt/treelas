@@ -315,7 +315,8 @@ HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
     dims->resize(ndims(data_name));
     status = H5LTget_dataset_info(file_id, data_name,
                                   dims->data(), c, NULL);
-    check_error("H5LTget_dataset_info");
+    check_error(std::string("H5LTget_dataset_info: ") +
+                data_name);
 }
 
 
