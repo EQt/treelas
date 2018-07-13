@@ -29,4 +29,4 @@ build_script:
   - cmake --build . --target tests --config %CONFIGURATION%
 
 test_script:
-  -" %CONFIGURATION%/tests.exe"
+  - "%CONFIGURATION%/tests.exe"
