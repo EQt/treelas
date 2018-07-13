@@ -57,42 +57,52 @@ public:
     HDF5(const char *fname, const char *mode = "r", int compress = 3);
  
    ~HDF5();
- 
-    bool has(const char *data_name);
- 
-    int ndims(const char *data_name);
 
+    /**
+       Check whether there exists, from the current location, a group or dataset
+       named `data_name`
+    */
+    bool has(const char *data_name);
+
+    /** Number of dimensions, i.e. rank of a dataset */
+    int ndims(const char *data_name);
 
     /** Dimensions of an hdf5 array */
     typedef std::vector<hsize_t> Dims;
 
+    /** Dimensions of a dataset */
     Dims dimensions(const char *data_name);
     void dimensions(const char *data_name, Dims *dims, H5T_class_t *c = nullptr);
 
+    /** Number of elements in a dataset, i.e. product of dimensions */
     size_t size(const char *data_name);
+    static size_t size(const Dims &dims);
 
+    /** Read the content of a dataset */
     template<typename T>
     std::vector<T> read(const char *data_name, Dims *dims = nullptr);
 
+    /** Return an attribute */
     template<typename T>
     T attr(const char *attr_name, const char *obj_name = "/");
 
+    /** Write into a new dataset, i.e. data_name must not exist */
     template<typename T>
     void write(const char *data_name, const std::vector<T> &data, Dims *dims = nullptr);
+
+    /** Install a compression filter for writing; assert 0 <= c <= 9. */
+    void set_compression(int c);
 
     /** Overwrite (if exists) */
     template<typename T>
     void owrite(const char *data_name, const std::vector<T> &data, Dims *dims = nullptr);
 
-    static size_t size(const Dims &dims);
-
+    /** Disable libhdf5 warnings/errors */
     static void shutup();
 
-    // get and set group
+    /** Get and set, and, if not exists, create the current group */
     const std::string& group(const char *g = "/");
     const std::string& group(const std::string &g) {  return group(g.c_str()); }
-
-    void set_compression(int c);
 
     /** Return the HDF5 liberary version */
     static std::string libversion();
