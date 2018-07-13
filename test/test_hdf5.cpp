@@ -79,7 +79,7 @@ TEST_F(HDF5Test, write_double)
     }
 }
 
-/*
+
 TEST_F(HDF5Test, write_int)
 {
     const std::vector<int> x ({1, 2, 3});
@@ -169,4 +169,4 @@ TEST_F(HDF5Test, write_readonly)
                      std::runtime_error);
     }
 }
-*/
+
