@@ -196,11 +196,14 @@ _group_name(hid_t g)
 }
 
 
+
+
 std::string
 HDF5::group(const char *g)
 {
     std::string grp (g);
     if (grp.size() > 0) {
+        
     }
     return _group_name(group_id);
 }
