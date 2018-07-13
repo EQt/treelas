@@ -260,10 +260,14 @@ HDF5::has(const char *data_name)
         loc = next_loc;
         part = strtok(nullptr, "/");
     }
-    const bool is_dataset = H5Iget_type(loc) == H5I_DATASET;
+    bool is_dataset = H5Iget_type(loc) == H5I_DATASET;
     if (loc != group_id && loc != file_id) {
         status = H5Oclose(loc);
         check_error("H5Oclose");
+    } else {
+        if (part != nullptr) {
+            is_dataset = _h5exists(loc, part);
+        }
     }
     return part == nullptr || is_dataset;
 }
@@ -355,7 +359,6 @@ HDF5::dimensions(const char *data_name)
 void
 HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
 {
-    throw std::runtime_error(std::string("data_name = ") + data_name);
     if (data_name[0] == '\0')
         throw std::runtime_error("Internal error");
     if (std::string(data_name) == "")
