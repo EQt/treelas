@@ -169,8 +169,11 @@ HDF5::group(const char *g)
                 throw std::runtime_error(grp + "does not exist and read only");
             } else {
                 // https://support.hdfgroup.org/HDF5/doc1.6/UG/09_Groups.html
-                status = H5Gcreate1(file_id, grp.c_str(), 0);
-                check_error("H5Gcreate");
+                const auto g = H5Gcreate1(file_id, grp.c_str(), 0);
+                if (g < 0) {
+                    status = herr_t(g);
+                    check_error("H5Gcreate");
+                }
             }
         }
         _group = grp;
@@ -441,7 +444,7 @@ HDF5::write(const char *name, const std::vector<T> &data, Dims *dims)
     if (dims == nullptr) {
         dims = &_dims;
     }
-    const int rank = dims->size();
+    const int rank = int(dims->size());
     status = make_dataset(file_id,
                           name,
                           rank,
