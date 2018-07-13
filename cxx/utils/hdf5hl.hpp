@@ -130,3 +130,35 @@ out:
     } H5E_END_TRY;
     return -1;
 }
+
+
+/* TODO: Error handling
+   https://support.hdfgroup.org/HDF5/doc/H5.user/Errors.html
+ */
+inline herr_t
+H5Ewalk_error(int n, H5E_error_t *err_desc, void *client_data)
+{
+    FILE       *stream = (FILE *)client_data;
+    const char *maj_str = NULL;
+    const char *min_str = NULL;
+    const int   indent = 2;
+
+    /* Check arguments */
+    assert (err_desc);
+    if (!client_data) client_data = stderr;
+
+    /* Get descriptions for the major and minor error numbers */
+    maj_str = H5Eget_major (err_desc->maj_num);
+    min_str = H5Eget_minor (err_desc->min_num);
+
+    /* Print error message */
+    fprintf (stream, "%*s#%03d: %s line %u in %s(): %s\n",
+             indent, "", n, err_desc->file_name, err_desc->line,
+             err_desc->func_name, err_desc->desc);
+    fprintf (stream, "%*smajor(%02d): %s\n",
+             indent*2, "", int(err_desc->maj_num), maj_str);
+    fprintf (stream, "%*sminor(%02d): %s\n",
+             indent*2, "", int(err_desc->min_num), min_str);
+
+    return 0;
+}
