@@ -205,6 +205,8 @@ HDF5::abspath(const std::string &data_name)
 {
     if (data_name[0] == '/') {
         last_name = data_name;
+    } else if (data_name[0] == '\0') {
+        throw std::runtime_error("absbath(\"\")");
     } else {
         if (_group == "/") {
             last_name = "/" + data_name;
@@ -212,7 +214,10 @@ HDF5::abspath(const std::string &data_name)
             last_name = _group + "/" + data_name;
         }
     }
-    return last_name.c_str();
+    auto r = last_name.c_str();
+    if (r[0] == '\0')
+        throw std::runtime_error("Returning empty name");
+    return r;
 }
 
 
