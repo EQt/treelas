@@ -201,10 +201,11 @@ _h5exists(hid_t id, const char *name)
 {
     // https://support.hdfgroup.org/HDF5/doc/RM/RM_H5L.html#Link-Exists
     const auto status = H5Lexists(id, name, H5P_DEFAULT);
-    if (status > 0)
-        return true;
     if (status < 0)
         throw std::runtime_error(std::string("_h5exists(...") + name + ")");
+
+    if (status > 0)
+        return true;
     return false;
 }
 
@@ -259,11 +260,12 @@ HDF5::has(const char *data_name)
         loc = next_loc;
         part = strtok(nullptr, "/");
     }
+    const bool is_dataset = H5Iget_type(loc) == H5I_DATASET;
     if (loc != group_id && loc != file_id) {
         status = H5Oclose(loc);
         check_error("H5Oclose");
     }
-    return part != nullptr;
+    return part == nullptr || is_dataset;
 }
 
 

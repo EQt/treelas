@@ -57,6 +57,13 @@ TEST_F(HDF5Test, create)
 }
 
 
+TEST_F(HDF5Test, has_nothing)
+{
+    HDF5 io (fname, "w");
+    ASSERT_FALSE(io.has("blub"));
+}
+
+
 TEST_F(HDF5Test, write_double)
 {
     const std::vector<double> x ({1, 2, 3});
