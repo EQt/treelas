@@ -196,14 +196,41 @@ _group_name(hid_t g)
 }
 
 
+inline bool
+_h5exists(hid_t id, const char *name)
+{
+    // https://support.hdfgroup.org/HDF5/doc/RM/RM_H5L.html#Link-Exists
+    const auto status = H5Lexists(id, name, H5P_DEFAULT);
+    if (status > 0)
+        return true;
+    if (status < 0)
+        throw std::runtime_error(std::string("_h5exists(...") + name + ")");
+    return false;
+}
+
 
 
 std::string
 HDF5::group(const char *g)
 {
-    std::string grp (g);
-    if (grp.size() > 0) {
-        
+    std::string owner (g);
+    char *grp = &owner.front();
+    char *part = strtok(grp, "/");
+    while (part != 0) {
+        if (_h5exists(group_id, part)) {
+            status = H5Gopen2(group_id, part, H5P_DEFAULT);
+            check_error("H5Gopen2");
+        } else {
+            status = H5Gcreate2(group_id, part, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+            check_error("H5Gcreate2");
+        }
+        hid_t next_group = status;
+        if (group_id != file_id) {
+            status = H5Gclose(group_id);
+            check_error("group()::H5Gclose");
+        }
+        group_id = next_group;
+        part = strtok(nullptr, "/");
     }
     return _group_name(group_id);
 }
@@ -224,20 +251,6 @@ HDF5::set_compression(int c)
             std::string("compress must be in [0..9]"));
     }
 }
-
-
-inline bool
-_h5exists(hid_t id, const char *name)
-{
-    // https://support.hdfgroup.org/HDF5/doc/RM/RM_H5L.html#Link-Exists
-    const auto status = H5Lexists(id, name, H5P_DEFAULT);
-    if (status > 0)
-        return true;
-    if (status < 0)
-        throw std::runtime_error(std::string("_h5exists(...") + name + ")");
-    return false;
-}
-
 
 
 bool
