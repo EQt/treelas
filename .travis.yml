@@ -36,7 +36,7 @@ install:
   - $CXX --version
   - echo $TRAVIS_OS_NAME
   - pwd
-  - if [[ ! -d $PWD/miniconda3 ]]; then
+  - if [[ ! -d $PWD/miniconda3/bin ]]; then
       url="https://repo.continuum.io/miniconda/Miniconda3-latest";
       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         wget $url-Linux-x86_64.sh -O miniconda.sh;
