@@ -21,11 +21,14 @@ init:
 
 install:
   - conda install -y cmake h5py pytest
+  - pip install pybind11
 
 build_script:
   - mkdir build.appveyor
   - cd build.appveyor && cmake -G "Visual Studio 14 2015 Win64" ..
   - cd build.appveyor && cmake --build . --target tests --config "%CONFIGURATION%"
+  - cd python && python setup.py install
 
 test_script:
   - "build.appveyor\\%CONFIGURATION%\\tests.exe"
+  - cd python && pytest
