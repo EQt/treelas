@@ -91,7 +91,7 @@ public:
     std::string _group = "/";
     hid_t cid = H5P_DEFAULT;
     int compress = 0;
-    void close_cid();
+    void close_compression_filter();
     void check_error(const char *msg);
     void check_error(const std::string s) { check_error(s.c_str()); }
     bool read_only() const { return hm == (hid_t)H5F_ACC_RDONLY; }
@@ -132,7 +132,7 @@ HDF5::HDF5(const char *fname, const char *mode, int compress)
 
 HDF5::~HDF5()
 {
-    close_cid();
+    close_compression_filter();
     if (file_id >= 0) {
         const auto err = H5Fclose(file_id);
         if (err != 0)
@@ -145,7 +145,7 @@ HDF5::~HDF5()
 
 
 void
-HDF5::close_cid()
+HDF5::close_compression_filter()
 {
     if (cid != H5P_DEFAULT) {
         status = H5Pclose(cid);
@@ -188,7 +188,7 @@ HDF5::set_compression(int c)
     if (0 <= c && c < 10) {
         if (c != compress) {
             compress = c;
-            close_cid();
+            close_compression_filter();
             cid = H5Pcreate(H5P_DATASET_CREATE);
             // check_error("H5Pcreate");    // no effect
         }
@@ -222,7 +222,7 @@ HDF5::has(const char *data_name)
     // printf("abs = %s\n", data_name);
     std::size_t split = buf.rfind('/');
     if (split == std::string::npos || split == 0) {
-        return _h5exists(file_id, data_name);
+        return _h5exists(loc_id, data_name);
     }
     buf[split] = '\0';
     const char *group_name = data_name;
