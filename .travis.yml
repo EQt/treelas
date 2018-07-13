@@ -52,6 +52,7 @@ script:
 notifications:
   email:
     on_failure: change
+    on_success: change
 deploy:
   provider: releases
   api_key:
