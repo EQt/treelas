@@ -66,7 +66,7 @@ deploy:
   file_glob: true
   skip_cleanup: true
   file: "${TRAVIS_BUILD_DIR}/build/tests"
-  tag_name: $TRAVIS_TAG
+  overwrite: true
   on:
     repo: EQt/treelas
   api_key:
