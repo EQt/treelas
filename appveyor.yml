@@ -1,0 +1,13 @@
+shallow_clone: true
+
+platform:
+  - x64
+# - x86
+
+configuration:
+  - Release
+# - Debug
+
+image:
+  - Visual Studio 2015
+  - Visual Studio 2017
