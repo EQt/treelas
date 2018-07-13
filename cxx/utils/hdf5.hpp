@@ -123,6 +123,7 @@ HDF5::HDF5(const char *fname, const char *mode, int compress)
     if (file_id < 0)
         throw std::runtime_error(std::string("Could not open '") + fname +
                                  "'; returned " + std::to_string(file_id));
+    loc_id = file_id;
     if (compress > 0) {
         set_compression(compress);
     }
@@ -216,7 +217,6 @@ bool
 HDF5::has(const char *data_name)
 {
     // ShutUp _;
-    // printf("in = %s\n", data_name);
     std::string buf (abspath(data_name));
     data_name = buf.c_str();
     // printf("abs = %s\n", data_name);
