@@ -56,11 +56,16 @@ public:
     }
 
     HDF5(const char *fname, const char *mode = "r", int compress = 3);
-    ~HDF5();
+ 
+   ~HDF5();
+ 
     bool has(const char *data_name);
+ 
     int ndims(const char *data_name);
+
     Dims dimensions(const char *data_name);
     void dimensions(const char *data_name, Dims *dims, H5T_class_t *c = nullptr);
+
     size_t size(const char *data_name);
 
     template<typename T>
@@ -70,18 +75,20 @@ public:
     T attr(const char *attr_name, const char *obj_name = "/");
 
     template<typename T>
-    void write(const char *data_name, const std::vector<T> &data,
-               Dims *dims = nullptr);
+    void write(const char *data_name, const std::vector<T> &data, Dims *dims = nullptr);
+
     /** Overwrite (if exists) */
     template<typename T>
-    void owrite(const char *data_name, const std::vector<T> &data,
-               Dims *dims = nullptr);
+    void owrite(const char *data_name, const std::vector<T> &data, Dims *dims = nullptr);
 
     static size_t size(const Dims &dims);
+
     static void shutup();
+
     // get and set group
     const std::string& group(const char *g = "/");
     const std::string& group(const std::string &g) {  return group(g.c_str()); }
+
     void set_compression(int c);
 
 private:
@@ -91,9 +98,12 @@ private:
     std::string _group = "/";
     hid_t cid = H5P_DEFAULT;
     int compress = 0;
+
     void close_compression_filter();
+
     void check_error(const char *msg);
     void check_error(const std::string s) { check_error(s.c_str()); }
+
     bool read_only() const { return hm == (hid_t)H5F_ACC_RDONLY; }
 };
 
