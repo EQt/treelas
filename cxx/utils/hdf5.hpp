@@ -83,7 +83,8 @@ public:
     const std::string& group(const std::string &g) {  return group(g.c_str()); }
     void set_compression(int c);
 
-private:
+// private:
+public:
     hid_t file_id;
     unsigned hm = H5F_ACC_EXCL;
     herr_t status = 0;
