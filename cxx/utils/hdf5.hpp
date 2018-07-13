@@ -85,7 +85,7 @@ public:
 
 private:
     hid_t file_id;
-    hid_t hm = H5F_ACC_EXCL;
+    unsigned hm = H5F_ACC_EXCL;
     herr_t status = 0;
     std::string _group = "/";
     hid_t cid = H5P_DEFAULT;
