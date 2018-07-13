@@ -53,8 +53,7 @@ public:
     };
 
 
-    /**
-       Open or create a file. Valid `mode`s are "
+    /** Open or create a file. Valid `mode`s are "r", "r+" and "w". */
     HDF5(const char *fname, const char *mode = "r", int compress = 3);
  
    ~HDF5();
