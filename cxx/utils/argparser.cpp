@@ -39,7 +39,7 @@ ArgParser::parse(int *argc, char *argv[])
             unparsed_args.push_back(argv[i]);
         }
     }
-    *argc = unparsed_args.size()+1;
+    *argc = int(unparsed_args.size()+1);
     for (int i = 1; i < *argc; i++) {
         argv[i] = unparsed_args[i-1];
     }
