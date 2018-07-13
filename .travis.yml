@@ -61,6 +61,9 @@ notifications:
     on_failure: change
     on_success: change
 
+before_deploy:
+  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+
 deploy:
   provider: releases
   file_glob: true
