@@ -101,17 +101,18 @@ public:
     static void shutup();
 
     /** Get (g = "") set (len(g) > 0)  and, if not exists, create the current group */
-    const std::string& group(const char *g = "");
-    const std::string& group(const std::string &g) {  return group(g.c_str()); }
+    std::string group(const char *g = "");
+    std::string group(const std::string &g) {  return group(g.c_str()); }
 
     /** Return the HDF5 liberary version */
     static std::string libversion();
 
 private:
-    hid_t file_id, loc_id;
+    hid_t file_id, group_id;
     unsigned hm = H5F_ACC_EXCL;
+
     herr_t status = 0;
-    std::string _group = "/";
+
     hid_t cid = H5P_DEFAULT;
     int compress = 0;
 
@@ -149,7 +150,7 @@ HDF5::HDF5(const char *fname, const char *mode, int compress)
     if (file_id < 0)
         throw std::runtime_error(std::string("Could not open '") + fname +
                                  "'; returned " + std::to_string(file_id));
-    loc_id = file_id;
+    group_id = file_id;
     if (compress > 0) {
         set_compression(compress);
     }
@@ -159,6 +160,11 @@ HDF5::HDF5(const char *fname, const char *mode, int compress)
 HDF5::~HDF5()
 {
     close_compression_filter();
+    if (group_id != file_id && group_id >= 0) {
+        status = H5Gclose(group_id);
+        group_id = -1;
+        check_error("H5Gclose");
+    }
     if (file_id >= 0) {
         const auto err = H5Fclose(file_id);
         if (err != 0)
@@ -179,32 +185,24 @@ HDF5::close_compression_filter()
 }
 
 
-const std::string&
+std::string
+_group_name(hid_t g)
+{
+    const size_t n = H5Iget_name(g, nullptr, 0);
+    if (n == 0) return "/";
+    std::string s (n, '\0');
+    H5Iget_name(g, &s.front(), n+1);
+    return s;
+}
+
+
+std::string
 HDF5::group(const char *g)
 {
     std::string grp (g);
-    if (grp[0] != '/') {    // relative to current group
-        if (_group == "/")
-            grp = "/" + grp;
-        else
-            grp = _group + "/" + grp;
+    if (grp.size() > 0) {
     }
-    if (grp != "/" && grp != _group) {
-        if (!has(grp.c_str())) {
-            if (read_only()) {
-                throw std::runtime_error(grp + "does not exist and read only");
-            } else {
-                // https://support.hdfgroup.org/HDF5/doc1.6/UG/09_Groups.html
-                const auto g = H5Gcreate1(file_id, grp.c_str(), 0);
-                if (g < 0) {
-                    status = herr_t(g);
-                    check_error("H5Gcreate");
-                }
-            }
-        }
-        _group = grp;
-    } 
-    return _group;
+    return _group_name(group_id);
 }
 
 
@@ -248,7 +246,7 @@ HDF5::has(const char *data_name)
     // printf("abs = %s\n", data_name);
     std::size_t split = buf.rfind('/');
     if (split == std::string::npos || split == 0) {
-        return _h5exists(loc_id, data_name);
+        return _h5exists(group_id, data_name);
     }
     buf[split] = '\0';
     const char *group_name = data_name;
