@@ -92,6 +92,7 @@ private:
     int compress = 0;
     void close_cid();
     void check_error(const char *msg);
+    void check_error(const std::string s) { check_error(s.c_str()); }
     bool read_only() const { return hm == (hid_t)H5F_ACC_RDONLY; }
     std::string last_name;
     inline const char* abspath(const std::string &data_name);
