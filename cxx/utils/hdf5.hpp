@@ -247,7 +247,7 @@ HDF5::has(const char *data_name)
     data_name = data_name + split + 1;
     // printf("g=%s, d=%s\n", group_name, data_name);
     hid_t group_id = H5Gopen1(file_id, group_name);
-    return _h5exists(group_id, data_name) > 0;
+    return _h5exists(group_id, data_name);
 }
 
 
