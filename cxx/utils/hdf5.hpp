@@ -257,19 +257,29 @@ bool
 HDF5::has(const char *data_name)
 {
     // ShutUp _;
-    std::string buf (data_name);
-    data_name = buf.c_str();
-    // printf("abs = %s\n", data_name);
-    std::size_t split = buf.rfind('/');
-    if (split == std::string::npos || split == 0) {
-        return _h5exists(group_id, data_name);
+    std::string owner (data_name);
+    char *s = &owner.front();
+    hid_t loc = data_name[0] == '/' ? file_id : group_id;
+    char *part = strtok(s, "/");
+    while (part != nullptr) {
+        if (H5Iget_type(loc) != H5I_GROUP || !_h5exists(loc, part)) {
+            break;
+        }
+        status = H5Oopen(loc, part, H5P_DEFAULT);
+        check_error("H5Open");
+        hid_t next_loc = status;
+        if (loc != group_id && loc != file_id) {
+            status = H5Gclose(loc);
+            check_error("has()::H5Gclose");
+        }
+        loc = next_loc;
+        part = strtok(nullptr, "/");
     }
-    buf[split] = '\0';
-    const char *group_name = data_name;
-    data_name = data_name + split + 1;
-    // printf("g=%s, d=%s\n", group_name, data_name);
-    hid_t group_id = H5Gopen2(file_id, group_name, H5P_DEFAULT);
-    return _h5exists(group_id, data_name);
+    if (loc != group_id && loc != file_id) {
+        status = H5Oclose(loc);
+        check_error("H5Oclose");
+    }
+    return part != nullptr;
 }
 
 
