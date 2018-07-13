@@ -275,13 +275,10 @@ template<typename T>
 std::vector<T>
 HDF5::read(const char *data_name, Dims *dims)
 {
-    // printf("read(%s)\n", data_name);
     data_name = abspath(data_name);
-    // printf("abspath --> %s\n", data_name);
-    if (!has(data_name)) {
+    if (!has(data_name))
         throw std::runtime_error(std::string("Does not exists \"") +
                                  data_name + "\"");
-    }
 
     Dims _dims;
     Dims *dims_ = &_dims;
