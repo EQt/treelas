@@ -16,13 +16,13 @@ matrix:
     # - env: CXX=clang++ CC=clang
     #   os: osx
 
-## https://docs.travis-ci.com/user/caching/
-# cache:
-#   directories:
-#     - $TRAVIS_BUILD_DIR/miniconda3
+https://docs.travis-ci.com/user/caching/
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/miniconda3
 
-# before_cache:
-#   - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
+before_cache:
+  - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
 
 branches:
   only:
