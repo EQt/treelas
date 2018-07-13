@@ -269,6 +269,9 @@ HDF5::find(const char *data_name)
             loc = status;
             return loc;
         }
+        auto confirm = _h5exists(loc, part);
+        fprintf(stdout, "non-existing part = %s, front = %s, %d\n",
+                part, _group_name(loc).c_str(), int(confirm));
         if (loc != group_id && loc != file_id) {
             status = H5Oclose(loc);
             check_error("find::H5Oclose");
@@ -283,7 +286,7 @@ bool
 HDF5::has(const char *data_name)
 {
     hid_t loc = find(data_name);
-    if (loc >= 0) {
+    if (loc != -1) {
         if (loc != group_id && loc != file_id) {
             status = H5Oclose(loc);
             check_error("has()::H5Oclose");
