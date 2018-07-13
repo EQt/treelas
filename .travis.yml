@@ -61,4 +61,3 @@ deploy:
   file: "${TRAVIS_BUILD_DIR}/build/tests"
   on:
     repo: EQt/treelas
-    tags: true
