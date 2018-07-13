@@ -320,7 +320,7 @@ HDF5::Dims
 HDF5::dimensions(const char *data_name)
 {
     Dims dims;
-    dimensions(abspath(data_name), &dims);
+    dimensions(data_name, &dims);
     return dims;
 }
 
