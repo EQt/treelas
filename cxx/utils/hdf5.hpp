@@ -53,6 +53,8 @@ public:
     };
 
 
+    /**
+       Open or create a file. Valid `mode`s are "
     HDF5(const char *fname, const char *mode = "r", int compress = 3);
  
    ~HDF5();
@@ -395,4 +397,16 @@ HDF5::owrite(const char *name, const std::vector<T> &data, Dims *dims)
     if (has(name))
         H5Ldelete(file_id, name, H5P_DEFAULT);
     write(name, data, dims);
+}
+
+
+std::string
+HDF5::libversion()
+{
+    unsigned major, minor, release;
+    H5get_libversion(&major, &minor, &release);
+    return
+        std::to_string(major) + "." +
+        std::to_string(minor) + "." +
+        std::to_string(release);
 }
