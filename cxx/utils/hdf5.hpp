@@ -85,7 +85,7 @@ public:
 
 // private:
 public:
-    hid_t file_id;
+    hid_t file_id, loc_id;
     unsigned hm = H5F_ACC_EXCL;
     herr_t status = 0;
     std::string _group = "/";
@@ -95,8 +95,6 @@ public:
     void check_error(const char *msg);
     void check_error(const std::string s) { check_error(s.c_str()); }
     bool read_only() const { return hm == (hid_t)H5F_ACC_RDONLY; }
-    std::string last_name;
-    inline const char* abspath(const std::string &data_name);
 };
 
 
@@ -183,7 +181,6 @@ HDF5::group(const char *g)
 }
 
 
-
 void
 HDF5::set_compression(int c)
 {
@@ -198,27 +195,6 @@ HDF5::set_compression(int c)
         throw std::range_error(
             std::string("compress must be in [0..9]"));
     }
-}
-
-
-inline const char*
-HDF5::abspath(const std::string &data_name)
-{
-    if (data_name[0] == '/') {
-        last_name = data_name;
-    } else if (data_name[0] == '\0') {
-        throw std::runtime_error("absbath(\"\")");
-    } else {
-        if (_group == "/") {
-            last_name = "/" + data_name;
-        } else {
-            last_name = _group + "/" + data_name;
-        }
-    }
-    auto r = last_name.c_str();
-    if (r[0] == '\0')
-        throw std::runtime_error("Returning empty name");
-    return r;
 }
 
 
