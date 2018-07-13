@@ -152,7 +152,7 @@ ArgParser::print_usage(FILE *out,
     fprintf(out,
             "%s\n"
             "Options\n", usage);
-    const int long_param_len = std::min(desc_width + 2, desc_indent - 7);
+    const int long_param_len = int(std::min(desc_width + 2, desc_indent - 7));
     for (const auto &ln : long_names) {
         Option &o = options[ln];
         std::string long_param = ln;
