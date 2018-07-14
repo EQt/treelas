@@ -135,7 +135,11 @@ TEST_F(HDF5Test, group)
     }
     {   // read, absolute
         HDF5 io (fname, "r");
-        ASSERT_TRUE(io.has("/blub/x"));
+        ASSERT_EQ(io.group(), "/");
+        ASSERT_TRUE(io.has("/blub"));
+        ASSERT_EQ(io.group("blub"), "/blub");
+        ASSERT_EQ(io.group(), "/blub");
+        ASSERT_TRUE(io.has("x"));
         auto xr = io.read<int>("/blub/x");
         ASSERT_EQ(x, xr);
     }
