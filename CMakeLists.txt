@@ -47,9 +47,9 @@ add_library(argparser OBJECT cxx/utils/argparser.cpp)
 # set_property(TARGET dp_line PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 
-find_package(HDF5 COMPONENTS C HL)
+find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
-  set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES} ${HDF5_HL_LIBRARIES})
+  set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES})
   if (MSVC)
     add_definitions(-DH5_BUILT_AS_DYNAMIC_LIB)
   endif()
@@ -69,8 +69,7 @@ if (BUILD_TESTS)
     target_compile_options(gtest PUBLIC -Wno-conversion)
   endif()
   include_directories(extern/googletest/googletest/include)
-  set(TESTS
-    test/test_strtok.cpp
+  set(TESTS test/test_strtok.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)

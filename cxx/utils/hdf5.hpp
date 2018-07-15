@@ -347,8 +347,8 @@ HDF5::read(const char *data_name, Dims *dims)
     // printf("dimensions(%s)\n", data_name);
     dimensions(data_name, dims_, &c);
     std::vector<T> buf (size(*dims_));
-    H5LTread_dataset(file_id, data_name, h5t<T>(), buf.data());
-    check_error("H5LTread_dataset");
+    _read_dataset(file_id, data_name, h5t<T>(), buf.data());
+    check_error("_read_dataset");
     return buf;
 }
 
@@ -358,8 +358,8 @@ HDF5::ndims(const char *data_name)
 {
     // printf("data_name --> %s\n", data_name);
     int ndims;
-    status = H5LTget_dataset_ndims(file_id, data_name, &ndims);
-    check_error("H5LTget_dataset_ndims");
+    status = _get_dataset_ndims(file_id, data_name, &ndims);
+    check_error("_get_dataset_ndims");
     return ndims;
 }
 
@@ -392,7 +392,7 @@ HDF5::dimensions(const char *data_name, Dims *dims, H5T_class_t *c)
     dims->resize(ndims(data_name));
     status = _get_dataset_info(group_id, data_name,
                                dims->data(), c, NULL);
-    check_error(std::string("H5LTget_dataset_info: '") +
+    check_error(std::string("_get_dataset_info: '") +
                 data_name + "'");
 }
 
@@ -420,8 +420,8 @@ T
 HDF5::attr(const char *attr_name, const char *obj_name)
 {
     T a;
-    status = H5LTget_attribute(file_id, obj_name, attr_name, h5t<T>(), &a);
-    check_error("H5LTget_attribute");
+    status = _get_attribute(file_id, obj_name, attr_name, h5t<T>(), &a);
+    check_error("_get_attribute");
     return a;
 }
 

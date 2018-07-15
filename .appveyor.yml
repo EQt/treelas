@@ -24,6 +24,7 @@ install:
   - pip install pybind11
 
 build_script:
+  - if exist build.appveyor rmdir /Q /S build.appveyor
   - mkdir build.appveyor
   - cd build.appveyor && cmake -G "Visual Studio 14 2015 Win64" ..
   - cd build.appveyor && cmake --build . --target tests --config "%CONFIGURATION%"
@@ -31,4 +32,5 @@ build_script:
 
 test_script:
   - "build.appveyor\\%CONFIGURATION%\\tests.exe"
-  - cd python && pytest --color=yes
+  - cd python/test && if exist "__pycache__" rmdir /Q /S "__pycache__"
+  - cd python/test && pytest --color=yes
