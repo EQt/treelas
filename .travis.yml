@@ -32,7 +32,7 @@ before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
       brew search llvm &&
-      brew install --with-clang llvm@5 &&
+      brew install --with-tools llvm@5 &&
       export PATH=/usr/local/bin:$PATH &&
       which clang && clang --version
     fi
