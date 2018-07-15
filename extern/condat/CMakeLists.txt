@@ -10,6 +10,6 @@ endif()
 
 
 if (EXISTS ${tvc})
-  add_library(condat_tv OBJECT condat_tv_v2.c)
+  add_library(condat_tv OBJECT condat_tv_v2.cpp)
   set_property(TARGET condat_tv PROPERTY POSITION_INDEPENDENT_CODE ON)
 endif()
