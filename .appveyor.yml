@@ -32,4 +32,5 @@ build_script:
 
 test_script:
   - "build.appveyor\\%CONFIGURATION%\\tests.exe"
+  - cd python/test && if exist "__pycache__" rmdir /Q /S "__pycache__"
   - cd python/test && pytest --color=yes
