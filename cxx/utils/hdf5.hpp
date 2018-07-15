@@ -273,7 +273,6 @@ HDF5::find(const char *data_name)
             loc = status;
             return loc;
         }
-        auto confirm = _h5exists(loc, part);
         if (loc != group_id && loc != file_id) {
             status = H5Oclose(loc);
             check_error("find::H5Oclose");
