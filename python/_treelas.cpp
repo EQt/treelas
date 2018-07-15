@@ -6,6 +6,7 @@
 // #include <pybind11/numpy.h>
 
 #include "../extern/glmgen/tf.hpp"
+#include "../extern/condat/condat_tv_v2.hpp"
 #include "../cxx/utils/timer.hpp"
 // #include "../cxx/dp_tree.hpp"
 // #include "../cxx/dp_line.hpp"
@@ -55,6 +56,10 @@ line_condat(const py::array_f64 &y,
     const auto n = check_1d_len(y, "y");
     if (is_empty(out))
         out = py::array_t<double>({{n}}, {{sizeof(double)}});
+    TV1D_denoise_v2(y.data(),
+                    out.mutable_data(),
+                    (unsigned int)n,
+                    lam);
     return out;
 }
 
