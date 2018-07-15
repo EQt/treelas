@@ -11,7 +11,7 @@ class HDF5Test : public ::testing::Test
 {
 public:
     static constexpr auto fname = "test.h5";
-    static constexpr bool delete_after = false;
+    static constexpr bool delete_after = true;
 protected:
     virtual void SetUp() {
         if (delete_after && path::exists(fname)) {
