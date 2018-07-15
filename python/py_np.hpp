@@ -66,7 +66,7 @@ _test_create_array()
     x[0] = 13.0;
     x[1] = -1.0;
     x[2] = 42.0;
-    return py::array_t<double>({{3}}, {{3}}, x);
+    return py::array_t<double>({{3}}, {{sizeof(double)}}, x);
 }
 
 
