@@ -123,6 +123,13 @@ TEST_F(HDF5Test, compress_int)
 }
 
 
+TEST_F(HDF5Test, group_empty0)
+{
+    HDF5 io (fname, "w");
+    ASSERT_EQ(io.group(), "/");
+}
+
+
 TEST_F(HDF5Test, group_empty)
 {
     HDF5 io (fname, "w");
