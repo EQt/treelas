@@ -29,7 +29,7 @@ _treelas = Extension("treelas._treelas",
                      ["_treelas.cpp",
                       "../extern/condat/condat_tv_v2.cpp",
                       "../extern/glmgen/tf_dp.cpp"],
-                     language='c++11',
+                     language='c++',
                      include_dirs=[GetPyBindInc(False),
                                    GetPyBindInc(True)]
 )
