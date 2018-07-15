@@ -12,6 +12,8 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - g++-7
+  - env: CXX_COMPILER=clang++ C_COMPILER=clang
+    os: osx
 
 cache:
   directories:
