@@ -37,17 +37,17 @@ is_empty(const py::array &a)
 
 
 inline void
-check_len(const size_t n,
+check_len(const ssize_t n,
           const py::array &a,
           const std::string &a_str = "?",
-          const size_t ndim = 1)
+          const ssize_t ndim = 1)
 {
     if (a.ndim() != ndim) {
         throw std::length_error(std::to_string(a.ndim()) + " = len(" +
                                 a_str + ".shape) != " +
                                 std::to_string(ndim));
     }
-    if (size_t(a.shape(0)) != n) {
+    if (a.shape(0) != n) {
         throw std::length_error(std::to_string(a.shape(0)) +
                                 std::string(" = len(") +
                                 a_str + ") != " + std::to_string(n));
