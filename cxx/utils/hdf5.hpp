@@ -29,6 +29,8 @@
 
 /**
    HDF5 file (and utility static methods).
+
+   Whenever an error occurs, it throws a std::runtime_error.
 */
 class HDF5
 {
