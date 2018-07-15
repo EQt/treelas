@@ -57,8 +57,8 @@ See the Matlab code on my webpage for comments.
 */
 void TV1D_denoise_v2(const datatype* input, datatype* output, unsigned int width, const datatype lambda) {
 	
-	unsigned int* indstart_low = malloc(sizeof *indstart_low * width);
-	unsigned int* indstart_up = malloc(sizeof *indstart_up * width);
+	unsigned int* indstart_low = (unsigned int*) malloc(sizeof *indstart_low * width);
+	unsigned int* indstart_up = (unsigned int*) malloc(sizeof *indstart_up * width);
 	unsigned int j_low = 0, j_up = 0, jseg = 0, indjseg = 0, i=1, indjseg2, ind;
 	double output_low_first = input[0]-lambda;
 	double output_low_curr = output_low_first;
