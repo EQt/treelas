@@ -57,15 +57,15 @@ notifications:
     on_failure: change
     on_success: change
 
-before_deploy:
-  - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
+# before_deploy:
+#   - git tag "$(date +'%Y%m%d%H%M%S')-$(git log --format=%h -1)"
 
 deploy:
   provider: releases
   file_glob: true
   skip_cleanup: true
-  file:
-    - "${TRAVIS_BUILD_DIR}/build/tests"
+  # file:
+  #   - "${TRAVIS_BUILD_DIR}/build/tests"
   overwrite: true
   on:
     repo: EQt/treelas
