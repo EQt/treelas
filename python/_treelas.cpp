@@ -85,6 +85,10 @@ PYBIND11_MODULE(_treelas, m)
         Create an empty np.int32 array
     )pbdoc");
 
+    m.def("_is_empty", &is_empty, R"pbdoc(
+        Tell whether an np.ndarray is empty
+    )pbdoc");
+
     m.def("line_condat", &line_condat, R"pbdoc(
         Line solver, implemented by Laurent Condat, version 2.0, Aug. 30, 2017.
         See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat

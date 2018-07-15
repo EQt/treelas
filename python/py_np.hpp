@@ -23,7 +23,9 @@ empty_array()
 }
 
 
-inline bool
+/** Check whether the array is empty (has no elements, i.e. all shapes
+    are zero) */
+bool
 is_empty(const py::array &a)
 {
     for (int d = 0; d < a.ndim(); d++) {
@@ -32,7 +34,6 @@ is_empty(const py::array &a)
     }
     return true;
 }
-
 
 
 /*

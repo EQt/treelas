@@ -26,6 +26,12 @@ def test_empty_array_i32():
     assert len(a.shape) == 0
 
 
+def test_is_empty():
+    assert t._treelas._is_empty(np.array([]))
+    assert t._treelas._is_empty(t._treelas._empty_array_f64())
+    assert t._treelas._is_empty(t._treelas._empty_array_i32())
+
+
 def test_refcount():
     a = t._treelas._test_create_array()
     # generally one higher than expected --> see sys.getrefcount.__doc__
