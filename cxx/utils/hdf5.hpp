@@ -165,7 +165,7 @@ HDF5::~HDF5()
     if (group_id != file_id && group_id >= 0) {
         status = H5Gclose(group_id);
         group_id = -1;
-        check_error("H5Gclose");
+        check_error("~HDF5::H5Gclose");
     }
     if (file_id >= 0) {
         const auto err = H5Fclose(file_id);
