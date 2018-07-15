@@ -64,8 +64,8 @@ deploy:
   provider: releases
   file_glob: true
   skip_cleanup: true
-  file:
-    - "${TRAVIS_BUILD_DIR}/build/tests"
+  # file:
+  #   - "${TRAVIS_BUILD_DIR}/build/tests"
   overwrite: true
   on:
     repo: EQt/treelas
