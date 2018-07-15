@@ -17,9 +17,13 @@ template<typename T>
 py::array_t<T>
 empty_array()
 {
-    return py::array_t<T>(std::vector<ssize_t>(),
-                          std::vector<ssize_t>(),
-                          nullptr);
+    auto e = py::array_t<T>(std::vector<ssize_t>(),
+                            std::vector<ssize_t>(),
+                            new T[0]);
+    if (e.ndim() != 0)
+        throw std::runtime_error(std::string("empty.ndim() = ") +
+                                 std::to_string(e.ndim()));
+    return e;
 }
 
 
