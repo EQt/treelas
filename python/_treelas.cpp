@@ -98,7 +98,8 @@ PYBIND11_MODULE(_treelas, m)
     )pbdoc");
 
     m.def("line_condat", &line_condat, R"pbdoc(
-            Line solver, implemented by Laurent Condat, version 2.0, Aug. 30, 2017.
+            Line solver, implemented by Laurent Condat,
+            version 2.0, Aug. 30, 2017.
             See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
         )pbdoc",
           py::arg("y"),
