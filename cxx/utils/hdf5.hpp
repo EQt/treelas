@@ -1,18 +1,17 @@
-/*
-  A thin C++ layer to handle basic HDF5
+/**
+  A thin C++ layer to handle basic HDF5.
   Inspired by h5py (Python) and HDF5.jl (Julia)
 
-  DONE: Add compression
+  Documentation:
+     https://support.hdfgroup.org/HDF5/doc/RM/RM_H5Front.html
+  Compression
      https://support.hdfgroup.org/HDF5/Tutor/compress.html
-
-  TODO: Write attributes.
-   https://github.com/mortenpi/hdf5/blob/master/hl/src/H5LT.c
-   Distinguish between numerical and string attributes.
-
-  File Interface:
-     https://support.hdfgroup.org/HDF5/doc/RM/RM_H5F.html
   Source Code:
      https://portal.hdfgroup.org/display/support/Downloads
+
+  TODO: Write attributes.
+    https://github.com/mortenpi/hdf5/blob/master/hl/src/H5LT.c
+    Distinguish between numerical and string attributes.
 */
 #pragma once
 #include <iostream>
@@ -80,7 +79,7 @@ public:
     template<typename T>
     std::vector<T> read(const char *data_name, Dims *dims = nullptr);
 
-    /** Return an attribute */
+    /** Return the value of an existing attribute */
     template<typename T>
     T attr(const char *attr_name, const char *obj_name = "/");
 
