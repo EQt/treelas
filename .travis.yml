@@ -38,6 +38,7 @@ before_install:
     if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ ! -z "$BREW" ]]; then
       brew install $BREW_OPTS $BREW &&
       export PATH=/usr/local/opt/$BREW/bin:$PATH &&
+      export LDFLAGS="-L/usr/local/opt/llvm@5/lib -Wl,-rpath,/usr/local/opt/llvm@5/lib" && 
       which $CXX_COMPILER && $CXX_COMPILER --version
     fi
 
