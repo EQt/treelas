@@ -178,3 +178,7 @@ TEST_F(HDF5Test, write_readonly)
     }
 }
 
+
+// Local Variables:
+// compile-command: "cd ../build && make tests && ./tests --gtest_filter='HDF5Test.*'"
+// End:
