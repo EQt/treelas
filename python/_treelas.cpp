@@ -2,8 +2,7 @@
 #include <cstdint>
 #include <stdexcept>
 #include <pybind11/pybind11.h>
-// #include <pybind11/stl.h>
-// #include <pybind11/numpy.h>
+#include "py_np.hpp"
 
 #include "../extern/glmgen/tf.hpp"
 #include "../extern/condat/condat_tv_v2.hpp"
@@ -12,7 +11,6 @@
 // #include "../cxx/dp_line.hpp"
 // #include "../cxx/prufer.hpp"
 #include "../cxx/utils/compiler.hpp"
-#include "py_np.hpp"
 
 namespace py = pybind11;
 
