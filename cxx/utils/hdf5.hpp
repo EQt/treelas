@@ -12,7 +12,7 @@
   File Interface:
      https://support.hdfgroup.org/HDF5/doc/RM/RM_H5F.html
   Source Code:
-     https://support.hdfgroup.org/ftp/HDF5/releases/hdf5-1.8.17/src/hdf5-1.8.17.zip
+     https://portal.hdfgroup.org/display/support/Downloads
 */
 #pragma once
 #include <iostream>
@@ -26,7 +26,7 @@
 
 
 /**
-   HDF5 file (and utility methods).
+   HDF5 file (and utility static methods).
 */
 class HDF5
 {
