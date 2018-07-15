@@ -28,8 +28,8 @@ branches:
 
 install:
 - uname -a && echo $TRAVIS_OS_NAME && pwd
-- export CC=${C_COMPILER:-cc} && echo $CC && "$CC --version"
-- export CXX=${CXX_COMPILER:-c++} && echo $CXX && "$CXX --version"
+- export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
+- export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
 - if [[ ! -d $PWD/miniconda3/bin ]]; then
     url="https://repo.continuum.io/miniconda/Miniconda3-latest";
     if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
