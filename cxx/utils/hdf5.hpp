@@ -115,18 +115,18 @@ public:
 private:
     hid_t file_id, group_id;
 
-    unsigned hm = H5F_ACC_EXCL;     // file flags: in read-only mode?
+    unsigned hm = H5F_ACC_EXCL;     /// file flags: in read-only mode?
     bool read_only() const { return hm == (hid_t)H5F_ACC_RDONLY; }
 
-    hid_t status = 0;               // error handling: status < 0?
+    hid_t status = 0;               /// error handling: status < 0?
     void check_error(const char *msg);
     void check_error(const std::string s) { check_error(s.c_str()); }
 
-    hid_t cid = H5P_DEFAULT;        // compression filter
-    int compress = 0;
+    int compress = 0;               /// compression level: 0 <= compress < 10
+    hid_t cid = H5P_DEFAULT;        /// compression filter
     void close_compression_filter();
 
-    hid_t find(const char *data_name);  // find loc_id of data_name, or -1
+    hid_t find(const char *data_name);  /// find loc_id of data_name, or -1
 };
 
 
