@@ -31,7 +31,11 @@ branches:
 before_install:
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew install --with-clang llvm
+      brew search llvm &&
+      brew install --with-clang llvm@5 &&
+      /usr/local/opt/llvm/bin/clang --version &&
+      export C_COMPILER=/usr/local/opt/llvm/bin/clang &&
+      export CXX_COMPILER=/usr/local/opt/llvm/bin/clang++
     fi
 
 install:
