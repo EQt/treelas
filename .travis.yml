@@ -12,7 +12,11 @@ matrix:
   #       - ubuntu-toolchain-r-test
   #       packages:
   #       - g++-7
-  - env: CXX_COMPILER=clang++ C_COMPILER=clang
+  - env:
+    - CXX_COMPILER=clang++
+    - C_COMPILER=clang
+    - BREW=llvm@5
+    - BREW_OPTS="--with-tools"
     os: osx
 
 cache:
@@ -30,10 +34,10 @@ branches:
 
 before_install:
   - |
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      brew install --with-tools llvm@5 &&
-      export PATH=/usr/local/opt/llvm@5/bin:$PATH &&
-      which clang && clang --version
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ ! -z "$BREW" ]]; then
+      brew install $BREW_OPTS $BREW &&
+      export PATH=/usr/local/opt/$BREW/bin:$PATH &&
+      which $CXX_COMPILER && $CXX_COMPILER --version
     fi
 
 install:
