@@ -37,18 +37,6 @@ is_empty(const py::array &a)
 
 
 /*
-template<typename T = double>
-py::array<T>
-create_array(T *x, size_t n)
-{
-    np::dtype dtype = np::dtype::get_builtin<T>();
-    py::tuple shape = py::make_tuple(n);
-    py::tuple stride = py::make_tuple(sizeof(T));
-    auto owner = py::object();
-    auto a = np::from_data(x, dtype, shape, stride, owner);
-    return a;
-}
-
 
 template<typename T = double>
 inline np::ndarray
