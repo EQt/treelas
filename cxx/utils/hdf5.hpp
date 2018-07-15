@@ -225,7 +225,8 @@ HDF5::group(const char *g)
         } else {
             if (read_only())
                 throw std::runtime_error(std::string("Cannot create group ") + g);
-            status = H5Gcreate2(group_id, part, H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+            status = H5Gcreate2(group_id, part,
+                                H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
             check_error("H5Gcreate2");
         }
         hid_t next_group = status;
