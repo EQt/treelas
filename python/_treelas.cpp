@@ -21,7 +21,6 @@ np_glm_line(const np::ndarray &y,
             np::ndarray &x,
             bool verbose = false)
 {
-#ifdef HAVE_GLMGEN
     TimerQuiet _ (verbose);
     const int n = check_1d_len(y, "y");
     if (is_empty(x)) {
@@ -106,6 +105,7 @@ PYBIND11_MODULE(_treelas, m)
                             const double lam,
                             py::array_f64 out)
           -> py::array_t<double> {
+          #ifdef HAVE_GLMGEN
               const auto n = check_1d_len(y, "y");
               if (is_empty(out))
                   out = py::array_t<double>({{n}}, {{sizeof(double)}});
@@ -115,6 +115,11 @@ PYBIND11_MODULE(_treelas, m)
                             lam,
                             out.mutable_data());
               return out;
+          #else
+              PyErr_SetString(PyExc_NotImplementedError,
+                              "glmgen/tf_dp.c was not available");
+              return y;
+          #endif
           },
           R"pbdoc(
             Line solver (implementation of the R package `glmgen`).
