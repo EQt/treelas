@@ -15,7 +15,8 @@ public:
 protected:
     virtual void SetUp() {
         if (delete_after && path::exists(fname)) {
-            EXPECT_FALSE(true) << "fname=" << fname << " exists in CWD=" << path::cwd();
+            EXPECT_FALSE(true) << "fname=" << fname
+                               << " exists in CWD=" << path::cwd();
             ASSERT_EQ(path::remove(fname), 0) << "errno=" << errno;
         }
     }
