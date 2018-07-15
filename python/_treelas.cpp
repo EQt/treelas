@@ -14,36 +14,6 @@
 
 namespace py = pybind11;
 
-/*
-np::ndarray
-np_glm_line(const np::ndarray &y,
-            const double lam,
-            np::ndarray &x,
-            bool verbose = false)
-{
-    TimerQuiet _ (verbose);
-    const int n = check_1d_len(y, "y");
-    if (is_empty(x)) {
-        np::dtype dtype = np::dtype::get_builtin<double>();
-        py::tuple shape = py::make_tuple(n);
-        x = np::empty(shape, dtype);
-    }
-    {
-        Timer("tf_dp");
-        glmgen::tf_dp(n,
-                      check_data_mut<double>(y, "y"),   // y not const!
-                      lam,
-                      check_data_mut(x, "x"));
-    }
-    return x;
-#else
-    PyErr_SetString(PyExc_NotImplementedError,
-                    "glmgen/tf_dp.c was not available");
-    return y;
-#endif
-}
-*/
-
 
 PYBIND11_MODULE(_treelas, m)
 {
