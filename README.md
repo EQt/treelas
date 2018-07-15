@@ -1,5 +1,7 @@
 Treelas
 =======
+[![Travis](https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master)](https://travis-ci.com/EQt/treelas)
+
 
 Fused Lasso solver for tree graphs, implemented in C++ with Python bindings.
 We exactly compute the minimizer of the convex function
