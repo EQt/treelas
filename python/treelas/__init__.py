@@ -9,7 +9,8 @@ import re
 # from .children import ChildrenIndex
 from ._treelas import (
     __compiler__,
-    __author__
+    __author__,
+    line_condat
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,

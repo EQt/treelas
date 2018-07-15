@@ -45,6 +45,16 @@ np_glm_line(const np::ndarray &y,
 }
 */
 
+
+py::array_t<double>
+line_condat(const py::array_f64 &y,
+            const double lam,
+            py::array_f64 &out = py::empty_array<double>)
+{
+
+}
+
+
 PYBIND11_MODULE(_treelas, m)
 {
     m.doc() = R"pbdoc(
@@ -61,6 +71,11 @@ PYBIND11_MODULE(_treelas, m)
     )pbdoc";
     m.attr("__author__") = "Elias Kuthe <elias.kuthe@tu-dortmund.de>";
     m.attr("__compiler__") = compiler_info();
+
+    py::def("line_condat", &line_condat, R"pbdoc(
+    Line solver, implemented by Laurent Condat, version 2.0, Aug. 30, 2017.
+    See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
+    )pbdoc";
 
     /*
     py::def("_test_create_array", test_create_array);

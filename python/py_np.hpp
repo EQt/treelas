@@ -1,7 +1,16 @@
 #pragma once
 #include <pybind11/numpy.h>
 
+
+namespace pybind11 {
+
+typedef array_t<double, array::c_style | array::forcecast> array_f64;
+
+} // namespace pybind11::
+
+
 namespace py = pybind11;
+
 
 /*
 template<typename T = double>
