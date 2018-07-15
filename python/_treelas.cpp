@@ -72,10 +72,15 @@ PYBIND11_MODULE(_treelas, m)
     m.attr("__author__") = "Elias Kuthe <elias.kuthe@tu-dortmund.de>";
     m.attr("__compiler__") = compiler_info();
 
+    m.def("_test_create_array", &_test_create_array, R"pbdoc(
+        Test to create an array with elements [13., -1., 42]
+    )pbdoc");
+
     m.def("line_condat", &line_condat, R"pbdoc(
         Line solver, implemented by Laurent Condat, version 2.0, Aug. 30, 2017.
         See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
     )pbdoc");
+
 
     /*
     py::def("_test_create_array", test_create_array);

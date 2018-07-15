@@ -59,17 +59,15 @@ copy_vector(const std::vector<T> &x)
 }
 */
 
-/*
-np::array<double>
-test_create_array()
+py::array_t<double>
+_test_create_array()
 {
     double *x = new double[3];
     x[0] = 13.0;
     x[1] = -1.0;
     x[2] = 42.0;
-    return create_array(x, 3);
+    return py::array_t<double>({{3}}, {{3}}, x);
 }
-*/
 
 
 /** Return mutable pointer to the data of an py::array */
