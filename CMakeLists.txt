@@ -13,13 +13,16 @@ endif()
 add_subdirectory(extern/glmgen)
 add_subdirectory(extern/condat)
 
+add_library(treelas STATIC
+  $<TARGET_OBJECTS:condat_tv>
+)
+
+
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
 
 set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11"
     CACHE STRING "Directory where pybind is located")
-
-
 if (BUILD_PYEXT)
   # download as submodule?
   # if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11/CMakeLists.txt")
@@ -31,8 +34,10 @@ if (BUILD_PYEXT)
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   endif()
   add_subdirectory(${PYBIND_DIR})
-  pybind11_add_module(_treelas python/_treelas.cpp)
-
+  pybind11_add_module(_treelas
+    python/_treelas.cpp
+    $<TARGET_OBJECTS:condat_tv>
+  )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
       $<TARGET_FILE_NAME:_treelas> ${CMAKE_SOURCE_DIR}/python/treelas)
