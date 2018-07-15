@@ -1,6 +1,9 @@
 /**
-  A thin C++ layer to handle basic HDF5.
+  A thin C++ layer to read and write basic HDF5 files.
   Inspired by h5py (Python) and HDF5.jl (Julia)
+
+  Author: Elias Kuthe
+  Copyright: 2018 MIT 
 
   Documentation:
      https://support.hdfgroup.org/HDF5/doc/RM/RM_H5Front.html
