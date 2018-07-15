@@ -1,6 +1,4 @@
-#include <vector>
 #include <cstdint>
-#include <stdexcept>
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
 
