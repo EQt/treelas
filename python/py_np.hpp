@@ -47,7 +47,7 @@ check_len(const size_t n,
                                 a_str + ".shape) != " +
                                 std::to_string(ndim));
     }
-    if (a.shape(0) != n) {
+    if (size_t(a.shape(0)) != n) {
         throw std::length_error(std::to_string(a.shape(0)) +
                                 std::string(" = len(") +
                                 a_str + ") != " + std::to_string(n));
