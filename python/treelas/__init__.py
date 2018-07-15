@@ -10,7 +10,8 @@ import re
 from ._treelas import (
     __compiler__,
     __author__,
-    line_condat
+    line_condat,
+    line_glmgen
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,
