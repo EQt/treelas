@@ -15,6 +15,7 @@ add_subdirectory(extern/condat)
 
 add_library(treelas STATIC
   $<TARGET_OBJECTS:condat_tv>
+  $<TARGET_OBJECTS:tf_dp>
 )
 
 
@@ -37,6 +38,7 @@ if (BUILD_PYEXT)
   pybind11_add_module(_treelas
     python/_treelas.cpp
     $<TARGET_OBJECTS:condat_tv>
+    $<TARGET_OBJECTS:tf_dp>
   )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
