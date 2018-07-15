@@ -23,6 +23,18 @@ empty_array()
 }
 
 
+inline bool
+is_empty(const py::aray &a)
+{
+    for (int d = 0; d < a.ndims(); d++) {
+        if (a.shape(d) > 0)
+            return false;
+    }
+    return true;
+}
+
+
+
 /*
 template<typename T = double>
 py::array<T>
@@ -34,18 +46,6 @@ create_array(T *x, size_t n)
     auto owner = py::object();
     auto a = np::from_data(x, dtype, shape, stride, owner);
     return a;
-}
-
-
-inline bool
-is_empty(const np::ndarray &a)
-{
-    for (int d = 0; d < a.get_nd(); d++) {
-        if (a.shape(d) > 0) {
-            return false;
-        }
-    }
-    return true;
 }
 
 
