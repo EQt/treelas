@@ -55,7 +55,7 @@ class BuildExt(build_ext):
         opts = self.c_opts.get(ct, [])
         if ct == 'unix':
             opts.append('-std=c++11')
-            opts.append('-g0')
+            opts.append('-g')
             opts.append('-O3')
         for ext in self.extensions:
             ext.extra_compile_args = opts
