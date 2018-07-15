@@ -1,4 +1,5 @@
 #include <vector>
+#include <cstdint>
 #include <stdexcept>
 #include <pybind11/pybind11.h>
 // #include <pybind11/stl.h>
@@ -74,6 +75,14 @@ PYBIND11_MODULE(_treelas, m)
 
     m.def("_test_create_array", &_test_create_array, R"pbdoc(
         Test to create an array with elements [13., -1., 42]
+    )pbdoc");
+
+    m.def("_empty_array_f64", &empty_array<double>, R"pbdoc(
+        Create an empty np.float64 array
+    )pbdoc");
+
+    m.def("_empty_array_i32", &empty_array<int32_t>, R"pbdoc(
+        Create an empty np.int32 array
     )pbdoc");
 
     m.def("line_condat", &line_condat, R"pbdoc(

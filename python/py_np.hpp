@@ -12,6 +12,17 @@ typedef array_t<double, array::c_style | array::forcecast> array_f64;
 namespace py = pybind11;
 
 
+/** Create an empty array */
+template<typename T>
+py::array_t<T>
+empty_array()
+{
+    return py::array_t<T>(std::vector<ssize_t>(),
+                          std::vector<ssize_t>(),
+                          nullptr);
+}
+
+
 /*
 template<typename T = double>
 py::array<T>
@@ -23,16 +34,6 @@ create_array(T *x, size_t n)
     auto owner = py::object();
     auto a = np::from_data(x, dtype, shape, stride, owner);
     return a;
-}
-
-
-template<typename T>
-py::array<T>
-empty_array()
-{
-    const np::dtype dtype = np::dtype::get_builtin<T>();
-    const py::tuple shape = py::make_tuple();
-    return np::zeros(shape, dtype);
 }
 
 
