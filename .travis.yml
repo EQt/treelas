@@ -61,7 +61,7 @@ install:
 script:
 - mkdir -p build && cd build
 - cmake .. -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$CC
-- make tests && ./tests
+- VERBOSE=1 make tests && ./tests
 - cd ../python && pwd
 - python setup.py install
 - py.test --color=yes
