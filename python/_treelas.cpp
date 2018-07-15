@@ -48,23 +48,6 @@ np_glm_line(const np::ndarray &y,
 */
 
 
-py::array_t<double>
-line_condat(const py::array_f64 &y,
-            const double lam,
-            py::array_f64 out)
-{
-    const auto n = check_1d_len(y, "y");
-    if (is_empty(out))
-        out = py::array_t<double>({{n}}, {{sizeof(double)}});
-    check_len(n, out, "out");
-    TV1D_denoise_v2(y.data(),
-                    out.mutable_data(),
-                    (unsigned int)n,
-                    lam);
-    return out;
-}
-
-
 PYBIND11_MODULE(_treelas, m)
 {
     m.doc() = R"pbdoc(
@@ -98,7 +81,20 @@ PYBIND11_MODULE(_treelas, m)
         Tell whether an np.ndarray is empty
     )pbdoc");
 
-    m.def("line_condat", &line_condat,
+    m.def("line_condat", [](const py::array_f64 &y,
+                            const double lam,
+                            py::array_f64 out)
+          -> py::array_t<double> {
+              const auto n = check_1d_len(y, "y");
+              if (is_empty(out))
+                  out = py::array_t<double>({{n}}, {{sizeof(double)}});
+              check_len(n, out, "out");
+              TV1D_denoise_v2(y.data(),
+                              out.mutable_data(),
+                              (unsigned int)n,
+                              lam);
+              return out;
+          },
           R"pbdoc(
             Line solver, implemented by Laurent Condat,
             version 2.0, Aug. 30, 2017.
@@ -162,12 +158,6 @@ PYBIND11_MODULE(_treelas, m)
                 arg("lam"),
                 arg("x") = empty_array<double>()),
             "Johnson's dynamic programming algorithm");
-    py::def("glmgen_line", np_glm_line, (
-                arg("y"),
-                arg("lam"),
-                arg("x") = empty_array<double>(),
-                arg("verbose") = false),
-            "glmgen implementation of Nick Johnson's O(n) line algorithm");
     py::def("post_order", np_post_ord, (
                 arg("parent"),
                 arg("root") = 0,
