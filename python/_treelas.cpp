@@ -106,7 +106,7 @@ PYBIND11_MODULE(_treelas, m)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
-          py::arg("out") = empty_array<double>());
+          py::arg("out") = py::none());
 
 
     /*
