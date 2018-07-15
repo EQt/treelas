@@ -1,6 +1,15 @@
 #include "tf.hpp"
 
 
+#ifdef __cplusplus
 namespace glmgen {
-    #include "tf_dp.c"
+extern "C" {
+#endif
+
+#include "tf_dp.c"
+
+
+#ifdef __cplusplus
 }
+}
+#endif

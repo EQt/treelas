@@ -4,8 +4,15 @@
 #ifdef HAVE_GLMGEN
 #  include <cstdlib>
 
+#  ifdef __cplusplus
 namespace glmgen {
-#  include "tf.h"
-}
+extern "C" {
+#  endif
 
+#  include "tf.h"
+
+#ifdef __cplusplus
+}
+}
+#endif
 #endif
