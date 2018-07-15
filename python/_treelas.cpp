@@ -83,7 +83,6 @@ PYBIND11_MODULE(_treelas, m)
 
 
     /*
-    py::def("_test_create_array", test_create_array);
     py::def("prufer2parent", np_prufer2parent, (
                 arg("prufer"),
                 arg("parent") = empty_array<double>()),
