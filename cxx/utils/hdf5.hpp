@@ -1,5 +1,5 @@
 /**
-  A thin C++ layer to read and write basic HDF5 files.
+  A thin header-only C++ layer to read and write HDF5 files.
   Inspired by h5py (Python) and HDF5.jl (Julia)
 
   Author: Elias Kuthe
@@ -35,7 +35,7 @@ class HDF5
 public:
     /**
        As long as an instance of this class exists, there won't be any HDF5
-       error/warning traces (e.g. when opening a non-existing file.
+       error/warning traces (e.g. when opening a non-existing file).
 
        See: https://support.hdfgroup.org/HDF5/doc/H5.user/Errors.html
     */
