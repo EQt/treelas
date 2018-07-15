@@ -55,7 +55,7 @@ The algorithm can operate in place, with output=input; in that case the input is
 
 See the Matlab code on my webpage for comments.
 */
-void TV1D_denoise_v2(datatype* input, datatype* output, unsigned int width, const datatype lambda) {
+void TV1D_denoise_v2(const datatype* input, datatype* output, unsigned int width, const datatype lambda) {
 	
 	unsigned int* indstart_low = malloc(sizeof *indstart_low * width);
 	unsigned int* indstart_up = malloc(sizeof *indstart_up * width);

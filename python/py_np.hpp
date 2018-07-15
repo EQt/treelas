@@ -12,52 +12,60 @@ typedef array_t<double, array::c_style | array::forcecast> array_f64;
 namespace py = pybind11;
 
 
-/*
-template<typename T = double>
-py::array<T>
-create_array(T *x, size_t n)
-{
-    np::dtype dtype = np::dtype::get_builtin<T>();
-    py::tuple shape = py::make_tuple(n);
-    py::tuple stride = py::make_tuple(sizeof(T));
-    auto owner = py::object();
-    auto a = np::from_data(x, dtype, shape, stride, owner);
-    return a;
-}
-
-
+/** Create an empty array */
 template<typename T>
-py::array<T>
+py::array_t<T>
 empty_array()
 {
-    const np::dtype dtype = np::dtype::get_builtin<T>();
-    const py::tuple shape = py::make_tuple();
-    return np::zeros(shape, dtype);
+    return py::array_t<T>(std::vector<ssize_t>(),
+                          std::vector<ssize_t>(),
+                          nullptr);
 }
 
 
-inline bool
-is_empty(const np::ndarray &a)
+/** Check whether the array is empty (has no elements, i.e. all shapes
+    are zero) */
+bool
+is_empty(const py::array &a)
 {
-    for (int d = 0; d < a.get_nd(); d++) {
-        if (a.shape(d) > 0) {
+    for (int d = 0; d < a.ndim(); d++) {
+        if (a.shape(d) > 0)
             return false;
-        }
     }
     return true;
 }
 
 
-template<typename T = double>
-inline np::ndarray
-copy_vector(const std::vector<T> &x)
+inline void
+check_len(const ssize_t n,
+          const py::array &a,
+          const std::string &a_str = "?",
+          const ssize_t ndim = 1)
 {
-    const auto n = x.size();
-    double *xdat = new double[n];
-    std::memcpy(xdat, x.data(), sizeof(double) * n);
-    return create_array(xdat, n);
+    if (a.ndim() != ndim) {
+        throw std::length_error(std::to_string(a.ndim()) + " = len(" +
+                                a_str + ".shape) != " +
+                                std::to_string(ndim));
+    }
+    if (a.shape(0) != n) {
+        throw std::length_error(std::to_string(a.shape(0)) +
+                                std::string(" = len(") +
+                                a_str + ") != " + std::to_string(n));
+    }
 }
-*/
+
+
+/** Be sure that an array is one-dimensional */
+inline size_t
+check_1d_len(const py::array &a, const std::string &a_str = "?")
+{
+    if (a.ndim() != 1) {
+        throw std::length_error(a_str +
+                                " is supposed to be 1-dimensional array");
+    }
+    return a.shape(0);
+}
+
 
 py::array_t<double>
 _test_create_array()
@@ -98,33 +106,3 @@ _test_create_array()
 //     return (const T*) check_data_mut<T>(var, var_str);
 // }
 
-
-// inline void
-// check_len(const int n,
-//           const np::ndarray &var,
-//           const std::string &var_str = "?",
-//           const int ndim = 1)
-// {
-//     if (var.get_nd() != ndim) {
-//         throw std::length_error(std::string("len(") +
-//                                 var_str + ".shape) != " +
-//                                 std::to_string(ndim));
-//     }
-//     if (var.shape(0) != n) {
-//         throw std::length_error(std::to_string(var.shape(0)) +
-//                                 std::string(" = len(") +
-//                                 var_str + ") != " + std::to_string(n));
-//     }
-// }
-
-
-// /** Be sure that an array is one-dimensional */
-// inline int
-// check_1d_len(const np::ndarray &a, const std::string &a_str = "?")
-// {
-//     if (a.get_nd() != 1) {
-//         throw std::length_error(a_str +
-//                                 " is supposed to be 1-dimensional array");
-//     }
-//     return a.shape(0);
-// }

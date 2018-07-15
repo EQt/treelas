@@ -1,10 +1,12 @@
 #include <vector>
+#include <cstdint>
 #include <stdexcept>
 #include <pybind11/pybind11.h>
 // #include <pybind11/stl.h>
 // #include <pybind11/numpy.h>
 
 #include "../extern/glmgen/tf.hpp"
+#include "../extern/condat/condat_tv_v2.hpp"
 #include "../cxx/utils/timer.hpp"
 // #include "../cxx/dp_tree.hpp"
 // #include "../cxx/dp_line.hpp"
@@ -49,8 +51,16 @@ np_glm_line(const np::ndarray &y,
 py::array_t<double>
 line_condat(const py::array_f64 &y,
             const double lam,
-            py::array_f64 &out)
+            py::array_f64 out)
 {
+    const auto n = check_1d_len(y, "y");
+    if (is_empty(out))
+        out = py::array_t<double>({{n}}, {{sizeof(double)}});
+    check_len(n, out, "out");
+    TV1D_denoise_v2(y.data(),
+                    out.mutable_data(),
+                    (unsigned int)n,
+                    lam);
     return out;
 }
 
@@ -76,10 +86,27 @@ PYBIND11_MODULE(_treelas, m)
         Test to create an array with elements [13., -1., 42]
     )pbdoc");
 
-    m.def("line_condat", &line_condat, R"pbdoc(
-        Line solver, implemented by Laurent Condat, version 2.0, Aug. 30, 2017.
-        See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
+    m.def("_empty_array_f64", &empty_array<double>, R"pbdoc(
+        Create an empty np.float64 array
     )pbdoc");
+
+    m.def("_empty_array_i32", &empty_array<int32_t>, R"pbdoc(
+        Create an empty np.int32 array
+    )pbdoc");
+
+    m.def("_is_empty", &is_empty, R"pbdoc(
+        Tell whether an np.ndarray is empty
+    )pbdoc");
+
+    m.def("line_condat", &line_condat,
+          R"pbdoc(
+            Line solver, implemented by Laurent Condat,
+            version 2.0, Aug. 30, 2017.
+            See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
+          )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("out") = py::none());
 
 
     /*
