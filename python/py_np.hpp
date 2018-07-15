@@ -36,18 +36,6 @@ is_empty(const py::array &a)
 }
 
 
-/*
-
-template<typename T = double>
-inline np::ndarray
-copy_vector(const std::vector<T> &x)
-{
-    const auto n = x.size();
-    double *xdat = new double[n];
-    std::memcpy(xdat, x.data(), sizeof(double) * n);
-    return create_array(xdat, n);
-}
-*/
 
 py::array_t<double>
 _test_create_array()
