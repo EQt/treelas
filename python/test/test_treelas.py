@@ -17,13 +17,13 @@ def test_create_array():
 def test_empty_array_f64():
     a = t._treelas._empty_array_f64()
     assert a.dtype == np.float64
-    assert len(a.shape) == 0
+    assert a.shape == (0,)
 
 
 def test_empty_array_i32():
     a = t._treelas._empty_array_i32()
     assert a.dtype == np.int32
-    assert len(a.shape) == 0
+    assert a.shape == (0,)
 
 
 def test_is_empty():

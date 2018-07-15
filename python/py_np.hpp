@@ -12,21 +12,6 @@ typedef array_t<double, array::c_style | array::forcecast> array_f64;
 namespace py = pybind11;
 
 
-/** Create an empty array */
-template<typename T>
-py::array_t<T>
-empty_array()
-{
-    auto e = py::array_t<T>(std::vector<ssize_t>(),
-                            std::vector<ssize_t>(),
-                            new T[0]);
-    if (e.ndim() != 0)
-        throw std::runtime_error(std::string("empty.ndim() = ") +
-                                 std::to_string(e.ndim()));
-    return e;
-}
-
-
 /** Check whether the array is empty (has no elements, i.e. all shapes
     are zero) */
 bool
