@@ -24,9 +24,9 @@ empty_array()
 
 
 inline bool
-is_empty(const py::aray &a)
+is_empty(const py::array &a)
 {
-    for (int d = 0; d < a.ndims(); d++) {
+    for (int d = 0; d < a.ndim(); d++) {
         if (a.shape(d) > 0)
             return false;
     }
