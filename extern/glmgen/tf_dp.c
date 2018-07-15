@@ -180,7 +180,7 @@ void tf_dp (int n, const double *y, double lam, double *beta)
  * @return  void
  * @see tf_dp
  */
-void tf_dp_weight (int n, double *y, double *w, double lam, double *beta)
+void tf_dp_weight (int n, const double *y, const double *w, double lam, double *beta)
 {
   int i;
   int k;
