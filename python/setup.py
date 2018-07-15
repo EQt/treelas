@@ -27,7 +27,7 @@ class GetPyBindInc():
 
 _treelas = Extension("treelas._treelas",
                      ["_treelas.cpp",
-                     ],
+                      "../extern/condat/condat_tv_v2.c"],
                      language='c++11',
                      include_dirs=[GetPyBindInc(False),
                                    GetPyBindInc(True)]
