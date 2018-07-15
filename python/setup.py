@@ -35,7 +35,7 @@ _treelas = Extension("treelas._treelas",
 def describe_tag(default):
     try:
         ver = check_output('git describe --tag'.split())
-        retrun ver.decode().strip()
+        return ver.decode().strip()
     except:
         return default
 
