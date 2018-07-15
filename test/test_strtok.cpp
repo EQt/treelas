@@ -4,6 +4,7 @@
 #include <string>
 
 
+
 TEST(Tokens, s1)
 {
     const char *delim = "/";
@@ -18,6 +19,15 @@ TEST(Tokens, s1)
         token = strtok(nullptr, delim);
         ASSERT_EQ(token, nullptr);
     }
+}
+
+
+TEST(Tokens, empty_str)
+{
+    const char *delim = "/";
+    char str[] = "";
+    char *token = strtok(str, delim);
+    ASSERT_EQ(token, nullptr);
 }
 
 
