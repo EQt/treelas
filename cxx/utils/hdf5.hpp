@@ -88,19 +88,22 @@ public:
 
     /** Write into a new dataset, i.e. data_name must not exist */
     template<typename T>
-    void write(const char *data_name, const std::vector<T> &data, Dims *dims = nullptr);
+    void write(const char *data_name, const std::vector<T> &data,
+               Dims *dims = nullptr);
 
     /** Install a compression filter for writing; assert 0 <= c <= 9. */
     void set_compression(int c);
 
     /** Overwrite (if exists) */
     template<typename T>
-    void owrite(const char *data_name, const std::vector<T> &data, Dims *dims = nullptr);
+    void owrite(const char *data_name, const std::vector<T> &data,
+                Dims *dims = nullptr);
 
     /** Disable libhdf5 warnings/errors */
     static void shutup();
 
-    /** Get (g = "") set (len(g) > 0)  and, if not exists, create the current group */
+    /** Get (g = "") set (len(g) > 0)  and, if not exists,
+        create the current group */
     std::string group(const char *g = "");
     std::string group(const std::string &g) {  return group(g.c_str()); }
 
@@ -228,9 +231,11 @@ HDF5::group(const char *g)
             status = H5Gcreate2(group_id, part,
                                 H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
             check_error("H5Gcreate2");
+            printf("created %s --> %ld\n", part, status);
         }
         hid_t next_group = status;
         if (group_id != file_id) {
+            printf("close %ld\n", group_id);
             status = H5Gclose(group_id);
             check_error("group()::H5Gclose");
         }
