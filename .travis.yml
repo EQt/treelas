@@ -4,14 +4,14 @@ git:
 
 matrix:
   include:
-  - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
-    os: linux
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - g++-7
+  # - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
+  #   os: linux
+  #   addons:
+  #     apt:
+  #       sources:
+  #       - ubuntu-toolchain-r-test
+  #       packages:
+  #       - g++-7
   - env: CXX_COMPILER=clang++ C_COMPILER=clang
     os: osx
 
@@ -27,6 +27,12 @@ before_cache:
 branches:
   only:
   - master
+
+before_install:
+  - |
+    if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+      brew install --with-clang
+    fi
 
 install:
 - uname -a && echo $TRAVIS_OS_NAME && pwd
