@@ -50,7 +50,7 @@ script:
 - make tests && ./tests
 - cd ../python && pwd
 - python setup.py install
-- py.test
+- py.test --color=yes
 
 notifications:
   email:
