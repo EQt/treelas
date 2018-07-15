@@ -51,7 +51,7 @@ np_glm_line(const np::ndarray &y,
 py::array_t<double>
 line_condat(const py::array_f64 &y,
             const double lam,
-            py::array_f64 out = empty_array<double>())
+            py::array_f64 out)
 {
     const auto n = check_1d_len(y, "y");
     if (is_empty(out))
