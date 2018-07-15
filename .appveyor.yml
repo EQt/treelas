@@ -31,4 +31,4 @@ build_script:
 
 test_script:
   - "build.appveyor\\%CONFIGURATION%\\tests.exe"
-  - cd python && pytest
+  - cd python && pytest --color=yes
