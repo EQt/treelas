@@ -58,10 +58,8 @@ public:
  
    ~HDF5();
 
-    /**
-       Check whether there exists, from the current location, a group or dataset
-       named `data_name`
-    */
+    /** Check whether there exists, from the current location, a group
+       or dataset named `data_name` */
     bool has(const char *data_name);
 
     /** Number of dimensions, i.e. rank of a dataset */
