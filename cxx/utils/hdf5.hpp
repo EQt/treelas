@@ -231,11 +231,9 @@ HDF5::group(const char *g)
             status = H5Gcreate2(group_id, part,
                                 H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
             check_error("H5Gcreate2");
-            printf("created %s --> %ld\n", part, status);
         }
         hid_t next_group = status;
         if (group_id != file_id) {
-            printf("close %ld\n", group_id);
             status = H5Gclose(group_id);
             check_error("group()::H5Gclose");
         }
