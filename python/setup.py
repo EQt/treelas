@@ -3,6 +3,7 @@ http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
 from setuptools import setup
 from setuptools.extension import Extension
+from subprocess import check_output
 
 
 class GetPyBindInc():
@@ -31,8 +32,16 @@ _treelas = Extension("treelas._treelas",
 )
 
 
+def describe_tag(default):
+    try:
+        ver = check_output('git describe --tag'.split())
+        retrun ver.decode().strip()
+    except:
+        return default
+
+
 setup(name="treelas",
-      version="0.6",
+      version=describe_tag("v0.7"),
       author="Elias Kuthe",
       author_email="elias.kuthe@tu-dortmund.de",
       license="MIT",
