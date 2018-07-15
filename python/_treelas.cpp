@@ -56,6 +56,7 @@ line_condat(const py::array_f64 &y,
     const auto n = check_1d_len(y, "y");
     if (is_empty(out))
         out = py::array_t<double>({{n}}, {{sizeof(double)}});
+    check_len(n, out, "out");
     TV1D_denoise_v2(y.data(),
                     out.mutable_data(),
                     (unsigned int)n,
