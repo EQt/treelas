@@ -46,7 +46,9 @@ add_library(argparser OBJECT cxx/utils/argparser.cpp)
 # add_library(dp_line OBJECT cxx/dp_line.cpp)
 # set_property(TARGET dp_line PROPERTY POSITION_INDEPENDENT_CODE ON)
 
-
+if (APPLE)
+  set(HDF5_USE_STATIC_LIBRARIES ON)
+endif()
 find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
   set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES})
