@@ -4,14 +4,14 @@ git:
 
 matrix:
   include:
-  # - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
-  #   os: linux
-  #   addons:
-  #     apt:
-  #       sources:
-  #       - ubuntu-toolchain-r-test
-  #       packages:
-  #       - g++-7
+  - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
+    os: linux
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - g++-7
   ## https://formulae.brew.sh/formula/gcc@7
   - env:
     - CXX_COMPILER=clang++
