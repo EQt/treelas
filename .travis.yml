@@ -12,6 +12,7 @@ matrix:
   #       - ubuntu-toolchain-r-test
   #       packages:
   #       - g++-7
+  ## https://formulae.brew.sh/formula/gcc@7
   - env:
     - CXX_COMPILER=clang++
     - C_COMPILER=clang
