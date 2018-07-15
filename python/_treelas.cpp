@@ -97,11 +97,12 @@ PYBIND11_MODULE(_treelas, m)
         Tell whether an np.ndarray is empty
     )pbdoc");
 
-    m.def("line_condat", &line_condat, R"pbdoc(
+    m.def("line_condat", &line_condat,
+          R"pbdoc(
             Line solver, implemented by Laurent Condat,
             version 2.0, Aug. 30, 2017.
             See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
-        )pbdoc",
+          )pbdoc",
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = empty_array<double>());
