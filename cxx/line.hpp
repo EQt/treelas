@@ -63,6 +63,15 @@ dp_reverse(
 
 template<typename float_ = double>
 void
+dp_line(
+    const size_t n,
+    float_ *x,
+    const float_ *y,
+    const float_ lam);
+
+
+template<typename float_ = double>
+void
 dp_line_w(
     const int n,
     float_ *x,
