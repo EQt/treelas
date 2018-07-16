@@ -13,6 +13,7 @@ from ._treelas import (
     line_condat,
     line_glmgen,
     line_las,
+    line_para,
     line_lasc,
     line_las2,
     line_las3,

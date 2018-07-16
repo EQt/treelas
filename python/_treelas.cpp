@@ -9,6 +9,7 @@
 #include "../cxx/utils/timer.hpp"
 // #include "../cxx/dp_tree.hpp"
 #include "../cxx/line.hpp"
+#include "../cxx/line_para.hpp"
 #include "../cxx/cline.hpp"
 #include "../cxx/cline2.hpp"
 #include "../cxx/cline3.hpp"
@@ -206,6 +207,28 @@ PYBIND11_MODULE(_treelas, m)
           },
           R"pbdoc(
             Line solver (own implementation, save more memory compared to line_lasc)
+          )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("out") = py::none(),
+          py::arg("verbose") = false);
+
+        m.def("line_para",
+              [](const py::array_f64 &y,
+                 const double lam,
+                 py::array_f64 out,
+                 const bool verbose) -> py::array_t<double>
+          {
+              TimerQuiet _ (verbose);
+              const int n = int(check_1d_len(y, "y"));
+              if (is_empty(out))
+                  out = py::array_t<double>({n}, {sizeof(double)});
+              check_len(n, out, "out");
+              line_para(n, y.data(), lam, out.mutable_data());
+              return out;
+          },
+          R"pbdoc(
+            Line solver (parallel from both ends)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),

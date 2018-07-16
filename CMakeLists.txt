@@ -16,16 +16,18 @@ add_subdirectory(extern/condat)
 add_subdirectory(cmake)
 
 
-add_object(line   cxx/line.cpp)
-add_object(cline  cxx/cline.cpp)
-add_object(cline2 cxx/cline2.cpp)
-add_object(cline3 cxx/cline3.cpp)
+add_object(line      cxx/line.cpp)
+add_object(line_para cxx/line_para.cpp)
+add_object(cline     cxx/cline.cpp)
+add_object(cline2    cxx/cline2.cpp)
+add_object(cline3    cxx/cline3.cpp)
 
 
 add_library(libtl SHARED
   $<TARGET_OBJECTS:condat_tv>
   $<TARGET_OBJECTS:tf_dp>
   $<TARGET_OBJECTS:line>
+  $<TARGET_OBJECTS:line_para>
   $<TARGET_OBJECTS:cline>
   $<TARGET_OBJECTS:cline2>
   $<TARGET_OBJECTS:cline3>
@@ -53,6 +55,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
+    $<TARGET_OBJECTS:line_para>
     $<TARGET_OBJECTS:cline>
     $<TARGET_OBJECTS:cline2>
     $<TARGET_OBJECTS:cline3>

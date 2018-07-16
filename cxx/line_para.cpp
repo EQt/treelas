@@ -1,5 +1,5 @@
-#include "line_parallel.hpp"
-#incldue "line.hpp"
+#include "line_para.hpp"
+#include "line.hpp"
 
 template <typename float_>
 void
