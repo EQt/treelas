@@ -1,6 +1,8 @@
 /**
    Aim at being more cache efficient than others
 */
+#include "cline.hpp"
+
 #include <vector>
 #include "utils/timer.hpp"
 
