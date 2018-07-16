@@ -141,8 +141,21 @@ dp_line(const size_t n,
         const float_ *y,
         const float_ lam)
 {
-    for (size_t i = 0; i < n; i++) {
-        x[i] = y[i] * lam;
+    std::vector<Event2> event_ (2*n);
+    std::vector<double> lb_ (n), ub_ (n);
+
+    const double mu = 0.5;
+    Event2 *event = event_.data();
+    double *lb = lb_.data(), *ub = ub_.data();
+    Queue pq {int(n), int(n-1)};
+    for (size_t i = n-1; i > 0; i--) {
+        lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -lam, -lam);
+        ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
+    }
+
+    x[0] = clip_front(event, pq, mu, -mu*y[0] -lam, 0);
+    for (size_t i = 1; i < n; i++) {
+        x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
     }
 }
 
