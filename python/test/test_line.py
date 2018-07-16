@@ -6,7 +6,7 @@ def test_line1():
     y = np.array([1, 0, 0.5])
     lam = 0.5
     x = line_las(y, lam)
-    assert (x == 0.5).all()
+    assert (x == 0.5).all(), repr(x)
 
 
 def test_line2():
