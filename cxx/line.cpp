@@ -136,7 +136,7 @@ dp_line_w(
     const double *lam);
 
 
-template<typename float_ = double>
+template<typename float_>
 void
 dp_line(const size_t n,
         float_ *x,
