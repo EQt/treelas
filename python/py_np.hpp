@@ -1,10 +1,12 @@
 #pragma once
+#include <cstdint>
 #include <pybind11/numpy.h>
 
 
 namespace pybind11 {
 
-typedef array_t<double, array::c_style | array::forcecast> array_f64;
+typedef array_t<double,  array::c_style | array::forcecast> array_f64;
+typedef array_t<int32_t, array::c_style | array::forcecast> array_i32;
 
 } // namespace pybind11::
 
