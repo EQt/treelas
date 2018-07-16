@@ -10,18 +10,7 @@
 #  include "utils/malloc.hpp"
 #endif
 #include "utils/timer.hpp"
-
-
-inline double
-min(double a, double b) {
-    return a < b ? a : b;
-}
-
-
-inline double
-max(double a, double b) {
-    return a > b ? a : b;
-}
+#include "utils/minmax.hpp"
 
 
 template <typename float_ = double>
