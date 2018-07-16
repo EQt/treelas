@@ -24,7 +24,7 @@ dp_forward(
     const float_ *lam,
     Event_ *event)
 {
-    VecAlloc<Event_> _ (&event, 2*n);
+    VecAlloc<Event_> _ (&event, size_t(2*n));
     double min_y, max_y;
     find_minmax(y, n, min_y, max_y);
     Queue pq {n, n-1};
