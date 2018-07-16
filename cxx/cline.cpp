@@ -33,7 +33,7 @@ _dp_line_c (const int n,
             float_ *kl,
             float_ *ku)
 {
-    const float_ mu = 1.0;
+    const float_ mu = float_(1.0);
     int l, r, i;
     float_ a_, b_;
 
