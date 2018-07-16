@@ -46,6 +46,13 @@ PYBIND11_MODULE(_treelas, m)
         Tell whether an np.ndarray is empty
     )pbdoc");
 
+    m.def("_stdcxx_sort", [](py::array_f64 a) -> void {
+        std::sort(a.mutable_data(), a.mutable_data()+a.size());
+      },
+      R"pbdoc(
+        std::sort from libstdc++ (to be compared against numpy.sort)
+      )pbdoc");
+
     m.def("line_condat", [](const py::array_f64 &y,
                             const double lam,
                             py::array_f64 out)
