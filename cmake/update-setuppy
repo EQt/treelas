@@ -1,0 +1,27 @@
+#!/usr/bin/env python
+import re
+from os import path
+
+cmake_txt = path.join(path.dirname(__file__), '..', 'CMakeLists.txt')
+setuppy   = path.join(path.dirname(__file__), '..', 'python', 'setup.py')
+
+with open(setuppy) as io:
+    setup = io.read()
+with open(cmake_txt) as io:
+    cmake = io.read()
+
+[mod] = re.findall(r'pybind11_add_module\(_treelas(.+?)\)', cmake, flags=re.DOTALL)
+
+objs = {n : p.strip() for n, p in
+        re.findall(r'add_object\((.+?) (.+?)\)', cmake, flags=re.DOTALL)}
+objs['condat_tv'] = 'extern/condat/condat_tv_v2.cpp'
+objs['tf_dp'] = 'extern/glmgen/tf_dp.cpp'
+
+mod = mod.replace
+mods = re.sub(r'\$<TARGET_OBJECTS:(.+?)>', lambda n: objs[n.group(1)], mod)
+source = ['"../' + s.strip() + '"' for s in mods.strip().split('\n')]
+new_source = "sources = [\n    " + ",\n    ".join(source) + "\n]"
+new_setup = re.sub(r'sources = \[(.+?)\]', new_source, setup, flags=re.DOTALL)
+
+with open(setuppy, 'w') as io:
+    io.write(new_setup)
