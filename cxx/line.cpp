@@ -5,7 +5,7 @@
 #include <vector>
 #include <cmath>
 
-#include "dp_line.hpp"
+#include "line.hpp"
 #include "clip.hpp"
 #include "clip2.cpp"
 #include "vecalloc.hpp"
