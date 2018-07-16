@@ -37,13 +37,14 @@ protected:
 };
 
 
+/*
 TEST(HDF5lib, DISABLED_libversion)
 {
 
     ASSERT_TRUE(std::regex_match(HDF5::libversion(), std::regex("1\\.8\\..*")))
         << "libversion=" << HDF5::libversion();
 }
-
+*/
 
 TEST_F(HDF5Test, create)
 {
