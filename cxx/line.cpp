@@ -126,7 +126,8 @@ void
 dp_line(const size_t n,
         float_ *x,
         const float_ *y,
-        const float_ lam)
+        const float_ lam,
+        const bool increasing)
 {
     Timer t ("alloc");
     std::vector<Event2> event_ (2*n);
@@ -137,22 +138,25 @@ dp_line(const size_t n,
     Event2 *event = event_.data();
     float_ *lb = x+1, *ub = ub_.data();
     Queue pq {int(n), int(n-1)};
-    {   Timer _ ("forward");
-        { // i = n-1
-            const auto i = n-1;
-            lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -0.0, -lam);
-            ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
-        }
-        for (size_t i = n-2; i > 0; i--) {
-            lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -lam, -lam);
-            ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
-        }
-    }
 
-    {   Timer _ ("backward");
-        x[0] = clip_front(event, pq, mu, -mu*y[0] -lam, 0.0);
-        for (size_t i = 1; i < n; i++) {
-            x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
+    if (increasing) {
+        {   Timer _ ("forward");
+            { // i = n-1
+                const auto i = n-1;
+                lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -0.0, -lam);
+                ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
+            }
+            for (size_t i = n-2; i > 0; i--) {
+                lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -lam, -lam);
+                ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
+            }
+        }
+
+        {   Timer _ ("backward");
+            x[0] = clip_front(event, pq, mu, -mu*y[0] -lam, 0.0);
+            for (size_t i = 1; i < n; i++) {
+                x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
+            }
         }
     }
 }
@@ -163,7 +167,8 @@ void
 dp_line(const size_t n,
         double *x,
         const double *y,
-        const double lam);
+        const double lam,
+        const bool);
 
 
 

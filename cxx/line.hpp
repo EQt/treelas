@@ -68,7 +68,8 @@ dp_line(
     const size_t n,
     float_ *x,
     const float_ *y,
-    const float_ lam);
+    const float_ lam,
+    const bool increasing = true);
 
 
 extern template
@@ -76,7 +77,8 @@ void
 dp_line(const size_t n,
         double *x,
         const double *y,
-        const double lam);
+        const double lam,
+        const bool increasing = true);
 
 
 template<typename float_ = double>
