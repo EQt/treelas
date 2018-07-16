@@ -107,6 +107,7 @@ PYBIND11_MODULE(_treelas, m)
         m.def("line_las", [](const py::array_f64 &y,
                              const double lam,
                              py::array_f64 out,
+                             const bool increasing,
                              const bool verbose) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
@@ -117,7 +118,8 @@ PYBIND11_MODULE(_treelas, m)
               dp_line(n,
                       out.mutable_data(),
                       y.data(),
-                      lam);
+                      lam,
+                      increasing);
               return out;
           },
           R"pbdoc(
@@ -126,6 +128,7 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
+          py::arg("increasing") = false,
           py::arg("verbose") = false);
 
     m.def("prufer2parent",
