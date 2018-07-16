@@ -90,6 +90,7 @@ if (BUILD_TESTS)
     test/test_strtok.cpp
     test/test_timer.cpp
     test/test_stack.cpp
+    test/test_line.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
@@ -97,6 +98,7 @@ if (BUILD_TESTS)
   add_executable(tests
     test/tests.cpp
     ${TESTS}
+    $<TARGET_OBJECTS:line>
   )
   target_compile_definitions(tests PUBLIC _STACK_DEBUG=1)
   target_link_libraries(tests gtest_main "${CMAKE_THREAD_LIBS_INIT}")
