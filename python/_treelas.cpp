@@ -9,6 +9,7 @@
 #include "../cxx/utils/timer.hpp"
 // #include "../cxx/dp_tree.hpp"
 #include "../cxx/line.hpp"
+#include "../cxx/cline.hpp"
 #include "../cxx/prufer.hpp"
 
 namespace py = pybind11;
@@ -123,12 +124,37 @@ PYBIND11_MODULE(_treelas, m)
               return out;
           },
           R"pbdoc(
-            Line solver (implementation of the R package `glmgen`).
+            Line solver (own implementation 1)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
           py::arg("increasing") = false,
+          py::arg("verbose") = false);
+
+        m.def("line_lasc",
+              [](const py::array_f64 &y,
+                 const double lam,
+                 py::array_f64 out,
+                 const bool verbose) -> py::array_t<double>
+          {
+              TimerQuiet _ (verbose);
+              const int n = int(check_1d_len(y, "y"));
+              if (is_empty(out))
+                  out = py::array_t<double>({n}, {sizeof(double)});
+              check_len(n, out, "out");
+              dp_line_c(n,
+                        y.data(),
+                        lam,
+                        out.mutable_data());
+              return out;
+          },
+          R"pbdoc(
+            Line solver (own implementation, cache efficient?)
+          )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("out") = py::none(),
           py::arg("verbose") = false);
 
     m.def("prufer2parent",

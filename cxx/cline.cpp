@@ -1,6 +1,9 @@
 /**
    Aim at being more cache efficient than others
 */
+#include <vector>
+#include "utils/timer.hpp"
+
 
 inline double 
 min(double a, double b) {
@@ -14,7 +17,7 @@ max(double a, double b) {
 }
 
 
-template <typename float_ = double_>
+template <typename float_ = double>
 void
 _dp_line_c (const int n,
             const float_ *y,
@@ -48,8 +51,8 @@ _dp_line_c (const int n,
 
         for (i = 1; i < n-1; i++) {
             // clip from lower
-            a_ = +w[i];
-            b_ = -w[i]*y[i] - lam;
+            a_ = +mu;
+            b_ = -mu*y[i] - lam;
             while (l <= r && a_ * x[l] + b_ <= -lam) {
                 a_ += a[l];
                 b_ += b[l];
@@ -61,8 +64,8 @@ _dp_line_c (const int n,
             b[l] = b_ + lam;
 
             // clip from upper: a_ and b_ are negated (direction)
-            a_ = -w[i];               // negated!
-            b_ = +w[i] * y[i] - lam;  // negated!
+            a_ = -mu;               // negated!
+            b_ = +mu * y[i] - lam;  // negated!
             while (l <= r && -(a_ * x[r] + b_) >= lam) {
                 a_ += a[r];
                 b_ += b[r];
@@ -74,10 +77,10 @@ _dp_line_c (const int n,
             b[r] = b_ + lam;
         }
     }
-    {   Timer _ ("backward")
+    {   Timer _ ("backward");
             // clip from below to 0
-            a_ = +w[n-1];
-        b_ = -w[n-1] * y[n-1] - lam;
+        a_ = mu;
+        b_ = -mu * y[n-1] - lam;
         while (l <= r && a_ * x[l] + b_ <= 0) {
             a_ += a[l];
             b_ += b[l];
@@ -95,14 +98,14 @@ _dp_line_c (const int n,
 }
 
 
-template <typename float__>
+template <typename float_>
 void
 dp_line_c(const int n,
           const float_ *y,
           const float_ lam,
           float_ *beta)
 {
-    Timer t ("alloc")
+    Timer t ("alloc");
     std::vector<float_>
         x (2*n),
         a (2*n),

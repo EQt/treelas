@@ -16,13 +16,15 @@ add_subdirectory(extern/condat)
 add_subdirectory(cmake)
 
 
-add_object(line cxx/line.cpp)
+add_object(line  cxx/line.cpp)
+add_object(cline cxx/cline.cpp)
 
 
 add_library(libtl SHARED
   $<TARGET_OBJECTS:condat_tv>
   $<TARGET_OBJECTS:tf_dp>
   $<TARGET_OBJECTS:line>
+  $<TARGET_OBJECTS:cline>
 )
 
 
@@ -47,6 +49,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
+    $<TARGET_OBJECTS:cline>
   )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
