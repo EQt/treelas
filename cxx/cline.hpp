@@ -1,6 +1,7 @@
 #pragma once
 
 #define BLOCK_ALLOC 1
+#define MALLOC      1
 
 
 template <typename float_ = double>

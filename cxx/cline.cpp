@@ -6,6 +6,9 @@
 #include <vector>
 #include <stdexcept>
 
+#ifdef MALLOC
+#  include "utils/malloc.hpp"
+#endif
 #include "utils/timer.hpp"
 
 
@@ -111,7 +114,11 @@ dp_line_c(const int n,
 {
     Timer t ("alloc");
 #ifdef BLOCK_ALLOC
+#  ifdef MALLOC
+    Malloc<float_> buf (2*n + 2*n + 2*n + n-1 + n-1);
+#  else
     std::vector<float_> buf (2*n + 2*n + 2*n + n-1 + n-1);
+#endif
     size_t p = 0;
     float_ *x = buf.data() + p; p += 2*n;
     float_ *a = buf.data() + p; p += 2*n;
