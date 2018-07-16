@@ -17,27 +17,29 @@ TEST(Line, line_las3)
             Event2 *event = event_.data();
             double *lb = lb_.data(), *ub = ub_.data();
             Queue pq {int(n), int(n-1)};
+            double off = 0.0;
             { // i = 2
                 const size_t i = n-1;
                 ASSERT_EQ(i, 2);
                 ASSERT_EQ(y[i], 0.5);
-                lb[i-1] = clip_front(event, pq, mu, -mu*y[i], -lam);
-                ASSERT_EQ(pq, Queue({int(n-1), int(n-1)}));
+                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off, -lam);
                 ASSERT_EQ(lb[i-1], 0.0);
-                ub[i-1] = clip_back (event, pq, mu, -mu*y[i], +lam);
+                ASSERT_EQ(pq, Queue({int(n-1), int(n-1)}));
+                ASSERT_EQ(event[pq.start], Event2({0.0, 1.0}));
+                ub[i-1] = clip_back (event, pq, mu, -mu*y[i]+off, +lam);
                 ASSERT_EQ(ub[i-1], 1.0);
                 ASSERT_EQ(pq, Queue({int(n-1), int(n)}));
+                ASSERT_EQ(event[pq.stop], Event2({1.0, -1.0}));
+                off = lam;
             }
             { // i = 1
                 const size_t i = n-2;
                 ASSERT_EQ(i, 1);
                 ASSERT_EQ(y[i], 0.0);
-                lb[i-1] = clip_front(event, pq, mu, -mu*y[i], -lam);
+                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off, -lam);
                 ASSERT_EQ(pq, Queue({int(n-2), int(n)}));
                 ASSERT_EQ(lb[i-1], 0.0);
-                ub[i-1] = clip_back (event, pq, mu, -mu*y[i], +lam);
-                ASSERT_EQ(ub[i-1], 1.0);
-                ASSERT_EQ(pq, Queue({int(n-2), int(n+1)}));
+                ub[i-1] = clip_back (event, pq, mu, -mu*y[i]+off, +lam);
             }
     }
 }

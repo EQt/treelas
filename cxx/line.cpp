@@ -148,9 +148,11 @@ dp_line(const size_t n,
     Event2 *event = event_.data();
     double *lb = lb_.data(), *ub = ub_.data();
     Queue pq {int(n), int(n-1)};
+    double off = 0.0;
     for (size_t i = n-1; i > 0; i--) {
-        lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -lam, -lam);
-        ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
+        lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -off, -lam);
+        ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +off, +lam);
+        off = lam;
     }
 
     x[0] = clip_front(event, pq, mu, -mu*y[0] -lam, 0.0);

@@ -25,4 +25,4 @@ def test_line3():
     x = y.copy()
     line_las(y, lam, x)
     expected = np.array([0.9, 0.2, 0.4])
-    assert (np.abs(x - expected) < 1e-16).all()
+    assert (np.abs(x - expected) < 1e-15).all()
