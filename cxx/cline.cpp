@@ -34,8 +34,8 @@ _dp_line_c (const int n,
             float_ *ku)
 {
     const float_ mu = float_(1.0);
-    int l, r, i;
-    float_ a_, b_;
+    register int l, r, i;
+    register float_ a_, b_;
 
     if (n <= 1) {
         beta[0] = y[0];
@@ -82,7 +82,7 @@ _dp_line_c (const int n,
         }
     }
     {   Timer _ ("backward");
-            // clip from below to 0
+        // clip from below to 0
         a_ = mu;
         b_ = -mu * y[n-1] - lam;
         while (l <= r && a_ * x[l] + b_ <= 0) {

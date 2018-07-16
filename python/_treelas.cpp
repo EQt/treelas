@@ -80,9 +80,11 @@ PYBIND11_MODULE(_treelas, m)
 
     m.def("line_glmgen", [](const py::array_f64 &y,
                             const double lam,
-                            py::array_f64 out) -> py::array_t<double>
+                            py::array_f64 out,
+                            const bool verbose) -> py::array_t<double>
           {
           #ifdef HAVE_GLMGEN
+              TimerQuiet _ (verbose);
               const auto n = check_1d_len(y, "y");
               if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
@@ -103,7 +105,8 @@ PYBIND11_MODULE(_treelas, m)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
-          py::arg("out") = py::none());
+          py::arg("out") = py::none(),
+          py::arg("verbose") = false);
 
         m.def("line_las", [](const py::array_f64 &y,
                              const double lam,
