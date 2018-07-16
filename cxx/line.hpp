@@ -78,7 +78,7 @@ dp_line(const size_t n,
         double *x,
         const double *y,
         const double lam,
-        const bool increasing = true);
+        const bool increasing);
 
 
 template<typename float_ = double>
