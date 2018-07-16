@@ -17,8 +17,8 @@
 
 
 template<typename float_, typename Event_>
-float_
-dp_forward(
+Queue
+dp_forward_w(
     const int n,
     float_ *lb,
     float_ *ub,
@@ -38,7 +38,7 @@ dp_forward(
         ub[i-1] = clip_backw(event, pq, mu[i], -mu[i]*y[i] +off, +lami, max_y);
         off = mu[i] > 1e-10 ? lami : std::min(lami, off);
     }
-    return clip_front(event, pq, mu[0], -mu[0]*y[0] -off, 0.0);
+    return pq;
 }
 
 
@@ -84,7 +84,8 @@ dp_line_w(
         *lb = lb_.data(),
         *ub = ub_.data();
 
-    x[0] = dp_forward(n, lb, ub, y, mu, lam);
+    Queue pq = dp_forward_w(n, lb, ub, y, mu, lam);
+    x[0] = clip_front(event, pq, mu[0], -mu[0]*y[0] -off, 0.0);
     for (int i = 1; i < n; i++) {
         x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
     }

@@ -13,8 +13,8 @@
 */
 template<typename float_ = double,
          typename Event_ = Event2>
-float_
-dp_forward(
+Queue
+dp_forward_w(
     const int n,
     float_ *lb,
     float_ *ub,
@@ -25,8 +25,9 @@ dp_forward(
 
 
 // template is compiled somewhere else for those types
-extern template double 
-dp_forward(
+extern template
+Queue
+dp_forward_w(
     const int n,
     double *lb,
     double *ub,
