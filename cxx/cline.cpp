@@ -9,13 +9,13 @@
 #include "utils/timer.hpp"
 
 
-inline double 
+inline double
 min(double a, double b) {
     return a < b ? a : b;
 }
 
 
-inline double 
+inline double
 max(double a, double b) {
     return a > b ? a : b;
 }
@@ -26,7 +26,7 @@ void
 _dp_line_c (const int n,
             const float_ *y,
             const float_ lam,
-            float_ *beta, 
+            float_ *beta,
             float_ *x,
             float_ *a,
             float_ *b,
@@ -134,6 +134,7 @@ dp_line_c(const int n,
                x.data(), a.data(), b.data(), lb.data(), ub.data());
 #endif
 }
+
 
 template
 void
