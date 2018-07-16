@@ -37,8 +37,8 @@ _dp_line_c (const int n,
             float_ *ku)
 {
     const float_ mu = float_(1.0);
-    register int l, r, i;
-    register float_ a_, b_;
+    int l, r, i;
+    float_ a_, b_;
 
     if (n <= 1) {
         beta[0] = y[0];
