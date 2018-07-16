@@ -1,0 +1,158 @@
+/*
+  Implement the dynamic programming algorithm for line graphs.
+  TODO: Make clip_front, clip_back also templates for generic float_ type
+*/
+#include <vector>
+#include <cmath>
+
+#include "dp_line.hpp"
+#include "clip.hpp"
+#include "clip2.cpp"
+#include "vecalloc.hpp"
+
+
+template<typename float_, typename Event_>
+float_
+dp_forward(
+    const int n,
+    float_ *lb,
+    float_ *ub,
+    const float_ *y,
+    const float_ *mu,
+    const float_ *lam,
+    Event_ *event)
+{
+    VecAlloc<Event_> _ (&event, 2*n);
+    double min_y, max_y;
+    find_minmax(y, n, min_y, max_y);
+    Queue pq {n, n-1};
+    double off = 0;
+    // std::cerr << "pq0 = " << pq << std::endl;
+    for (int i = n-1; i > 0; i--) {
+        const auto lami = lam[i-1];
+        // std::cerr << "y[" << i << "] = " << y[i] << std::endl;
+        // std::cerr << "mu[" << i << "] = " << mu[i] << std::endl;
+        // std::cerr << "lami = " << lami << std::endl;
+        // std::cerr << "off = " << off << std::endl;
+        lb[i-1] = clip_fronw(event, pq, mu[i], -mu[i]*y[i] -off, -lami, min_y);
+        // std::cerr << "pql = " << pq << std::endl;
+        // std::cerr << "lb[" << i-1 << "]  = " << lb[i] << std::endl;
+        // for (int j = pq.start; j <= pq.stop; j++) {
+        //     std::cerr << " " << j << ": " << event[j];
+        // }
+        ub[i-1] = clip_backw(event, pq, mu[i], -mu[i]*y[i] +off, +lami, max_y);
+        // std::cerr << "pqb = " << pq << std::endl;
+        // std::cerr << "ub  = " << ub[i] << std::endl;
+        // for (int j = pq.start; j <= pq.stop; j++) {
+        //     std::cerr << " " << j << ": " << event[j];
+        // }
+        off = mu[i] > 1e-10 ? lami : std::min(lami, off);
+    }
+    return clip_front(event, pq, mu[0], -mu[0]*y[0] -off, 0.0);
+}
+
+
+template<typename float_, typename Event_>
+float_
+dp_reverse(
+    const int n,
+    float_ *lb,
+    float_ *ub,
+    const float_ *y,
+    const float_ *mu,
+    const float_ *lam,
+    Event_ *event)
+{
+    VecAlloc<Event_> _ (&event, 2*n);
+    double min_y, max_y;
+    find_minmax(y, n, min_y, max_y);
+    Queue pq {n, n-1};
+    double off = 0;
+    for (int i = 0; i < n-1; i++) {
+        const auto lami = lam[i];
+        lb[i] = clip_fronw(event, pq, mu[i], -mu[i]*y[i] -off, -lami, min_y);
+        ub[i] = clip_backw(event, pq, mu[i], -mu[i]*y[i] +off, +lami, max_y);
+        off = mu[i] > 1e-10 ? lami : std::min(lami, off);
+    }
+    return clip_front(event, pq, mu[n-1], -mu[n-1]*y[n-1] -off, 0.0);
+}
+
+
+
+template<typename float_>
+void
+dp_line_w(
+    const int n,
+    float_ *x,
+    const float_ *y,
+    const float_ *mu,
+    const float_ *lam)
+{
+    std::vector<float_>
+        lb_ (n-1), ub_ (n-1);
+    float_
+        *lb = lb_.data(),
+        *ub = ub_.data();
+
+    x[0] = dp_forward(n, lb, ub, y, mu, lam);
+    for (int i = 1; i < n; i++) {
+        x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
+    }
+}
+
+
+// template instantiation for float_ = double
+template double
+dp_forward(
+    const int n,
+    double *lb,
+    double *ub,
+    const double *y,
+    const double *mu,
+    const double *lam,
+    Event2 *event = nullptr);
+
+
+template double
+dp_reverse(
+    const int n,
+    double *lb,
+    double *ub,
+    const double *y,
+    const double *mu,
+    const double *lam,
+    Event2 *event = nullptr);
+
+
+template
+void
+dp_line_w(
+    const int n,
+    double *x,
+    const double *y,
+    const double *mu,
+    const double *lam);
+
+
+#ifndef PARALLEL
+#  define PARALLEL 0
+#endif
+#if PARALLEL
+
+#include <thread>
+
+// https://github.com/uchicago-cs/cmsc12300/tree/master/examples/cpp/concurrency/simple
+
+void
+dp_line_par()
+{
+    const int n0 = n / 2;
+    const int n1 = n - n0;
+    std::thread t0 (dp_forward, n0, lb, ub);
+    std::thread t1 (dp_forward, n1, lb, ub);
+
+    t0.join();
+    t1.join();
+}
+
+#endif
