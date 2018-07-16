@@ -13,9 +13,9 @@
  */
 template<typename int_ = int>
 inline int_
-prufer2parent(const int n,
+prufer2parent(const int_ n,
               const int_ *prufer,
-              int_ *parent)
+                    int_ *parent)
 {
     for (int i = 0; i < n; i++)
         parent[i] = -1;
