@@ -88,6 +88,7 @@ if (BUILD_TESTS)
   include_directories(extern/googletest/googletest/include)
   set(TESTS
     test/test_strtok.cpp
+    test/test_timer.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
