@@ -134,6 +134,21 @@ dp_line_w(
     const double *lam);
 
 
+template<typename float_ = double>
+void
+dp_line(
+    const size_t n,
+    float_ *x,
+    const float_ *y,
+    const float_ lam)
+{
+    for (size_t i = 0; i < n; i++) {
+        x[i] = y[i] * lam;
+    }
+}
+
+
+
 #ifndef PARALLEL
 #  define PARALLEL 0
 #endif
