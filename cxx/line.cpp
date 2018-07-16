@@ -153,7 +153,7 @@ dp_line(const size_t n,
         ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
     }
 
-    x[0] = clip_front(event, pq, mu, -mu*y[0] -lam, 0);
+    x[0] = clip_front(event, pq, mu, -mu*y[0] -lam, 0.0);
     for (size_t i = 1; i < n; i++) {
         x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
     }
