@@ -13,10 +13,16 @@ endif()
 
 add_subdirectory(extern/glmgen)
 add_subdirectory(extern/condat)
+add_subdirectory(cmake)
 
-add_library(treelas STATIC
+
+add_object(line cxx/line.cpp)
+
+
+add_library(libtl SHARED
   $<TARGET_OBJECTS:condat_tv>
   $<TARGET_OBJECTS:tf_dp>
+  $<TARGET_OBJECTS:line>
 )
 
 
@@ -40,6 +46,7 @@ if (BUILD_PYEXT)
     python/_treelas.cpp
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
+    $<TARGET_OBJECTS:line>
   )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
@@ -50,9 +57,6 @@ endif()
 
 
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
-
-# add_library(dp_line OBJECT cxx/dp_line.cpp)
-# set_property(TARGET dp_line PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 if (APPLE)
   set(HDF5_USE_STATIC_LIBRARIES ON)
