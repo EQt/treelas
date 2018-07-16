@@ -21,8 +21,8 @@ dp_forward_w(
     const float_ *y,
     const float_ *mu,
     const float_ *lam,
-    Event_ *event = nullptr,
-    double &off = 0.0);
+    double &off,
+    Event_ *event = nullptr);
 
 
 // template is compiled somewhere else for those types
@@ -35,8 +35,8 @@ dp_forward_w(
     const double *y,
     const double *mu,
     const double *lam,
-    Event2 *event,
-    double &off);
+    double &off,
+    Event2 *event);
 
 
 /**

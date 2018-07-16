@@ -25,8 +25,8 @@ dp_forward_w(
     const float_ *y,
     const float_ *mu,
     const float_ *lam,
-    Event_ *event,
-    double &off)
+    double &off,
+    Event_ *event)
 {
     VecAlloc<Event_> _ (&event, size_t(2*n));
     double min_y, max_y;
@@ -88,7 +88,7 @@ dp_line_w(
     Event2 *event = events_.data();
 
     double off;
-    Queue pq = dp_forward_w(n, lb, ub, y, mu, lam, event, off);
+    Queue pq = dp_forward_w(n, lb, ub, y, mu, lam, off, event);
     x[0] = clip_front(event, pq, mu[0], -mu[0]*y[0] -off, 0.0);
     for (int i = 1; i < n; i++) {
         x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
@@ -106,8 +106,8 @@ dp_forward_w(
     const double *y,
     const double *mu,
     const double *lam,
-    Event2 *event,
-    double &off);
+    double &off,
+    Event2 *event);
 
 
 template double
