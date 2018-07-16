@@ -1,5 +1,7 @@
 #pragma once
 
+#define BLOCK_ALLOC 1
+
 
 template <typename float_ = double>
 void

@@ -4,6 +4,8 @@
 #include "cline.hpp"
 
 #include <vector>
+#include <stdexcept>
+
 #include "utils/timer.hpp"
 
 
@@ -108,6 +110,19 @@ dp_line_c(const int n,
           float_ *beta)
 {
     Timer t ("alloc");
+#ifdef BLOCK_ALLOC
+    std::vector<float_> buf (2*n + 2*n + 2*n + n-1 + n-1);
+    size_t p = 0;
+    float_ *x = buf.data() + p; p += 2*n;
+    float_ *a = buf.data() + p; p += 2*n;
+    float_ *b = buf.data() + p; p += 2*n;
+    float_ *lb = buf.data() + p; p += n-1;
+    float_ *ub = buf.data() + p; p += n-1;
+    t.stop();
+    if (p != buf.size())
+        throw std::runtime_error("Should not happen");
+    _dp_line_c(n, y, lam, beta, x, a, b, lb, ub);
+#else
     std::vector<float_>
         x (2*n),
         a (2*n),
@@ -117,8 +132,8 @@ dp_line_c(const int n,
     t.stop();
     _dp_line_c(n, y, lam, beta,
                x.data(), a.data(), b.data(), lb.data(), ub.data());
+#endif
 }
-
 
 template
 void
