@@ -1,7 +1,7 @@
 #pragma once
 
 
-template <typename float__>
+template <typename float_ = double>
 void
 dp_line_c(const int n,
           const float_ *y,
