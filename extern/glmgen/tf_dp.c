@@ -70,6 +70,9 @@ void tf_dp (int n, const double *y, double lam, double *beta)
     return;
   }
 
+#ifdef HAVE_TIMER
+  Timer t ("alloc");
+#endif
   x = (double*) malloc(2*n*sizeof(double));
   a = (double*) malloc(2*n*sizeof(double));
   b = (double*) malloc(2*n*sizeof(double));
@@ -77,6 +80,14 @@ void tf_dp (int n, const double *y, double lam, double *beta)
   /* These are the knots of the back-pointers */
   tm = (double*) malloc((n-1)*sizeof(double));
   tp = (double*) malloc((n-1)*sizeof(double));
+#ifdef HAVE_TIMER
+  t.stop();
+#endif
+
+  { // forward
+#ifdef HAVE_TIMER
+  Timer _ ("forward");
+#endif
 
   /* We step through the first iteration manually */
   tm[0] = -lam+y[0];
@@ -140,6 +151,13 @@ void tf_dp (int n, const double *y, double lam, double *beta)
     blast = y[k+1]-lam;
   }
 
+  }
+
+  {  // backward
+#ifdef HAVE_TIMER
+  Timer _ ("backward");
+#endif
+
   /* Compute the last coefficient: this is where
      the function has zero derivative */
   alo = afirst;
@@ -161,12 +179,20 @@ void tf_dp (int n, const double *y, double lam, double *beta)
     else beta[k] = beta[k+1];
   }
 
+  }
+
+  { // free
+#ifdef HAVE_TIMER
+  Timer _ ("free");
+#endif
+
   /* Done! Free up memory */
   free(x);
   free(a);
   free(b);
   free(tm);
   free(tp);
+  }
 }
 
 /**
