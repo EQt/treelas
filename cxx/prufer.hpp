@@ -17,10 +17,10 @@ prufer2parent(const int_ n,
               const int_ *prufer,
                     int_ *parent)
 {
-    for (int i = 0; i < n; i++)
+    for (int_ i = 0; i < n; i++)
         parent[i] = -1;
     std::vector<int_> degree (n, 1);
-    for (int i = 0; i < n-2; i++) {
+    for (int_ i = 0; i < n-2; i++) {
         const auto pi = prufer[i];
         if (pi < 0 || pi >= n)
             throw std::invalid_argument(std::string("prufer[") +
@@ -44,7 +44,7 @@ prufer2parent(const int_ n,
     };
 
     find_min(0);
-    for (int i = 0; i < n-2; i++) {
+    for (int_ i = 0; i < n-2; i++) {
         const auto v = prufer[i];
         parent[u] = v;
         degree[v]--;
