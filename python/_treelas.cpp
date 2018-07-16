@@ -4,11 +4,11 @@
 
 #include "../extern/glmgen/tf.hpp"
 #include "../extern/condat/condat_tv_v2.hpp"
+#include "../cxx/utils/compiler.hpp"
 #include "../cxx/utils/timer.hpp"
 // #include "../cxx/dp_tree.hpp"
 #include "../cxx/line.hpp"
 #include "../cxx/prufer.hpp"
-#include "../cxx/utils/compiler.hpp"
 
 namespace py = pybind11;
 
@@ -76,7 +76,7 @@ PYBIND11_MODULE(_treelas, m)
           #ifdef HAVE_GLMGEN
               const auto n = check_1d_len(y, "y");
               if (is_empty(out))
-                  out = py::array_t<double>({{n}}, {{sizeof(double)}});
+                  out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
               glmgen::tf_dp(int(n),
                             y.data(),
@@ -96,12 +96,26 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("lam"),
           py::arg("out") = py::none());
 
+    m.def("prufer2parent", [](const py::array_t<int32_t, py::array::forcecast> &prufer,
+                              py::array_t<int32_t, py::array::forcecast> parent)
+          -> py::tuple {
+            const auto n = check_1d_len(prufer, "prufer") + 2;
+            if (is_empty(parent))
+                parent = py::array_t<int32_t>({n}, {sizeof(int32_t)});
+            else
+                check_len(n, parent, "parent");
+            const auto r =  prufer2parent(n,
+                                          prufer.data(),
+                                          parent.mutable_data());
+            return py::make_tuple(parent, r);
+          },
+          R"pbdoc(
+            Compute parent vector from Prüfer sequence
+          )pbdoc",
+          py::arg("prufer"),
+          py::arg("parent") = py::none());
 
     /*
-    py::def("prufer2parent", np_prufer2parent, (
-                arg("prufer"),
-                arg("parent") = empty_array<double>()),
-            "Compute parent vector out of prufer sequence");
     py::def("dp_tree", np_dp_tree, (
                 arg("y"),
                 arg("parent"),

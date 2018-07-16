@@ -91,6 +91,7 @@ if (BUILD_TESTS)
     test/test_timer.cpp
     test/test_stack.cpp
     test/test_line.cpp
+    test/test_prufer.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
