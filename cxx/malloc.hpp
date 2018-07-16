@@ -5,8 +5,9 @@
 template<typename T>
 struct Malloc
 {
+    size_t n;
     T *_x;
-    Malloc(size_t n) {
+    Malloc(size_t n) : n(n) {
         _x = (T*) malloc(n * sizeof(T));
     }
 
@@ -20,4 +21,6 @@ struct Malloc
 
     T* data() { return _x; }
     const T* data() const { return _x; }
+
+    size_t size() const { return n; }
 };
