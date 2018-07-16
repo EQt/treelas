@@ -104,6 +104,27 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("lam"),
           py::arg("out") = py::none());
 
+        m.def("line_las", [](const py::array_f64 &y,
+                             const double lam,
+                             py::array_f64 out) -> py::array_t<double>
+          {
+              const size_t n = check_1d_len(y, "y");
+              if (is_empty(out))
+                  out = py::array_t<double>({n}, {sizeof(double)});
+              check_len(n, out, "out");
+              dp_line(n,
+                      out.mutable_data(),
+                      y.data(),
+                      lam);
+              return out;
+          },
+          R"pbdoc(
+            Line solver (implementation of the R package `glmgen`).
+          )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("out") = py::none());
+
     m.def("prufer2parent",
           [](const py::array_i32 &prufer, py::array_i32 parent) -> py::tuple
           {
