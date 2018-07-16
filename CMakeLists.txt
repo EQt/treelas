@@ -86,12 +86,16 @@ if (BUILD_TESTS)
     target_compile_options(gtest PUBLIC -Wno-missing-field-initializers)
   endif()
   include_directories(extern/googletest/googletest/include)
-  set(TESTS test/test_strtok.cpp
+  set(TESTS
+    test/test_strtok.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
   endif()
-  add_executable(tests test/tests.cpp ${TESTS})
+  add_executable(tests
+    test/tests.cpp
+    ${TESTS}
+  )
   target_compile_definitions(tests PUBLIC _STACK_DEBUG=1)
   target_link_libraries(tests gtest_main "${CMAKE_THREAD_LIBS_INIT}")
   if (HDF5_FOUND)
