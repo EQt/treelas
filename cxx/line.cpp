@@ -136,10 +136,31 @@ dp_line(const size_t n,
 
     const float_ mu = 1.0;
     Event2 *event = event_.data();
-    float_ *lb = x+1, *ub = ub_.data();
+    float_ *ub = ub_.data();
     Queue pq {int(n), int(n-1)};
 
     if (increasing) {
+        float_ *lb = x;
+        {   Timer _ ("forward");
+            { // i = n-1
+                const auto i = 0;
+                lb[i] = clip_front(event, pq, mu, -mu*y[i] -0.0, -lam);
+                ub[i] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
+            }
+            for (size_t i = 1; i < n-1; i++) {
+                lb[i] = clip_front(event, pq, mu, -mu*y[i] -lam, -lam);
+                ub[i] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
+            }
+        }
+
+        {   Timer _ ("backward");
+            x[n-1] = clip_front(event, pq, mu, -mu*y[n-1] -lam, 0.0);
+            for (int i = n-2; i >= 0; i--) {
+                x[i] = clip(x[i+1], lb[i], ub[i]);
+            }
+        }
+    } else {
+        float_ *lb = x+1;
         {   Timer _ ("forward");
             { // i = n-1
                 const auto i = n-1;
