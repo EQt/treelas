@@ -25,12 +25,14 @@ class GetPyBindInc():
         return pybind11.get_include(self.user)
 
 
-_treelas = Extension("treelas._treelas",
-                     ["_treelas.cpp",
-                      "../extern/condat/condat_tv_v2.cpp",
-                      "../extern/glmgen/tf_dp.cpp",
-                      "../cxx/line.cpp"],
-                     language='c++',
+sources = [
+    "_treelas.cpp",
+    "../extern/condat/condat_tv_v2.cpp",
+    "../extern/glmgen/tf_dp.cpp",
+    "../cxx/line.cpp"
+]
+
+_treelas = Extension("treelas._treelas", sources, language='c++',
                      include_dirs=[GetPyBindInc(False),
                                    GetPyBindInc(True)]
 )
