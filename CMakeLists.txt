@@ -19,6 +19,7 @@ add_subdirectory(cmake)
 add_object(line   cxx/line.cpp)
 add_object(cline  cxx/cline.cpp)
 add_object(cline2 cxx/cline2.cpp)
+add_object(cline3 cxx/cline3.cpp)
 
 
 add_library(libtl SHARED
@@ -27,6 +28,7 @@ add_library(libtl SHARED
   $<TARGET_OBJECTS:line>
   $<TARGET_OBJECTS:cline>
   $<TARGET_OBJECTS:cline2>
+  $<TARGET_OBJECTS:cline3>
 )
 
 
@@ -53,6 +55,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:line>
     $<TARGET_OBJECTS:cline>
     $<TARGET_OBJECTS:cline2>
+    $<TARGET_OBJECTS:cline3>
   )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy

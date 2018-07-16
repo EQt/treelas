@@ -15,6 +15,7 @@ from ._treelas import (
     line_las,
     line_lasc,
     line_las2,
+    line_las3,
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,
