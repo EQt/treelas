@@ -15,10 +15,6 @@
 #include "clip2.cpp"
 #include "vecalloc.hpp"
 
-// #define UNIQUE_PTR 1
-#undef UNIQUE_PTR
-#define MALLOC   1
-
 
 template<typename float_, typename Event_>
 float_
