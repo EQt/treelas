@@ -29,25 +29,10 @@ dp_forward(
     find_minmax(y, n, min_y, max_y);
     Queue pq {n, n-1};
     double off = 0;
-    // std::cerr << "pq0 = " << pq << std::endl;
     for (int i = n-1; i > 0; i--) {
         const auto lami = lam[i-1];
-        // std::cerr << "y[" << i << "] = " << y[i] << std::endl;
-        // std::cerr << "mu[" << i << "] = " << mu[i] << std::endl;
-        // std::cerr << "lami = " << lami << std::endl;
-        // std::cerr << "off = " << off << std::endl;
         lb[i-1] = clip_fronw(event, pq, mu[i], -mu[i]*y[i] -off, -lami, min_y);
-        // std::cerr << "pql = " << pq << std::endl;
-        // std::cerr << "lb[" << i-1 << "]  = " << lb[i] << std::endl;
-        // for (int j = pq.start; j <= pq.stop; j++) {
-        //     std::cerr << " " << j << ": " << event[j];
-        // }
         ub[i-1] = clip_backw(event, pq, mu[i], -mu[i]*y[i] +off, +lami, max_y);
-        // std::cerr << "pqb = " << pq << std::endl;
-        // std::cerr << "ub  = " << ub[i] << std::endl;
-        // for (int j = pq.start; j <= pq.stop; j++) {
-        //     std::cerr << " " << j << ": " << event[j];
-        // }
         off = mu[i] > 1e-10 ? lami : std::min(lami, off);
     }
     return clip_front(event, pq, mu[0], -mu[0]*y[0] -off, 0.0);
