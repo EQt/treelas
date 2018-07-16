@@ -89,6 +89,7 @@ if (BUILD_TESTS)
   set(TESTS
     test/test_strtok.cpp
     test/test_timer.cpp
+    test/test_stack.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
