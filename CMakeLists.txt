@@ -52,6 +52,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
     $<TARGET_OBJECTS:cline>
+    $<TARGET_OBJECTS:cline2>
   )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy

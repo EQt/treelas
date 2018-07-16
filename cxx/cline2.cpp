@@ -10,7 +10,7 @@
 #  include "utils/malloc.hpp"
 #endif
 #include "utils/timer.hpp"
-#include "utils/minmax.hpp"d
+#include "utils/minmax.hpp"
 
 
 template <typename float_ = double>

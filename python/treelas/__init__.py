@@ -13,7 +13,8 @@ from ._treelas import (
     line_condat,
     line_glmgen,
     line_las,
-    line_lasc
+    line_lasc,
+    line_las2,
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,
