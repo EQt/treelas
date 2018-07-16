@@ -125,11 +125,10 @@ _dp_line_c2(const int n,
     }
 
     {   Timer _ ("forward");
-
         l = n-1;       // leftest index in queue
         r = n-0;       // rightest index in queue
-        x[l] = kl[0] = -lam/mu + y[0];
-        x[r] = ku[0] = +lam/mu + y[0];
+        x[l] = lb[0] = -lam/mu + y[0];
+        x[r] = ub[0] = +lam/mu + y[0];
         a[l] = +mu;
         a[r] = -mu;
         b[l] = -mu*y[0] + lam;
@@ -145,7 +144,7 @@ _dp_line_c2(const int n,
                 l += 1;
             }
             l -= 1;
-            kl[i] = x[l] = (-lam - b_) / a_;
+            lb[i] = x[l] = (-lam - b_) / a_;
             a[l] = a_;
             b[l] = b_ + lam;
 
@@ -158,7 +157,7 @@ _dp_line_c2(const int n,
                 r -= 1;
             }
             r += 1;
-            ku[i] = x[r] = - (lam + b_) / a_;        // a_ and b_ negated!
+            ub[i] = x[r] = - (lam + b_) / a_;        // a_ and b_ negated!
             a[r] = a_;
             b[r] = b_ + lam;
         }
@@ -176,8 +175,8 @@ _dp_line_c2(const int n,
         b_ = beta[n-1];
         // back-pointers
         for (i = n-2; i >= 0; i--) {
-            b_ = min(b_, ku[i]);
-            b_ = max(b_, kl[i]);
+            b_ = min(b_, ub[i]);
+            b_ = max(b_, lb[i]);
             beta[i] = b_;
         }
     }
