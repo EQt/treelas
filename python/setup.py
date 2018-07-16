@@ -26,10 +26,14 @@ class GetPyBindInc():
 
 
 sources = [
-    "_treelas.cpp",
+    "../python/_treelas.cpp",
     "../extern/condat/condat_tv_v2.cpp",
     "../extern/glmgen/tf_dp.cpp",
-    "../cxx/line.cpp"
+    "../cxx/line.cpp",
+    "../cxx/line_para.cpp",
+    "../cxx/cline.cpp",
+    "../cxx/cline2.cpp",
+    "../cxx/cline3.cpp"
 ]
 
 _treelas = Extension("treelas._treelas", sources, language='c++',
