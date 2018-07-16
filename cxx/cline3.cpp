@@ -14,17 +14,31 @@
 
 
 template <typename float_ = double>
+struct pair2
+{
+  float_ l;
+  float_ u;
+};
+
+
+template <typename float_ = double>
+struct pair2a
+{
+  float_ x;
+  float_ a;
+};
+
+
+
+template <typename float_ = double>
 void
 _dp_line_c3(const int n,
             const float_ *y,
             const float_ lam,
             float_ *beta,
-            float_ *x,
-            float_ *a,
-            float_ *ub)
+            pair2a<float_> *deriv,
+            pair2<float_>  *bounds)
 {
-    float_ *lb = beta;
-
     const float_ mu = float_(1.0);
     int l, r, i;
     float_ a_, b_;
@@ -37,55 +51,53 @@ _dp_line_c3(const int n,
     {   Timer _ ("forward");
         l = n-1;       // leftest index in queue
         r = n-0;       // rightest index in queue
-        x[l] = lb[0] = -lam/mu + y[0];
-        x[r] = ub[0] = +lam/mu + y[0];
-        a[l] = +mu;
-        a[r] = -mu;
-        // b[l] = -mu*y[0] + lam;
-        // b[r] = +mu*y[0] + lam;
+        deriv[l].x = bounds[0].l = -lam/mu + y[0];
+        deriv[r].x = bounds[0].u = +lam/mu + y[0];
+        deriv[l].a = +mu;
+        deriv[r].a = -mu;
 
         for (i = 1; i < n-1; i++) {
             // clip from lower
             a_ = +mu;
             b_ = -mu*y[i] - lam;
-            while (l <= r && a_ * x[l] + b_ <= -lam) {
-                b_ += -a[l] * x[l];
-                a_ += a[l];
+            while (l <= r && a_ * deriv[l].x + b_ <= -lam) {
+                b_ += -deriv[l].a * deriv[l].x;
+                a_ += deriv[l].a;
                 l += 1;
             }
             l -= 1;
-            lb[i] = x[l] = (-lam - b_) / a_;
-            a[l] = a_;
+            bounds[i].l = deriv[l].x = (-lam - b_) / a_;
+            deriv[l].a = a_;
             // b[l] = b_ + lam;
 
             // clip from upper: a_ and b_ are negated (direction)
             a_ = -mu;               // negated!
             b_ = +mu * y[i] - lam;  // negated!
-            while (l <= r && -(a_ * x[r] + b_) >= lam) {
-                b_ += -a[r] * x[r];
-                a_ += a[r];
+            while (l <= r && -(a_ * deriv[r].x + b_) >= lam) {
+                b_ += -deriv[r].a * deriv[r].x;
+                a_ += deriv[r].a;
                 r -= 1;
             }
             r += 1;
-            ub[i] = x[r] = - (lam + b_) / a_;        // a_ and b_ negated!
-            a[r] = a_;
+            bounds[i].u = deriv[r].x = - (lam + b_) / a_;        // a_ and b_ negated!
+            deriv[r].a = a_;
         }
     }
     {   Timer _ ("backward");
         // clip from below to 0
         a_ = mu;
         b_ = -mu * y[n-1] - lam;
-        while (l <= r && a_ * x[l] + b_ <= 0) {
-            b_ += -a[l] * x[l];
-            a_ += a[l];
+        while (l <= r && a_ * deriv[l].x + b_ <= 0) {
+            b_ += -deriv[l].a * deriv[l].x;
+            a_ += deriv[l].a;
             l += 1;
         }
         beta[n-1] = -b_ / a_;
         b_ = beta[n-1];
         // back-pointers
         for (i = n-2; i >= 0; i--) {
-            b_ = min(b_, ub[i]);
-            b_ = max(b_, lb[i]);
+            b_ = min(b_, bounds[i].u);
+            b_ = max(b_, bounds[i].l);
             beta[i] = b_;
         }
     }
@@ -102,19 +114,19 @@ dp_line_c3(const int n,
     Timer t ("alloc");
 #ifdef BLOCK_ALLOC
 #  ifdef MALLOC
-    Malloc<float_> buf (2*n + 2*n + n);
+    Malloc<pair2a<float_>>  deriv  (2*n);
+    Malloc<pair2<float_>> bounds (1*n);
 #  else
-    std::vector<float_> buf (2*n + 2*n + n);
-#endif
+    # error "not implemented"
+    std::vector<float_> buf (6*n);
     size_t p = 0;
-    float_ *x = buf.data() + p; p += 2*n;
-    float_ *a = buf.data() + p; p += 2*n;
-    float_ *ub = buf.data() + p; p += n;
-    t.stop();
     if (p != buf.size())
         throw std::runtime_error("Should not happen");
-    _dp_line_c3(n, y, lam, beta, x, a, ub);
+#endif
+    t.stop();
+    _dp_line_c3(n, y, lam, beta, deriv.data(), bounds.data());
 #else
+# error "not implemented"
     std::vector<float_>
         x (2*n),
         a (2*n),
