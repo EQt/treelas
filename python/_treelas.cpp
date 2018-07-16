@@ -153,7 +153,32 @@ PYBIND11_MODULE(_treelas, m)
               return out;
           },
           R"pbdoc(
-            Line solver (own implementation, cache efficient?)
+            Line solver (own implementation, hand tuned C code)
+          )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("out") = py::none(),
+          py::arg("verbose") = false);
+
+        m.def("line_las2",
+              [](const py::array_f64 &y,
+                 const double lam,
+                 py::array_f64 out,
+                 const bool verbose) -> py::array_t<double>
+          {
+              TimerQuiet _ (verbose);
+              const int n = int(check_1d_len(y, "y"));
+              if (is_empty(out))
+                  out = py::array_t<double>({n}, {sizeof(double)});
+              check_len(n, out, "out");
+              dp_line_c2(n,
+                         y.data(),
+                         lam,
+                         out.mutable_data());
+              return out;
+          },
+          R"pbdoc(
+            Line solver (own implementation, save more memory compared to line_lasc)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),

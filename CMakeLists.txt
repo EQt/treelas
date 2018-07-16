@@ -16,8 +16,9 @@ add_subdirectory(extern/condat)
 add_subdirectory(cmake)
 
 
-add_object(line  cxx/line.cpp)
-add_object(cline cxx/cline.cpp)
+add_object(line   cxx/line.cpp)
+add_object(cline  cxx/cline.cpp)
+add_object(cline2 cxx/cline2.cpp)
 
 
 add_library(libtl SHARED
@@ -25,6 +26,7 @@ add_library(libtl SHARED
   $<TARGET_OBJECTS:tf_dp>
   $<TARGET_OBJECTS:line>
   $<TARGET_OBJECTS:cline>
+  $<TARGET_OBJECTS:cline2>
 )
 
 
