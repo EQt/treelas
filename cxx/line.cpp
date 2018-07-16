@@ -9,11 +9,11 @@
 
 #include "utils/timer.hpp"
 #include "utils/malloc.hpp"
+#include "utils/vecalloc.hpp"
 
 #include "line.hpp"
 #include "clip.hpp"
 #include "clip2.cpp"
-#include "vecalloc.hpp"
 
 
 template<typename float_, typename Event_>
