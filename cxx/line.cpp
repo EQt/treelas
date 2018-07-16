@@ -136,16 +136,23 @@ dp_line_w(
 
 template<typename float_ = double>
 void
-dp_line(
-    const size_t n,
-    float_ *x,
-    const float_ *y,
-    const float_ lam)
+dp_line(const size_t n,
+        float_ *x,
+        const float_ *y,
+        const float_ lam)
 {
     for (size_t i = 0; i < n; i++) {
         x[i] = y[i] * lam;
     }
 }
+
+
+template
+void
+dp_line(const size_t n,
+        double *x,
+        const double *y,
+        const double lam);
 
 
 

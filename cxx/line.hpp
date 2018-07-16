@@ -50,7 +50,8 @@ dp_reverse(
     Event_ *event = nullptr);
 
 
-extern template double
+extern template
+double
 dp_reverse(
     const int n,
     double *lb,
@@ -68,6 +69,14 @@ dp_line(
     float_ *x,
     const float_ *y,
     const float_ lam);
+
+
+extern template
+void
+dp_line(const size_t n,
+        double *x,
+        const double *y,
+        const double lam);
 
 
 template<typename float_ = double>
