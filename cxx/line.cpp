@@ -155,7 +155,7 @@ dp_line(const size_t n,
 
         {   Timer _ ("backward");
             x[n-1] = clip_front(event, pq, mu, -mu*y[n-1] -lam, 0.0);
-            for (int i = n-2; i >= 0; i--) {
+            for (int i = int(n-2); i >= 0; i--) {
                 x[i] = clip(x[i+1], lb[i], ub[i]);
             }
         }
