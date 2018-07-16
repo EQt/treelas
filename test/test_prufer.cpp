@@ -8,7 +8,7 @@
 TEST(prufer, networkx_example_parent)
 {
     const std::vector<int> pruf {3, 3, 3, 4};
-    const int n = pruf.size() + 2;
+    const int n = int(pruf.size() + 2);
     std::vector<int> parent (n, -1);
     prufer2parent(n, pruf.data(), parent.data());
 
@@ -20,7 +20,7 @@ TEST(prufer, networkx_example_parent)
 TEST(prufer, networkx_example_edges)
 {
     const std::vector<int> pruf {3, 3, 3, 4};
-    const int n = pruf.size() + 2;
+    const int n = int(pruf.size() + 2);
 
     std::vector<int>
         head (n-1, -1),
@@ -41,7 +41,7 @@ TEST(prufer, networkx_example_edges)
 TEST(prufer, paper)
 {
     const std::vector<int> c {2, 4, 0, 1, 3, 3};
-    const int n = c.size() + 2;
+    const int n = int(c.size() + 2);
     std::vector<int>
         head (n-1, -1),
         tail (n-0, -1);
