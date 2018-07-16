@@ -142,11 +142,11 @@ dp_line(const size_t n,
         const float_ lam)
 {
     std::vector<Event2> event_ (2*n);
-    std::vector<double> ub_ (n-1);
+    std::vector<float_> ub_ (n-1);
 
-    const double mu = 1.0;
+    const float_ mu = 1.0;
     Event2 *event = event_.data();
-    double *lb = x, *ub = ub_.data();
+    float_ *lb = x, *ub = ub_.data();
     Queue pq {int(n), int(n-1)};
     { // i = n-1
         const auto i = n-1;
