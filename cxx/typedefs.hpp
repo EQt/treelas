@@ -36,7 +36,7 @@ struct Event2
     const static int _p = 5;
     const static int _w = 6;
 
-    bool operator==(const Event &o) const {
+    bool operator==(const Event2 &o) const {
         return x == o.x && slope == o.slope;
     }
 };
