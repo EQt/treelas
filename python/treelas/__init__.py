@@ -12,7 +12,8 @@ from ._treelas import (
     __author__,
     line_condat,
     line_glmgen,
-    line_las
+    line_las,
+    line_lasc
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,
