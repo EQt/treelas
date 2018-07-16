@@ -25,13 +25,14 @@ dp_forward_w(
     const float_ *y,
     const float_ *mu,
     const float_ *lam,
-    Event_ *event)
+    Event_ *event,
+    double &off)
 {
     VecAlloc<Event_> _ (&event, size_t(2*n));
     double min_y, max_y;
     find_minmax(y, n, min_y, max_y);
     Queue pq {n, n-1};
-    double off = 0;
+    off = 0;
     for (int i = n-1; i > 0; i--) {
         const auto lami = lam[i-1];
         lb[i-1] = clip_fronw(event, pq, mu[i], -mu[i]*y[i] -off, -lami, min_y);
@@ -80,11 +81,14 @@ dp_line_w(
 {
     std::vector<float_>
         lb_ (n-1), ub_ (n-1);
+    std::vector<Event2> events_ (2*n);
     float_
         *lb = lb_.data(),
         *ub = ub_.data();
+    Event2 *event = events_.data();
 
-    Queue pq = dp_forward_w(n, lb, ub, y, mu, lam);
+    double off;
+    Queue pq = dp_forward_w(n, lb, ub, y, mu, lam, event, off);
     x[0] = clip_front(event, pq, mu[0], -mu[0]*y[0] -off, 0.0);
     for (int i = 1; i < n; i++) {
         x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
@@ -93,15 +97,17 @@ dp_line_w(
 
 
 // template instantiation for float_ = double
-template double
-dp_forward(
+template
+Queue
+dp_forward_w(
     const int n,
     double *lb,
     double *ub,
     const double *y,
     const double *mu,
     const double *lam,
-    Event2 *event = nullptr);
+    Event2 *event,
+    double &off);
 
 
 template double
