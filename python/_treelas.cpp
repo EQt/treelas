@@ -6,8 +6,8 @@
 #include "../extern/condat/condat_tv_v2.hpp"
 #include "../cxx/utils/timer.hpp"
 // #include "../cxx/dp_tree.hpp"
-// #include "../cxx/dp_line.hpp"
-// #include "../cxx/prufer.hpp"
+#include "../cxx/line.hpp"
+#include "../cxx/prufer.hpp"
 #include "../cxx/utils/compiler.hpp"
 
 namespace py = pybind11;
