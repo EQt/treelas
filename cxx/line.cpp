@@ -8,6 +8,7 @@
 #include <cstdlib>              // for malloc
 
 #include "utils/timer.hpp"
+#include "utils/malloc.hpp"
 
 #include "line.hpp"
 #include "clip.hpp"
@@ -16,6 +17,7 @@
 
 // #define UNIQUE_PTR 1
 #undef UNIQUE_PTR
+#define MALLOC   1
 
 
 template<typename float_, typename Event_>
@@ -142,6 +144,11 @@ dp_line(const size_t n,
     std::unique_ptr<float_> ub_ (new float_[2*n]);
     Event2 *event = event_.get();
     float_ *ub = ub_.get();
+#elif defined MALLOC
+    Malloc<Event2> event_(2*n);
+    Malloc<float_> ub_ (n);
+    Event2 *event = event_.data();
+    float_ *ub = ub_.data();
 #else
     std::vector<Event2> event_ (2*n);
     std::vector<float_> ub_ (n-1);
