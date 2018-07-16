@@ -4,6 +4,8 @@
 */
 #include <vector>
 #include <cmath>
+#include <memory>               // for std::unique_ptr
+#include <cstdlib>              // for malloc
 
 #include "utils/timer.hpp"
 
@@ -11,6 +13,8 @@
 #include "clip.hpp"
 #include "clip2.cpp"
 #include "vecalloc.hpp"
+
+#define UNIQUE_PTR 1
 
 
 template<typename float_, typename Event_>
@@ -129,14 +133,22 @@ dp_line(const size_t n,
         const float_ lam,
         const bool increasing)
 {
+    const float_ mu = 1.0;
+
     Timer t ("alloc");
+#ifdef UNIQUE_PTR
+    std::unique_ptr<Event2> event_ (new Event2[2*n]);
+    std::unique_ptr<float_> ub_ (new float_[2*n]);
+    Event2 *event = event_.get();
+    float_ *ub = ub_.get();
+#else
     std::vector<Event2> event_ (2*n);
     std::vector<float_> ub_ (n-1);
-    t.stop();
-
-    const float_ mu = 1.0;
     Event2 *event = event_.data();
     float_ *ub = ub_.data();
+#endif
+    t.stop();
+
     Queue pq {int(n), int(n-1)};
 
     if (increasing) {
