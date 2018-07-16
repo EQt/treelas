@@ -1,4 +1,5 @@
 #include <cstdint>
+#include <algorithm>                // for std::sort
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
 
