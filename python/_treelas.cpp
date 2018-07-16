@@ -71,8 +71,8 @@ PYBIND11_MODULE(_treelas, m)
 
     m.def("line_glmgen", [](const py::array_f64 &y,
                             const double lam,
-                            py::array_f64 out)
-          -> py::array_t<double> {
+                            py::array_f64 out) -> py::array_t<double>
+          {
           #ifdef HAVE_GLMGEN
               const auto n = check_1d_len(y, "y");
               if (is_empty(out))
@@ -97,8 +97,8 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("out") = py::none());
 
     m.def("prufer2parent",
-          [](const py::array_i32 &prufer, py::array_i32 parent)
-             -> py::tuple {
+          [](const py::array_i32 &prufer, py::array_i32 parent) -> py::tuple
+          {
             const int32_t n = int(check_1d_len(prufer, "prufer") + 2);
             if (is_empty(parent))
                 parent = py::array_t<int32_t>({n}, {sizeof(int32_t)});
@@ -113,7 +113,7 @@ PYBIND11_MODULE(_treelas, m)
             Compute parent vector from Prüfer sequence
           )pbdoc",
           py::arg("prufer"),
-          py::arg("parent") = py::none());
+          py::arg("parent") = py::array_i32());
 
     /*
     py::def("dp_tree", np_dp_tree, (
