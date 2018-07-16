@@ -10,6 +10,7 @@
 // #include "../cxx/dp_tree.hpp"
 #include "../cxx/line.hpp"
 #include "../cxx/cline.hpp"
+#include "../cxx/cline2.hpp"
 #include "../cxx/prufer.hpp"
 
 namespace py = pybind11;
