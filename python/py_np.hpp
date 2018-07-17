@@ -1,6 +1,6 @@
 /**
    Utility methods regarding numpy arrays
-*/
+ */
 #pragma once
 #include <cstdint>
 #include <pybind11/numpy.h>
@@ -17,19 +17,19 @@ typedef array_t<int32_t, array::c_style | array::forcecast> array_i32;
 namespace py = pybind11;
 
 
-/** Check whether the array is empty (has no elements, i.e. all shapes
-    are zero) */
+/**
+   Check whether the array is empty (i.e. size() == 0)
+ */
 bool
 is_empty(const py::array &a)
 {
-    for (int d = 0; d < a.ndim(); d++) {
-        if (a.shape(d) > 0)
-            return false;
-    }
-    return true;
+    return a.size() == 0;
 }
 
 
+/**
+   Assert that an array has a certain size.
+ */
 inline void
 check_len(const ssize_t n,
           const py::array &a,
@@ -41,7 +41,7 @@ check_len(const ssize_t n,
                                 a_str + ".shape) != " +
                                 std::to_string(ndim));
     }
-    if (a.shape(0) != n) {
+    if (a.size() != n) {
         throw std::length_error(std::to_string(a.shape(0)) +
                                 std::string(" = len(") +
                                 a_str + ") != " + std::to_string(n));
@@ -49,7 +49,9 @@ check_len(const ssize_t n,
 }
 
 
-/** Be sure that an array is one-dimensional */
+/**
+   Be sure that an array is one-dimensional and return its length
+ */
 inline size_t
 check_1d_len(const py::array &a, const std::string &a_str = "?")
 {
@@ -61,6 +63,10 @@ check_1d_len(const py::array &a, const std::string &a_str = "?")
 }
 
 
+
+/**
+   For testing: create an array with 3 elements
+ */
 py::array_t<double>
 _test_create_array()
 {
@@ -68,5 +74,5 @@ _test_create_array()
     x[0] = 13.0;
     x[1] = -1.0;
     x[2] = 42.0;
-    return py::array_t<double>({{3}}, {{sizeof(double)}}, x);
+    return py::array_t<double>({3}, {sizeof(double)}, x);
 }
