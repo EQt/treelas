@@ -12,6 +12,8 @@ _f_(_x_) :=
 
 whereby _E_ are the edges of a tree.
 
+There are also specialized algorithms for one dimensional line graphs (also called “trail graphs”), including the implementation by [Laurent Condat][condat] and the [`glmgen` R package][glmgen].
+
 
 Python Interface
 ---------------
@@ -46,3 +48,7 @@ Directory Structure
 ├── python      Python bindings
 └── test        GTest cases
 ```
+
+
+[condat]: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
+[glmgen]: https://github.com/glmgen/glmgen
