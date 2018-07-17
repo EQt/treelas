@@ -67,33 +67,3 @@ _test_create_array()
     x[2] = 42.0;
     return py::array_t<double>({{3}}, {{sizeof(double)}}, x);
 }
-
-
-/** Return mutable pointer to the data of an py::array */
-// template<typename T = double>
-// inline T*
-// check_data_mut(const py::array<T> &var, const std::string &var_str = "?")
-// {
-//     np::dtype dtype = np::dtype::get_builtin<T>();
-//     const auto vtype = var.get_dtype();
-//     if (vtype != dtype) {
-//         const std::string
-//             dtype_str = py::extract<std::string>(py::str(dtype)),
-//             vtype_str = py::extract<std::string>(py::str(vtype));
-//         throw std::invalid_argument(var_str + ".dtype = numpy." + vtype_str +
-//                                     " != numpy." + dtype_str);
-//     }
-//     if (var.strides(0) != sizeof(T)) {
-//         throw std::invalid_argument(var_str + ": wrong stride");
-//     }
-//     return (T*) var.get_data();
-// }
-
-
-// template<typename T = double>
-// inline const T*
-// check_data(const np::ndarray &var, const std::string &var_str = "?")
-// {
-//     return (const T*) check_data_mut<T>(var, var_str);
-// }
-
