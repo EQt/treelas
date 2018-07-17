@@ -31,9 +31,9 @@ sources = [
     "../extern/glmgen/tf_dp.cpp",
     "../cxx/line.cpp",
     "../cxx/line_para.cpp",
-    "../cxx/cline.cpp",
-    "../cxx/cline2.cpp",
-    "../cxx/cline3.cpp"
+    "../cxx/line_c.cpp",
+    "../cxx/line_c2.cpp",
+    "../cxx/line_c3.cpp"
 ]
 
 _treelas = Extension("treelas._treelas", sources, language='c++',
