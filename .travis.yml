@@ -65,8 +65,8 @@ script:
 - mkdir -p build && cd build
 - cmake .. -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$CC -DCMAKE_BUILD_TYPE=Debug
 - if [ "$TRAVIS_OS_NAME" == "linux" ]; then make tests && ./tests; fi
-- cd ../python && pwd
-- CC=$CXX python setup.py install --force
+- cd ../python && pwd && rm -fr build
+- CC=$CXX python setup.py install
 - py.test --color=yes test
 
 notifications:
