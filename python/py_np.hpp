@@ -23,7 +23,12 @@ namespace py = pybind11;
 bool
 is_empty(const py::array &a)
 {
-    return a.size() == 0;
+    for (int d = 0; d < a.ndim(); d++) {
+        if (a.shape(d) > 0)
+            return false;
+    }
+    return true;
+    // return a.size() == 0;
 }
 
 
