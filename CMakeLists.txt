@@ -28,11 +28,11 @@ add_subdirectory(cmake)
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
 
-add_object(line      cxx/line.cpp)
-add_object(line_para cxx/line_para.cpp)
-add_object(cline     cxx/cline.cpp)
-add_object(cline2    cxx/cline2.cpp)
-add_object(cline3    cxx/cline3.cpp)
+add_object(line       cxx/line.cpp)
+add_object(line_para  cxx/line_para.cpp)
+add_object(line_c     cxx/line_c.cpp)
+add_object(line_c2    cxx/line_c2.cpp)
+add_object(line_c3    cxx/line_c3.cpp)
 
 
 
@@ -56,9 +56,9 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
     $<TARGET_OBJECTS:line_para>
-    $<TARGET_OBJECTS:cline>
-    $<TARGET_OBJECTS:cline2>
-    $<TARGET_OBJECTS:cline3>
+    $<TARGET_OBJECTS:line_c>
+    $<TARGET_OBJECTS:line_c2>
+    $<TARGET_OBJECTS:line_c3>
   )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy

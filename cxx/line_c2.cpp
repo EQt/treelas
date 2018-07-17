@@ -2,7 +2,7 @@
    Aim at being more cache efficient than others:
    Save memory by b[i] = -a[i] * x[i]
 */
-#include "cline2.hpp"
+#include "line_c2.hpp"
 
 #include <vector>
 #include <stdexcept>

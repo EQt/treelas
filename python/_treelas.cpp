@@ -11,9 +11,9 @@
 #include "../cxx/line.hpp"
 // #include "../cxx/line_w.hpp"
 #include "../cxx/line_para.hpp"
-#include "../cxx/cline.hpp"
-#include "../cxx/cline2.hpp"
-#include "../cxx/cline3.hpp"
+#include "../cxx/line_c.hpp"
+#include "../cxx/line_c2.hpp"
+#include "../cxx/line_c3.hpp"
 #include "../cxx/prufer.hpp"
 
 namespace py = pybind11;

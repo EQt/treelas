@@ -1,7 +1,7 @@
 /**
    Aim at being more cache efficient than others
 */
-#include "cline3.hpp"
+#include "line_c3.hpp"
 
 #include <vector>
 #include <stdexcept>
