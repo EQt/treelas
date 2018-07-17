@@ -1,3 +1,6 @@
+/**
+   Utility methods regarding numpy arrays
+*/
 #pragma once
 #include <cstdint>
 #include <pybind11/numpy.h>
