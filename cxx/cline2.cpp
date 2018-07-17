@@ -1,5 +1,6 @@
 /**
-   Aim at being more cache efficient than others
+   Aim at being more cache efficient than others:
+   Save memory by b[i] = -a[i] * x[i]
 */
 #include "cline2.hpp"
 
@@ -41,8 +42,6 @@ _dp_line_c2(const int n,
         x[r] = ub[0] = +lam/mu + y[0];
         a[l] = +mu;
         a[r] = -mu;
-        // b[l] = -mu*y[0] + lam;
-        // b[r] = +mu*y[0] + lam;
 
         for (i = 1; i < n-1; i++) {
             // clip from lower
@@ -54,7 +53,6 @@ _dp_line_c2(const int n,
             }
             lb[i] = x[--l] = (-lam - b_) / a_;
             a[l] = a_;
-            // b[l] = b_ + lam;
 
             // clip from upper: a_ and b_ are negated (direction)
             a_ = -mu;               // negated!
