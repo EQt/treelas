@@ -34,6 +34,7 @@ branches:
   - master
 
 before_install:
+  - git describe --tags
   - |
     if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ ! -z "$BREW" ]]; then
       brew install $BREW_OPTS $BREW &&
