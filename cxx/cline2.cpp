@@ -53,8 +53,7 @@ _dp_line_c2(const int n,
                 a_ += a[l];
                 l += 1;
             }
-            l -= 1;
-            lb[i] = x[l] = (-lam - b_) / a_;
+            lb[i] = x[--l] = (-lam - b_) / a_;
             a[l] = a_;
             // b[l] = b_ + lam;
 
@@ -66,8 +65,7 @@ _dp_line_c2(const int n,
                 a_ += a[r];
                 r -= 1;
             }
-            r += 1;
-            ub[i] = x[r] = - (lam + b_) / a_;        // a_ and b_ negated!
+            ub[i] = x[++r] = - (lam + b_) / a_;        // a_ and b_ negated!
             a[r] = a_;
         }
     }
@@ -80,8 +78,7 @@ _dp_line_c2(const int n,
             a_ += a[l];
             l += 1;
         }
-        beta[n-1] = -b_ / a_;
-        b_ = beta[n-1];
+        beta[n-1] = b_ = -b_ / a_;
         // back-pointers
         for (i = n-2; i >= 0; i--) {
             b_ = min(b_, ub[i]);
