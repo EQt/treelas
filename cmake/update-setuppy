@@ -2,8 +2,9 @@
 import re
 from os import path
 
-cmake_txt = path.join(path.dirname(__file__), '..', 'CMakeLists.txt')
-setuppy   = path.join(path.dirname(__file__), '..', 'python', 'setup.py')
+__dir__ = path.dirname(path.realpath(__file__))
+cmake_txt = path.join(__dir__, '..', 'CMakeLists.txt')
+setuppy   = path.join(__dir__, '..', 'python', 'setup.py')
 
 with open(setuppy) as io:
     setup = io.read()
