@@ -1,9 +1,9 @@
 #pragma once
-#include "typedefs.hpp"
+#include "event.hpp"
+#include "queue.hpp"
 
-// #define UNIQUE_PTR 1
-#undef UNIQUE_PTR
-#define MALLOC   1
+#undef UNIQUE_PTR       // use "new T[n]" allocator?
+#define MALLOC   1      // use Malloc(n) allocator?
 
 
 /**
