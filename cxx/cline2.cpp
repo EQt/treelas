@@ -50,8 +50,7 @@ _dp_line_c2(const int n,
             b_ = -mu*y[i] - lam;
             while (l <= r && a_ * x[l] + b_ <= -lam) {
                 b_ += -a[l] * x[l];
-                a_ += a[l];
-                l += 1;
+                a_ += a[l++];
             }
             lb[i] = x[--l] = (-lam - b_) / a_;
             a[l] = a_;
@@ -62,8 +61,7 @@ _dp_line_c2(const int n,
             b_ = +mu * y[i] - lam;  // negated!
             while (l <= r && -(a_ * x[r] + b_) >= lam) {
                 b_ += -a[r] * x[r];
-                a_ += a[r];
-                r -= 1;
+                a_ += a[r--];
             }
             ub[i] = x[++r] = - (lam + b_) / a_;        // a_ and b_ negated!
             a[r] = a_;
@@ -75,8 +73,7 @@ _dp_line_c2(const int n,
         b_ = -mu * y[n-1] - lam;
         while (l <= r && a_ * x[l] + b_ <= 0) {
             b_ += -a[l] * x[l];
-            a_ += a[l];
-            l += 1;
+            a_ += a[l++];
         }
         beta[n-1] = b_ = -b_ / a_;
         // back-pointers
