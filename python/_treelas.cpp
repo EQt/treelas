@@ -77,6 +77,8 @@ PYBIND11_MODULE(_treelas, m)
             Line solver, implemented by Laurent Condat,
             version 2.0, Aug. 30, 2017.
             See: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
+
+            Memory usage: 2*len(y)*sizeof(uint32_t)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
@@ -106,6 +108,8 @@ PYBIND11_MODULE(_treelas, m)
           },
           R"pbdoc(
             Line solver (implementation of the R package `glmgen`).
+
+            Memory: ??*len(y)*sizeof(uint32_t)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
@@ -131,7 +135,9 @@ PYBIND11_MODULE(_treelas, m)
               return out;
           },
           R"pbdoc(
-            Line solver (own implementation 1)
+            Line solver (own implementation by Event2).
+
+            Memory: ??*len(y)*sizeof(uint32_t)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
@@ -157,7 +163,9 @@ PYBIND11_MODULE(_treelas, m)
               return out;
           },
           R"pbdoc(
-            Line solver (own implementation, hand tuned C code)
+            Line solver (own implementation, hand tuned C code).
+
+            Memory: ??*len(y)*sizeof(uint32_t)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
@@ -183,6 +191,8 @@ PYBIND11_MODULE(_treelas, m)
           },
           R"pbdoc(
             Line solver (own implementation, save more memory compared to line_lasc)
+
+            Memory: ??*len(y)*sizeof(uint32_t)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
@@ -207,7 +217,9 @@ PYBIND11_MODULE(_treelas, m)
               return out;
           },
           R"pbdoc(
-            Line solver (own implementation, save more memory compared to line_lasc)
+            Line solver (own implementation, save more memory compared to line_lasc).
+
+            Memory: ??*len(y)*sizeof(uint32_t)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
@@ -229,7 +241,9 @@ PYBIND11_MODULE(_treelas, m)
               return out;
           },
           R"pbdoc(
-            Line solver (parallel from both ends)
+            Line solver (parallel from both ends).
+
+            Memory: ??*len(y)*sizeof(uint32_t)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
