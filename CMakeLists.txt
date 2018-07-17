@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(treelas)
 
+# FLAGS
 set(CMAKE_CXX_STANDARD 11)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
   add_definitions(-Wall -Wno-error=conversion -Wextra -Wconversion)
@@ -10,10 +11,18 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
 elseif (MSVC)
   add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 endif()
+if (APPLE)
+  set(HDF5_USE_STATIC_LIBRARIES ON)
+endif()
+option(BUILD_TESTS "Build unit tests using googletest" ON)
+option(BUILD_PYEXT "Build python extension module"     ON)
+
 
 add_subdirectory(extern/glmgen)
 add_subdirectory(extern/condat)
 add_subdirectory(cmake)
+
+add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
 
 add_object(line      cxx/line.cpp)
@@ -22,9 +31,9 @@ add_object(cline     cxx/cline.cpp)
 add_object(cline2    cxx/cline2.cpp)
 add_object(cline3    cxx/cline3.cpp)
 
-option(BUILD_TESTS "Build unit tests using googletest" ON)
-option(BUILD_PYEXT "Build python extension module"     ON)
 
+
+# PYTHON
 set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11"
     CACHE STRING "Directory where pybind is located")
 if (BUILD_PYEXT)
@@ -56,11 +65,7 @@ if (BUILD_PYEXT)
 endif()
 
 
-add_library(argparser OBJECT cxx/utils/argparser.cpp)
-
-if (APPLE)
-  set(HDF5_USE_STATIC_LIBRARIES ON)
-endif()
+# HDF5
 find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
   set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES})
@@ -70,6 +75,7 @@ if (HDF5_FOUND)
 endif()
 
 
+# TESTS
 if (BUILD_TESTS)
   if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest/CMakeLists.txt")
     execute_process(COMMAND git submodule update --init extern/googletest
