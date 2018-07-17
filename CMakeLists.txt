@@ -22,18 +22,6 @@ add_object(cline     cxx/cline.cpp)
 add_object(cline2    cxx/cline2.cpp)
 add_object(cline3    cxx/cline3.cpp)
 
-
-add_library(libtl SHARED
-  $<TARGET_OBJECTS:condat_tv>
-  $<TARGET_OBJECTS:tf_dp>
-  $<TARGET_OBJECTS:line>
-  $<TARGET_OBJECTS:line_para>
-  $<TARGET_OBJECTS:cline>
-  $<TARGET_OBJECTS:cline2>
-  $<TARGET_OBJECTS:cline3>
-)
-
-
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
 
