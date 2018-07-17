@@ -1,6 +1,6 @@
 /**
    Aim at being more cache efficient than others
-*/
+ */
 #include "line_c.hpp"
 
 #include <vector>
