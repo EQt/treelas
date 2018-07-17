@@ -64,6 +64,9 @@ class BuildExt(build_ext):
             opts.append('-std=c++11')
             opts.append('-g')
             opts.append('-O3')
+            if hasattr(self.compiler, "compiler"):
+                if self.compiler.compiler[0] == 'gcc':
+                    self.compiler.compiler_so.remove('-Wstrict-prototypes')
         for ext in self.extensions:
             ext.extra_compile_args = opts
         build_ext.build_extensions(self)
