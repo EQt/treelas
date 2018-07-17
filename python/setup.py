@@ -26,7 +26,7 @@ class GetPyBindInc():
 
 
 sources = [
-    "../python/_treelas.cpp",
+    "_treelas.cpp",
     "../extern/condat/condat_tv_v2.cpp",
     "../extern/glmgen/tf_dp.cpp",
     "../cxx/line.cpp",

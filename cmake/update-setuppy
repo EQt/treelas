@@ -17,10 +17,10 @@ objs = {n : p.strip() for n, p in
 objs['condat_tv'] = 'extern/condat/condat_tv_v2.cpp'
 objs['tf_dp'] = 'extern/glmgen/tf_dp.cpp'
 
-mod = mod.replace
 mods = re.sub(r'\$<TARGET_OBJECTS:(.+?)>', lambda n: objs[n.group(1)], mod)
 source = ['"../' + s.strip() + '"' for s in mods.strip().split('\n')]
 new_source = "sources = [\n    " + ",\n    ".join(source) + "\n]"
+new_source = new_source.replace('../python/', '')
 new_setup = re.sub(r'sources = \[(.+?)\]', new_source, setup, flags=re.DOTALL)
 
 with open(setuppy, 'w') as io:
