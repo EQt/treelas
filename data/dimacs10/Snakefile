@@ -22,7 +22,7 @@ rule download:
 
 
 @njit(cache=True)
-def transform(vals, head, tail):
+def transform(vals, head, tail, m):
     e = 0
     for i in range(vals.shape[0]):
         for j in range(vals.shape[1]):
@@ -44,7 +44,8 @@ rule to_hdf5:
     output: "{name}.h5"
     run:
         n, m = read_csv(input[0], sep=' ', skiprows=14, nrows=1, header=None).values[0]
-        assert m < np.iinfo(np.int32).max
+        assert n < m, n
+        assert m < np.iinfo(np.int32).max, f'{m:,}'
 
         ncols = 15
         cols = list(range(ncols))
@@ -63,7 +64,7 @@ rule to_hdf5:
 
         head = -np.ones(m, dtype=np.int32)
         tail = -np.ones(m, dtype=np.int32)
-        assert transform(df.values, head, tail) == -1
+        assert transform(df.values, head, tail, m) == -1
         assert head.min() >= 0
         assert tail.min() >= 0
 
