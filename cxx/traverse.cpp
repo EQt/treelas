@@ -35,8 +35,9 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     tim.stop();
     const size_t n = index.num_nodes();
 
+    std::vector<int> parent;
     {   Timer _ ("random span");
-        const auto included = random_spanning_tree(index, seed);
+        parent = random_spanning_tree(index, seed);
     }
 
     std::cout << "m = " << m << std::endl
