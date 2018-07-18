@@ -1,6 +1,8 @@
 # https://www.cc.gatech.edu/dimacs10/archive/streets.shtml
 import h5py
 import numpy as np
+from numba import njit
+from pandas import read_csv
 from six.moves.urllib.request import urlretrieve
 
 URL = "https://www.cc.gatech.edu/dimacs10/archive/data/streets"
@@ -24,9 +26,19 @@ rule to_hdf5:
     input: "{name}.bz2"
     output: "{name}.h5"
     run:
-        from pandas import read_csv
-        df = read_csv(input[0], sep=' ', header=None, skiprows=16, usecols=[0, 1])
-        df.dropna(inplace=True)
+        n, m = read_csv(input[0], sep=' ', skiprows=14, nrows=1, header=None).values[0]
+
+        ncols = 15
+        cols = list(range(ncols))
+        df = read_csv(input[0], sep=' ', header=None, skiprows=15, names=cols,
+                      engine='c', dtype={i: float for i in range(ncols)})
+        df[df.isna()] = -1
+        df = df.astype(int)
+
+        assert len(df) == n
+        assert (df >= 0).astype(int).sum().sum() == 2*m
+
+        
         with h5py.File(output[0], 'w') as io:
             g = io
             g.create_dataset("head", data=df[0].astype(np.int32).values, compression=3)
