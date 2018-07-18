@@ -1,3 +1,2 @@
 *.txt.gz
 *.h5
-.snakemake/

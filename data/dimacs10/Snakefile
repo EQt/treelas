@@ -1,0 +1,13 @@
+# https://www.cc.gatech.edu/dimacs10/archive/streets.shtml
+from six.moves.urllib.request import urlretrieve
+
+URL = "https://www.cc.gatech.edu/dimacs10/archive/data/streets"
+
+names = ["asia", "belgium", "europe"]
+
+rule download:
+    output: "{name}.bz2"
+    params: name="{name}"
+    run:
+        urlretrieve(f"{URL}/{params.name}.osm.graph.bz2", filename=output[0])
+
