@@ -25,10 +25,10 @@ rule to_hdf5:
     output: "{name}.h5"
     run:
         from pandas import read_csv
-        df = read_csv(input[0], sep=' ', header=None, comment='%', skiprows=2, usecols=[0, 1])
+        df = read_csv(input[0], sep=' ', header=None, skiprows=16, usecols=[0, 1])
         df.dropna(inplace=True)
         with h5py.File(output[0], 'w') as io:
             g = io
-            g.create_dataset("head", data=df[0].astype(np32).values, compression=3)
-            g.create_dataset("tail", data=df[1].astype(np32).values, compression=3)
+            g.create_dataset("head", data=df[0].astype(np.int32).values, compression=3)
+            g.create_dataset("tail", data=df[1].astype(np.int32).values, compression=3)
 
