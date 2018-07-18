@@ -6,7 +6,6 @@
 #include <cstdint>
 #include <iostream>
 #include <locale>
-#include <random>
 
 #include "utils/argparser.hpp"
 #include "utils/hdf5.hpp"

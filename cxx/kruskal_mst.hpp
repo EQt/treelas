@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <algorithm>        // for std::random_shuffle, std::sort
+#include <random>
+
 #include "unionfind.hpp"
 
 
