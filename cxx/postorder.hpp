@@ -11,7 +11,11 @@ post_order(const int n,
            const int root = 0,
            int *postord = nullptr);
 
-
+/**
+   Compute a post_order (if called with nullptr).
+   The array is released when this is destructed.
+   Additionally, the iterator interface (std::begin, std::end) is provided.
+*/
 class PostOrder
 {
     const int *postord;
@@ -43,15 +47,9 @@ public:
         }
     }
 
-    const int* begin() const {
-        return postord;
-    }
+    const int* begin() const { return postord; }
 
-    const int* end() const {
-        return postord + (include_root ? n : n-1);
-    }
+    const int* end() const { return postord + (include_root ? n : n-1); }
     
-    int size() const {
-        return end() - begin();
-    }
+    int size() const { return end() - begin(); }
 };
