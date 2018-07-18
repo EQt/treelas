@@ -6,9 +6,6 @@
 #include "bfs.hpp"
 #include "tree.hpp"
 
-#ifndef TEST_NODE
-#  define TEST_NODE false
-#endif
 #ifndef EXTRA
 #  define EXTRA 0
 #endif
@@ -25,7 +22,7 @@ struct Node
     float_ deriv;
 
     static constexpr int_ one = (int_(1)<<(8*sizeof(int_)-1));  //  b"100...0"
-#if !TEST_NODE
+
     inline bool same() const {
         return bool(_parent & one);
     }
@@ -45,53 +42,9 @@ struct Node
         }
         _parent = p;
     }
-#else
-    inline bool bit_same() const {
-        return bool(_parent & one);
-    }
-    inline void bit_set_same(bool v) {
-        if (v)
-            _parent |= one;
-        else
-            _parent &= ~one;
-    }
-    inline int_ bit_parent() const {
-        return _parent & (~one);
-    }
-    inline void bit_set_parent(int_ p) {
-        if (p & one) {
-            throw "too big";
-        }
-        _parent = p;
-    }
-    inline bool same() const {
-        if (bit_same() != _same) {
-            throw "error same";
-        }
-        return _same;
-    }
-    inline void set_same(bool v) {
-        bit_set_same(v);
-        _same = v;
-    }
-
-    inline int_ parent() const {
-        if (bit_parent() != _parent_) {
-            throw "error parent";
-        }
-        return _parent_;
-    }
-    inline void set_parent(int_ p) {
-        bit_set_parent(p);
-        _parent_ = p;
-    }
-#endif
 private:
     int_   _parent;
-#if TEST_NODE
-    int_ _parent_;
-    bool _same;
-#endif
+
 #if EXTRA > 0
     char   _ignore[EXTRA];
 #endif
