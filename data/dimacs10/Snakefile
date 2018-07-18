@@ -52,19 +52,24 @@ rule to_hdf5:
         df = read_csv(input[0], sep=' ', header=None, skiprows=15, names=cols,
                       engine='c', dtype={i: float for i in range(ncols)})
         df[df.isna()] = -1
-        df = df.astype(int)
+        df = df.astype(np.int32)
 
         assert len(df) == n
         assert (df >= 0).astype(int).sum().sum() == 2*m
 
-        for i, j in enumerate(df.max(0)):
+        for i, j in enumerate(df.max()):
             if j < 0: break
+
+        vals = df.values
+        del df
+
         max_degree = j
         assert max_degree < ncols
 
         head = -np.ones(m, dtype=np.int32)
         tail = -np.ones(m, dtype=np.int32)
-        assert transform(df.values, head, tail, m) == -1
+        assert transform(vals, head, tail, m) == -1
+        del vals
         assert head.min() >= 0
         assert tail.min() >= 0
 
