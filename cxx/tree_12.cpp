@@ -95,7 +95,9 @@ main(int argc, char *argv[])
                    int(sizeof(disc::Node<float_, int_>)));
             printf("max_iter = %d\n", max_iter);
             const char *group = "/";
-            process_tree<float_, int_>(fname, group, max_iter, ap.has_option("dfs"));
+            process_tree<float_, int_>(fname, group,
+                                       max_iter,
+                                       ap.has_option("dfs"));
         }
     } catch (const char *msg) {
         fprintf(stderr, "EXCEPTION: %s\n", msg);
