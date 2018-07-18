@@ -33,7 +33,7 @@ add_object(line_para  cxx/line_para.cpp)
 add_object(line_c     cxx/line_c.cpp)
 add_object(line_c2    cxx/line_c2.cpp)
 add_object(line_c3    cxx/line_c3.cpp)
-
+add_object(postorder  cxx/postorder.cpp)
 
 
 # PYTHON
@@ -75,6 +75,14 @@ if (HDF5_FOUND)
   if (MSVC)
     add_definitions(-DH5_BUILT_AS_DYNAMIC_LIB)
   endif()
+
+  add_executable(traverse
+    cxx/traverse.cpp
+    $<TARGET_OBJECTS:argparser>
+    $<TARGET_OBJECTS:postorder>
+  )
+  target_include_directories(traverse PUBLIC ${HDF5_INCLUDE_DIR})
+  target_link_libraries(traverse ${HDF5_LIBRARIES})
 endif()
 
 
