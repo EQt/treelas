@@ -5,7 +5,8 @@
 #include <cstring>          // for std::memmove
 
 #include "utils/timer.hpp"
-#include "typedefs.hpp"
+
+#include "queue.hpp"
 #include "children.hpp"
 
 
