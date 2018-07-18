@@ -9,12 +9,13 @@
 #include <vector>
 #include <algorithm>    // for std::min_element
 #include <cassert>
-#include "treeio.hpp"
-#include "tree12.hpp"
+
 #include "utils/hdf5.hpp"
 #include "utils/timer.hpp"
 #include "utils/argparser.hpp"
 
+#include "tree_io.hpp"
+#include "tree_12.hpp"
 
 
 template<typename float_ = float, typename int_ = int>
