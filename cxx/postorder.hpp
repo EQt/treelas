@@ -1,5 +1,4 @@
 #pragma once
-#include "children.hpp"
 
 /**
    Compute a post_order; more specific the DFS finish time.
