@@ -26,7 +26,7 @@ process_tree(const char *fname,
              const bool use_dfs,
              const int PRINT_MAX = 10)
 {
-    using namespace disc;
+    using namespace approx;
     auto tree = load_treelasso<float_, int_>(fname, group);
     const int n = tree.parent.size();
 
