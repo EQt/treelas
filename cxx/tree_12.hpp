@@ -1,9 +1,9 @@
 #include "utils/perm.hpp"
 #include "utils/timer.hpp"
 #include "utils/viostream.hpp"
+#include "utils/minmax.hpp"
 
 #include "bfs.hpp"
-#include "clip.hpp"
 #include "tree.hpp"
 
 #ifndef TEST_NODE
