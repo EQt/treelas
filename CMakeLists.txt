@@ -103,6 +103,7 @@ if (BUILD_TESTS)
     test/test_prufer.cpp
     test/test_vecalloc.cpp
     test/test_ref.cpp
+    test/test_unionfind.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
