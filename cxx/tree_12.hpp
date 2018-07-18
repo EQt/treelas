@@ -219,4 +219,4 @@ tree12(const TreeLasso<float_, int_> &tree,
     return xv;
 }
 
-}   // namespace disc::
+}   // namespace approx::
