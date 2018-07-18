@@ -7,11 +7,11 @@
 #include "tree.hpp"
 
 #ifndef EXTRA
-#  define EXTRA 0
+#  define EXTRA 0       // number of extra bytes in Node (for padding)
 #endif
 
 
-namespace disc {
+namespace approx {
 
 template<typename float_ = float,
          typename int_ = int>
