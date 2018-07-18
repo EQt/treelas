@@ -6,13 +6,12 @@
 #include "bfs.hpp"
 #include "tree.hpp"
 
+namespace approx {
+
+
 #ifndef EXTRA
 #  define EXTRA 0       // number of extra bytes in Node (for padding)
 #endif
-
-
-namespace approx {
-
 template<typename float_ = float,
          typename int_ = int>
 struct Node
@@ -68,8 +67,8 @@ update_x(Node<float_, int_> &v,
         } else {
             v.x = p.x;
         }
-        // update whether still same
-        if (v.x != p.x) {
+
+        if (v.x != p.x) {               // update whether still same
             v.set_same(false);
             changed++;
             if (v.x < p.x) {
