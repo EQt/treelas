@@ -12,7 +12,7 @@
 #include "utils/minmax.hpp"
 
 #include "line.hpp"
-#include "clip2.hpp"
+#include "clip.hpp"
 
 
 template<typename float_, typename Event_>

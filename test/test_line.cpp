@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "../cxx/line.hpp"
-#include "../cxx/clip2.hpp"
+#include "../cxx/clip.hpp"
 
 
 TEST(Line, line_las3)
