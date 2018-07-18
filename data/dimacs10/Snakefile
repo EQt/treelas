@@ -1,13 +1,34 @@
 # https://www.cc.gatech.edu/dimacs10/archive/streets.shtml
+import h5py
+import numpy as np
 from six.moves.urllib.request import urlretrieve
 
 URL = "https://www.cc.gatech.edu/dimacs10/archive/data/streets"
 
 names = ["asia", "belgium", "europe"]
 
+
+rule all:
+    input: expand("{name}.h5", name=names)
+
+
 rule download:
     output: "{name}.bz2"
     params: name="{name}"
     run:
         urlretrieve(f"{URL}/{params.name}.osm.graph.bz2", filename=output[0])
+
+
+
+rule to_hdf5:
+    input: "{name}.bz2"
+    output: "{name}.h5"
+    run:
+        from pandas import read_csv
+        df = read_csv(input[0], sep=' ', header=None, comment='%', skiprows=2, usecols=[0, 1])
+        df.dropna(inplace=True)
+        with h5py.File(output[0], 'w') as io:
+            g = io
+            g.create_dataset("head", data=df[0].astype(np32).values, compression=3)
+            g.create_dataset("tail", data=df[1].astype(np32).values, compression=3)
 
