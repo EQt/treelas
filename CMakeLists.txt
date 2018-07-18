@@ -101,6 +101,7 @@ if (BUILD_TESTS)
     test/test_stack.cpp
     test/test_line.cpp
     test/test_prufer.cpp
+    test/test_vecalloc.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
