@@ -20,27 +20,23 @@ struct Node
     float_ x;
     float_ deriv;
 
-    static constexpr int_ one = (int_(1)<<(8*sizeof(int_)-1));  //  b"100...0"
+    static constexpr int_ one =             //  b"100...0"
+        (int_(1)<<(8*sizeof(int_)-1));
 
-    inline bool same() const {
-        return bool(_parent & one);
-    }
+    inline bool same() const { return bool(_parent & one); }
+
     inline void set_same(bool v) {
-        if (v)
-            _parent |= one;
-        else
-            _parent &= ~one;
+        if (v) _parent |= one;
+        else   _parent &= ~one;
     }
 
-    inline int_ parent() const {
-        return _parent & (~one);
-    }
+    inline int_ parent() const { return _parent & (~one); }
+
     inline void set_parent(int_ p) {
-        if (p & one) {
-            throw "too big";
-        }
+        if (p & one) throw std::runtime_error("too big");
         _parent = p;
     }
+
 private:
     int_   _parent;
 
