@@ -12,7 +12,8 @@
 #include "utils/timer.hpp"
 
 #include "biadjacent.hpp"
-#include "kruskal_mst.hpp"
+// #include "kruskal_mst.hpp"
+#include "prim_mst.hpp"
 
 
 void
@@ -34,9 +35,8 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     tim.stop();
     const size_t n = index.num_nodes();
 
-    std::vector<bool> included;
     {   Timer _ ("random span");
-        included = random_spanning_tree(n, head, tail, seed);
+        const auto included = random_spanning_tree(index, seed);
     }
 
     std::cout << "m = " << m << std::endl
