@@ -58,7 +58,7 @@ def show_tree(parent, prg="dot -Tx11", wait=True, out=sp.DEVNULL):
 
 
 def main(args=None):
-    from utils import load_edges
+    from graphio import load_edges
 
     buf = StringIO()
     with h5py.File(args.inh5, 'r') as io:
