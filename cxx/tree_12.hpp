@@ -161,10 +161,10 @@ compute_orders(TreeLasso<float_, int_> &tree,
 
 template<typename float_, typename int_>
 std::vector<double>
-tree12(const TreeLasso<float_, int_> &tree,
-       const std::vector<int_> &ipostordv,
-       const std::vector<int_> &iorderv,
-       const int max_iter = 20)
+tree_12(const TreeLasso<float_, int_> &tree,
+        const std::vector<int_> &ipostordv,
+        const std::vector<int_> &iorderv,
+        const int max_iter = 20)
 {
     using namespace disc;
     const int n = tree.parent.size();
