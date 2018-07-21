@@ -12,10 +12,10 @@
 
 namespace approx {
 
-
 #ifndef EXTRA
 #  define EXTRA 0       // number of extra bytes in Node (for padding)
 #endif
+
 
 /** All information of a node together */
 template<typename float_ = float, typename int_ = int>
