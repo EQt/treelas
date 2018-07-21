@@ -60,7 +60,7 @@ update_x(Node<float_, int_> &v,
          const float_ c,
          int &changed)
 {
-    if (v.same()) {
+    if (v.same()) {                     // same region, so far?
         if (v.deriv > lam) {
             v.x -= c;
         } else if (v.deriv < -lam) {
@@ -86,6 +86,7 @@ update_x(Node<float_, int_> &v,
 }
 
 
+/** Perform an iteration */
 template<typename float_ = float, typename int_ = int>
 int
 tree12_iter(std::vector<Node<float_, int_>> &nodes,
@@ -105,22 +106,16 @@ tree12_iter(std::vector<Node<float_, int_>> &nodes,
     static bool first = n < 20;
     for (const auto &v : nodes) {
         auto &p = nodes[v.parent()];
-        if (first)
-            Timer::log("nodes.deriv = %f\n", p.deriv);
-        if (v.same()) {
+        if (first)  Timer::log("nodes.deriv = %f\n", p.deriv);
+        if (v.same())
             p.deriv += clip(v.deriv, -lam, +lam);
-        }
     }
+    first = false;
 
-    if (first)
-        first = false;
-
-    // optimize root node
     auto &r = nodes[preorder[0]];
-    r.x += r.deriv < 0 ? c : -c;
+    r.x += r.deriv < 0 ? c : -c;           // optimize root node
 
-    // backtracing
-    for (size_t i = 1; i < n; i++) {
+    for (size_t i = 1; i < n; i++) {       // backtracing
         auto &v = nodes[preorder[i]];
         auto &p = nodes[v.parent()];
         update_x(v, p, lam, delta, c, changed);
