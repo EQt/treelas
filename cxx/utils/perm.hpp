@@ -57,9 +57,9 @@ reverse(const std::vector<int_> &a)
 inline std::vector<int>
 argsort(const std::vector<int> &a)
 {
-    const int n = a.size();
+    const auto n = a.size();
     std::vector<int> order (n);
-    for (int i = 0; i < n; i++)
+    for (unsigned i = 0; i < n; i++)
         order[i] = i;
     std::sort(order.begin(), order.end(),
               [&](int i, int j) {
