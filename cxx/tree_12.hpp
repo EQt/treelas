@@ -164,7 +164,7 @@ std::vector<double>
 tree_12(const TreeLasso<float_, int_> &tree,
         const std::vector<int_> &ipostordv,
         const std::vector<int_> &iorderv,
-        const int max_iter = 20)
+        const size_t max_iter = 20)
 {
     using namespace disc;
     const int n = tree.parent.size();
@@ -200,11 +200,10 @@ tree_12(const TreeLasso<float_, int_> &tree,
     }
 
     {   Timer _ ("Iterations:\n");
-        for (int it = 0; it < max_iter; it++) {
-            Timer::log("%2d ...", it+1);
-            int changed = tree12_iter(nodes, iorder, delta, lam, mu);
-            if (changed)
-                Timer::log("  %d", changed);
+        for (size_t it = 0; it < max_iter; it++) {
+            Timer::log("%2ld ...", it+1);
+            const auto changed = tree12_iter(nodes, iorder, delta, lam, mu);
+            if (changed)  Timer::log("  %d", changed);
             Timer::log("\n");
             delta /= 2.0;
         }
