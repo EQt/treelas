@@ -291,7 +291,7 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("parent"),
           py::arg("y"),
           py::arg("lam"),
-          py::arg("max_iter"),
+          py::arg("max_iter") = 10,
           py::arg("verbose") = false,
           py::arg("x") = py::none());
 
