@@ -1,3 +1,7 @@
+/**
+   Approximate the tree solution by iterative refinement.
+   Push formulation (each node updates its parent).
+ */
 #include "utils/perm.hpp"
 #include "utils/timer.hpp"
 #include "utils/viostream.hpp"
@@ -46,6 +50,7 @@ private:
 };
 
 
+/** Update a node v (according to its parent p) */
 template<typename float_ = float, typename int_ = int>
 inline void
 update_x(Node<float_, int_> &v,
