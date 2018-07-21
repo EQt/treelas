@@ -253,21 +253,47 @@ PYBIND11_MODULE(_treelas, m)
     m.def("prufer2parent",
           [](const py::array_i32 &prufer, py::array_i32 parent) -> py::tuple
           {
-            const int32_t n = int(check_1d_len(prufer, "prufer") + 2);
-            if (is_empty(parent))
-                parent = py::array_t<int32_t>({n}, {sizeof(int32_t)});
-            else
-                check_len(n, parent, "parent");
-            const auto r = prufer2parent(n,
-                                         prufer.data(),
-                                         parent.mutable_data());
-            return py::make_tuple(parent, r);
+              const int32_t n = int(check_1d_len(prufer, "prufer") + 2);
+              if (is_empty(parent))
+                  parent = py::array_t<int32_t>({n}, {sizeof(int32_t)});
+              else
+                  check_len(n, parent, "parent");
+              const auto r = prufer2parent(n,
+                                           prufer.data(),
+                                           parent.mutable_data());
+              return py::make_tuple(parent, r);
           },
           R"pbdoc(
             Compute parent vector from Prüfer sequence
           )pbdoc",
           py::arg("prufer"),
           py::arg("parent") = py::array_i32());
+
+    m.def("tree_12",
+          [](const py::array_i32 &parent,
+             const py::array_f64 &y,
+             const double lam,
+             int max_iter,
+             bool verbose,
+             py::array_f64 x) -> py::array_f64
+          {
+              const auto n = check_1d_len(parent, "parent");
+              check_len(n, y, "y");
+              if (is_empty(x))
+                  x = py::array_t<double>({n}, {sizeof(double)});
+              check_len(n, x, "x");
+              // TODO
+              return x;
+          },
+          R"pbdoc(
+            Perform `max_iter` iterations in O(n) time to approximate flsa on tree.
+          )pbdoc",
+          py::arg("parent"),
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("max_iter"),
+          py::arg("verbose") = false,
+          py::arg("x") = py::none());
 
     /*
     py::def("dp_tree", np_dp_tree, (
