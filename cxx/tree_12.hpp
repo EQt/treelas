@@ -57,7 +57,6 @@ inline void
 update_x(Node<float_, int_> &v,
          Node<float_, int_> &p,
          const float_ lam,
-         const float_ delta,
          const float_ c,
          int &changed)
 {
@@ -119,7 +118,7 @@ tree12_iter(std::vector<Node<float_, int_>> &nodes,
     for (size_t i = 1; i < n; i++) {       // backtracing
         auto &v = nodes[preorder[i]];
         auto &p = nodes[v.parent()];
-        update_x(v, p, lam, delta, c, changed);
+        update_x(v, p, lam, c, changed);
     }
     return changed;
 }
@@ -165,13 +164,12 @@ std::vector<double>
 tree_12(const TreeLasso<float_, int_> &tree,
         const std::vector<int_> &ipostordv,
         const std::vector<int_> &iorderv,
-        const size_t max_iter = 20)
+        const size_t max_iter = 20,
+        const float_ mu = float_(1.0))
 {
-    using namespace approx;
     const auto n = tree.parent.size();
     std::vector<double> xv (n);
 
-    const float_ mu = float_(0.5);
     const float_ lam = tree.lam[0];
     const float_ *y = tree.y.data();
     const int_ *parent = tree.parent.data();
