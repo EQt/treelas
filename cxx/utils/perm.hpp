@@ -27,9 +27,9 @@ iperm(const std::vector<int_> &p)
 {
     static_assert(std::is_integral<int_>::value, "expected int type");
 
-    const int n = p.size();
+    const auto n = p.size();
     std::vector<int_> q (n);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < int(n); i++) {
         q[p[i]] = i;
     }
     return q;

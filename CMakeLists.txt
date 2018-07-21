@@ -83,6 +83,14 @@ if (HDF5_FOUND)
   )
   target_include_directories(traverse PUBLIC ${HDF5_INCLUDE_DIR})
   target_link_libraries(traverse ${HDF5_LIBRARIES})
+
+
+  add_executable(tree_12
+    cxx/tree_12.cpp
+    $<TARGET_OBJECTS:argparser>
+  )
+  target_include_directories(tree_12 PUBLIC ${HDF5_INCLUDE_DIR})
+  target_link_libraries(tree_12 ${HDF5_LIBRARIES})
 endif()
 
 

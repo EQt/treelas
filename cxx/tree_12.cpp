@@ -24,15 +24,15 @@ process_tree(const char *fname,
              const char *group,
              const int max_iter,
              const bool use_dfs,
-             const int PRINT_MAX = 10)
+             const unsigned PRINT_MAX = 10)
 {
     using namespace approx;
     auto tree = load_treelasso<float_, int_>(fname, group);
-    const int n = tree.parent.size();
+    const auto n = tree.parent.size();
 
     std::vector<int_> ipostord, iorder;
     compute_orders(tree, ipostord, iorder, use_dfs, PRINT_MAX);
-    const auto x = tree12(tree, ipostord, iorder, max_iter);
+    const auto x = tree_12(tree, ipostord, iorder, max_iter);
 
     std::vector<double> xt;
     {   // Read extra information
@@ -44,15 +44,15 @@ process_tree(const char *fname,
     if (n <= PRINT_MAX) {
         fprintf(stdout, " x: ");
         print(x, 3, stdout);
-        if (int(xt.size()) == n) {
+        if (xt.size() == n) {
             fprintf(stdout, "xt: ");
             print(xt, 3, stdout);
         }
     }
 
-    if (int(xt.size()) == n) {
+    if (xt.size() == n) {
         double max_diff = 0.0;
-        for (int i = 0; i < n; i++) {
+        for (unsigned i = 0; i < n; i++) {
             max_diff = std::max(max_diff, std::abs(x[i] - xt[i]));
         }
         fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_diff);
@@ -92,7 +92,7 @@ main(int argc, char *argv[])
             typedef float float_;
             typedef int   int_;
             printf("sizeof(struct Node): %d bytes\n",
-                   int(sizeof(disc::Node<float_, int_>)));
+                   int(sizeof(approx::Node<float_, int_>)));
             printf("max_iter = %d\n", max_iter);
             const char *group = "/";
             process_tree<float_, int_>(fname, group,

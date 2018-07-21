@@ -90,7 +90,7 @@ tree12_iter(std::vector<Node<float_, int_>> &nodes,
             const float_ mu = float_(0.5))
 {
     int changed = 0;
-    const int n = nodes.size();
+    const auto n = nodes.size();
 
     float_ c = float_(0.5 * delta);
     for (auto &v : nodes) {
@@ -115,7 +115,7 @@ tree12_iter(std::vector<Node<float_, int_>> &nodes,
     r.x += r.deriv < 0 ? c : -c;
 
     // backtracing
-    for (int i = 1; i < n; i++) {
+    for (size_t i = 1; i < n; i++) {
         auto &v = nodes[preorder[i]];
         auto &p = nodes[v.parent()];
         update_x(v, p, lam, delta, c, changed);
@@ -130,14 +130,14 @@ compute_orders(TreeLasso<float_, int_> &tree,
                std::vector<int_> &ipostord,
                std::vector<int_> &iorder,
                const bool use_dfs,
-               const int PRINT_MAX = 0)
+               const size_t PRINT_MAX = 0)
 {
-    const int n = tree.parent.size();
+    const auto n = tree.parent.size();
     {   Timer _ ("Computing BFS");
         if (use_dfs) {
             tree.preorder = std::move(tree.dfs);
         } else {
-            tree.preorder = (int(tree.bfs.size()) == n) ?
+            tree.preorder = (tree.bfs.size() == n) ?
                 tree.bfs : compute_bfs(tree.parent, tree.root);
         }
         // for testing:
@@ -166,8 +166,8 @@ tree_12(const TreeLasso<float_, int_> &tree,
         const std::vector<int_> &iorderv,
         const size_t max_iter = 20)
 {
-    using namespace disc;
-    const int n = tree.parent.size();
+    using namespace approx;
+    const auto n = tree.parent.size();
     std::vector<double> xv (n);
 
     const float_ mu = float_(0.5);
@@ -184,15 +184,15 @@ tree_12(const TreeLasso<float_, int_> &tree,
         find_minmax(y, n, y_min, y_max);
     }
     float_
-        delta = 0.5 * (y_max - y_min),
-        y_mid = 0.5 * (y_max + y_min);
+        delta = float_(0.5 * (y_max - y_min)),
+        y_mid = float_(0.5 * (y_max + y_min));
 
     std::vector<Node<float_, int_>> nodes;
     {   Timer _ ("Init nodes");
         nodes.resize(n);
-        for (int i = 0; i < n; i++) {
+        for (size_t i = 0; i < n; i++) {
             const int ii = order[i];
-            nodes[i].y = -2.0 * mu * y[ii];
+            nodes[i].y = float_(-2.0 * mu * y[ii]);
             nodes[i].x = y_mid;
             nodes[i].set_parent(ipostord[parent[ii]]);
             nodes[i].set_same(true);
@@ -205,12 +205,12 @@ tree_12(const TreeLasso<float_, int_> &tree,
             const auto changed = tree12_iter(nodes, iorder, delta, lam, mu);
             if (changed)  Timer::log("  %d", changed);
             Timer::log("\n");
-            delta /= 2.0;
+            delta /= float_(2.0);
         }
     }
 
     {   Timer _ ("Extract x");
-        for (int i = 0; i < n; i++) {
+        for (size_t i = 0; i < n; i++) {
             x[order[i]] = nodes[i].x;
         }
     }
