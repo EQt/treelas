@@ -27,6 +27,29 @@ TEST(Nodes, int64)
 }
 
 
+TEST(Nodes, extra)
+{
+    ASSERT_GT(sizeof(std::array<char, 0>), 0);
+}
+
+
+
+TEST(Nodes, empty_class)
+{
+    // https://stackoverflow.com/a/621648
+
+    struct Empty{} e;
+    ASSERT_EQ(sizeof(e), 1);
+}
+
+
+TEST(Nodes, sizeof_node)
+{
+    ASSERT_EQ(sizeof(approx::Node<float, int>), 3*sizeof(float) + sizeof(int));
+}
+
+
+
 // TEST(Nodes, init)
 // {
 //     const std::vector<int>

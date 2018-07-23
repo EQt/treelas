@@ -17,7 +17,7 @@ namespace approx {
 
 
 /** All information of a node together */
-template<typename float_ = float, typename int_ = int, int EXTRA = 0>
+template<typename float_ = float, typename int_ = int>
 struct Node
 {
     float_ y;
@@ -43,7 +43,6 @@ struct Node
 
 private:
     int_   _parent;
-    std::array<char, EXTRA>   _ignore;
 };
 
 
