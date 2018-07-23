@@ -63,18 +63,6 @@ process_tree(const char *fname,
 int
 main(int argc, char *argv[])
 {
-    #if TEST_NODE
-    {
-        printf("Testing same/parent\n");
-        Node n;
-        n.set_parent(42);
-        n.set_same(true);
-        printf("%d\n%d\n", n.parent(), int(n.same()));
-        n.set_same(false);
-        printf("%d\n%d\n", n.parent(), int(n.same()));
-    }
-    #endif
-            
     try {
         ArgParser ap ("tree12 [file]\n");
         ap.add_option('i', "max-iter",
