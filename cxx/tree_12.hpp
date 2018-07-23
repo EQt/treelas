@@ -2,6 +2,8 @@
    Approximate the tree solution by iterative refinement.
    Push formulation (each node updates its parent).
  */
+#include <vector>
+
 #include "utils/perm.hpp"
 #include "utils/timer.hpp"
 #include "utils/viostream.hpp"
@@ -49,6 +51,10 @@ private:
     char   _ignore[EXTRA];
 #endif
 };
+
+
+template<typename float_ = float, typename int_ = int>
+using Nodes = std::vector<Node<float_, int_>>;
 
 
 /** Update a node v (according to its parent p) */

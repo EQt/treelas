@@ -120,6 +120,7 @@ if (BUILD_TESTS)
     test/test_vecalloc.cpp
     test/test_ref.cpp
     test/test_unionfind.cpp
+    test/test_tree_12.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
