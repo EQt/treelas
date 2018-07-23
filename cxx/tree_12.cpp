@@ -52,9 +52,9 @@ process_tree(const char *fname,
 
     if (xt.size() == n) {
         double max_diff = 0.0;
-        for (unsigned i = 0; i < n; i++) {
+        for (unsigned i = 0; i < n; i++)
             max_diff = std::max(max_diff, std::abs(x[i] - xt[i]));
-        }
+
         fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_diff);
     }
 }
