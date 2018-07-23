@@ -68,7 +68,8 @@ main(int argc, char *argv[])
         ap.add_option('i', "max-iter",
                       "Number of iterations [default 3]",
                       "INT", "3");
-        ap.add_option('d', "dfs", "Use DFS instead of BFS order");
+        ap.add_option('d', "dfs",     "Use DFS instead of BFS order");
+        ap.add_option('6', "float64", "Calculate in float64_t precision");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No tree file!\n");
@@ -76,14 +77,19 @@ main(int argc, char *argv[])
         }
         const char *fname = argv[1];
         const int max_iter = atoi(ap.get_option("max-iter"));
-        {
-            typedef float float_;
-            typedef int   int_;
+        typedef int   int_;
+        const char *group = "/";
+        printf("max_iter = %d\n", max_iter);
+        if (ap.has_option("float64")) {
             printf("sizeof(struct Node): %d bytes\n",
-                   int(sizeof(approx::Node<float_, int_>)));
-            printf("max_iter = %d\n", max_iter);
-            const char *group = "/";
-            process_tree<float_, int_>(fname, group,
+                   int(sizeof(approx::Node<double, int_>)));
+            process_tree<double, int_>(fname, group,
+                                       max_iter,
+                                       ap.has_option("dfs"));
+        } else {
+            printf("sizeof(struct Node): %d bytes\n",
+                   int(sizeof(approx::Node<float, int_>)));
+            process_tree<float, int_>(fname, group,
                                        max_iter,
                                        ap.has_option("dfs"));
         }
