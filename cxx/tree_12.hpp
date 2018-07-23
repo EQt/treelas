@@ -101,15 +101,11 @@ tree12_iter(Nodes<float_, int_> &nodes,
         v.deriv = v.x - v.y;
     }
 
-    static bool first = n < 20;
-    if (first) Timer::log("\n");
     for (const auto &v : nodes) {
         auto &p = nodes[v.parent()];
-        if (first)  Timer::log("nodes.deriv = %f\n", p.deriv);
         if (v.same())
             p.deriv += clip(v.deriv, -lam, +lam);
     }
-    first = false;
 
     auto &r = nodes[preorder[0]];
     r.x += r.deriv < 0 ? c : -c;           // optimize root node
