@@ -98,7 +98,7 @@ tree12_iter(std::vector<Node<float_, int_>> &nodes,
 
     float_ c = float_(0.5 * delta);
     for (auto &v : nodes) {
-        v.deriv = v.x + v.y;
+        v.deriv = v.x - v.y;
     }
 
     static bool first = n < 20;
@@ -189,7 +189,7 @@ tree_12(const TreeLasso<float_, int_> &tree,
         nodes.resize(n);
         for (size_t i = 0; i < n; i++) {
             const int ii = order[i];
-            nodes[i].y = -y[ii];
+            nodes[i].y = y[ii];
             nodes[i].x = y_mid;
             nodes[i].set_parent(ipostord[parent[ii]], true);
         }
