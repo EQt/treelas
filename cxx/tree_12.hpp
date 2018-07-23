@@ -88,7 +88,7 @@ update_x(Node<float_, int_> &v,
 /** Perform an iteration */
 template<typename float_ = float, typename int_ = int>
 int
-tree12_iter(std::vector<Node<float_, int_>> &nodes,
+tree12_iter(Nodes<float_, int_> &nodes,
             const int_ *preorder,
             const float_ delta,
             const float_ lam)
