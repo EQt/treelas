@@ -277,6 +277,7 @@ PYBIND11_MODULE(_treelas, m)
              bool verbose,
              py::array_f64 x) -> py::array_f64
           {
+              TimerQuiet _ (verbose);
               const auto n = check_1d_len(parent, "parent");
               check_len(n, y, "y");
               if (is_empty(x))
