@@ -39,6 +39,8 @@ process_tree(const char *fname,
         HDF5 io (fname, "r+");
         if (io.has("xt")) {
             xt = io.read<double>("xt");
+        } else if (io.has("x++")) {
+            xt = io.read<double>("x++");
         }
     }
     if (n <= PRINT_MAX) {
