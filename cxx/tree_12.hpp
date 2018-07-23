@@ -3,6 +3,7 @@
    Push formulation (each node updates its parent).
  */
 #include <vector>
+#include <array>
 
 #include "utils/perm.hpp"
 #include "utils/timer.hpp"
@@ -14,13 +15,9 @@
 
 namespace approx {
 
-#ifndef EXTRA
-#  define EXTRA 0       // number of extra bytes in Node (for padding)
-#endif
-
 
 /** All information of a node together */
-template<typename float_ = float, typename int_ = int>
+template<typename float_ = float, typename int_ = int, int EXTRA = 0>
 struct Node
 {
     float_ y;
@@ -39,17 +36,14 @@ struct Node
 
     inline int_ parent() const { return _parent & (~one); }
 
-    inline void set_parent(int_ p) {
+    inline void set_parent(const int_ p, const bool s = true) {
         if (p & one) throw std::runtime_error("too big");
-        _parent = p;
+        _parent = s ? (p | one) : p;
     }
 
 private:
     int_   _parent;
-
-#if EXTRA > 0
-    char   _ignore[EXTRA];
-#endif
+    std::array<char, EXTRA>   _ignore;
 };
 
 
