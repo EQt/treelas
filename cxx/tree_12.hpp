@@ -91,15 +91,14 @@ int
 tree12_iter(std::vector<Node<float_, int_>> &nodes,
             const int_ *preorder,
             const float_ delta,
-            const float_ lam,
-            const float_ mu = float_(1.0))
+            const float_ lam)
 {
     int changed = 0;
     const auto n = nodes.size();
 
     float_ c = float_(0.5 * delta);
     for (auto &v : nodes) {
-        v.deriv = mu * v.x + v.y;
+        v.deriv = v.x + v.y;
     }
 
     static bool first = n < 20;
@@ -164,8 +163,7 @@ std::vector<double>
 tree_12(const TreeLasso<float_, int_> &tree,
         const std::vector<int_> &ipostordv,
         const std::vector<int_> &iorderv,
-        const size_t max_iter = 20,
-        const float_ mu = float_(1.0))
+        const size_t max_iter = 20)
 {
     const auto n = tree.parent.size();
     std::vector<double> xv (n);
@@ -191,7 +189,7 @@ tree_12(const TreeLasso<float_, int_> &tree,
         nodes.resize(n);
         for (size_t i = 0; i < n; i++) {
             const int ii = order[i];
-            nodes[i].y = -mu * y[ii];
+            nodes[i].y = -y[ii];
             nodes[i].x = y_mid;
             nodes[i].set_parent(ipostord[parent[ii]], true);
         }
@@ -200,7 +198,7 @@ tree_12(const TreeLasso<float_, int_> &tree,
     {   Timer _ ("Iterations:\n");
         for (size_t it = 0; it < max_iter; it++) {
             Timer::log("%2ld ...", it+1);
-            const auto changed = tree12_iter(nodes, iorder, delta, lam, mu);
+            const auto changed = tree12_iter(nodes, iorder, delta, lam);
             if (changed)  Timer::log("  %d", changed);
             Timer::log("\n");
             delta /= float_(2.0);
