@@ -178,12 +178,12 @@ tree_12(const TreeLasso<float_, int_> &tree,
     {   Timer _ ("Iterations:\n");
         for (size_t it = 0; it < max_iter; it++) {
             delta *= float_(0.5);
-            if (n <= 20) {
-                printf("delta=%.4f;   x: ", delta);
-                for (size_t i = 0; i < n; i++)
-                    x[order[i]] = nodes[i].x;
-                print(xv, 3, stdout);
-            }
+            // if (n <= 20) {
+            //     printf("delta=%.4f;   x: ", delta);
+            //     for (size_t i = 0; i < n; i++)
+            //         x[order[i]] = nodes[i].x;
+            //     print(xv, 3, stdout);
+            // }
             Timer::log("%2ld ...", it+1);
             const auto changed = tree12_iter(nodes, iorder, delta, lam);
             if (changed)
