@@ -93,13 +93,11 @@ tree12_iter(Nodes<float_, int_> &nodes,
             const float_ delta,
             const float_ lam)
 {
-    int changed = 0;
     const auto n = nodes.size();
+    int changed = 0;
 
-    float_ c = float_(0.5 * delta);
-    for (auto &v : nodes) {
+    for (auto &v : nodes)
         v.deriv = v.x - v.y;
-    }
 
     for (const auto &v : nodes) {
         auto &p = nodes[v.parent()];
@@ -108,12 +106,12 @@ tree12_iter(Nodes<float_, int_> &nodes,
     }
 
     auto &r = nodes[preorder[0]];
-    r.x += r.deriv < 0 ? c : -c;           // optimize root node
+    r.x += r.deriv < 0 ? delta : -delta;    // optimize root node
 
     for (size_t i = 1; i < n; i++) {       // backtracing
         auto &v = nodes[preorder[i]];
         auto &p = nodes[v.parent()];
-        update_x(v, p, lam, c, changed);
+        update_x(v, p, lam, delta, changed);
     }
     return changed;
 }
@@ -177,7 +175,7 @@ tree_12(const TreeLasso<float_, int_> &tree,
         find_minmax(y, n, y_min, y_max);
     }
     float_
-        delta = float_(0.5 * (y_max - y_min)),
+        delta = float_(0.5*0.5 * (y_max - y_min)),
         y_mid = float_(0.5 * (y_max + y_min));
 
     std::vector<Node<float_, int_>> nodes;
