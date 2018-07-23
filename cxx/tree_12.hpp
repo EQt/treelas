@@ -161,7 +161,7 @@ tree_12(const TreeLasso<float_, int_> &tree,
         find_minmax(y, n, y_min, y_max);
     }
     float_
-        delta = float_(0.5*0.5 * (y_max - y_min)),
+        delta = float_(0.5 * (y_max - y_min)),
         y_mid = float_(0.5 * (y_max + y_min));
 
     std::vector<Node<float_, int_>> nodes;
@@ -177,18 +177,18 @@ tree_12(const TreeLasso<float_, int_> &tree,
 
     {   Timer _ ("Iterations:\n");
         for (size_t it = 0; it < max_iter; it++) {
+            delta *= float_(0.5);
             Timer::log("%2ld ...", it+1);
             const auto changed = tree12_iter(nodes, iorder, delta, lam);
-            if (changed)  Timer::log("  %d", changed);
+            if (changed)
+                Timer::log("  %d", changed);
             Timer::log("\n");
-            delta /= float_(2.0);
         }
     }
 
     {   Timer _ ("Extract x");
-        for (size_t i = 0; i < n; i++) {
+        for (size_t i = 0; i < n; i++)
             x[order[i]] = nodes[i].x;
-        }
     }
 
     return xv;
