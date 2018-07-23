@@ -191,10 +191,9 @@ tree_12(const TreeLasso<float_, int_> &tree,
         nodes.resize(n);
         for (size_t i = 0; i < n; i++) {
             const int ii = order[i];
-            nodes[i].y = float_(mu * y[ii]);
+            nodes[i].y = -mu * y[ii];
             nodes[i].x = y_mid;
-            nodes[i].set_parent(ipostord[parent[ii]]);
-            nodes[i].set_same(true);
+            nodes[i].set_parent(ipostord[parent[ii]], true);
         }
     }
 
