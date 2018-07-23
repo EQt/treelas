@@ -50,41 +50,6 @@ template<typename float_ = float, typename int_ = int>
 using Nodes = std::vector<Node<float_, int_>>;
 
 
-/** Update a node v (according to its parent p) */
-template<typename float_ = float, typename int_ = int>
-inline void
-update_x(Node<float_, int_> &v,
-         Node<float_, int_> &p,
-         const float_ lam,
-         const float_ c,
-         int &changed)
-{
-    if (v.same()) {                     // same region, so far?
-        if (v.deriv > lam) {
-            v.x -= c;
-        } else if (v.deriv < -lam) {
-            v.x += c;
-        } else {
-            v.x = p.x;
-        }
-
-        if (v.x != p.x) {               // update whether still same
-            v.set_same(false);
-            changed++;
-            if (v.x < p.x) {
-                p.y += lam;
-                v.y -= lam;
-            } else {
-                p.y -= lam;
-                v.y += lam;
-            }
-        }
-    } else {
-        v.x += v.deriv < 0 ? c : -c;
-    }
-}
-
-
 /** Perform an iteration */
 template<typename float_ = float, typename int_ = int>
 int
@@ -106,12 +71,33 @@ tree12_iter(Nodes<float_, int_> &nodes,
     }
 
     auto &r = nodes[preorder[0]];
-    r.x += r.deriv < 0 ? delta : -delta;    // optimize root node
+    r.x += r.deriv < 0 ? delta : -delta;   // optimize root node
 
     for (size_t i = 1; i < n; i++) {       // backtracing
         auto &v = nodes[preorder[i]];
         auto &p = nodes[v.parent()];
-        update_x(v, p, lam, delta, changed);
+        if (v.same()) {                    // same region, so far?
+            if (v.deriv > lam) {
+                v.x -= delta;
+            } else if (v.deriv < -lam) {
+                v.x += delta;
+            } else {
+                v.x = p.x;
+            }
+
+            if (v.x != p.x) {               // update whether still same
+                v.set_same(false);
+                changed++;
+                if (v.x < p.x) {
+                    p.y += lam;
+                    v.y -= lam;
+                } else {
+                    p.y -= lam;
+                    v.y += lam;
+                }
+            }
+        } else
+            v.x += v.deriv < 0 ? +delta : -delta;
     }
     return changed;
 }
