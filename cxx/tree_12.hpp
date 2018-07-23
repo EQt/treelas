@@ -92,17 +92,18 @@ tree12_iter(std::vector<Node<float_, int_>> &nodes,
             const int_ *preorder,
             const float_ delta,
             const float_ lam,
-            const float_ mu = float_(0.5))
+            const float_ mu = float_(1.0))
 {
     int changed = 0;
     const auto n = nodes.size();
 
     float_ c = float_(0.5 * delta);
     for (auto &v : nodes) {
-        v.deriv = float_(2.0) * mu * v.x + v.y;
+        v.deriv = mu * v.x + v.y;
     }
 
     static bool first = n < 20;
+    if (first) Timer::log("\n");
     for (const auto &v : nodes) {
         auto &p = nodes[v.parent()];
         if (first)  Timer::log("nodes.deriv = %f\n", p.deriv);
@@ -190,7 +191,7 @@ tree_12(const TreeLasso<float_, int_> &tree,
         nodes.resize(n);
         for (size_t i = 0; i < n; i++) {
             const int ii = order[i];
-            nodes[i].y = float_(-2.0 * mu * y[ii]);
+            nodes[i].y = float_(mu * y[ii]);
             nodes[i].x = y_mid;
             nodes[i].set_parent(ipostord[parent[ii]]);
             nodes[i].set_same(true);
