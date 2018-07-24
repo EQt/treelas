@@ -215,14 +215,31 @@ tree_12(const size_t n,
         const float_ lam,
         const int *parent,
         double *x,
-        const size_t max_iter = 20)
+        const size_t max_iter = 20,
+        int root = -1)
 {
-    const int root = find_root(n, parent);
+
+    if (root < 0) {
+        Timer _ ("find root");
+        root = find_root(n, parent);
+    }
+
     Timer tim ("children index");
     ChildrenIndex childs (parent, n, root);
     tim.stop();
 
-    PostOrder ord (n, parent);
+    {   Timer _ ("allocate orders");
+        postord.reserve(n);
+        iorder.reserve(n);
+        ipostord.reserve(n);
+        stack.reserve(2*n);
+    }
+    {   Timer _ ("postorder");
+        post_order(root, childs, stack, postord.data());
+    }
+    {   Timer _ ("iorder");
+        iperm(n, iorder.data(), postord.data());
+    }
 }
 
 
