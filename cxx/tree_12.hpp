@@ -13,6 +13,8 @@
 #include "bfs.hpp"
 #include "postorder.hpp"
 #include "tree.hpp"
+#include "root.hpp"
+
 
 namespace approx {
 
@@ -223,6 +225,9 @@ tree_12(const size_t n,
         Timer _ ("find root");
         root = find_root(n, parent);
     }
+
+    std::vector<int> postord, iorder, ipostord;
+    stack<int> stack;
 
     Timer tim ("children index");
     ChildrenIndex childs (parent, n, root);
