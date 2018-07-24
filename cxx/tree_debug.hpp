@@ -25,10 +25,12 @@
  general lower_bound for x.
 */
 #pragma once
-#include "typedefs.hpp"
-#include <cstring>      // memcpy
 #define DEBUG 0
 
+#include <cstring>      // memcpy
+
+#include "event.hpp"
+#include "queue.hpp"
 
 #ifdef DEBUG
 #  define CLIP_START()  const Queue pq0 (pq); const double slope0 = slope;

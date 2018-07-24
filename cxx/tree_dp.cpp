@@ -7,16 +7,13 @@
 
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
+#include "utils/finite.hpp"
 
-#include "dp_tree.hpp"
-#include "typedefs.hpp"
-#include "dp_debug.hpp"
-#include "finite.hpp"
-#include "clip.hpp"
+#include "tree_debug.hpp"
 #include "stack.hpp"
+#include "clip.hpp"
 
-#include "clip2.hpp"
-#include "queues.cpp"
+#include "queue.cpp"
 
 
 template<typename E = Event2>

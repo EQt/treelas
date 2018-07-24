@@ -34,7 +34,7 @@ add_object(line_c     cxx/line_c.cpp)
 add_object(line_c2    cxx/line_c2.cpp)
 add_object(line_c3    cxx/line_c3.cpp)
 add_object(postorder  cxx/postorder.cpp)
-
+add_object(tree_dp    cxx/tree_dp.cpp)
 
 # PYTHON
 set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11"
@@ -91,6 +91,15 @@ if (HDF5_FOUND)
   )
   target_include_directories(tree_12 PUBLIC ${HDF5_INCLUDE_DIR})
   target_link_libraries(tree_12 ${HDF5_LIBRARIES})
+
+  add_executable(treesolve
+    $<TARGET_OBJECTS:tree_dp>
+    $<TARGET_OBJECTS:postorder>
+    $<TARGET_OBJECTS:argparser>
+    cxx/treesolve.cpp
+  )
+  target_include_directories(treesolve PUBLIC ${HDF5_INCLUDE_DIR})
+  target_link_libraries(treesolve ${HDF5_LIBRARIES})
 endif()
 
 
