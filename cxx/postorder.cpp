@@ -1,19 +1,13 @@
 #include "stack.hpp"
 #include "children.hpp"
 
-
-int*
-post_order(const int n,
-           const int *parent,
-           const int root,
+void
+post_order(const int root,
+           const ChildrenIndex &childs,
+           stack<int> &stack,
            int *postord)
 {
-    if (postord == nullptr) {
-        postord = new int[n];
-    }
-    ChildrenIndex childs (parent, n, root);
-    stack<int> stack;
-    stack.reserve(2*n);
+    stack.reserve(2*childs.size());
     stack.push_back(root);
     int t = 0, pos = 0;
     while (!stack.empty()) {
@@ -29,5 +23,20 @@ post_order(const int n,
             postord[pos++] = -v-1;
         }
     }
+}
+
+
+int*
+post_order(const int n,
+           const int *parent,
+           const int root,
+           int *postord)
+{
+    if (postord == nullptr) {
+        postord = new int[n];
+    }
+    ChildrenIndex childs (parent, n, root);
+    stack<int> stack;
+    post_order(root, childs, stack, postord);
     return postord;
 }
