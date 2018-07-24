@@ -40,6 +40,12 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
         parent = random_spanning_tree(index, seed);
     }
 
+    {   Timer _ ("store parent");
+        HDF5 io (fname, "r+");
+        io.group(group);
+        io.owrite("parent", parent);
+    }
+
     std::cout << "m = " << m << std::endl
               << "n = " << n << std::endl;
 
@@ -53,7 +59,8 @@ main(int argc, char *argv[])
         ArgParser ap (
             "traverse [file]\n"
             "\n"
-            "TODO: Documentation"
+            "Read in a graph (edge list) and compute a random spanning tree.\n"
+            "Store this tree (parent)."
         );
         ap.add_option('s', "srand",   "Random seed [default 2018]", "INT", "2018");
         ap.add_option('g', "group",   "HDF5 group [default \"/\"]", "STR", "/");
