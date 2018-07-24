@@ -36,6 +36,16 @@ iperm(const std::vector<int_> &p)
 }
 
 
+template<typename int_ = int>
+inline void
+reverse(const size_t n, int_ *r, const int_ *a)
+{
+    for (size_t i = 0; i < n; i++) {
+        r[i] = a[n-i-1];
+    }
+}
+
+
 /** Reverse a vector, i.e. reverse({1,2,3}) == {3,2,1} */
 template<typename int_ = int>
 inline std::vector<int_>
@@ -44,11 +54,10 @@ reverse(const std::vector<int_> &a)
     static_assert(std::is_integral<int_>::value, "expected int type");
     const size_t n = a.size();
     std::vector<int_> r (n);
-    for (size_t i = 0; i < n; i++) {
-        r[i] = a[n-i-1];
-    }
+    reverse(n, r.data(), a.data());
     return r;
 }
+
 
 
 /** Return permutation of indexes that make `a` sorted.
