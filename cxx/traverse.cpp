@@ -30,7 +30,7 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     }
 
     const size_t m = head.size();
-    Timer tim ("compute edge index");
+    Timer tim ("compute edgxe index");
     BiAdjacent index (head, tail);
     tim.stop();
     const size_t n = index.num_nodes();

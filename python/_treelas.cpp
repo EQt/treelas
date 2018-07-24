@@ -15,6 +15,7 @@
 #include "../cxx/line_c2.hpp"
 #include "../cxx/line_c3.hpp"
 #include "../cxx/prufer.hpp"
+#include "../cxx/root.hpp"
 #include "../cxx/tree_dp.hpp"
 
 #include "py_np.hpp"
@@ -271,6 +272,17 @@ PYBIND11_MODULE(_treelas, m)
           )pbdoc",
           py::arg("prufer"),
           py::arg("parent") = py::array_i32());
+
+    m.def("find_root",
+          [](const py::array_i32 &parent) -> int32_t
+          {
+              const size_t n = check_1d_len(parent, "parent");
+              return find_root(n, parent.data());
+          },
+          R"pbdoc(
+            Find smallest i such that parent[i] == i
+          )pbdoc",
+          py::arg("parent"));
 
     m.def("tree_12",
           [](const py::array_i32 &parent,

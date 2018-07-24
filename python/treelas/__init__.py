@@ -17,6 +17,7 @@ from ._treelas import (
     line_lasc,
     line_las2,
     line_las3,
+    find_root,
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,

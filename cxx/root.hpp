@@ -6,7 +6,7 @@ template <typename int_ = int>
 inline int_
 find_root(const size_t n, const int_ *parent)
 {
-    for (size_t i = 0; i < n; i++) {
+    for (int_ i = 0; i < int_(n); i++) {
         if (parent[i] == i)
             return int_(i);
     }
