@@ -51,7 +51,7 @@ rule to_hdf5:
         cols = list(range(ncols))
         df = read_csv(input[0], sep=' ', header=None, skiprows=15, names=cols,
                       engine='c', dtype={i: float for i in range(ncols)})
-        df[df.isna()] = -1
+        df[np.isnan(df)] = -1
         df = df.astype(np.int32)
 
         assert len(df) == n
