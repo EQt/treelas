@@ -16,6 +16,7 @@
 #include "../cxx/line_c3.hpp"
 #include "../cxx/prufer.hpp"
 #include "../cxx/root.hpp"
+#include "../cxx/tree_12.hpp"
 #include "../cxx/tree_dp.hpp"
 
 #include "py_np.hpp"
@@ -298,7 +299,7 @@ PYBIND11_MODULE(_treelas, m)
               if (is_empty(x))
                   x = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, x, "x");
-              
+              approx::tree_12(n, y.data(), lam, parent.data(), x.mutable_data(), max_iter);
               return x;
           },
           R"pbdoc(

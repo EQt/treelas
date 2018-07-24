@@ -208,6 +208,19 @@ tree_12(const size_t n,
 
 
 template<typename float_, typename int_>
+void
+tree_12(const size_t n,
+        const float_ *y,
+        const float_ lam,
+        const int_ *parent,
+        double *x,
+        const size_t max_iter = 20)
+{
+}
+
+
+
+template<typename float_, typename int_>
 std::vector<double>
 tree_12(const TreeLasso<float_, int_> &tree,
         const std::vector<int_> &ipostordv,
