@@ -5,7 +5,7 @@
 
 template <bool merge_sort>
 const double*
-dp_tree(
+tree_dp(
     const size_t n,
     double *x,
     const double *y,
@@ -17,7 +17,7 @@ dp_tree(
 
 extern template
 const double*
-dp_tree<true>(
+tree_dp<true>(
     const size_t n,
     double *x,
     const double *y,
@@ -29,7 +29,7 @@ dp_tree<true>(
 
 extern template
 const double*
-dp_tree<false>(
+tree_dp<false>(
     const size_t n,
     double *x,
     const double *y,
@@ -40,7 +40,7 @@ dp_tree<false>(
 
 
 const double*
-dp_tree_weighted(
+tree_dp_weighted(
     const size_t n,
     double *x,
     const double *y,

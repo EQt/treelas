@@ -320,23 +320,24 @@ PYBIND11_MODULE(_treelas, m)
                const bool verbose,
                const bool merge_sort) -> py::array_f64
             {
+                const double mu = 1.0;
                 const auto n = check_1d_len(y, "y");
                 check_len(n, parent, "parent");
                 if (is_empty(x))
                     x = py::array_t<double>({n}, {sizeof(double)});
                 if (merge_sort)
-                    dp_tree<false>(n,
-                                   check_data_mut(x, "x"),
-                                   check_data<double>(y, "y"),
-                                   check_data<int>(parent, "parent"),
+                    tree_dp<false>(n,
+                                   x.mutable_data(),
+                                   y.data(),
+                                   parent.data(),
                                    lam,
                                    mu,
                                    root);
                 else
-                    dp_tree<false>(n,
-                                   check_data_mut(x, "x"),
-                                   check_data<double>(y, "y"),
-                                   check_data<int>(parent, "parent"),
+                    tree_dp<false>(n,
+                                   x.mutable_data(),
+                                   y.data(),
+                                   parent.data(),
                                    lam,
                                    mu,
                                    root);

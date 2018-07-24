@@ -40,7 +40,7 @@ struct DPTreeStatus
 
 template <bool merge_sort, typename E>
 inline const double*
-_dp_tree(
+_tree_dp(
     const size_t n,
     double *x,
     const double *y,
@@ -98,7 +98,7 @@ _dp_tree(
  */
 template <bool merge_sort>
 const double*
-dp_tree(
+tree_dp(
     const size_t n,
     double *x,
     const double *y,
@@ -112,12 +112,12 @@ dp_tree(
         x = new double[n];
     DPTreeStatus<Event2> s(n);
     timer.stop();
-    return _dp_tree<merge_sort>(n, x, y, parent, lam, mu, root, s);
+    return _tree_dp<merge_sort>(n, x, y, parent, lam, mu, root, s);
 }
 
 
 const double*
-dp_tree_weighted(
+tree_dp_weighted(
     const size_t n,
     double *x,
     const double *y,
@@ -238,7 +238,7 @@ dp_tree_weighted(
 // template instantiation
 template
 const double*
-dp_tree<true>(
+tree_dp<true>(
     const size_t n,
     double *x,
     const double *y,
@@ -250,7 +250,7 @@ dp_tree<true>(
 
 template
 const double*
-dp_tree<false>(
+tree_dp<false>(
     const size_t n,
     double *x,
     const double *y,

@@ -55,12 +55,12 @@ process_tree(const char *fname,
                 x.resize(y.size());
         }
         for (int r = 0; r < repeat; r++) {
-            Timer _ ("dp_tree:\n");
+            Timer _ ("tree_dp:\n");
             if (merge_sort)
-                dp_tree<true>(y.size(), x.data(), y.data(), parent.data(),
+                tree_dp<true>(y.size(), x.data(), y.data(), parent.data(),
                               lam, mu, root);
             else
-                dp_tree<false>(y.size(), x.data(), y.data(), parent.data(),
+                tree_dp<false>(y.size(), x.data(), y.data(), parent.data(),
                                lam, mu, root);
             Timer::stopit();
         }
