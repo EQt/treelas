@@ -20,6 +20,16 @@ concat(const std::vector<int_> &a, const std::vector<int_> &idx)
 }
 
 
+template<typename int_ = int>
+inline void
+iperm(const size_t n, int_ *q, const int_ *p)
+{
+    for (int i = 0; i < int(n); i++) {
+        q[p[i]] = i;
+    }
+}
+
+
 /** Return inverse permutation `invp`, it is `invp[p[i]] == i` */
 template<typename int_ = int>
 inline std::vector<int_>
@@ -29,9 +39,7 @@ iperm(const std::vector<int_> &p)
 
     const auto n = p.size();
     std::vector<int_> q (n);
-    for (int i = 0; i < int(n); i++) {
-        q[p[i]] = i;
-    }
+    iperm(n, q.data(), p.data());
     return q;
 }
 
