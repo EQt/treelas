@@ -5,11 +5,11 @@
 */
 #include <cstdint>
 #include <iostream>
-#include <locale>
 
 #include "utils/argparser.hpp"
 #include "utils/hdf5.hpp"
 #include "utils/timer.hpp"
+#include "utils/thousand.hpp"
 
 #include "biadjacent.hpp"
 // #include "kruskal_mst.hpp"
@@ -46,14 +46,6 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
 }
 
 
-
-struct space_out : std::numpunct<char>
-{
-    char do_thousands_sep()   const { return '_'; }  // separate with spaces
-    std::string do_grouping() const { return "\3"; } // groups of 3 digit
-};
-
-
 int
 main(int argc, char *argv[])
 {
@@ -72,8 +64,10 @@ main(int argc, char *argv[])
         }
         const int seed = atoi(ap.get_option("srand"));
         const char *fname = argv[1];
-        std::cout.imbue(std::locale(std::cout.getloc(), new space_out));
+        set_thousand_sep(std::cout, '\'');
         traverse(fname, ap.get_option("group"), seed);
+    } catch (std::runtime_error &e) {
+        fprintf(stderr, "EXCEPTION: %s\n", e.what());
     } catch (const char *msg) {
         fprintf(stderr, "EXCEPTION: %s\n", msg);
     }

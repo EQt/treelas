@@ -9,10 +9,12 @@
 #include <vector>
 #include <algorithm>    // for std::min_element
 #include <cassert>
+#include <clocale>
 
 #include "utils/hdf5.hpp"
 #include "utils/timer.hpp"
 #include "utils/argparser.hpp"
+#include "utils/thousand.hpp"
 
 #include "tree_io.hpp"
 #include "tree_12.hpp"
@@ -29,7 +31,7 @@ process_tree(const char *fname,
     using namespace approx;
     auto tree = load_treelasso<float_, int_>(fname, group);
     const auto n = tree.parent.size();
-
+    std::cout << "n = " << n << std::endl;
     std::vector<int_> ipostord, iorder;
     compute_orders(tree, ipostord, iorder, use_dfs, PRINT_MAX);
     const auto x = tree_12(tree, ipostord, iorder, max_iter);
@@ -66,6 +68,8 @@ int
 main(int argc, char *argv[])
 {
     try {
+        set_thousand_sep(std::cout, '\'');
+
         ArgParser ap ("tree12 [file]\n");
         ap.add_option('i', "max-iter",
                       "Number of iterations [default 3]",
