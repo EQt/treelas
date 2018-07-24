@@ -59,6 +59,8 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:line_c>
     $<TARGET_OBJECTS:line_c2>
     $<TARGET_OBJECTS:line_c3>
+    $<TARGET_OBJECTS:tree_dp>
+    $<TARGET_OBJECTS:postorder>
   )
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
