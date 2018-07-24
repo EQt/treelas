@@ -15,9 +15,9 @@ template<typename T = int>
 class stack
 {
 public:
-    int n = 0;
+    size_t n = 0;
     T *e = nullptr;
-    int pos = -1;
+    long int pos = -1;
 
 public:
     inline static bool debug_mode() {
@@ -47,7 +47,7 @@ public:
         pos = -1;
     }
 
-    void reserve(int n) {
+    void reserve(size_t n) {
         if (n <= 0)
             throw std::invalid_argument(std::string("stack::reserve(") +
                                         std::to_string(n) + ")");
