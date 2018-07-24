@@ -312,17 +312,51 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("verbose") = false,
           py::arg("x") = py::none());
 
+    py::def("tree_dp",
+            [](const py::array_f64 &y,
+               const py::array_i32 &parent,
+               const int32_t root,
+               py::array_f64 &x,
+               const bool verbose,
+               const bool merge_sort) -> py::array_f64
+            {
+                const auto n = check_1d_len(y, "y");
+                check_len(n, parent, "parent");
+                if (is_empty(x))
+                    x = py::array_t<double>({n}, {sizeof(double)});
+                if (merge_sort)
+                    dp_tree<false>(n,
+                                   check_data_mut(x, "x"),
+                                   check_data<double>(y, "y"),
+                                   check_data<int>(parent, "parent"),
+                                   lam,
+                                   mu,
+                                   root);
+                else
+                    dp_tree<false>(n,
+                                   check_data_mut(x, "x"),
+                                   check_data<double>(y, "y"),
+                                   check_data<int>(parent, "parent"),
+                                   lam,
+                                   mu,
+                                   root);
+                    
+                return x;
+            }
+            R"pbdoc(
+              Dynamic programming algorithm for trees (uniform weighting)
+            )pbdoc",
+            py::arg("y"),
+            py::arg("parent"),
+            py::arg("lam"),
+            py::arg("root") = 0,
+            py::arg("x") = py::none(),
+            py::arg("verbose") = false,
+            py::arg("merge_sort") = false,
+            );
+
+
     /*
-    py::def("dp_tree", np_dp_tree, (
-                arg("y"),
-                arg("parent"),
-                arg("lam"),
-                arg("mu") = 1.0,
-                arg("root") = 0,
-                arg("x") = empty_array<double>(),
-                arg("verbose") = false,
-                arg("merge_sort") = false),
-            "Dynamic programming algorithm for trees (uniform weighting)");
     py::def("dp_tree_w", np_dp_tree_w, (
                 arg("y"),
                 arg("parent"),
