@@ -4,7 +4,6 @@
  */
 #include <cmath>        // for std::abs
 #include <vector>
-#include <algorithm>    // for std::min_element
 #include <iostream>
 #include <iomanip>
 
