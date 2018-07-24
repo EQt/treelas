@@ -13,13 +13,13 @@ struct ChildrenIndex : public AdjacencyIndex<int>
     ChildrenIndex() {}
 
 
-    ChildrenIndex(const int n) {
+    ChildrenIndex(const size_t n) {
         index.reserve(n+1);
         value.reserve(n);
     }
 
 
-    ChildrenIndex(const int *parent, const int n, const int root = 0) {
+    ChildrenIndex(const int *parent, const size_t n, const int root = 0) {
         reset(parent, n, root);
     }
 
@@ -28,7 +28,7 @@ struct ChildrenIndex : public AdjacencyIndex<int>
         ChildrenIndex(parent.data(), (int)parent.size(), root) {}
 
     
-    void reset(const int *parent, const int n, const int root = 0) {
+    void reset(const int *parent, const size_t n, const int root = 0) {
         if (parent[root] != root)
             throw std::invalid_argument(std::string("\n" __FILE__) + ":" +
                                         std::to_string(__LINE__) +
@@ -39,7 +39,7 @@ struct ChildrenIndex : public AdjacencyIndex<int>
 
         value.resize(n);
         index.assign(n+1, 0);       // compute number of children
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < int(n); i++) {
             index[parent[i]]++;
         }
         index[root]--;              // root isn't child of itself
@@ -47,7 +47,7 @@ struct ChildrenIndex : public AdjacencyIndex<int>
             int acc = 0,
                 deg_i = 0,
                 deg_ii = index[0];
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < int(n); i++) {
                 index[i] = acc;
                 acc += deg_i;
                 deg_i = deg_ii;
@@ -55,12 +55,12 @@ struct ChildrenIndex : public AdjacencyIndex<int>
             }
             index[n] = acc;
         }
-        for (int v = 0; v < n; v++) {
+        for (int v = 0; v < int(n); v++) {
             const auto p = parent[v];
             if (v == p) continue;   // skip root
             value[index[p+1]++] = v;
         }
-        if (index[n] != n-1)
+        if (index[n] != int(n-1))
             throw std::runtime_error(std::string("\n" __FILE__) + ":" +
                                          std::to_string(__LINE__) +
                                          ": Severe Bug:\n  index[n] = " +

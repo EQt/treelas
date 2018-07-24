@@ -19,7 +19,7 @@
 template<typename E = Event2>
 struct DPTreeStatus
 {
-    DPTreeStatus(const int n) :
+    DPTreeStatus(const size_t n) :
         childs(n),
         elements_(2*n),
         pq(n),
@@ -81,7 +81,7 @@ _dp_tree(
     {   Timer _ ("backtrace");
         const auto r = root;
         x[r] = clip_front(elements, pq[r], mu, -mu*y[r] -sig[r], 0.0);
-        for (int j = n-2; j >= 0; j--) {
+        for (long int j = (long int)(n-2); j >= 0; j--) {
             const auto v = proc_order[j];
             x[v] = clip(x[parent[v]], lb[v], ub[v]);
         }
@@ -224,7 +224,7 @@ dp_tree_weighted(
             throw std::runtime_error(std::string("x[r] = ") +
                                      std::to_string(x[r]));
         }
-        for (int j = n-2; j >= 0; j--) {
+        for (long int j = (long int)(n-2); j >= 0; j--) {
             const auto v = proc_order[j];
             x[v] = clip(x[parent[v]], lb[v], ub[v]);
         }
