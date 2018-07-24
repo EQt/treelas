@@ -50,5 +50,5 @@ public:
 
     const int* end() const { return postord + (include_root ? n : n-1); }
     
-    int size() const { return end() - begin(); }
+    size_t size() const { return end() - begin(); }
 };
