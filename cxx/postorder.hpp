@@ -1,4 +1,7 @@
 #pragma once
+#include "stack.hpp"
+#include "children.hpp"
+
 
 /**
    Compute a post_order; more specific the DFS finish time.
@@ -10,6 +13,12 @@ post_order(const int n,
            const int *parent,
            const int root = 0,
            int *postord = nullptr);
+
+void
+post_order(const int root,
+           const ChildrenIndex &childs,
+           stack<int> &stack,
+           int *postord);
 
 /**
    Compute a post_order (if called with nullptr).

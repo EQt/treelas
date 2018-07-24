@@ -11,6 +11,7 @@
 #include "utils/minmax.hpp"
 
 #include "bfs.hpp"
+#include "postorder.hpp"
 #include "tree.hpp"
 
 namespace approx {
@@ -207,15 +208,21 @@ tree_12(const size_t n,
 }
 
 
-template<typename float_, typename int_>
+template<typename float_>
 void
 tree_12(const size_t n,
         const float_ *y,
         const float_ lam,
-        const int_ *parent,
+        const int *parent,
         double *x,
         const size_t max_iter = 20)
 {
+    const int root = find_root(n, parent);
+    Timer tim ("children index");
+    ChildrenIndex childs (parent, n, root);
+    tim.stop();
+
+    PostOrder ord (n, parent);
 }
 
 
