@@ -18,6 +18,8 @@ from ._treelas import (
     line_las2,
     line_las3,
     find_root,
+    tree_dp,
+    tree_12,
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,
