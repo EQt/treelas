@@ -58,4 +58,6 @@ struct AdjacencyIndex
             *stop  = value.data() + index[i+1];
         return {start, stop};
     }
+
+    size_t size() const { return index.size() -1; }
 };
