@@ -286,7 +286,7 @@ PYBIND11_MODULE(_treelas, m)
               if (is_empty(x))
                   x = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, x, "x");
-              // TODO
+              
               return x;
           },
           R"pbdoc(

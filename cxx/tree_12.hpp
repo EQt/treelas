@@ -156,6 +156,24 @@ tree_12(const TreeLasso<float_, int_> &tree,
     const int_ *iorder = iorderv.data();
     double *x = xv.data();
 
+    tree_12(y, lam, parent, order, iorder);
+
+    return xv;
+}
+
+
+
+template<typename float_, typename int_>
+void
+tree_12(const size_t n,
+        const float_ *y,
+        const float_ lam,
+        const int_ *parent,
+        const int_ *order,
+        const int_ *iorder,
+        float_ *x,
+        const size_t max_iter = 20)
+{    
     float_ y_min, y_max;
     {   Timer _ ("Analyze y");
         find_minmax(y, n, y_min, y_max);
