@@ -2,7 +2,8 @@
 
 /**
    Compute a post_order; more specific the DFS finish time.
-   If postord is preallocated, it has to have a length >= n
+   If postord is preallocated, it must have a length >= n.
+   If postord == nullptr, it will be allocated.
  */
 int*
 post_order(const int n,
