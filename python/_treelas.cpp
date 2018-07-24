@@ -312,50 +312,50 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("verbose") = false,
           py::arg("x") = py::none());
 
-    py::def("tree_dp",
-            [](const py::array_f64 &y,
-               const py::array_i32 &parent,
-               const int32_t root,
-               py::array_f64 &x,
-               const bool verbose,
-               const bool merge_sort) -> py::array_f64
-            {
-                const double mu = 1.0;
-                const auto n = check_1d_len(y, "y");
-                check_len(n, parent, "parent");
-                if (is_empty(x))
-                    x = py::array_t<double>({n}, {sizeof(double)});
-                if (merge_sort)
-                    tree_dp<false>(n,
-                                   x.mutable_data(),
-                                   y.data(),
-                                   parent.data(),
-                                   lam,
-                                   mu,
-                                   root);
-                else
-                    tree_dp<false>(n,
-                                   x.mutable_data(),
-                                   y.data(),
-                                   parent.data(),
-                                   lam,
-                                   mu,
-                                   root);
+    m.def("tree_dp",
+          [](const py::array_f64 &y,
+             const py::array_i32 &parent,
+             const double lam,
+             const int32_t root,
+             py::array_f64 &x,
+             const bool verbose,
+             const bool merge_sort) -> py::array_f64
+          {
+              TimerQuiet _ (verbose);
+              const double mu = 1.0;
+              const auto n = check_1d_len(y, "y");
+              check_len(n, parent, "parent");
+              if (is_empty(x))
+                  x = py::array_t<double>({n}, {sizeof(double)});
+              if (merge_sort)
+                  tree_dp<false>(n,
+                                 x.mutable_data(),
+                                 y.data(),
+                                 parent.data(),
+                                 lam,
+                                 mu,
+                                 root);
+              else
+                  tree_dp<false>(n,
+                                 x.mutable_data(),
+                                 y.data(),
+                                 parent.data(),
+                                 lam,
+                                 mu,
+                                 root);
                     
-                return x;
-            }
-            R"pbdoc(
+              return x;
+          },
+          R"pbdoc(
               Dynamic programming algorithm for trees (uniform weighting)
             )pbdoc",
-            py::arg("y"),
-            py::arg("parent"),
-            py::arg("lam"),
-            py::arg("root") = 0,
-            py::arg("x") = py::none(),
-            py::arg("verbose") = false,
-            py::arg("merge_sort") = false,
-            );
-
+          py::arg("y"),
+          py::arg("parent"),
+          py::arg("lam"),
+          py::arg("root") = 0,
+          py::arg("x") = py::none(),
+          py::arg("verbose") = false,
+          py::arg("merge_sort") = false);
 
     /*
     py::def("dp_tree_w", np_dp_tree_w, (
