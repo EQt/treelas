@@ -139,31 +139,6 @@ compute_orders(TreeLasso<float_, int_> &tree,
 
 
 template<typename float_, typename int_>
-std::vector<double>
-tree_12(const TreeLasso<float_, int_> &tree,
-        const std::vector<int_> &ipostordv,
-        const std::vector<int_> &iorderv,
-        const size_t max_iter = 20)
-{
-    const auto n = tree.parent.size();
-    std::vector<double> xv (n);
-
-    const float_ lam = tree.lam[0];
-    const float_ *y = tree.y.data();
-    const int_ *parent = tree.parent.data();
-    const int  *order = tree.postorder.data();
-    const int_ *ipostord = ipostordv.data();
-    const int_ *iorder = iorderv.data();
-    double *x = xv.data();
-
-    tree_12(y, lam, parent, order, iorder);
-
-    return xv;
-}
-
-
-
-template<typename float_, typename int_>
 void
 tree_12(const size_t n,
         const float_ *y,
@@ -171,7 +146,8 @@ tree_12(const size_t n,
         const int_ *parent,
         const int_ *order,
         const int_ *iorder,
-        float_ *x,
+        const int_ *ipostord,
+        double *x,
         const size_t max_iter = 20)
 {    
     float_ y_min, y_max;
@@ -214,6 +190,28 @@ tree_12(const size_t n,
         for (size_t i = 0; i < n; i++)
             x[order[i]] = nodes[i].x;
     }
+}
+
+
+template<typename float_, typename int_>
+std::vector<double>
+tree_12(const TreeLasso<float_, int_> &tree,
+        const std::vector<int_> &ipostordv,
+        const std::vector<int_> &iorderv,
+        const size_t max_iter = 20)
+{
+    const auto n = tree.parent.size();
+    std::vector<double> xv (n);
+
+    const float_ lam = tree.lam[0];
+    const float_ *y = tree.y.data();
+    const int_ *parent = tree.parent.data();
+    const int  *order = tree.postorder.data();
+    const int_ *ipostord = ipostordv.data();
+    const int_ *iorder = iorderv.data();
+    double *x = xv.data();
+
+    tree_12(n, y, lam, parent, order, iorder, ipostord, x, max_iter);
 
     return xv;
 }
