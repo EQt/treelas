@@ -1,13 +1,13 @@
 #include <cstdint>
 #include <algorithm>                // for std::sort
 #include <pybind11/pybind11.h>
-#include "py_np.hpp"
 
 #include "../extern/glmgen/tf.hpp"
 #include "../extern/condat/condat_tv_v2.hpp"
+
 #include "../cxx/utils/compiler.hpp"
 #include "../cxx/utils/timer.hpp"
-// #include "../cxx/dp_tree.hpp"
+
 #include "../cxx/line.hpp"
 // #include "../cxx/line_w.hpp"
 #include "../cxx/line_para.hpp"
@@ -15,6 +15,9 @@
 #include "../cxx/line_c2.hpp"
 #include "../cxx/line_c3.hpp"
 #include "../cxx/prufer.hpp"
+#include "../cxx/tree_dp.hpp"
+
+#include "py_np.hpp"
 
 namespace py = pybind11;
 
