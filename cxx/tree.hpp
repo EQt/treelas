@@ -2,7 +2,6 @@
 #include <cassert>
 #include <stdexcept>
 #include <string>
-#include "utils/timer.hpp"
 
 
 template <typename float_ = double, typename int_ = int>
