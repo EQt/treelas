@@ -103,6 +103,20 @@ tree12_iter(Nodes<float_, int_> &nodes,
 }
 
 
+
+template<typename float_, typename int_>
+void
+compute_dfs_orders(const size_t n,
+                   const int_ *parent,
+                   int_ *order,
+                   int_ *iorder,
+                   int_ *ipostord)
+{
+
+}
+
+
+
 template<typename float_, typename int_>
 void
 compute_orders(TreeLasso<float_, int_> &tree,
