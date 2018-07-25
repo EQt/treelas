@@ -357,6 +357,22 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("verbose") = false,
           py::arg("merge_sort") = false);
 
+    m.def("tree_dual",
+          [](const py::array_i32 &parent,
+             const py::array_f64 &x,
+             int32_t root,
+             py::array_f64 &alpha) -> py::array_f64
+          {
+              return x;
+          },
+          R"pbdoc(
+              Compute dual solution along tree
+          )pbdoc",
+          py::arg("parent"),
+          py::arg("x"),
+          py::arg("root") = 0,
+             py::arg("alpha") = py::none());
+
     /*
     py::def("dp_tree_w", np_dp_tree_w, (
                 arg("y"),
