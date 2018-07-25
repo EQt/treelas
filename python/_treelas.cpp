@@ -9,7 +9,7 @@
 #include "../cxx/utils/timer.hpp"
 
 #include "../cxx/line.hpp"
-// #include "../cxx/line_w.hpp"
+#include "../cxx/line_w.hpp"
 #include "../cxx/line_para.hpp"
 #include "../cxx/line_c.hpp"
 #include "../cxx/line_c2.hpp"
