@@ -23,6 +23,7 @@ from ._treelas import (
     line_condat,
     line_glmgen,
     line_las,
+#   line_w,
     line_para,
     line_lasc,
     line_las2,
@@ -33,8 +34,7 @@ from ._treelas import (
     tree_12,
     tree_dual,
     tree_dual_gap,
+#   post_order,
+#   dp_forward, dp_reverse,
 )
-#     post_order,
-#     dp_forward, dp_reverse,
-#     dp_line_w,
-# )
+
