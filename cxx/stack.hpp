@@ -30,6 +30,8 @@ public:
 
     stack() { }
 
+    stack(const size_t n) { reserve(n); }
+
     ~stack() { free(); }
 
     void free() {
