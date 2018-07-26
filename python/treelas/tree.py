@@ -109,8 +109,8 @@ parent = {repr(self.parent)}"""
         if self._gamma is None:
             self._gamma = np.empty(0)
         alpha = self.dual
-        self._gamma = _tl.dp_gamma(self.x, alpha, self.lam, self.parent,
-                                   root_val, gamma=self._gamma)
+        self._gamma = _tl.tree_dual_gap(self.x, alpha, self.lam, self.parent,
+                                        root_val, gamma=self._gamma)
         return self._gamma
 
     @property

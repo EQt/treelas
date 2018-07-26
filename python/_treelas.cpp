@@ -387,7 +387,6 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("root") = 0,
           py::arg("alpha") = py::none());
 
-
     m.def("tree_dp_w",
           [](const py::array_f64 &y,
              const py::array_i32 &parent,
@@ -425,15 +424,41 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("verbose") = false,
           py::arg("x") = py::none());
 
+    m.def("tree_dual_gap",
+          [](const py::array_f64 &x,
+             const py::array_f64 &alpha,
+             const py::array_f64 &lam,
+             const py::array_i32 &parent,
+             double root_val,
+             py::array_f64 gamma)
+          {
+              const auto n = check_1d_len(x);
+              check_len(n, alpha, "alpha");
+              check_len(n, lam, "lam");
+              check_len(n, parent, "parent");
+              if (is_empty(gamma))
+                  gamma = py::array_f64({n}, {sizeof(double)});
+              check_len(n, gamma, "gamma");
+              tree_dual_gap(n,
+                            gamma.mutable_data(),
+                            x.data(),
+                            alpha.data(),
+                            lam.data(),
+                            parent.data(),
+                            root_val);
+              return gamma;
+          },
+          R"pbdoc(
+              Compute the duality gap vector
+          )pbdoc",
+          py::arg("x"),
+          py::arg("alpha"),
+          py::arg("lam"),
+          py::arg("parent"),
+          py::arg("root_val") = 0.0,
+          py::arg("gamma") = py::none());
+
     /*
-    py::def("dp_gamma", np_dp_gamma, (
-                arg("x"),
-                arg("alpha"),
-                arg("lam"),
-                arg("parent"),
-                arg("root_val") = 0.0,
-                arg("gamma") = empty_array<double>()),
-            "Compute the duality gap vector");
     py::def("dp_forward", np_dp_forward, (
                 arg("y"),
                 arg("mu"),

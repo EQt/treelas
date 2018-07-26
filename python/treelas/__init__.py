@@ -22,6 +22,7 @@ from ._treelas import (
     tree_dp_w,
     tree_12,
     tree_dual,
+    tree_dual_gap,
 )
 #     dp_gamma,
 #     post_order,

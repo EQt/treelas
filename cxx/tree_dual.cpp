@@ -35,3 +35,22 @@ tree_dual(const int n,
 
     return alpha;
 }
+
+
+void
+tree_dual_gap(
+    const int n,
+    double *gamma,
+    const double *x,
+    const double *alpha,
+    const double *lam,
+    const int *parent,
+    const double root_val)
+{
+    for (int i = 0; i < n; i++) {
+        int p = parent[i];
+        const double diff = x[i] - x[p];
+        gamma[i] = (i == p) ? root_val :
+            alpha[i] / lam[i] * diff + std::abs(diff);
+    }
+}

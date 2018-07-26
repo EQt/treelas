@@ -48,13 +48,3 @@ tree_dp_w(
     const double *lam,
     const double *mu,
     const int root = 0);
-
-
-void
-dp_gamma(const int n,
-         double *gamma,
-         const double *x,
-         const double *alpha,
-         const double *lam,
-         const int *parent,
-         const double root_val = 0.0);
