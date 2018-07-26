@@ -49,6 +49,11 @@ PYBIND11_MODULE(adjidx, m)
              {
                  return self.size();
              })
+        .def("__iter__",
+             [](const IndexIter_int &self)
+             {
+                 return py::make_iterator(self.begin(), self.end());
+             })
         ;
 }
 
