@@ -100,7 +100,8 @@ parent = {repr(self.parent)}"""
         if self.alpha is None:
             if self.x is None:
                 self.solve()
-            self.alpha = _tl.tree_dual(self.parent, self.z, root=self.root)
+            self.alpha = _tl.tree_dual(self.parent, self.z, root=self.root,
+                                       alpha=self.alpha)
         return self.alpha
 
     @property
