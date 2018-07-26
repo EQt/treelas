@@ -328,6 +328,7 @@ PYBIND11_MODULE(_treelas, m)
               check_len(n, parent, "parent");
               if (is_empty(x))
                   x = py::array_t<double>({n}, {sizeof(double)});
+              check_len(n, x, "x");
               if (merge_sort)
                   tree_dp<false>(n,
                                  x.mutable_data(),
@@ -361,15 +362,16 @@ PYBIND11_MODULE(_treelas, m)
     m.def("tree_dual",
           [](const py::array_i32 &parent,
              py::array_f64 &x,
-             int32_t root,
+             const int root,
              py::array_f64 &alpha) -> py::array_f64
           {
               const auto n = check_1d_len(parent, "parent");
               check_len(n, x, "x");
               if (is_empty(alpha))
                   alpha = py::array_f64({n}, {sizeof(double)});
-              int *post_ord = nullptr;
-              tree_dual(n,
+              check_len(n, alpha, "alpha");
+              const int *post_ord = nullptr;
+              tree_dual(int(n),
                         x.mutable_data(),
                         parent.data(),
                         post_ord,
@@ -385,15 +387,45 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("root") = 0,
           py::arg("alpha") = py::none());
 
+
+    m.def("tree_dp_w",
+          [](const py::array_f64 &y,
+             const py::array_i32 &parent,
+             const py::array_f64 &lam,
+             const py::array_f64 &mu,
+             int root,
+             bool verbose,
+             py::array_f64 &x) -> py::array_f64
+          {
+              TimerQuiet _ (verbose);
+              const auto n = check_1d_len(y, "y");
+              check_len(n, parent, "parent");
+              check_len(n, lam, "lam");
+              check_len(n, mu, "mu");
+              if (is_empty(x))
+                  x = py::array_f64({n}, {sizeof(double)});
+              check_len(n, x, "x");
+              tree_dp_w(n,
+                        x.mutable_data(),
+                        y.data(),
+                        parent.data(),
+                        lam.data(),
+                        mu.data(),
+                        root);
+              return x;
+          },
+          R"pbdoc(
+              Dynamic programming algorithm for trees (node and edge weighting)
+          )pbdoc",
+          py::arg("y"),
+          py::arg("parent"),
+          py::arg("lam"),
+          py::arg("mu"),
+          py::arg("root") = 0,
+          py::arg("verbose") = false,
+          py::arg("x") = py::none());
+
     /*
-    py::def("dp_tree_w", np_dp_tree_w, (
-                arg("y"),
-                arg("parent"),
-                arg("lam"),
-                arg("mu"),
-                arg("root") = 0,
-                arg("verbose") = false),
-            "Dynamic programming algorithm for trees (node and edge weighting)");
     py::def("dp_gamma", np_dp_gamma, (
                 arg("x"),
                 arg("alpha"),
