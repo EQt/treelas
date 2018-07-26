@@ -17,7 +17,9 @@ PYBIND11_MODULE(adjidx, m)
                           const auto m = check_1d_len(head);
                           check_len(m, tail, "tail");
                           return BiAdjacent(int(m), head.data(), tail.data());
-                      }))
+                      }),
+             py::arg("head"),
+             py::arg("tail"))
         .def("__repr__",
              [](const BiAdjacent &b) -> std::string
              {
@@ -27,3 +29,8 @@ PYBIND11_MODULE(adjidx, m)
              })
         ;
 }
+
+
+// Local Variables:
+// compile-command: "make -C ../build adjidx"
+// End:
