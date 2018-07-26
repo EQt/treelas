@@ -1,6 +1,7 @@
 #pragma once
-#include <vector>
 #include <random>
+
+#include "stack.hpp"
 
 
 std::vector<int>
@@ -10,23 +11,19 @@ random_spanning_tree(const BiAdjacent &index,
     const auto n = index.num_nodes();
 
     std::vector<int> parent (n, -1);
-    std::vector<int> stack_ (n, -1);
-
-    int *stack = stack_.data();
     std::mt19937_64 rng (seed);
-
+    stack<int> stack (n);
 
     int root = int(rng() % n);
-    int len = 0;
-    stack[len++] = root;
-    while (len > 0) {
-        const int v = stack[--len];
+    parent[root] = root;
+    stack.push_back(root);
+    while (!stack.empty()) {
+        const int v = stack.pop_back();
         for (const int u : index[v]) {
             if (parent[u] < 0) {
                 parent[u] = v;
-                stack[len++] = u;
-                const int i = int(rng() % len);
-                std::swap(stack[i], stack[len-1]);
+                stack.push_back(u);
+                stack.swap(rng() % stack.size(), stack.size()-1);
             }
         }
     }
