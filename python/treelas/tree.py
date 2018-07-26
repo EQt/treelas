@@ -104,16 +104,16 @@ parent = {repr(self.parent)}"""
                                  parent=self.parent,
                                  lam=self.lam/self.mu,
                                  root=self.root,
-                                 verbose=verbose,
-                                 x=x)
+                                 x=x,
+                                 verbose=verbose)
         else:
             self.x = _tl.tree_dp_w(y=self.y,
                                    parent=self.parent,
                                    lam=self.lam,
                                    mu=self.mu,
                                    root=self.root,
-                                   verbose=verbose,
-                                   x=x)
+                                   x=x,
+                                   verbose=verbose)
         self.y0 = self.y.copy()
         self.y0[np.isnan(self.y0)] = 0.0
         self.z = self.mu * (self.x - self.y0)
