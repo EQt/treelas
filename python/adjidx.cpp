@@ -10,6 +10,8 @@ namespace py = pybind11;
 
 PYBIND11_MODULE(adjidx, m)
 {
+    using IndexIter_int = IndexIter<int>;
+
     py::class_<BiAdjacent>(m, "BiAdjecent")
         .def(py::init([](const py::array_i32 &head,
                          const py::array_i32 &tail)
@@ -28,11 +30,17 @@ PYBIND11_MODULE(adjidx, m)
                      "n = " + std::to_string(b.num_nodes()) + "]";
              })
         .def("__getitem__",
-             [](const BiAdjacent &b, const int i)
+             [](const BiAdjacent &b, const int i) -> IndexIter_int
              {
                  return b[i];
              })
         ;
+    py::class_<IndexIter_int>(m, "IndexIter_int")
+        .def("__repr__",
+             [](const IndexIter_int &self) -> std::string
+             {
+                 return std::string("IndexIter_int(") + std::to_string((void*)&self) + ")";
+             })
 }
 
 
