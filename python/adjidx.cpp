@@ -27,6 +27,11 @@ PYBIND11_MODULE(adjidx, m)
                      "m = " + std::to_string(b.num_edges()) + ", " +
                      "n = " + std::to_string(b.num_nodes()) + "]";
              })
+        .def("__getitem__",
+             [](const BiAdjacent &b, const int i)
+             {
+                 return b[i];
+             })
         ;
 }
 
