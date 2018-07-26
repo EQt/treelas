@@ -6,7 +6,7 @@ See https://github.com/eqt/treelas
 """
 import re
 from .tree import Tree, TreeInstance
-# from .children import ChildrenIndex
+from .children import ChildrenIndex
 from ._treelas import (
     __compiler__,
     __author__,
