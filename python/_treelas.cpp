@@ -355,8 +355,10 @@ PYBIND11_MODULE(_treelas, m)
               const double mu = 1.0;
               const auto n = check_1d_len(y, "y");
               check_len(n, parent, "parent");
-              if (is_empty(x))
+              if (is_empty(x)) {
+                  Timer _ ("allocate x")
                   x = py::array_t<double>({n}, {sizeof(double)});
+              }
               check_len(n, x, "x");
               if (merge_sort)
                   tree_dp<false>(n,
