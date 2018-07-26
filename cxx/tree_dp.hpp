@@ -40,7 +40,7 @@ tree_dp<false>(
 
 
 const double*
-tree_dp_weighted(
+tree_dp_w(
     const size_t n,
     double *x,
     const double *y,
