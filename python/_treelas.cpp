@@ -359,11 +359,22 @@ PYBIND11_MODULE(_treelas, m)
 
     m.def("tree_dual",
           [](const py::array_i32 &parent,
-             const py::array_f64 &x,
+             py::array_f64 &x,
              int32_t root,
              py::array_f64 &alpha) -> py::array_f64
           {
-              return x;
+              const auto n = check_1d_len(parent, "parent");
+              check_len(n, x, "x");
+              if (is_empty(alpha))
+                  alpha = py::array_f64({n}, {sizeof(double)});
+              int *post_ord = nullptr;
+              tree_dual(n,
+                        x.mutable_data(),
+                        parent.data(),
+                        post_ord,
+                        alpha.mutable_data(),
+                        root);
+              return alpha;
           },
           R"pbdoc(
               Compute dual solution along tree
@@ -371,7 +382,7 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("parent"),
           py::arg("x"),
           py::arg("root") = 0,
-             py::arg("alpha") = py::none());
+          py::arg("alpha") = py::none());
 
     /*
     py::def("dp_tree_w", np_dp_tree_w, (
