@@ -34,7 +34,7 @@ public:
 
     void free() {
         #if _STACK_DEBUG
-        if (pos > decltype(pos)(n-1))
+        if (pos > n)
             throw std::overflow_error("stack::clear()");
         #endif
         if (e) delete[] e;

@@ -56,6 +56,7 @@ TEST(stack, push1)
     ASSERT_EQ(stack.size(), 0);
     stack.reserve(1);
     ASSERT_EQ(stack.size(), 0);
+    ASSERT_EQ(stack.capacity(), 1);
     stack.push_back(-42);
     ASSERT_EQ(stack.size(), 1);
     ASSERT_EQ(stack.back(), -42);
@@ -69,11 +70,15 @@ TEST(stack, throws)
     ASSERT_EQ(stack.size(), 0);
     ASSERT_THROW(stack.back(), std::underflow_error);
     ASSERT_EQ(stack.size(), 0);
+    ASSERT_EQ(stack.capacity(), 0);
     ASSERT_THROW(stack.reserve(0), std::invalid_argument);
     stack.reserve(2);
+    ASSERT_EQ(stack.capacity(), 2);
     ASSERT_EQ(stack.size(), 0);
     stack.push_back(1);
     ASSERT_EQ(stack.size(), 1);
     stack.push_back(2);
+    ASSERT_EQ(stack.size(), 2);
+    ASSERT_EQ(stack.capacity(), 2);
     ASSERT_THROW(stack.push_back(3), std::overflow_error);
 }
