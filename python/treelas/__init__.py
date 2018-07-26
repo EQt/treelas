@@ -2,6 +2,8 @@
 Treelas: a fused lasso solver for trees
 ---------------------------------------
 
+
+## Tree Edges
 Information on tree edges (e.g. lambda) are encoded as vector of length n
 (albeit there are only n-1 edges).  We do so because than the root node can
 be arbitrary and the i-th element lam[i] contains the information for edge
