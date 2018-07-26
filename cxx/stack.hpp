@@ -44,7 +44,7 @@ public:
 
     inline void clear() { pos = 0; }
 
-    void reserve(size_t n) {
+    inline void reserve(size_t n) {
         if (n <= 0)
             throw std::invalid_argument(std::string("stack::reserve(") +
                                         std::to_string(n) + ")");
