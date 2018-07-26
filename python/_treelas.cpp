@@ -481,6 +481,5 @@ PYBIND11_MODULE(_treelas, m)
                 arg("include_root") = false),
             "Compute the DFS post order starting at root "
             "on the tree given by parent");
-    py::register_exceptions();
     */
 }
