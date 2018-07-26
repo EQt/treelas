@@ -8,6 +8,14 @@ from .graphviz import show_tree
 from .prufer import prufer_from_children_spec
 
 
+@njit
+def find_root(parent):
+    """Return the smallest i with parent[i] == i"""
+    for i, p in enumerate(parent):
+        if i == p:
+            return i
+
+
 class Tree:
     """Rooted tree, stored as a parent np.array"""
     def __init__(self, parent, root=0):
@@ -41,14 +49,6 @@ Tree(n={self.n},
     def generate(cls, degrees, seed=42):
         return cls.from_prufer(prufer_from_children_spec(degrees, seed=seed))
     
-
-@njit
-def find_root(parent):
-    """Return the smallest i with parent[i] == i"""
-    for i, p in enumerate(parent):
-        if i == p:
-            return i
-
 
 class TreeInstance(Tree):
     """Fused lasso tree instance (including all weight-parameters)"""
