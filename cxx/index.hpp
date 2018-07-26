@@ -14,17 +14,11 @@ struct IndexIter
     IndexIter(const int_ *start, const int_ *stop) :
         start(start), stop(stop) { }
 
-    const int_* begin() const {
-        return start;
-    }
+    const int_* begin() const { return start; }
 
-    const int_* end() const {
-        return stop;
-    }
+    const int_* end() const { return stop; }
 
-    size_t size() const {
-        return stop - start;
-    }
+    size_t size() const { return stop - start; }
 
     operator std::set<int_>() const {
         return std::set<int_>(this->begin(), this->end());
