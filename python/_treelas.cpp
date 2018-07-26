@@ -356,7 +356,7 @@ PYBIND11_MODULE(_treelas, m)
               const auto n = check_1d_len(y, "y");
               check_len(n, parent, "parent");
               if (is_empty(x)) {
-                  Timer _ ("allocate x")
+                  Timer _ ("allocate x");
                   x = py::array_t<double>({n}, {sizeof(double)});
               }
               check_len(n, x, "x");
