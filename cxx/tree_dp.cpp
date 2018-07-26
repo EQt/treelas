@@ -17,9 +17,9 @@
 
 
 template<typename E = Event2>
-struct DPTreeStatus
+struct TreeDPStatus
 {
-    DPTreeStatus(const size_t n) :
+    TreeDPStatus(const size_t n) :
         childs(n),
         elements_(2*n),
         pq(n),
@@ -48,7 +48,7 @@ _tree_dp(
     const double lam,
     const double mu,
     const int root,
-    DPTreeStatus<E> &s)
+    TreeDPStatus<E> &s)
 {
     auto *elements = s.elements_.data();
     auto &pq = s.pq;
@@ -110,7 +110,7 @@ tree_dp(
     Timer timer ("memory alloc");
     if (x == nullptr)
         x = new double[n];
-    DPTreeStatus<Event2> s(n);
+    TreeDPStatus<Event2> s(n);
     timer.stop();
     return _tree_dp<merge_sort>(n, x, y, parent, lam, mu, root, s);
 }
