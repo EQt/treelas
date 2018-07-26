@@ -96,7 +96,7 @@ class TreeInstance(Tree):
    lam = {repr(self.lam)}
 parent = {repr(self.parent)}"""
 
-    def solve(self, verbose=False):
+    def solve(self, verbose=False, x=None):
         """Compute a primal solution self.x (return self)"""
         if isinstance(self.lam, float) and isinstance(self.mu, float):
             assert self.mu > 0
@@ -104,14 +104,16 @@ parent = {repr(self.parent)}"""
                                  parent=self.parent,
                                  lam=self.lam/self.mu,
                                  root=self.root,
-                                 verbose=verbose)
+                                 verbose=verbose,
+                                 x=x)
         else:
             self.x = _tl.tree_dp_w(y=self.y,
                                    parent=self.parent,
                                    lam=self.lam,
                                    mu=self.mu,
                                    root=self.root,
-                                   verbose=verbose)
+                                   verbose=verbose,
+                                   x=x)
         self.y0 = self.y.copy()
         self.y0[np.isnan(self.y0)] = 0.0
         self.z = self.mu * (self.x - self.y0)
