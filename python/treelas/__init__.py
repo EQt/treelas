@@ -20,6 +20,7 @@ from ._treelas import (
     find_root,
     tree_dp,
     tree_12,
+    tree_dual,
 )
 #     dp_tree, dp_tree_w,
 #     dp_dual,
