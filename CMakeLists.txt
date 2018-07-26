@@ -29,6 +29,7 @@ add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
 
 add_object(line       cxx/line.cpp)
+add_object(line_w     cxx/line_w.cpp)
 add_object(line_para  cxx/line_para.cpp)
 add_object(line_c     cxx/line_c.cpp)
 add_object(line_c2    cxx/line_c2.cpp)
@@ -56,6 +57,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
+    $<TARGET_OBJECTS:line_w>
     $<TARGET_OBJECTS:line_para>
     $<TARGET_OBJECTS:line_c>
     $<TARGET_OBJECTS:line_c2>

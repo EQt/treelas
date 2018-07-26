@@ -30,6 +30,7 @@ sources = [
     "../extern/condat/condat_tv_v2.cpp",
     "../extern/glmgen/tf_dp.cpp",
     "../cxx/line.cpp",
+    "../cxx/line_w.cpp",
     "../cxx/line_para.cpp",
     "../cxx/line_c.cpp",
     "../cxx/line_c2.cpp",
