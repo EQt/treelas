@@ -26,11 +26,18 @@ class Tree:
             assert root >= 0
             assert root < len(parent)
         self.root = np.int32(root)
+        self.childidx = None
 
     def show(self, wait=True):
         """Show the tree using graphviz' dot"""
         show_tree(self.parent, wait=wait)
         return self
+
+    @property
+    def children(self):
+        if self.childidx is None:
+            self.childidx = ChildrenIndex.compute(self.parent, self.root)
+        return self.childidx
 
     @property
     def n(self):
