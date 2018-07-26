@@ -28,7 +28,7 @@ class Tree:
             assert root < len(parent)
         self.root = np.int32(root)
         self.childidx = None
-        assert self.parent[self.root] = self.root
+        assert self.parent[self.root] == self.root
 
     @property
     def children(self):
