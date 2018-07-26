@@ -97,6 +97,7 @@ parent = {repr(self.parent)}"""
 
     @property
     def dual(self):
+        """Dual solution, corresponding to self.x (if called the first time, compute it)"""
         if self.alpha is None:
             if self.x is None:
                 self.solve()
