@@ -19,6 +19,7 @@ from ._treelas import (
     line_las3,
     find_root,
     tree_dp,
+    tree_dp_w,
     tree_12,
     tree_dual,
 )
