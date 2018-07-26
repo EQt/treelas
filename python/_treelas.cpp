@@ -376,7 +376,7 @@ PYBIND11_MODULE(_treelas, m)
                                  lam,
                                  mu,
                                  root);
-                    
+              Timer::stopit();
               return x;
           },
           R"pbdoc(
@@ -442,6 +442,7 @@ PYBIND11_MODULE(_treelas, m)
                         lam.data(),
                         mu.data(),
                         root);
+              Timer::stopit();
               return x;
           },
           R"pbdoc(
