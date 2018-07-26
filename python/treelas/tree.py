@@ -6,6 +6,7 @@ from numba import njit
 from . import _treelas as _tl
 from .graphviz import show_tree
 from .prufer import prufer_from_children_spec
+from .children import ChildrenIndex
 
 
 @njit
@@ -38,6 +39,10 @@ class Tree:
         if self.childidx is None:
             self.childidx = ChildrenIndex.compute(self.parent, self.root)
         return self.childidx
+
+    @property
+    def degree(self):
+        return np.diff(self.children.idx) + 1
 
     @property
     def n(self):
