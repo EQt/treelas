@@ -4,13 +4,12 @@
 #include "stack.hpp"
 
 
-std::vector<int>
+void
 random_spanning_tree(const BiAdjacent &index,
-                     const int seed = 2018)
+                     const int seed,
+                     int *parent)
 {
     const auto n = index.num_nodes();
-
-    std::vector<int> parent (n, -1);
     std::mt19937_64 rng (seed);
     stack<int> stack (n);
 
@@ -27,5 +26,14 @@ random_spanning_tree(const BiAdjacent &index,
             }
         }
     }
+}
+
+
+std::vector<int>
+random_spanning_tree(const BiAdjacent &index,
+                     const int seed = 2018)
+{
+    std::vector<int> parent (index.num_nodes(), -1);
+    random_spanning_tree(index, seed, parent.data());
     return parent;
 }
