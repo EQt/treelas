@@ -24,7 +24,6 @@ from ._treelas import (
     tree_dual,
     tree_dual_gap,
 )
-#     dp_gamma,
 #     post_order,
 #     dp_forward, dp_reverse,
 #     dp_line_w,
