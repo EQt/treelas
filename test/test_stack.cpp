@@ -65,6 +65,8 @@ TEST(stack, push1)
 TEST(stack, throws)
 {
     stack<int> stack;
+    ASSERT_TRUE(stack.empty());
+    ASSERT_EQ(stack.size(), 0);
     ASSERT_THROW(stack.back(), std::underflow_error);
     ASSERT_EQ(stack.size(), 0);
     ASSERT_THROW(stack.reserve(0), std::invalid_argument);
