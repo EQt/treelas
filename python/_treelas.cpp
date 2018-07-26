@@ -394,12 +394,6 @@ PYBIND11_MODULE(_treelas, m)
                 arg("root") = 0,
                 arg("verbose") = false),
             "Dynamic programming algorithm for trees (node and edge weighting)");
-    py::def("dp_dual", np_dp_dual, (
-                arg("parent"),
-                arg("x"),
-                arg("root") = 0,
-                arg("alpha") = empty_array<double>()),
-            "Compute dual solution along tree");
     py::def("dp_gamma", np_dp_gamma, (
                 arg("x"),
                 arg("alpha"),
