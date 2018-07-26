@@ -90,6 +90,8 @@ public:
 
     inline size_t capacity() const { return n; }
 
+    inline void swap(const size_t i, const size_t j) { std::swap(e[i], e[j]); }
+
 #ifdef GTEST_INCLUDE_GTEST_GTEST_PROD_H_
     FRIEND_TEST(stack, underflow0);
 #endif
