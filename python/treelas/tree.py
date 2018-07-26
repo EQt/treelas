@@ -163,16 +163,6 @@ parent = {repr(self.parent)}"""
         assert x.size == self.n
         raise NotImplementedError()
 
-    # def show(self, wait=True):
-    #     """Show the tree using graphviz' dot"""
-    #     raise NotImplementedError()
-    #     # from dilas._graphviz import graphviz_ladder as graphviz
-    #     # lat = np.where(self.mu <= 0)[0]
-    #     # r = ' fontsize=8'
-    #     # graphviz(self.parent, range(self.n), out='neato', latent=lat, wait=wait,
-    #     #          edge_label=lambda j: f'label="{j}: {self.lam[j]:.2f}"' + r)
-    #     # return self
-
     def load(fname, group="/"):
         """Load a tree instance from a HDF5 file"""
         with h5py.File(fname) as io:
