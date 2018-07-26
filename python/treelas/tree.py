@@ -30,11 +30,6 @@ class Tree:
         self.childidx = None
         assert self.parent[self.root] = self.root
 
-    def show(self, wait=True):
-        """Show the tree using graphviz' dot"""
-        show_tree(self.parent, wait=wait)
-        return self
-
     @property
     def children(self):
         if self.childidx is None:
@@ -55,6 +50,11 @@ class Tree:
 Tree(n={self.n},
      root={self.root},
      parent={repr(self.parent)})""".strip()
+
+    def show(self, wait=True):
+        """Show the tree using graphviz' dot"""
+        show_tree(self.parent, wait=wait)
+        return self
 
     @staticmethod
     def from_prufer(prufer):
