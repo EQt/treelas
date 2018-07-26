@@ -15,7 +15,6 @@ def load_mini_h5():
         xt = io['xt'].value
         lam = io['lam'].value
         root = int(io.attrs['root'])
-        mu = 1.0
 
     y = y.reshape(-1)
     n = len(y)
@@ -28,12 +27,12 @@ def load_mini_h5():
     assert parent[root] == root
     assert sys.getrefcount(parent) <= 2
     assert sys.getrefcount(y) <= 2
-    return y, parent, xt, lam, root, mu
+    return y, parent, xt, lam, root
 
 
 def test_mini_h5():
-    y, parent, xt, lam, root, mu = load_mini_h5()
-    x = tl.tree_dp(y, parent, lam, mu, root)
+    y, parent, xt, lam, root = load_mini_h5()
+    x = tl.tree_dp(y, parent, lam, root)
     assert (x.reshape(xt.shape) == xt).all()
     assert sys.getrefcount(parent) <= 2
     assert sys.getrefcount(y) <= 2
@@ -41,10 +40,10 @@ def test_mini_h5():
 
 
 def test_mini_h5_w():
-    y, parent, xt, lam, root, mu = load_mini_h5()
-    x1 = tl.tree_dp(y, parent, lam, mu, root)
+    y, parent, xt, lam, root = load_mini_h5()
+    x1 = tl.tree_dp(y, parent, lam, root)
     n = len(y)
-    mua = 1.0 * mu * np.ones(n)
+    mua = np.ones(n)
     lama = lam * np.ones(n)
     x2 = tl.tree_dp_w(y=y, parent=parent, lam=lama, mu=mua, root=root)
     assert (x2.reshape(xt.shape) == xt).all()
