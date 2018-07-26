@@ -2,4 +2,4 @@
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((c++-mode
-   (c-fill-style . "stroustrup")))
+   (c-file-style . "stroustrup")))
