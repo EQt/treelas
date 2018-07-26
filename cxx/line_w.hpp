@@ -67,7 +67,7 @@ dp_reverse_w(
 
 template<typename float_ = double>
 void
-dp_line_w(
+line_w(
     const int n,
     float_ *x,
     const float_ *y,
@@ -77,7 +77,7 @@ dp_line_w(
 
 extern template
 void
-dp_line_w(
+line_w(
     const int n,
     double *x,
     const double *y,

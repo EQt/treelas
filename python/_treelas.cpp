@@ -210,51 +210,80 @@ PYBIND11_MODULE(_treelas, m)
                  const double lam,
                  py::array_f64 out,
                  const bool verbose) -> py::array_t<double>
-          {
-              TimerQuiet _ (verbose);
-              const int n = int(check_1d_len(y, "y"));
-              if (is_empty(out))
+              {
+                TimerQuiet _ (verbose);
+                const int n = int(check_1d_len(y, "y"));
+                if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
-              check_len(n, out, "out");
-              dp_line_c3(n,
-                         y.data(),
-                         lam,
-                         out.mutable_data());
-              return out;
-          },
-          R"pbdoc(
-            Line solver (own implementation, save more memory compared to line_lasc).
+                check_len(n, out, "out");
+                dp_line_c3(n,
+                           y.data(),
+                           lam,
+                           out.mutable_data());
+                return out;
+              },
+              R"pbdoc(
+                  Line solver (own implementation, save more memory compared to line_lasc).
 
-            Memory: ??*len(y)*sizeof(uint32_t)
-          )pbdoc",
-          py::arg("y"),
-          py::arg("lam"),
-          py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+                  Memory: ??*len(y)*sizeof(uint32_t)
+              )pbdoc",
+              py::arg("y"),
+              py::arg("lam"),
+              py::arg("out") = py::none(),
+              py::arg("verbose") = false);
 
         m.def("line_para",
               [](const py::array_f64 &y,
                  const double lam,
                  py::array_f64 out,
                  const bool verbose) -> py::array_t<double>
-          {
-              TimerQuiet _ (verbose);
-              const int n = int(check_1d_len(y, "y"));
-              if (is_empty(out))
+              {
+                TimerQuiet _ (verbose);
+                const int n = int(check_1d_len(y, "y"));
+                if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
-              check_len(n, out, "out");
-              line_para(n, y.data(), lam, out.mutable_data());
-              return out;
-          },
-          R"pbdoc(
-            Line solver (parallel from both ends).
+                check_len(n, out, "out");
+                line_para(n, y.data(), lam, out.mutable_data());
+                return out;
+              },
+              R"pbdoc(
+                  Line solver (parallel from both ends).
 
-            Memory: ??*len(y)*sizeof(uint32_t)
-          )pbdoc",
-          py::arg("y"),
-          py::arg("lam"),
-          py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+                  Memory: ??*len(y)*sizeof(uint32_t)
+              )pbdoc",
+              py::arg("y"),
+              py::arg("lam"),
+              py::arg("out") = py::none(),
+              py::arg("verbose") = false);
+
+      m.def("line_w",
+            [](const py::array_f64 &y,
+               const py::array_f64 &mu,
+               const py::array_f64 &lam,
+               py::array_f64 &x) -> py::array_t<double>
+            {
+                const auto n = check_1d_len(y);
+                check_len(n, mu, "mu");
+                check_len(n-1, lam, "lam");
+                if (is_empty(x))
+                    x = py::array_f64({n}, {sizeof(double)});
+                check_len(n, x, "x");
+                line_w(int(n),
+                       x.mutable_data(),
+                       y.data(),
+                       mu.data(),
+                       lam.data());
+                return x;
+            },
+            R"pbdoc(
+                Line solver (weights).
+
+                Memory: ??*len(y)*sizeof(uint32_t)
+            )pbdoc",
+            py::arg("y"),
+            py::arg("mu"),
+            py::arg("lam"),
+            py::arg("x") = py::none());
 
     m.def("prufer2parent",
           [](const py::array_i32 &prufer, py::array_i32 parent) -> py::tuple
@@ -469,12 +498,6 @@ PYBIND11_MODULE(_treelas, m)
                 arg("mu"),
                 arg("lam")),
             "Reverse clipping along a line");
-    py::def("dp_line_w", np_dp_line_w, (
-                arg("y"),
-                arg("mu"),
-                arg("lam"),
-                arg("x") = empty_array<double>()),
-            "Johnson's dynamic programming algorithm");
     py::def("post_order", np_post_ord, (
                 arg("parent"),
                 arg("root") = 0,

@@ -35,6 +35,7 @@ sources = [
     "../cxx/line_c2.cpp",
     "../cxx/line_c3.cpp",
     "../cxx/tree_dp.cpp",
+    "../cxx/tree_dual.cpp",
     "../cxx/postorder.cpp"
 ]
 
