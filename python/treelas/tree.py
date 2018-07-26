@@ -89,7 +89,7 @@ parent = {repr(self.parent)}"""
                                    verbose=verbose)
         self.y0 = self.y.copy()
         self.y0[np.isnan(self.y0)] = 0.0
-        self.z = 2.0 * self.mu * (self.x - self.y0)
+        self.z = self.mu * (self.x - self.y0)
         return self
 
     def dsolve(self, max_iter=20):
