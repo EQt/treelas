@@ -9,4 +9,4 @@ def test_1():
     assert repr(index) == "BiAdjacent[m = 4, n = 4]"
 
     i2 = index[2]
-    assert len(2) == 2
+    assert len(i2) == 2
