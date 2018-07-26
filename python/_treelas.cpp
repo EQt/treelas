@@ -18,6 +18,7 @@
 #include "../cxx/root.hpp"
 #include "../cxx/tree_12.hpp"
 #include "../cxx/tree_dp.hpp"
+#include "../cxx/tree_dual.hpp"
 
 #include "py_np.hpp"
 
