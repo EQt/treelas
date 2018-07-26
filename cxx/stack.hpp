@@ -15,8 +15,9 @@ template<typename T = int>
 class stack
 {
     size_t n = 0;
+    size_t pos = 0;     // points to the next element
+
     T *e = nullptr;
-    long int pos = -1;
 
 public:
     inline static bool debug_mode() {
@@ -38,12 +39,10 @@ public:
         #endif
         if (e) delete[] e;
         e = nullptr;
-        pos = -1;
+        pos = 0;
     }
 
-    void clear() {
-        pos = -1;
-    }
+    inline void clear() { pos = 0; }
 
     void reserve(size_t n) {
         if (n <= 0)
@@ -53,15 +52,16 @@ public:
             free();
             e = new T[n];
             this->n = n;
+            this->pos = 0;
         }
     }
 
     inline void push_back(T x) {
         #if _STACK_DEBUG
-        if (pos > decltype(pos)(n-1))
+        if (pos >= n)
             throw std::overflow_error("stack::push_back");
         #endif
-        e[++pos] = x;
+        e[pos++] = x;
     }
 
     inline T back() const {
@@ -70,7 +70,7 @@ public:
             throw std::underflow_error("stack::back()");
         }
         #endif
-        return e[pos];
+        return e[pos-1];
     }
 
     inline T pop_back() {
@@ -79,16 +79,14 @@ public:
             throw std::underflow_error("stack::pop_back()");
         }
         #endif
-        return e[pos--];
+        return e[--pos];
     }
 
-    inline bool empty() const {
-        return pos < 0;
-    }
+    inline bool empty() const { return pos <= 0; }
 
-    inline size_t size() const {
-        return pos + 1;
-    }
+    inline size_t size() const { return pos; }
+
+    inline size_t capacity() const { return n; }
 
 #ifdef GTEST_INCLUDE_GTEST_GTEST_PROD_H_
     FRIEND_TEST(stack, underflow0);

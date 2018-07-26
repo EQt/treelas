@@ -43,7 +43,7 @@ TEST(stack, underflow0)
     stack<int> s;
     ASSERT_EQ(s.size(), 0);
     ASSERT_TRUE(s.empty());
-    ASSERT_EQ(s.pos, -1);
+    ASSERT_EQ(s.pos, 0);
     ASSERT_THROW(s.back(), std::underflow_error);
     ASSERT_THROW(s.pop_back(), std::underflow_error);
 }
