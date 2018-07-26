@@ -1,3 +1,5 @@
+#include "tree_dual.hpp"
+
 #include <vector>
 #include <stdexcept>
 #include <cmath>
