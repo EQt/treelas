@@ -35,12 +35,21 @@ PYBIND11_MODULE(adjidx, m)
                  return b[i];
              })
         ;
+
     py::class_<IndexIter_int>(m, "IndexIter_int")
         .def("__repr__",
              [](const IndexIter_int &self) -> std::string
              {
-                 return std::string("IndexIter_int(") + std::to_string((void*)&self) + ")";
+                 std::ostringstream os;
+                 os << "IndexIter_int(" << (void*)&self << ")";
+                 return os.str();
              })
+        .def("__len__",
+             [](const IndexIter_int &self) -> size_t
+             {
+                 return self.size();
+             })
+        ;
 }
 
 
