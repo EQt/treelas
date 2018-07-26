@@ -52,6 +52,9 @@ if (BUILD_PYEXT)
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   endif()
   add_subdirectory(${PYBIND_DIR})
+  pybind11_add_module(adjidx
+    python/adjidx.cpp
+  )
   pybind11_add_module(_treelas
     python/_treelas.cpp
     $<TARGET_OBJECTS:condat_tv>
