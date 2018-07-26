@@ -10,6 +10,7 @@ be arbitrary and the i-th element lam[i] contains the information for edge
 (i, parent[i]).
 
 
+## Details
 See https://github.com/eqt/treelas.
 
 """
