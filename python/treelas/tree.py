@@ -53,6 +53,13 @@ Tree(n={self.n},
     def generate(cls, degrees, seed=42):
         return cls.from_prufer(prufer_from_children_spec(degrees, seed=seed))
     
+    @staticmethod
+    def load(fname):
+        with h5py.File(fname) as io:
+            parent = io['parent'][:]
+            root = io['root'][:] if 'root' in io else _tl.find_root(parent)
+        return Tree(parent=parent, root=root)
+
 
 class TreeInstance(Tree):
     """Fused lasso tree instance (including all weight-parameters)"""
