@@ -50,15 +50,6 @@ tree_dp_w(
     const int root = 0);
 
 
-double*
-dp_dual(const int n,
-        double *x,
-        const int *parent,
-        const int *post_ord = nullptr,
-        double *alpha = nullptr,
-        const int root = 0);
-
-
 void
 dp_gamma(const int n,
          double *gamma,
