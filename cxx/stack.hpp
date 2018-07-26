@@ -14,7 +14,6 @@
 template<typename T = int>
 class stack
 {
-public:
     size_t n = 0;
     T *e = nullptr;
     long int pos = -1;
@@ -34,11 +33,10 @@ public:
 
     void free() {
         #if _STACK_DEBUG
-        if (pos > n-1)
+        if (pos > decltype(pos)(n-1))
             throw std::overflow_error("stack::clear()");
         #endif
-        if (e)
-            delete[] e;
+        if (e) delete[] e;
         e = nullptr;
         pos = -1;
     }
@@ -60,7 +58,7 @@ public:
 
     inline void push_back(T x) {
         #if _STACK_DEBUG
-        if (pos > n-2)
+        if (pos > decltype(pos)(n-1))
             throw std::overflow_error("stack::push_back");
         #endif
         e[++pos] = x;
@@ -91,6 +89,10 @@ public:
     inline size_t size() const {
         return pos + 1;
     }
+
+#ifdef GTEST_INCLUDE_GTEST_GTEST_PROD_H_
+    FRIEND_TEST(stack, underflow0);
+#endif
 };
 
 
