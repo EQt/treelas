@@ -20,8 +20,7 @@ def find_root(parent):
 class Tree:
     """Rooted tree, stored as a parent np.array"""
     def __init__(self, parent, root=-1):
-        assert parent.dtype == np.int32
-        self.parent = parent
+        self.parent = np.asarray(parent, dtype=np.int32)
         if root < 0:
             root = _tl.find_root(parent)
             assert root >= 0
