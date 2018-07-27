@@ -7,8 +7,8 @@
 
 namespace py = pybind11;
 
-
-PYBIND11_MODULE(adjidx, m)
+void
+reg_biadjacent(py::module &m)
 {
     using IndexIter_int = IndexIter<int>;
 
@@ -55,6 +55,12 @@ PYBIND11_MODULE(adjidx, m)
                  return py::make_iterator(self.begin(), self.end());
              })
         ;
+}
+
+
+PYBIND11_MODULE(adjidx, m)
+{
+    reg_biadjacent(m);
 }
 
 
