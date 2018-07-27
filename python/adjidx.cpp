@@ -1,18 +1,18 @@
 #include <string>
 #include <pybind11/pybind11.h>
 
-#include "py_np.hpp"
 #include "../cxx/biadjacent.hpp"
-
+#include "py_np.hpp"
 
 namespace py = pybind11;
+
 
 void
 reg_biadjacent(py::module &m)
 {
     using IndexIter_int = IndexIter<int>;
 
-    py::class_<BiAdjacent>(m, "BiAdjecent")
+    py::class_<BiAdjacent>(m, "BiAdjacent")
         .def(py::init([](const py::array_i32 &head,
                          const py::array_i32 &tail)
                       {
@@ -58,11 +58,12 @@ reg_biadjacent(py::module &m)
 }
 
 
+#ifdef OWN_MODULE
 PYBIND11_MODULE(adjidx, m)
 {
     reg_biadjacent(m);
 }
-
+#endif
 
 // Local Variables:
 // compile-command: "make -C ../build adjidx"
