@@ -4,7 +4,6 @@
 #include "../cxx/prim_mst.hpp"
 #include "py_np.hpp"
 
-
 void
 reg_spanning(py::module &m)
 {
@@ -25,5 +24,5 @@ reg_spanning(py::module &m)
           )pbdoc",
           py::arg("index"),
           py::arg("seed") = 2018,
-          py::arg("parent") = py::none());
+          py::arg("parent") = py::array_i32());
 }
