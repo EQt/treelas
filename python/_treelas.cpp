@@ -48,9 +48,8 @@ PYBIND11_MODULE(_treelas, m)
               Test to create an array with elements [13., -1., 42]
           )pbdoc");
 
-    m.def("_empty_array_f64", []() { return py::array_t<double>(); }, R"pbdoc(
-        Create an empty np.float64 array
-    )pbdoc");
+    m.def("_empty_array_f64", []() -> py:;array_f64 { return py::array_t<double>(); },
+          "Create an empty np.float64 array");
 
     m.def("_empty_array_i32", []() { return py::array_t<int32_t>(); }, R"pbdoc(
         Create an empty np.int32 array
@@ -64,7 +63,7 @@ PYBIND11_MODULE(_treelas, m)
         std::sort(a.mutable_data(), a.mutable_data()+a.size());
       },
       R"pbdoc(
-        std::sort from libstdc++ (to be compared against numpy.sort)
+          std::sort from libstdc++ (to be compared against numpy.sort)
       )pbdoc");
 
     m.def("prufer2parent",
@@ -81,7 +80,7 @@ PYBIND11_MODULE(_treelas, m)
               return py::make_tuple(parent, r);
           },
           R"pbdoc(
-            Compute parent vector from Prüfer sequence
+              Compute parent vector from Prüfer sequence
           )pbdoc",
           py::arg("prufer"),
           py::arg("parent") = py::array_i32());
@@ -93,7 +92,7 @@ PYBIND11_MODULE(_treelas, m)
               return find_root(n, parent.data());
           },
           R"pbdoc(
-            Find smallest i such that parent[i] == i
+              Find smallest i such that parent[i] == i
           )pbdoc",
           py::arg("parent"));
 
