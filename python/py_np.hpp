@@ -20,7 +20,7 @@ namespace py = pybind11;
 /**
    Check whether the array is empty (i.e. size() == 0)
  */
-bool
+inline bool
 is_empty(const py::array &a)
 {
     for (int d = 0; d < a.ndim(); d++) {
@@ -65,19 +65,4 @@ check_1d_len(const py::array &a, const std::string &a_str = "?")
                                 " is supposed to be 1-dimensional array");
     }
     return a.shape(0);
-}
-
-
-
-/**
-   For testing: create an array with 3 elements
- */
-py::array_t<double>
-_test_create_array()
-{
-    double *x = new double[3];
-    x[0] = 13.0;
-    x[1] = -1.0;
-    x[2] = 42.0;
-    return py::array_t<double>({3}, {sizeof(double)}, x);
 }
