@@ -11,14 +11,16 @@
 
 namespace py = pybind11;
 
+
 void reg_line(py::module &m);
 void reg_tree(py::module &m);
+void reg_biadjacent(py::module &m);
 
 
 /**
    For testing: create an array with 3 elements
  */
-inline py::array_t<double>
+py::array_t<double>
 _test_create_array()
 {
     double *x = new double[3];
@@ -102,6 +104,7 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("parent"));
 
     reg_tree(m);
+    reg_biadjacent(m);
 
     /*
     py::def("dp_forward", np_dp_forward, (
