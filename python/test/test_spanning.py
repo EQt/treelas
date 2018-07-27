@@ -1,7 +1,6 @@
 import numpy as np
 from itertools import combinations
-from treelas import random_spanning_tree
-from treelas.adjidx import BiAdjacent
+from treelas._treelas import BiAdjacent, random_spanning_tree
 
 
 def test_clique5():

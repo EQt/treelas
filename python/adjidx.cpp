@@ -18,7 +18,7 @@ reg_biadjacent(py::module &m)
                       {
                           const auto m = check_1d_len(head);
                           check_len(m, tail, "tail");
-                          return BiAdjacent(int(m), head.data(), tail.data());
+                          return new BiAdjacent(int(m), head.data(), tail.data());
                       }),
              py::arg("head"),
              py::arg("tail"))
@@ -66,5 +66,5 @@ PYBIND11_MODULE(adjidx, m)
 #endif
 
 // Local Variables:
-// compile-command: "make -C ../build adjidx"
+// compile-command: "make -C ../build pysetup"
 // End:
