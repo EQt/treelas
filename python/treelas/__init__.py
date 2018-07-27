@@ -34,6 +34,7 @@ from ._treelas import (
     tree_12,
     tree_dual,
     tree_dual_gap,
+    random_spanning_tree,
 #   post_order,
 #   dp_forward, dp_reverse,
 )
