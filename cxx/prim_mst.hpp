@@ -13,6 +13,9 @@ random_spanning_tree(const BiAdjacent &index,
     std::mt19937_64 rng (seed);
     stack<int> stack (n);
 
+    for (size_t i = 0; i < n; i++)
+        parent[i] = -1;
+
     int root = int(rng() % n);
     parent[root] = root;
     stack.push_back(root);
@@ -33,7 +36,7 @@ std::vector<int>
 random_spanning_tree(const BiAdjacent &index,
                      const int seed = 2018)
 {
-    std::vector<int> parent (index.num_nodes(), -1);
+    std::vector<int> parent (index.num_nodes());
     random_spanning_tree(index, seed, parent.data());
     return parent;
 }
