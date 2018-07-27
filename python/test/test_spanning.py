@@ -1,6 +1,6 @@
 import numpy as np
 from itertools import combinations
-from treelas._treelas import BiAdjacent, random_spanning_tree
+from treelas._treelas import BiAdjacent, random_spanning_tree, find_root
 
 
 def test_clique5():
@@ -12,4 +12,8 @@ def test_clique5():
     assert list(index[4]) == [0, 1, 2, 3]
 
     parent = random_spanning_tree(index)
-    assert (parent == [3, 2, 1, 1, 2]).all(), parent
+    assert (parent >= 0).all()
+    assert (parent < 5).all()
+    assert find_root(parent) >= 0
+    assert (parent == [3, 4, 1, 4, 4]).all(), parent
+    
