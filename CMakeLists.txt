@@ -57,6 +57,7 @@ if (BUILD_PYEXT)
     python/line.cpp
     python/tree.cpp
     python/adjidx.cpp
+    python/spanning.cpp
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>

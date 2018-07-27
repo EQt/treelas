@@ -15,6 +15,7 @@ namespace py = pybind11;
 void reg_line(py::module &m);
 void reg_tree(py::module &m);
 void reg_biadjacent(py::module &m);
+void reg_spanning(py::module &m);
 
 
 /**
@@ -105,6 +106,7 @@ PYBIND11_MODULE(_treelas, m)
 
     reg_tree(m);
     reg_biadjacent(m);
+    reg_spanning(m);
 
     /*
     py::def("dp_forward", np_dp_forward, (
