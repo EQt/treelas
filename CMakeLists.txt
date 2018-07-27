@@ -58,6 +58,7 @@ if (BUILD_PYEXT)
   pybind11_add_module(_treelas
     python/_treelas.cpp
     python/line.cpp
+    python/tree.cpp
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
