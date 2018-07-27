@@ -1,11 +1,11 @@
 import numpy as np
-from treelas.adjidx import BiAdjecent
+from treelas.adjidx import BiAdjacent
 
 
 def test_1():
     head = np.array([0, 1, 2, 3], dtype=np.int32)
     tail = np.array([1, 3, 1, 2], dtype=np.int32)
-    index = BiAdjecent(head, tail)
+    index = BiAdjacent(head, tail)
     assert repr(index) == "BiAdjacent[m = 4, n = 4]"
 
     i2 = index[2]
