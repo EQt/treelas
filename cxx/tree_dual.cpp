@@ -8,7 +8,7 @@
 
 
 double*
-tree_dual(const int n,
+tree_dual(const size_t n,
           double *x,
           const int *parent,
           const int *_postord,
@@ -21,7 +21,7 @@ tree_dual(const int n,
                                  " != " + std::to_string(parent[root]) +
                                  " = parent[root]");
     }
-    PostOrder postorder (n, parent, _postord, root);
+    PostOrder postorder (int(n), parent, _postord, root);
     if (alpha == nullptr) {
         alpha = new double[n];
     }
@@ -39,7 +39,7 @@ tree_dual(const int n,
 
 void
 tree_dual_gap(
-    const int n,
+    const size_t n,
     double *gamma,
     const double *x,
     const double *alpha,
@@ -47,7 +47,7 @@ tree_dual_gap(
     const int *parent,
     const double root_val)
 {
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < int(n); i++) {
         int p = parent[i];
         const double diff = x[i] - x[p];
         gamma[i] = (i == p) ? root_val :

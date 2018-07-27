@@ -1,8 +1,9 @@
 #pragma once
+#include <cstddef>                  // for std::size_t
 
 
 double*
-tree_dual(const int n,
+tree_dual(const size_t n,
           double *x,
           const int *parent,
           const int *_postord,
@@ -12,7 +13,7 @@ tree_dual(const int n,
 
 void
 tree_dual_gap(
-    const int n,
+    const size_t n,
     double *gamma,
     const double *x,
     const double *alpha,
