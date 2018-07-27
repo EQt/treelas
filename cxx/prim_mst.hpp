@@ -25,7 +25,7 @@ random_spanning_tree(const BiAdjacent &index,
             if (parent[u] < 0) {
                 parent[u] = v;
                 stack.push_back(u);
-                stack.swap(rng() % (stack.size()-1), stack.size()-1);
+                stack.swap(rng() % stack.size(), stack.size()-1);
             }
         }
     }
