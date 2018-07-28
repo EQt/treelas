@@ -37,7 +37,9 @@ class Tree:
 
     @property
     def degree(self):
-        return np.diff(self.children.idx) + 1
+        degs = np.diff(self.children.idx) + 1
+        degs[-1] -= 1
+        return degs
 
     @property
     def n(self):
