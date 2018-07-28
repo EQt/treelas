@@ -27,7 +27,6 @@ add_subdirectory(cmake)
 
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
-
 add_object(line       cxx/line.cpp)
 add_object(line_w     cxx/line_w.cpp)
 add_object(line_para  cxx/line_para.cpp)
