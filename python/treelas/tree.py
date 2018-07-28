@@ -58,7 +58,7 @@ Tree(n={self.n},
     @staticmethod
     def from_prufer(prufer):
         """If choose root by the Prüfer sequence"""
-        parent, root = _tl.prufer2parent(prufer.astype(np.int32, copy=False))
+        parent, root = _tl.prufer2parent(np.asarray(prufer, dtype=np.int32))
         return Tree(parent, root=root)
 
     @classmethod
