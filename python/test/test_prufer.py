@@ -17,6 +17,13 @@ def test_tree_from_prufer3():
     assert (t.parent == [2, 2, 3, 4, 4]).all()
 
 
+def test_tree_from_prufer5():
+    p = [a for i in range(5) for a in [i]*2]
+    assert len(p) == 10
+    t = Tree.from_prufer(p)
+    assert t.n == 12
+
+
 if __name__ == '__main__':
     import argparse
 
