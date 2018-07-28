@@ -1,9 +1,7 @@
-#include <cstdint>
 #include <algorithm>                // for std::sort
 #include <pybind11/pybind11.h>
 
 #include "../cxx/utils/compiler.hpp"
-#include "../cxx/utils/timer.hpp"
 #include "../cxx/prufer.hpp"
 #include "../cxx/root.hpp"
 
