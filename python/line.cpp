@@ -237,4 +237,17 @@ reg_line(py::module &m)
           py::arg("mu"),
           py::arg("lam"),
           py::arg("x") = py::none());
+
+    /*
+    py::def("dp_forward", np_dp_forward, (
+                arg("y"),
+                arg("mu"),
+                arg("lam")),
+            "Forward clipping along a line");
+    py::def("dp_reverse", np_dp_reverse, (
+                arg("y"),
+                arg("mu"),
+                arg("lam")),
+            "Reverse clipping along a line");
+    */
 }
