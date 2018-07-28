@@ -46,7 +46,7 @@ PYBIND11_MODULE(_treelas, m)
               Test to create an array with elements [13., -1., 42]
           )pbdoc");
 
-    m.def("_empty_array_f64", []() -> py:;array_f64 { return py::array_t<double>(); },
+    m.def("_empty_array_f64", []() -> py::array_f64 { return py::array_t<double>(); },
           "Create an empty np.float64 array");
 
     m.def("_empty_array_i32", []() { return py::array_t<int32_t>(); }, R"pbdoc(
