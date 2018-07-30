@@ -1,6 +1,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <cstring>                  // for std::memset
 
 #include "utils/malloc.hpp"
 #include "utils/timer.hpp"
@@ -14,8 +15,12 @@ test_malloc(const size_t n)
     Malloc<char> a (n);
     char *b = a.data();
     timer.stop();
+    {
+        Timer _ ("memset");
+        std::memset((void*)b, 0, n);
+    }
     for (size_t i = 0; i < n; i += 8)
-        b[i] = char(i);
+        b[i] += char(i);
     Timer::startit("free");
 }
 
