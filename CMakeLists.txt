@@ -77,6 +77,10 @@ if (BUILD_PYEXT)
 endif()
 
 
+add_executable(malloc_vs_new
+  cxx/malloc_vs_new.cpp
+)
+
 # HDF5
 find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
