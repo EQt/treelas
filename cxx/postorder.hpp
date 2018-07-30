@@ -9,7 +9,7 @@
    If postord == nullptr, it will be allocated.
  */
 int*
-post_order(const int n,
+post_order(const size_t n,
            const int *parent,
            const int root = 0,
            int *postord = nullptr);
@@ -28,7 +28,7 @@ post_order(const int root,
 class PostOrder
 {
     const int *postord;
-    const int n;
+    const size_t n;
     const bool include_root;
     std::vector<int> _postord_buf;
 
@@ -37,13 +37,13 @@ public:
               const int *postord = nullptr,
               const int root = 0,
               const bool include_root = false)
-        : PostOrder(int(parent.size()),
+        : PostOrder(parent.size(),
                     parent.data(),
                     postord,
                     root,
                     include_root) { }
 
-    PostOrder(int n,
+    PostOrder(size_t n,
               const int *parent,
               const int *postord = nullptr,
               const int root = 0,
