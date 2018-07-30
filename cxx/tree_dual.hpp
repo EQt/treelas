@@ -1,5 +1,5 @@
 #pragma once
-#include <cstddef>                  // for std::size_t
+#include <cstddef>              // std::size_t
 
 
 double*

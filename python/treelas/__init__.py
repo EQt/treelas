@@ -23,7 +23,7 @@ from ._treelas import (
     line_condat,
     line_glmgen,
     line_las,
-#   line_w,
+    line_w,
     line_para,
     line_lasc,
     line_las2,
@@ -35,7 +35,7 @@ from ._treelas import (
     tree_dual,
     tree_dual_gap,
     random_spanning_tree,
-#   post_order,
+    post_order,
 #   dp_forward, dp_reverse,
 )
 

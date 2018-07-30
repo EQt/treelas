@@ -27,7 +27,7 @@ post_order(const int root,
 
 
 int*
-post_order(const int n,
+post_order(const size_t n,
            const int *parent,
            const int root,
            int *postord)
