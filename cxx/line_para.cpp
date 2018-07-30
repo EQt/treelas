@@ -3,6 +3,7 @@
 
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"         // for clip(x, lb, ub)
+#include "utils/plotpwl.hpp"        // for debugging
 #include "line_para.hpp"
 #include "line.hpp"
 #include "clip.hpp"
@@ -45,11 +46,13 @@ line_para(const size_t n,
     std::cerr << "pq1 = " << pq1 << std::endl;
     Queue pq = merge(pq0, pq1, event);
     std::cerr << "pq  = " << pq << std::endl;
+    std::cerr << pwl_csv(pq, event) << std::endl;
 
     {   Timer _ ("root value");
         const float_ mu = 1.0;
         x[n0-1] = clip_front(event, pq, mu, -mu*y[n0-1] -lam, 0.0);
     }
+    std::cerr << "x[" << n0 - 1 << "] = " << x[n0-1] << std::endl;
     {   Timer _ ("backward halve0");
         for (int i = int(n0-2); i >= 0; i--)
             x[i] = clip(x[i+1], lb[i], ub[i]);
