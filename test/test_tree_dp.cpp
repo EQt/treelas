@@ -158,10 +158,10 @@ TEST(dptree0, DISABLED_proc_order)
         ASSERT_DOUBLE_EQ(sig[parent[i]], 0.01);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 0}));
         const auto sig_i = sig[i];
-        lb[i] = clip_fronw(elements, pq[i],
+        lb[i] = clip_front(elements, pq[i],
                            /* slope  */ +mu[i],
                            /* offset */ -mu[i]*y[i] -sig_i,
-                           /* t      */ -lam_i, min_y);
+                           /* t      */ -lam_i);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 1.99}));
         ASSERT_DOUBLE_EQ(lb[i], 2.0 - 0.01);
         ASSERT_EQ(pq[i], Queue({3, 3}));
@@ -169,7 +169,7 @@ TEST(dptree0, DISABLED_proc_order)
                   Event({.x = lb[i], .slope = mu[i],
                          .offset = -mu[i]*y[i] + lam[i]}));
 
-        ub[i] = clip_backw (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i, max_y);
+        ub[i] = clip_back  (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 1.99}));
         ASSERT_DOUBLE_EQ(ub[i], 2.0 + 0.01);
         ASSERT_EQ(pq[i], Queue({3, 4}));
@@ -192,10 +192,10 @@ TEST(dptree0, DISABLED_proc_order)
         ASSERT_DOUBLE_EQ(sig[parent[i]], 0.02);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.02, 0, 0, 0, 1.99}));
         ASSERT_DOUBLE_EQ(sig_i, 0.0);
-        lb[i] = clip_fronw(elements, pq[i],
+        lb[i] = clip_front(elements, pq[i],
                            /* slope  */ +mu[i],
                            /* offset */ -mu[i]*y[i] -sig_i,
-                           /* t      */ -lam_i, min_y);
+                           /* t      */ -lam_i);
         ASSERT_DOUBLE_EQ(lb[i], 0.0 - 0.01);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.02, 0, 0, -0.01, 1.99}));
         ASSERT_EQ(pq[i], Queue({5, 5}));
@@ -203,7 +203,7 @@ TEST(dptree0, DISABLED_proc_order)
                   Event({.x = lb[i], .slope = mu[i],
                          .offset = -mu[i]*y[i] + lam[i]}));
 
-        ub[i] = clip_backw(elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i, max_y);
+        ub[i] = clip_back (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         ASSERT_DOUBLE_EQ(ub[i], 0.0 + 0.01);
         ASSERT_EQ(pq[i], Queue({5, 6}));
         ASSERT_EQ(elements[6],
@@ -243,10 +243,10 @@ TEST(dptree0, DISABLED_proc_order)
             ASSERT_EQ(t, -0.02);
             ASSERT_EQ(slope * e.x + offset, t);
             ASSERT_LE(q.start, q.stop);
-            lb[i] = clip_fronw(elements, pq[i],
+            lb[i] = clip_front(elements, pq[i],
                                /* slope  */ slope,
                                /* offset */ offset,
-                               /* t      */ t, min_y);
+                               /* t      */ t);
             ASSERT_EQ(lb[i], 0.0 /*-0.01*/);    // uncertainty...
             ASSERT_EQ(offset - t, 0.0);
             ASSERT_EQ(pq[i], Queue({3, 6}));
@@ -272,7 +272,7 @@ TEST(dptree0, DISABLED_proc_order)
             ASSERT_EQ(t, +0.02);
             ASSERT_EQ(slope * e.x + offset, t);
 
-            ub[i] = clip_backw (elements, q, slope, offset, t, max_y);
+            ub[i] = clip_back  (elements, q, slope, offset, t);
             ASSERT_DOUBLE_EQ(ub[i], 2.0 + 0.01);
             ASSERT_EQ(offset - t, 0.0);
             ASSERT_EQ(pq[i], Queue({2, 7}));
@@ -291,8 +291,8 @@ TEST(dptree0, DISABLED_proc_order)
         const auto lam_i = lam[i];
         sig[parent[i]] += lam_i;
         const auto sig_i = sig[i];  // backup before it is set in next line
-        lb[i] = clip_fronw(elements, pq[i], mu[i], -mu[i]*y[i] -sig_i, -lam_i, min_y);
-        ub[i] = clip_backw (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i, max_y);
+        lb[i] = clip_front(elements, pq[i], mu[i], -mu[i]*y[i] -sig_i, -lam_i);
+        ub[i] = clip_back  (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
     }
     {
@@ -301,8 +301,8 @@ TEST(dptree0, DISABLED_proc_order)
         const auto lam_i = lam[i];
         sig[parent[i]] += lam_i;
         const auto sig_i = sig[i];  // backup before it is set in next line
-        lb[i] = clip_fronw(elements, pq[i], mu[i], -mu[i]*y[i] -sig_i, -lam_i, min_y);
-        ub[i] = clip_backw(elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i, max_y);
+        lb[i] = clip_front(elements, pq[i], mu[i], -mu[i]*y[i] -sig_i, -lam_i);
+        ub[i] = clip_back (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
     }
     {
@@ -311,8 +311,8 @@ TEST(dptree0, DISABLED_proc_order)
         const auto lam_i = lam[i];
         const auto sig_i = sig[i];  // backup before it is set in next line
         sig[parent[i]] += lam_i;
-        lb[i] = clip_fronw(elements, pq[i], mu[i], -mu[i]*y[i] -sig_i, -lam_i, min_y);
-        ub[i] = clip_backw(elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i, max_y);
+        lb[i] = clip_front(elements, pq[i], mu[i], -mu[i]*y[i] -sig_i, -lam_i);
+        ub[i] = clip_back (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
     }
     {   // final merge
