@@ -20,8 +20,8 @@ template<typename E = Event2>
 struct TreeDPStatus
 {
     TreeDPStatus(const size_t n) :
-        childs(n),
-        lb(n, 0.0) {
+        childs(n) {
+        lb.reserve(n);
         elements_.reserve(2*n),
         pq.reserve(n),
         proc_order.reserve(n);
@@ -59,6 +59,10 @@ _tree_dp(
     const auto &childs = s.childs;
     const auto &proc_order = s.proc_order;
 
+    {   Timer _ ("lb init");
+        for (size_t i = 0; i < n; i++)
+            lb[i] = 0;
+    }
     {   Timer _ ("children index");
         s.childs.reset(parent, n, root);
     }
