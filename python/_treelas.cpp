@@ -116,10 +116,13 @@ PYBIND11_MODULE(_treelas, m)
               int *postord_buf = post_order(n,
                                             parent.data(),
                                             root);
-              return py::array_t<int32_t>({n}, {sizeof(int32_t)}, postord_buf);
-          }
-          "Compute the DFS post order starting at root "
-          "on the tree given by parent",
+              return py::array_t<int32_t>({include_root ? n : n-1},
+                                          {sizeof(int32_t)}, postord_buf);
+          },
+          R"pbdoc(
+              Compute a post order (DFS finish time) starting at root
+              on the tree given by parent
+          )pbdoc",
           py::arg("parent"),
           py::arg("root") = -1,
           py::arg("include_root") = false);
