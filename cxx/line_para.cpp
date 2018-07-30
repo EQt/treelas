@@ -42,6 +42,9 @@ line_para(const size_t n,
         dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
     }
 
+    std::cerr << "&x      = " << x << std::endl;
+    std::cerr << "&event  = " << event << std::endl;
+    std::cerr << "2*n = " << 2*n << std::endl;
     std::cerr << "pq0 = " << pq0 << std::endl;
     std::cerr << "pq1 = " << pq1 << std::endl;
 
@@ -57,10 +60,12 @@ line_para(const size_t n,
 
     {   Timer _ ("root value");
         const float_ mu = 1.0;
-        x[n0] = clip_front(event, pq, mu, -mu*y[n0] -2*lam, 0.0);
+        x[n0] = clip_back(event, pq, mu, -mu*y[n0] +2*lam, 0.0);
     }
+
     std::cerr << "x[" << n0 << "] = " << x[n0] << std::endl;
     std::cerr << "y[" << n0 << "] = " << y[n0] << std::endl;
+
     {   Timer _ ("backward half1");
         for (size_t i = n0+1; i < n; i++)
             x[i] = clip(x[i-1], lb[i], ub[i]);

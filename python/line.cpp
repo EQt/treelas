@@ -196,6 +196,7 @@ reg_line(py::module &m)
               if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
+
               line_para(n, y.data(), lam, out.mutable_data());
               return out;
           },
