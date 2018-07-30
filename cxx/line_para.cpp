@@ -37,41 +37,37 @@ line_para(const size_t n,
     Queue pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
 
     {   Timer _ ("forward halve");
-        std::cerr << "lb =  ";
-        print_it(std::cerr, lb, lb+2);
-        std::cerr << std::endl;
+        // std::cerr << "lb =  "; print_it(// std::cerr, lb, lb+2); // std::cerr << std::endl;
         dp_forward(y, lam, lb, ub, event, pq0, 0, n0+1);
-        std::cerr << "lb -->";
-        print_it(std::cerr, lb, lb+2);
-        std::cerr << std::endl;
+        // std::cerr << "lb -->"; print_it(// std::cerr, lb, lb+2); // std::cerr << std::endl;
     }
     {   Timer _ ("reverse halve");
         dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
     }
 
-    std::cerr << "&x      = " << x << std::endl;
-    std::cerr << "&event  = " << event << std::endl;
-    std::cerr << "2*n = " << 2*n << std::endl;
-    std::cerr << "pq0 = " << pq0 << std::endl;
-    std::cerr << "pq1 = " << pq1 << std::endl;
+    // std::cerr << "&x      = " << x << std::endl;
+    // std::cerr << "&event  = " << event << std::endl;
+    // std::cerr << "2*n = " << 2*n << std::endl;
+    // std::cerr << "pq0 = " << pq0 << std::endl;
+    // std::cerr << "pq1 = " << pq1 << std::endl;
 
-    std::cerr << "pwl0" << std::endl;
-    std::cerr << pwl_csv(pq0, event) << std::endl;
+    // std::cerr << "pwl0" << std::endl;
+    // std::cerr << pwl_csv(pq0, event) << std::endl;
 
-    std::cerr << "pwl1" << std::endl;
-    std::cerr << pwl_csv(pq1, event) << std::endl;
+    // std::cerr << "pwl1" << std::endl;
+    // std::cerr << pwl_csv(pq1, event) << std::endl;
 
     Queue pq = merge(pq0, pq1, event);
-    std::cerr << "pq  = " << pq << std::endl;
-    std::cerr << pwl_csv(pq, event) << std::endl;
+    // std::cerr << "pq  = " << pq << std::endl;
+    // std::cerr << pwl_csv(pq, event) << std::endl;
 
     {   Timer _ ("root value");
         const float_ mu = 1.0;
         x[n0] = clip_back(event, pq, mu, -mu*y[n0] +2*lam, 0.0);
     }
 
-    std::cerr << "x[" << n0 << "] = " << x[n0] << std::endl;
-    std::cerr << "y[" << n0 << "] = " << y[n0] << std::endl;
+    // std::cerr << "x[" << n0 << "] = " << x[n0] << std::endl;
+    // std::cerr << "y[" << n0 << "] = " << y[n0] << std::endl;
 
     {   Timer _ ("backward half1");
         for (size_t i = n0+1; i < n; i++)
