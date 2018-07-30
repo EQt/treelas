@@ -64,7 +64,7 @@ dp_reverse_w(
     const double *mu,
     const double *lam,
     double &off,
-    Event2 *event = nullptr);
+    Event2 *event);
 
 
 template<typename float_ = double>
