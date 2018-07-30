@@ -54,6 +54,19 @@ dp_reverse_w(
     Event_ *event = nullptr);
 
 
+extern template
+Queue
+dp_reverse_w(
+    const int n,
+    double *lb,
+    double *ub,
+    const double *y,
+    const double *mu,
+    const double *lam,
+    double &off,
+    Event2 *event = nullptr);
+
+
 template<typename float_ = double>
 void
 line_w(

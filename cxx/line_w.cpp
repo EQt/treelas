@@ -83,7 +83,8 @@ dp_reverse_w(
 }
 
 
-template double
+template
+Queue
 dp_reverse_w(
     const int n,
     double *lb,
@@ -91,6 +92,7 @@ dp_reverse_w(
     const double *y,
     const double *mu,
     const double *lam,
+    double &off,
     Event2 *event = nullptr);
 
 
