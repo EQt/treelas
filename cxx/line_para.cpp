@@ -6,8 +6,20 @@ void
 line_para(const int n,
           const float_ *y,
           const float_ lam,
-          float_ *beta)
+          float_ *x)
 {
+    std::vector<Event2> event_;
+    std::vector<float_> ub_;
+    {   Timer _ ("allocation");
+        event_.reserve(2*n);
+        ub_.reserve(n-1);
+    }
+
+    Event2 *event = event_.data();
+    float_
+        *ub = ub_.data(),
+        *lb = x;
+
     const int n0 = n / 2;
     const int n1 = n - n0;
 }
@@ -18,9 +30,7 @@ void
 line_para(const int n,
           const double *y,
           const double lam,
-          double *beta);
-
-
+          double *x);
 
 
 #ifndef PARALLEL

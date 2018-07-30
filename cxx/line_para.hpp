@@ -8,12 +8,13 @@ void
 line_para(const int n,
           const float_ *y,
           const float_ lam,
-          float_ *beta);
+          float_ *x);
 
 
 extern template
 void
 line_para(const int n,
+          double *x,
           const double *y,
           const double lam,
-          double *beta);
+          double *x);
