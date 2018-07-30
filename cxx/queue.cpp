@@ -6,6 +6,7 @@
 
 #include "utils/timer.hpp"
 
+#include "stack.hpp"
 #include "queue.hpp"
 #include "children.hpp"
 
@@ -18,7 +19,7 @@
    timc: If not NULL, allocate a Timer before returning.
          This makes it possible to measure the time needed for deallocation.
 */
-void
+inline void
 init_queues(const size_t n,
             std::vector<Queue> &pq,
             std::vector<int> &proc_order,
