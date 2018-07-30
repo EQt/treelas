@@ -33,7 +33,6 @@ test_vector(const size_t n)
 }
 
 
-
 int
 main()
 {
