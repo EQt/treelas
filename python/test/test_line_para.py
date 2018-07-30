@@ -1,9 +1,7 @@
 import numpy as np
 from treelas import line_para
-from pytest import mark
 
 
-@mark.xfail
 def test_line1():
     y = np.array([1, 0, 0.5])
     lam = 0.5
@@ -11,7 +9,6 @@ def test_line1():
     assert (x == 0.5).all(), repr(x)
 
 
-@mark.xfail
 def test_line2():
     """with pre-allocated output array"""
     y = np.array([1, 0, 0.5])
@@ -21,7 +18,6 @@ def test_line2():
     assert (x == 0.5).all()
 
 
-@mark.xfail
 def test_line3():
     """different lambda"""
     y = np.array([1, 0, 0.5])
