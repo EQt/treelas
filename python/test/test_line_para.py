@@ -2,14 +2,14 @@ import numpy as np
 from treelas import line_para
 
 
-def test_line1():
+def test_line1_para():
     y = np.array([1, 0, 0.5])
     lam = 0.5
     x = line_para(y, lam)
     assert (x == 0.5).all(), repr(x)
 
 
-def test_line2():
+def test_line2_para():
     """with pre-allocated output array"""
     y = np.array([1, 0, 0.5])
     lam = 0.5
@@ -18,7 +18,7 @@ def test_line2():
     assert (x == 0.5).all()
 
 
-def test_line3():
+def test_line3_para():
     """different lambda"""
     y = np.array([1, 0, 0.5])
     lam = 0.1
