@@ -34,12 +34,17 @@ line_para(const size_t n,
 
     Queue pq0 {int(0*n0 + n0), int(0*n0 + n0-1)};
     Queue pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
+    float_
+        *lb0 = lb,
+        *ub0 = ub,
+        *lb1 = lb + n0,
+        *ub1 = ub + n0;
 
     {   Timer _ ("forward halve");
-        dp_forward(y, lam, lb, ub, event, pq0, 0, n0);
+        dp_forward(y, lam, lb0, ub0, event, pq0, 0, n0);
     }
     {   Timer _ ("reverse halve");
-        dp_reverse(y, lam, lb, ub, event, pq1, n0, n);
+        dp_reverse(y, lam, lb1, ub1, event, pq1, n0, n);
     }
 
     std::cerr << "pq0 = " << pq0 << std::endl;
