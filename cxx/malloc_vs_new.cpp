@@ -1,3 +1,17 @@
+/**
+   Analyze, why std::vector<...> allocation seems so slow.
+   Basically, the results of [1] are reconstructed, i.e.
+
+      std::vector<int> (n)
+
+   is the same as
+
+      std::vector<int> (n, 0)
+
+   (which is somehow unexpected).
+
+   [1]: https://stackoverflow.com/q/17347254
+*/
 #include <vector>
 #include <string>
 #include <iostream>
