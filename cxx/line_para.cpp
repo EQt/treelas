@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 
 #include "utils/timer.hpp"
@@ -40,7 +41,10 @@ line_para(const size_t n,
         dp_reverse(y, lam, lb, ub, event, pq1, n0, n);
     }
 
+    std::cerr << "pq0 = " << pq0 << std::endl;
+    std::cerr << "pq1 = " << pq1 << std::endl;
     merge(pq0, pq1, event);
+    std::cerr << "pq  = " << pq0 << std::endl;
 
     Queue &pq = pq0;
     {   Timer _ ("root value");
