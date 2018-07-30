@@ -28,7 +28,7 @@ dp_forward(
     const size_t end)
 {
     const float_ mu = 1.0;
-    { // i = n-1
+    { // i = 0
         const auto i = begin;
         lb[i] = clip_front(event, pq, mu, -mu*y[i] -0.0, -lam);
         ub[i] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
