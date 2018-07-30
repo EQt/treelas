@@ -34,7 +34,7 @@ test_malloc(const size_t n)
         std::memset((void*)b, 0, n);
     }
     for (size_t i = 0; i < n; i += 8)
-        b[i] += char(i);
+        b[i] = char(i + b[i]);
     Timer::startit("free");
 }
 

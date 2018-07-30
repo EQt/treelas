@@ -21,9 +21,9 @@ struct TreeDPStatus
 {
     TreeDPStatus(const size_t n) :
         childs(n),
-        elements_(2*n),
-        pq(n),
         lb(n, 0.0) {
+        elements_.reserve(2*n),
+        pq.reserve(n),
         proc_order.reserve(n);
         dfs_stack.reserve(n);
     }
