@@ -44,6 +44,13 @@ line_para(const size_t n,
 
     std::cerr << "pq0 = " << pq0 << std::endl;
     std::cerr << "pq1 = " << pq1 << std::endl;
+
+    std::cerr << "pwl0" << std::endl;
+    std::cerr << pwl_csv(pq0, event) << std::endl;
+
+    std::cerr << "pwl1" << std::endl;
+    std::cerr << pwl_csv(pq1, event) << std::endl;
+
     Queue pq = merge(pq0, pq1, event);
     std::cerr << "pq  = " << pq << std::endl;
     std::cerr << pwl_csv(pq, event) << std::endl;
