@@ -62,16 +62,16 @@ line_para(const size_t n,
 
     {   Timer _ ("root value");
         const float_ mu = 1.0;
-        x[n0-1] = clip_front(event, pq, mu, -mu*y[n0-1] -lam, 0.0);
+        x[n0] = clip_front(event, pq, mu, -mu*y[n0] -lam, 0.0);
     }
-    std::cerr << "x[" << n0 - 1 << "] = " << x[n0-1] << std::endl;
-    {   Timer _ ("backward halve0");
-        for (int i = int(n0-2); i >= 0; i--)
-            x[i] = clip(x[i+1], lb[i], ub[i]);
-    }
-    {   Timer _ ("backward halve1");
-        for (size_t i = n0; i < n; i++)
+    std::cerr << "x[" << n0 << "] = " << x[n0] << std::endl;
+    {   Timer _ ("backward half1");
+        for (size_t i = n0+1; i < n; i++)
             x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
+    }
+    {   Timer _ ("backward half0");
+        for (int i = int(n0-1); i >= 0; i--)
+            x[i] = clip(x[i+1], lb[i], ub[i]);
     }
 }
 
