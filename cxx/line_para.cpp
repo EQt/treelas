@@ -43,10 +43,9 @@ line_para(const size_t n,
 
     std::cerr << "pq0 = " << pq0 << std::endl;
     std::cerr << "pq1 = " << pq1 << std::endl;
-    merge(pq0, pq1, event);
-    std::cerr << "pq  = " << pq0 << std::endl;
+    Queue pq = merge(pq0, pq1, event);
+    std::cerr << "pq  = " << pq << std::endl;
 
-    Queue &pq = pq0;
     {   Timer _ ("root value");
         const float_ mu = 1.0;
         x[n0-1] = clip_front(event, pq, mu, -mu*y[n0-1] -lam, 0.0);
