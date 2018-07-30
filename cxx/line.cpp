@@ -38,8 +38,11 @@ dp_line(const size_t n,
     Event2 *event = event_.data();
     float_ *ub = ub_.data();
 #else
-    std::vector<Event2> event_ (2*n);
-    std::vector<float_> ub_ (n-1);
+    std::vector<Event2> event_;
+    std::vector<float_> ub_;
+    event_.reserve(2*n);
+    ub_.reserve(n-1);
+
     Event2 *event = event_.data();
     float_ *ub = ub_.data();
 #endif

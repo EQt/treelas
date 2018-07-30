@@ -3,7 +3,7 @@
 #include "queue.hpp"
 
 #undef UNIQUE_PTR       // use "new T[n]" allocator?
-#define MALLOC   1      // use Malloc(n) allocator?
+#undef MALLOC           // use Malloc(n) allocator?
 
 
 template<typename float_ = double>
