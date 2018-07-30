@@ -38,11 +38,11 @@ line_para(const size_t n,
 
     {   Timer _ ("forward halve");
         std::cerr << "lb =  ";
-        print_it(std::cerr, lb+1, lb+2+1);
+        print_it(std::cerr, lb, lb+2);
         std::cerr << std::endl;
-        dp_forward(y, lam, lb, ub, event, pq0, 0, n0);
+        dp_forward(y, lam, lb, ub, event, pq0, 0, n0+1);
         std::cerr << "lb -->";
-        print_it(std::cerr, lb+pq0.start, lb+pq0.stop+1);
+        print_it(std::cerr, lb, lb+2);
         std::cerr << std::endl;
     }
     {   Timer _ ("reverse halve");

@@ -51,4 +51,4 @@ def test_line3_rev():
     x = y.copy()
     line_las(y, lam, x, increasing=True)
     expected = np.array([0.9, 0.2, 0.4])
-    assert (np.abs(x - expected) < 1e-15).all()
+    assert (np.abs(x - expected) < 1e-15).all(), x
