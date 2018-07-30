@@ -8,7 +8,8 @@ line_para(const int n,
           const float_ lam,
           float_ *beta)
 {
-    
+    const int n0 = n / 2;
+    const int n1 = n - n0;
 }
 
 
