@@ -23,3 +23,29 @@ line_dp(const size_t n,
         const double *y,
         const double lam,
         const bool increasing);
+
+
+template<typename float_ = double, typename Event = Event2>
+void
+dp_forward(
+    const float_ *y,
+    const float_ lam,
+    float_ *lb,
+    float_ *ub,
+    Event *event,
+    Queue &pq,
+    const size_t begin,
+    const size_t end);
+
+
+template<typename float_ = double, typename Event = Event2>
+void
+dp_reverse(
+    const float_ *y,
+    const float_ lam,
+    float_ *lb,
+    float_ *ub,
+    Event *event,
+    Queue &pq,
+    const size_t begin,
+    const size_t end);

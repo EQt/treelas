@@ -1,8 +1,11 @@
 #include <vector>
 
 #include "utils/timer.hpp"
+#include "utils/minmax.hpp"         // for clip(x, lb, ub)
 #include "line_para.hpp"
 #include "line.hpp"
+#include "clip.hpp"
+#include "queue.cpp"
 
 
 template <typename float_>
@@ -26,6 +29,27 @@ line_para(const int n,
 
     const int n0 = n / 2;
     const int n1 = n - n0;
+
+    Queue pq0 {int(0*n0 + n0), int(0*n0 + n0-1)};
+    Queue pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
+
+    {   Timer _ ("forward halve");
+        dp_forward(y, lam, lb, ub, event, pq0, 0, n0);
+    }
+    {   Timer _ ("reverse halve");
+        dp_reverse(y, lam, lb, ub, event, pq1, n0, n);
+    }
+
+    merge(pq0, pq1, event);
+
+    Queue &pq = pq0;
+    {   Timer _ ("backward");
+        const float_ mu = 1.0;
+        x[n0-1] = clip_front(event, pq, mu, -mu*y[n0-1] -lam, 0.0);
+        for (int i = int(n-2); i >= 0; i--) {
+            x[i] = clip(x[i+1], lb[i], ub[i]);
+        }
+    }
 }
 
 
