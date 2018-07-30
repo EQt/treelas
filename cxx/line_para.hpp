@@ -5,7 +5,7 @@
 
 template <typename float_ = double>
 void
-line_para(const int n,
+line_para(const size_t n,
           const float_ *y,
           const float_ lam,
           float_ *x);
@@ -13,7 +13,7 @@ line_para(const int n,
 
 extern template
 void
-line_para(const int n,
+line_para(const size_t n,
           const double *y,
           const double lam,
           double *x);

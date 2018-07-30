@@ -10,7 +10,7 @@
 
 template <typename float_>
 void
-line_para(const int n,
+line_para(const size_t n,
           const float_ *y,
           const float_ lam,
           float_ *x)
@@ -27,8 +27,8 @@ line_para(const int n,
         *ub = ub_.data(),
         *lb = x;
 
-    const int n0 = n / 2;
-    const int n1 = n - n0;
+    const size_t n0 = n / 2;
+    const size_t n1 = n - n0;
 
     Queue pq0 {int(0*n0 + n0), int(0*n0 + n0-1)};
     Queue pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
@@ -43,19 +43,24 @@ line_para(const int n,
     merge(pq0, pq1, event);
 
     Queue &pq = pq0;
-    {   Timer _ ("backward");
+    {   Timer _ ("root value");
         const float_ mu = 1.0;
         x[n0-1] = clip_front(event, pq, mu, -mu*y[n0-1] -lam, 0.0);
-        for (int i = int(n-2); i >= 0; i--) {
+    }
+    {   Timer _ ("backward halve0");
+        for (int i = int(n0-2); i >= 0; i--)
             x[i] = clip(x[i+1], lb[i], ub[i]);
-        }
+    }
+    {   Timer _ ("backward halve1");
+        for (size_t i = n0; i < n; i++)
+            x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
     }
 }
 
 
 template
 void
-line_para(const int n,
+line_para(const size_t n,
           const double *y,
           const double lam,
           double *x);
