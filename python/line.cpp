@@ -238,6 +238,7 @@ reg_line(py::module &m)
           py::arg("lam"),
           py::arg("x") = py::none());
 
+    /*
     m.def("dp_forward_w",
           [](const py::array_f64 &y,
              const py::array_f64 &mu,
@@ -263,6 +264,7 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("mu"),
           py::arg("lam"));
+    */
     // py::def("dp_reverse", np_dp_reverse, (
     //             arg("y"),
     //             arg("mu"),
