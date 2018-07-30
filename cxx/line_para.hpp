@@ -14,7 +14,6 @@ line_para(const int n,
 extern template
 void
 line_para(const int n,
-          double *x,
           const double *y,
           const double lam,
           double *x);

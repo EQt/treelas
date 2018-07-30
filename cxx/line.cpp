@@ -15,6 +15,31 @@
 #include "clip.hpp"
 
 
+template<typename float_ = double, typename Event = Event2>
+void
+dp_forward(
+    const float_ *y,
+    const float_ lam,
+    float_ *lb,
+    float_ *ub,
+    Event *event,
+    Queue &pq,
+    const size_t begin,
+    const size_t end)
+{
+    const float_ mu = 1.0;
+
+    { // i = n-1
+        const auto i = begin;
+        lb[i] = clip_front(event, pq, mu, -mu*y[i] -0.0, -lam);
+        ub[i] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
+    }
+    for (size_t i = 1; i < end; i++) {
+        lb[i] = clip_front(event, pq, mu, -mu*y[i] -lam, -lam);
+        ub[i] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
+    }
+}
+
 
 template<typename float_>
 void
@@ -53,15 +78,7 @@ dp_line(const size_t n,
     if (increasing) {
         float_ *lb = x;
         {   Timer _ ("forward");
-            { // i = n-1
-                const auto i = 0;
-                lb[i] = clip_front(event, pq, mu, -mu*y[i] -0.0, -lam);
-                ub[i] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
-            }
-            for (size_t i = 1; i < n-1; i++) {
-                lb[i] = clip_front(event, pq, mu, -mu*y[i] -lam, -lam);
-                ub[i] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
-            }
+            dp_forward(y, lam, lb, ub, event, pq, 0, n-1);
         }
 
         {   Timer _ ("backward");
@@ -72,7 +89,7 @@ dp_line(const size_t n,
         }
     } else {
         float_ *lb = x+1;
-        {   Timer _ ("forward");
+        {   Timer _ ("reverse");
             { // i = n-1
                 const auto i = n-1;
                 lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -0.0, -lam);

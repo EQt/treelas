@@ -1,5 +1,9 @@
+#include <vector>
+
+#include "utils/timer.hpp"
 #include "line_para.hpp"
 #include "line.hpp"
+
 
 template <typename float_>
 void
