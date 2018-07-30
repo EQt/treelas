@@ -37,7 +37,7 @@ line_para(const size_t n,
     float_
         *lb0 = lb,
         *ub0 = ub,
-        *lb1 = lb + n0,
+        *lb1 = lb + n0 + 1,
         *ub1 = ub + n0;
 
     {   Timer _ ("forward halve");
