@@ -8,7 +8,7 @@
 
 template<typename float_ = double>
 void
-dp_line(
+line_dp(
     const size_t n,
     float_ *x,
     const float_ *y,
@@ -18,7 +18,7 @@ dp_line(
 
 extern template
 void
-dp_line(const size_t n,
+line_dp(const size_t n,
         double *x,
         const double *y,
         const double lam,

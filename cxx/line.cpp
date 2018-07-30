@@ -43,7 +43,7 @@ dp_forward(
 
 template<typename float_>
 void
-dp_line(const size_t n,
+line_dp(const size_t n,
         float_ *x,
         const float_ *y,
         const float_ lam,
@@ -113,7 +113,7 @@ dp_line(const size_t n,
 
 template
 void
-dp_line(const size_t n,
+line_dp(const size_t n,
         double *x,
         const double *y,
         const double lam,

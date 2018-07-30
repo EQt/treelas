@@ -86,7 +86,7 @@ reg_line(py::module &m)
               if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
-              dp_line(n,
+              line_dp(n,
                       out.mutable_data(),
                       y.data(),
                       lam,
