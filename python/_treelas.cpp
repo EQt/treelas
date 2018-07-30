@@ -109,16 +109,6 @@ PYBIND11_MODULE(_treelas, m)
     reg_spanning(m);
 
     /*
-    py::def("dp_forward", np_dp_forward, (
-                arg("y"),
-                arg("mu"),
-                arg("lam")),
-            "Forward clipping along a line");
-    py::def("dp_reverse", np_dp_reverse, (
-                arg("y"),
-                arg("mu"),
-                arg("lam")),
-            "Reverse clipping along a line");
     py::def("post_order", np_post_ord, (
                 arg("parent"),
                 arg("root") = 0,
