@@ -104,16 +104,26 @@ PYBIND11_MODULE(_treelas, m)
           )pbdoc",
           py::arg("parent"));
 
+    m.def("post_order",
+          [](const py::array_i32 &parent,
+             const int root,
+             const bool include_root) -> py::array_i32
+          {
+              const size_t n = check_1d_len(parent, "parent");
+              if (root < 0)
+                  root = find_root(n, parent.data());
+              int *postord_buf = post_order(n,
+                                            parent.data(),
+                                            root);
+              return py::array_i32(postord_buf, {n}, {sizeof(int32_t)});
+          }
+          "Compute the DFS post order starting at root "
+          "on the tree given by parent",
+          py::arg("parent"),
+          py::arg("root") = -1,
+          py::arg("include_root") = false);
+
     reg_tree(m);
     reg_biadjacent(m);
     reg_spanning(m);
-
-    /*
-    py::def("post_order", np_post_ord, (
-                arg("parent"),
-                arg("root") = 0,
-                arg("include_root") = false),
-            "Compute the DFS post order starting at root "
-            "on the tree given by parent");
-    */
 }
