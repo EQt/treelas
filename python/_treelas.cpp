@@ -6,6 +6,7 @@
 #include "../cxx/utils/timer.hpp"
 #include "../cxx/prufer.hpp"
 #include "../cxx/root.hpp"
+#include "../cxx/postorder.hpp"
 
 #include "py_np.hpp"
 
@@ -106,7 +107,7 @@ PYBIND11_MODULE(_treelas, m)
 
     m.def("post_order",
           [](const py::array_i32 &parent,
-             const int root,
+             int root,
              const bool include_root) -> py::array_i32
           {
               const size_t n = check_1d_len(parent, "parent");
