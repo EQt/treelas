@@ -27,3 +27,11 @@ def test_line3_para():
     line_para(y, lam, x)
     expected = np.array([0.9, 0.2, 0.4])
     assert (np.abs(x - expected) < 1e-15).all()
+
+
+def test_line4_para():
+    y = np.array([-0.28,  0.58,  2.15, -1.28])
+    lam = 0.01
+    x = line_para(y, lam)
+    expected = np.array([-0.27,  0.58,  2.13, -1.27])
+    assert (np.abs(x - expected) < 1e-15).all(), x
