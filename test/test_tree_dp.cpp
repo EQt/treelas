@@ -167,7 +167,7 @@ TEST(dptree0, DISABLED_proc_order)
         ASSERT_EQ(pq[i], Queue({3, 3}));
         ASSERT_EQ(elements[3],
                   Event({.x = lb[i], .slope = mu[i],
-                         .offset = -mu[i]*y[i] + lam[i]}));
+                         ._offset = -mu[i]*y[i] + lam[i]}));
 
         ub[i] = clip_back  (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 1.99}));
@@ -175,7 +175,7 @@ TEST(dptree0, DISABLED_proc_order)
         ASSERT_EQ(pq[i], Queue({3, 4}));
         ASSERT_EQ(elements[4],
                   Event({.x = ub[i], .slope = -mu[i],
-                         .offset = +mu[i]*y[i] + lam[i]}));
+                         ._offset = +mu[i]*y[i] + lam[i]}));
 
         ASSERT_EQ(pq[parent[i]], Queue({7, 6}));
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
@@ -201,14 +201,14 @@ TEST(dptree0, DISABLED_proc_order)
         ASSERT_EQ(pq[i], Queue({5, 5}));
         ASSERT_EQ(elements[5],
                   Event({.x = lb[i], .slope = mu[i],
-                         .offset = -mu[i]*y[i] + lam[i]}));
+                         ._offset = -mu[i]*y[i] + lam[i]}));
 
         ub[i] = clip_back (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         ASSERT_DOUBLE_EQ(ub[i], 0.0 + 0.01);
         ASSERT_EQ(pq[i], Queue({5, 6}));
         ASSERT_EQ(elements[6],
                   Event({.x = ub[i], .slope = -mu[i],
-                         .offset = +mu[i]*y[i] + lam[i]}));
+                         ._offset = +mu[i]*y[i] + lam[i]}));
 
         ASSERT_EQ(pq[parent[i]], Queue({3, 4}));
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
@@ -238,7 +238,7 @@ TEST(dptree0, DISABLED_proc_order)
             auto &e = elements[q.start];
             ASSERT_EQ(offset, -0.02);
             ASSERT_EQ(slope, 0.0);
-            ASSERT_EQ(e, Event({.x = -0.01, .slope = 1, .offset=+0.01}));
+            ASSERT_EQ(e, Event({.x = -0.01, .slope = 1, ._offset=+0.01}));
             ASSERT_EQ(slope * e.x + offset, -0.02);
             ASSERT_EQ(t, -0.02);
             ASSERT_EQ(slope * e.x + offset, t);
@@ -252,9 +252,9 @@ TEST(dptree0, DISABLED_proc_order)
             ASSERT_EQ(pq[i], Queue({3, 6}));
             // TODO: Think about merging those elments automatically
             ASSERT_EQ(elements[2],
-                      Event({.x = -0.01, .slope = 0.0, .offset = 0.0}));
+                      Event({.x = -0.01, .slope = 0.0, ._offset = 0.0}));
             ASSERT_EQ(elements[3],
-                      Event({.x = -0.01, .slope = 1.0, .offset = 0.01}));
+                      Event({.x = -0.01, .slope = 1.0, ._offset = 0.01}));
             EXPECT_EQ(pq[i].start, 2) << pwl_csv(pq[i], elements) << std::endl;
         }
         {
@@ -267,7 +267,7 @@ TEST(dptree0, DISABLED_proc_order)
                 t = +lam_i;
             ASSERT_EQ(offset, +0.02);
             ASSERT_EQ(slope,  +0.0);
-            ASSERT_EQ(e, Event({.x = +2.01, .slope = -1, .offset = +2.01}));
+            ASSERT_EQ(e, Event({.x = +2.01, .slope = -1, ._offset = +2.01}));
             ASSERT_EQ(slope * e.x + offset, +0.02);
             ASSERT_EQ(t, +0.02);
             ASSERT_EQ(slope * e.x + offset, t);
@@ -277,9 +277,9 @@ TEST(dptree0, DISABLED_proc_order)
             ASSERT_EQ(offset - t, 0.0);
             ASSERT_EQ(pq[i], Queue({2, 7}));
             ASSERT_EQ(elements[7],
-                      Event({.x = +2.01, .slope = +0.0, .offset = +0.00}));
+                      Event({.x = +2.01, .slope = +0.0, ._offset = +0.00}));
             ASSERT_EQ(elements[6],
-                      Event({.x = +2.01, .slope = -1.0, .offset = +2.01}));
+                      Event({.x = +2.01, .slope = -1.0, ._offset = +2.01}));
         }
 
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);

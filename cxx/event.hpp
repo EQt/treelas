@@ -7,18 +7,20 @@ struct Event
 {
     double x;
     double slope;
-    double offset;
+    double _offset;
     // Event() : Event(0, 0, 0) {}
     /* Event(double x, double slope, double offset) :
        x(x), slope(slope), offset(offset) {} */
     // double extra[20] = {0.};
-    inline double val() const { return x * slope + offset; }
+    inline double val() const { return x * slope + offset(); }
+
+    inline double offset() const { return _offset; }
 
     const static int _p = 5;
     const static int _w = 6;
 
     bool operator==(const Event &o) const {
-        return x == o.x && slope == o.slope && offset == o.offset;
+        return x == o.x && slope == o.slope && offset() == o.offset();
     }
 };
 
@@ -48,7 +50,7 @@ operator<<(std::ostream &o, const Event &e)
     o << "Event("
       << std::setw(Event::_w) << std::setprecision(Event::_p) << e.x << ", "
       << std::setw(Event::_w) << std::setprecision(Event::_p) << e.slope << ", "
-      << std::setw(Event::_w) << std::setprecision(Event::_p) << e.offset << ")"
+      << std::setw(Event::_w) << std::setprecision(Event::_p) << e.offset() << ")"
       << std::endl;
     return o;
 }

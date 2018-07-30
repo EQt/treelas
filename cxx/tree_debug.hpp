@@ -133,7 +133,7 @@ dump_events(std::ostream &io,
         io << " " << i << ": Event("
            << hex(e.x) << ", "
            << hex(e.slope) << ", "
-           << hex(e.offset) << ")";
+           << hex(e.offset()) << ")";
     }
     io << std::endl << "}" << std::endl;
 }

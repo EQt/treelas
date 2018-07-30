@@ -12,7 +12,7 @@ pwl_csv(const Event *begin, const Event *end, const double margin = 1.0)
 {
     double sumo = 0.0;
     for (auto it = begin; it != end; it++) {
-        sumo += it->offset;
+        sumo += it->offset();
     }
     double
         offset = -sumo/2.0,
@@ -30,7 +30,7 @@ pwl_csv(const Event *begin, const Event *end, const double margin = 1.0)
     out();
     for (const Event *e = begin; e != end; e++) {
         x = e->x;
-        offset += e->offset;
+        offset += e->offset();
         slope += e->slope;
         out();
     }
