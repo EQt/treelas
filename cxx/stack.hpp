@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef _STACK_DEBUG
 #  define _STACK_DEBUG 0
 #else
