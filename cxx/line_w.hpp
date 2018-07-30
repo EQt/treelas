@@ -42,7 +42,7 @@ dp_forward_w(
 */
 template<typename float_ = double,
          typename Event_ = Event2>
-float_
+Queue
 dp_reverse_w(
     const int n,
     float_ *lb,
@@ -50,19 +50,8 @@ dp_reverse_w(
     const float_ *y,
     const float_ *mu,
     const float_ *lam,
+    float_ &off,
     Event_ *event = nullptr);
-
-
-extern template
-double
-dp_reverse_w(
-    const int n,
-    double *lb,
-    double *ub,
-    const double *y,
-    const double *mu,
-    const double *lam,
-    Event2 *event);
 
 
 template<typename float_ = double>

@@ -57,7 +57,7 @@ dp_forward_w(
 
 
 template<typename float_, typename Event_>
-float_
+Queue
 dp_reverse_w(
     const int n,
     float_ *lb,
@@ -65,6 +65,7 @@ dp_reverse_w(
     const float_ *y,
     const float_ *mu,
     const float_ *lam,
+    float_ &off,
     Event_ *event)
 {
     VecAlloc<Event_> _ (&event, size_t(2*n));
@@ -78,7 +79,7 @@ dp_reverse_w(
         ub[i] = clip_backw(event, pq, mu[i], -mu[i]*y[i] +off, +lami, max_y);
         off = mu[i] > 1e-10 ? lami : std::min(lami, off);
     }
-    return clip_front(event, pq, mu[n-1], -mu[n-1]*y[n-1] -off, 0.0);
+    return pq;
 }
 
 
