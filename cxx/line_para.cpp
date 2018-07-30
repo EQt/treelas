@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+#include "utils/viostream.hpp"
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"         // for clip(x, lb, ub)
 #include "utils/plotpwl.hpp"        // for debugging
@@ -36,7 +37,13 @@ line_para(const size_t n,
     Queue pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
 
     {   Timer _ ("forward halve");
+        std::cerr << "lb =  ";
+        print_it(std::cerr, lb+1, lb+2+1);
+        std::cerr << std::endl;
         dp_forward(y, lam, lb, ub, event, pq0, 0, n0);
+        std::cerr << "lb -->";
+        print_it(std::cerr, lb+pq0.start, lb+pq0.stop+1);
+        std::cerr << std::endl;
     }
     {   Timer _ ("reverse halve");
         dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
