@@ -72,7 +72,7 @@ dp_reverse_w(
     double min_y, max_y;
     find_minmax(y, n, min_y, max_y);
     Queue pq {n, n-1};
-    double off = 0;
+    off = 0;
     for (int i = 0; i < n-1; i++) {
         const auto lami = lam[i];
         lb[i] = clip_fronw(event, pq, mu[i], -mu[i]*y[i] -off, -lami, min_y);
