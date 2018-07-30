@@ -10,7 +10,6 @@ def test_line1_para():
     assert (x == 0.5).all(), repr(x)
 
 
-@mark.skip
 def test_line2_para():
     """with pre-allocated output array"""
     y = np.array([1, 0, 0.5])
