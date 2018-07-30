@@ -17,7 +17,7 @@ dp_forward_w(
     const float_ *y,
     const float_ *mu,
     const float_ *lam,
-    double &off,
+    float_ &off,
     Event_ *event = nullptr);
 
 
