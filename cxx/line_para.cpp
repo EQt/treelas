@@ -21,7 +21,7 @@ line_para(const size_t n,
     std::vector<float_> ub_;
     {   Timer _ ("allocation");
         event_.reserve(2*n);
-        ub_.reserve(n-1);
+        ub_.reserve(n);
     }
 
     Event2 *event = event_.data();
@@ -39,7 +39,7 @@ line_para(const size_t n,
         dp_forward(y, lam, lb, ub, event, pq0, 0, n0);
     }
     {   Timer _ ("reverse halve");
-        dp_reverse(y, lam, lb, ub, event, pq1, n0, n);
+        dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
     }
 
     std::cerr << "pq0 = " << pq0 << std::endl;
@@ -62,7 +62,7 @@ line_para(const size_t n,
     std::cerr << "x[" << n0 << "] = " << x[n0] << std::endl;
     {   Timer _ ("backward half1");
         for (size_t i = n0+1; i < n; i++)
-            x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
+            x[i] = clip(x[i-1], lb[i], ub[i]);
     }
     {   Timer _ ("backward half0");
         for (int i = int(n0-1); i >= 0; i--)
