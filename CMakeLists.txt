@@ -133,16 +133,16 @@ if (BUILD_TESTS)
     test/test_strtok.cpp
     test/test_timer.cpp
     test/test_stack.cpp
-    test/test_line.cpp
-    test/test_prufer.cpp
     test/test_vecalloc.cpp
     test/test_ref.cpp
     test/test_unionfind.cpp
-    test/test_tree_12.cpp
     test/test_children.cpp
     test/test_biadjacent.cpp
     test/test_postorder.cpp
-    
+    test/test_prufer.cpp
+    test/test_line.cpp
+    test/test_tree_12.cpp
+    test/test_tree_dp.cpp
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
