@@ -141,6 +141,8 @@ if (BUILD_TESTS)
     test/test_tree_12.cpp
     test/test_children.cpp
     test/test_biadjacent.cpp
+    test/test_postorder.cpp
+    
   )
   if (HDF5_FOUND)
     list(APPEND TESTS test/test_hdf5.cpp)
@@ -149,6 +151,7 @@ if (BUILD_TESTS)
     test/tests.cpp
     ${TESTS}
     $<TARGET_OBJECTS:line>
+    $<TARGET_OBJECTS:postorder>
   )
   target_compile_definitions(tests PUBLIC _STACK_DEBUG=1)
   target_link_libraries(tests gtest_main "${CMAKE_THREAD_LIBS_INIT}")
