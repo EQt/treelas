@@ -3,7 +3,7 @@
 */
 #pragma once
 #ifndef PARALLEL
-#  define PARALLEL 1
+#  define PARALLEL 0
 #endif
 
 
