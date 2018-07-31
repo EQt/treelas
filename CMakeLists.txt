@@ -97,12 +97,12 @@ if (HDF5_FOUND)
   target_link_libraries(traverse ${HDF5_LIBRARIES})
 
 
-  add_executable(tree_12
-    cxx/app/tree_12.cpp
+  add_executable(tree_apx
+    cxx/app/tree_apx.cpp
     $<TARGET_OBJECTS:argparser>
   )
-  target_include_directories(tree_12 PUBLIC ${HDF5_INCLUDE_DIR})
-  target_link_libraries(tree_12 ${HDF5_LIBRARIES})
+  target_include_directories(tree_apx PUBLIC ${HDF5_INCLUDE_DIR})
+  target_link_libraries(tree_apx ${HDF5_LIBRARIES})
 
   add_executable(treesolve
     cxx/app/treesolve.cpp
