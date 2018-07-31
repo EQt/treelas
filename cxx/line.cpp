@@ -40,6 +40,18 @@ dp_forward(
 }
 
 
+template
+void
+dp_forward(
+    const double *y,
+    const double lam,
+    double *lb,
+    double *ub,
+    Event2 *event,
+    Queue &pq,
+    const size_t begin,
+    const size_t end);
+
 
 template<typename float_ = double, typename Event = Event2>
 void
