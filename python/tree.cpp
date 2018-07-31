@@ -163,18 +163,22 @@ reg_tree(py::module &m)
           {
               const auto n = check_1d_len(x);
               check_len(n, alpha, "alpha");
-              check_len(n, lam, "lam");
               check_len(n, parent, "parent");
               if (is_empty(gamma))
                   gamma = py::array_f64({n}, {sizeof(double)});
               check_len(n, gamma, "gamma");
-              tree_dual_gap(n,
-                            gamma.mutable_data(),
-                            x.data(),
-                            alpha.data(),
-                            lam.data(),
-                            parent.data(),
-                            root_val);
+              if (lam.ndim() == 1) {
+                  check_len(n, lam, "lam");
+                  tree_dual_gap(n,
+                                gamma.mutable_data(),
+                                x.data(),
+                                alpha.data(),
+                                lam.data(),
+                                parent.data(),
+                                root_val);
+              } else if (lam.ndim() == 0) {
+                  throw std::runtime_error(py::repr(lam).cast<std::string>());
+              }
               return gamma;
           },
           R"pbdoc(
