@@ -2,6 +2,10 @@
    Parallel implementation.
 */
 #pragma once
+#ifndef PARALLEL
+#  define PARALLEL 1
+#endif
+
 
 template <typename float_ = double>
 void
