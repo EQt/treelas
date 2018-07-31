@@ -34,3 +34,4 @@ def test_tree5():
     assert np.abs(diff).max() < 1e-14
 
     gap = ti.gamma
+    assert (gap >= 0).all()
