@@ -11,13 +11,13 @@
 #include <cassert>
 #include <clocale>
 
-#include "utils/hdf5.hpp"
-#include "utils/timer.hpp"
-#include "utils/argparser.hpp"
-#include "utils/thousand.hpp"
+#include "../utils/hdf5.hpp"
+#include "../utils/timer.hpp"
+#include "../utils/argparser.hpp"
+#include "../utils/thousand.hpp"
 
-#include "tree_io.hpp"
-#include "tree_12.hpp"
+#include "../tree_io.hpp"
+#include "../tree_12.hpp"
 
 
 template<typename float_ = float, typename int_ = int>

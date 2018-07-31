@@ -6,14 +6,14 @@
 #include <cstdint>
 #include <iostream>
 
-#include "utils/argparser.hpp"
-#include "utils/hdf5.hpp"
-#include "utils/timer.hpp"
-#include "utils/thousand.hpp"
+#include "../utils/argparser.hpp"
+#include "../utils/hdf5.hpp"
+#include "../utils/timer.hpp"
+#include "../utils/thousand.hpp"
 
-#include "biadjacent.hpp"
-// #include "kruskal_mst.hpp"
-#include "prim_mst.hpp"
+#include "../biadjacent.hpp"
+// #include "../kruskal_mst.hpp"
+#include "../prim_mst.hpp"
 
 
 void
