@@ -78,6 +78,19 @@ dp_reverse(
  }
 
 
+template
+void
+dp_reverse(
+    const double *y,
+    const double lam,
+    double *lb,
+    double *ub,
+    Event2 *event,
+    Queue &pq,
+    const size_t begin,
+    const size_t end);
+
+
 template<typename float_>
 void
 line_dp(const size_t n,
