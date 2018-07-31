@@ -78,17 +78,17 @@ Tree(n={self.n},
 class TreeInstance(Tree):
     """Fused lasso tree instance (including all weight-parameters)"""
     def __init__(self, y, parent, lam, mu=1.0, root=-1):
-        assert y.dtype == np.float64
         assert isinstance(lam, float) or lam.dtype == np.float64
         assert isinstance(mu, float) or mu.dtype == np.float64
         super().__init__(parent, root)
-        self.y = y
+        self.y = np.asarray(y, dtype=np.float64)
         self.lam = lam
         self.mu = mu
         self.x = None
         self.z = None
         self.alpha = None
         self._gamma = None
+        assert self.y.dtype == np.float64
 
     def __repr__(self):
         return f"""TreeInstance(root={self.root}):
