@@ -25,3 +25,8 @@ def test_tree5():
     ti.solve()
     diff = np.abs(ti.x*3 - [22.7, 22.7, 22.7, 18.9, 18.9, 21.9,  9.9,  8.2,  8.2,  8.2])
     assert diff.max() < 1e-14, f'{diff}, x={ti.x}'
+
+    alpha = ti.dual
+    assert np.isnan(alpha[0])
+    diff = alpha[1:] * 3 - [ 1.1,  2.8, -3. , -1.5, -3. , -3. , -1.4, -3. ,  0.2]
+    assert np.abs(diff).max() < 1e-14
