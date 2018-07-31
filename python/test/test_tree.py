@@ -30,3 +30,5 @@ def test_tree5():
     assert np.isnan(alpha[0])
     diff = alpha[1:] * 3 - [ 1.1,  2.8, -3. , -1.5, -3. , -3. , -1.4, -3. ,  0.2]
     assert np.abs(diff).max() < 1e-14
+
+    gap = ti.gamma
