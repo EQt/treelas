@@ -138,9 +138,9 @@ parent = {repr(self.parent)}"""
     @property
     def gamma(self, root_val=0.0):
         """Compute the duality gap vector"""
-        if self._gamma is None:
-            self._gamma = np.empty(0)
         alpha = self.dual
+        if self._gamma is None:
+            self._gamma = np.empty_like(alpha)
         self._gamma = _tl.tree_dual_gap(self.x, alpha, self.lam, self.parent,
                                         root_val, gamma=self._gamma)
         return self._gamma
