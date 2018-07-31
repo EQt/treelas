@@ -17,9 +17,9 @@
 #include <iostream>
 #include <cstring>                  // for std::memset
 
-#include "utils/malloc.hpp"
-#include "utils/timer.hpp"
-#include "utils/thousand.hpp"
+#include "../utils/malloc.hpp"
+#include "../utils/timer.hpp"
+#include "../utils/thousand.hpp"
 
 
 void

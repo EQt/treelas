@@ -78,9 +78,7 @@ if (BUILD_PYEXT)
 endif()
 
 
-add_executable(malloc_vs_new
-  cxx/malloc_vs_new.cpp
-)
+add_executable(malloc_vs_new cxx/app/malloc_vs_new.cpp)
 
 # HDF5
 find_package(HDF5 COMPONENTS C)
@@ -91,7 +89,7 @@ if (HDF5_FOUND)
   endif()
 
   add_executable(traverse
-    cxx/traverse.cpp
+    cxx/app/traverse.cpp
     $<TARGET_OBJECTS:argparser>
     $<TARGET_OBJECTS:postorder>
   )
@@ -100,17 +98,17 @@ if (HDF5_FOUND)
 
 
   add_executable(tree_12
-    cxx/tree_12.cpp
+    cxx/app/tree_12.cpp
     $<TARGET_OBJECTS:argparser>
   )
   target_include_directories(tree_12 PUBLIC ${HDF5_INCLUDE_DIR})
   target_link_libraries(tree_12 ${HDF5_LIBRARIES})
 
   add_executable(treesolve
+    cxx/app/treesolve.cpp
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:postorder>
     $<TARGET_OBJECTS:argparser>
-    cxx/treesolve.cpp
   )
   target_include_directories(treesolve PUBLIC ${HDF5_INCLUDE_DIR})
   target_link_libraries(treesolve ${HDF5_LIBRARIES})
