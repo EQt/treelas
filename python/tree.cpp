@@ -177,7 +177,15 @@ reg_tree(py::module &m)
                                 parent.data(),
                                 root_val);
               } else if (lam.ndim() == 0) {
-                  throw std::runtime_error(py::repr(lam).cast<std::string>());
+                  // throw std::runtime_error(py::repr(lam).cast<std::string>());
+                  const double la = lam.cast<double>();
+                  tree_dual_gap(n,
+                                gamma.mutable_data(),
+                                x.data(),
+                                alpha.data(),
+                                la,
+                                parent.data(),
+                                root_val);
               }
               return gamma;
           },
