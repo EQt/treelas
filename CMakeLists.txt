@@ -69,6 +69,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:tree_dual>
     $<TARGET_OBJECTS:postorder>
   )
+  # target_link_libraries(_treelas PUBLIC -pthread)
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
       $<TARGET_FILE_NAME:_treelas> ${CMAKE_SOURCE_DIR}/python/treelas)
