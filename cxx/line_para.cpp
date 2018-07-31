@@ -41,8 +41,11 @@ line_para(const size_t n,
         std::thread t0 ([&]() {
                 dp_forward(y, lam, lb+0, ub+0, event, pq0, size_t(0), size_t(n0+1));
             });
-        dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
+        std::thread t1 ([&]() {
+                dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
+            });
         t0.join();
+        t1.join();
     }
 
     Queue pq = merge(pq0, pq1, event);
