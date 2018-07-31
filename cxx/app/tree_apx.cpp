@@ -8,8 +8,6 @@
 #include <cmath>        // for std::abs
 #include <vector>
 #include <algorithm>    // for std::min_element
-#include <cassert>
-#include <clocale>
 
 #include "../utils/hdf5.hpp"
 #include "../utils/timer.hpp"
