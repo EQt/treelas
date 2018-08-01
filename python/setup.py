@@ -75,7 +75,9 @@ class BuildExt(build_ext):
             opts.append('-Wall')
             if hasattr(self.compiler, "compiler"):
                 if self.compiler.compiler[0] in ['gcc', 'g++', 'c++']:
-                    self.compiler.compiler_so.remove('-Wstrict-prototypes')
+                    cso = self.compiler.compiler_so
+                    if '-Wstrict-prototypes' in cso:
+                        cso.remove('-Wstrict-prototypes')
         for ext in self.extensions:
             ext.extra_compile_args = opts
         build_ext.build_extensions(self)
