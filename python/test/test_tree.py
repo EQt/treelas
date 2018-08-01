@@ -54,4 +54,4 @@ def test_rtree(n=5, seed=2015, eps=1e-14):
     if n == 5 and seed == 2015:
         assert (ti.x == [0.1 , 1.5 , 0.1 , 1.05, 1.05]).all()
     assert ti.gamma.min() >= -eps, ti.gamma.min()
-    assert ti.gamma.max() <= +eps, f'{ti.gamma.max()}, {t}'
+    assert ti.gamma.max() <= +eps, f'{ti.gamma.max()}, {ti}'
