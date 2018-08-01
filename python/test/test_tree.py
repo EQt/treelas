@@ -39,14 +39,19 @@ def test_tree5():
     assert (gap >= 0).all()
 
 
-def test_rtree2015(n=5, seed=2015):
+def test_rtree(n=5, seed=2015, eps=1e-14):
     t = Tree.random(n, seed=seed)
     assert t.n == n
-    # np.random.seed(seed); y = np.random.normal(size=5).round(1)
     y = np.array([ 0.1,  1.7, -0.1,  1. ,  1.1])
+    if n != 5 or seed != 2015:
+        np.random.seed(seed)
+        y = np.random.normal(size=n).round(1)
     lam = 0.2
     ti = TreeInstance(y, t.parent, lam=lam)
     ti.solve()
 
-    assert ti.x.mean() == ti.y.mean()
-    assert (ti.x == [0.1 , 1.5 , 0.1 , 1.05, 1.05]).all()
+    assert abs(ti.x.mean() - ti.y.mean()) < eps
+    if n == 5 and seed == 2015:
+        assert (ti.x == [0.1 , 1.5 , 0.1 , 1.05, 1.05]).all()
+    assert ti.gamma.min() >= -eps, ti.gamma.min()
+    assert ti.gamma.max() <= +eps, f'{ti.gamma.max()}, {t}'
