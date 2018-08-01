@@ -1,5 +1,5 @@
 #/bin/bash
 
 cd python
-$PYTHON setup.py install
-$STRIP $SP_DIR/treelas/_treelas.*
+$PYTHON setup.py install --single-version-externally-managed --record=record.txt
+$STRIP $(grep _treelas record.txt)
