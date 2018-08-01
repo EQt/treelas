@@ -20,9 +20,9 @@ requirements:
   run:
     - h5py
     - numba
-# test:
-#   imports:
-#     - treelas._treelas
+test:
+  imports:
+    - treelas
 
 about:
   home: https://github.com/eqt/treelas
