@@ -1,6 +1,6 @@
 package:
   name: treelas
-  version: v0.6
+  version: v0.9.8
 
 source:
   # git_rev: v0.6
@@ -20,9 +20,9 @@ requirements:
   # run:
   #   - h5py
   #   - numba
-test:
-  imports:
-    - treelas._treelas
+# test:
+#   imports:
+#     - treelas._treelas
 
 about:
   home: https://github.com/eqt/treelas
