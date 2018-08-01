@@ -73,7 +73,6 @@ class BuildExt(build_ext):
             # opts.append('-g')
             opts.append('-O3')
             opts.append('-Wall')
-            opts.append('-s')
             if hasattr(self.compiler, "compiler"):
                 if self.compiler.compiler[0] in ['gcc', 'g++', 'c++']:
                     cso = self.compiler.compiler_so
