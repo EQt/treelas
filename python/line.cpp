@@ -189,7 +189,8 @@ reg_line(py::module &m)
           [](const py::array_f64 &y,
              const double lam,
              py::array_f64 out,
-             const bool verbose) -> py::array_t<double>
+             const bool verbose,
+             const bool parallel) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const int n = int(check_1d_len(y, "y"));
@@ -197,7 +198,7 @@ reg_line(py::module &m)
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
 
-              line_para(n, y.data(), lam, out.mutable_data());
+              line_para(n, y.data(), lam, out.mutable_data(), parallel);
               return out;
           },
           R"pbdoc(
@@ -208,7 +209,8 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+          py::arg("verbose") = false,
+          py::arg("parallel") = false);
 
     m.def("line_w",
           [](const py::array_f64 &y,

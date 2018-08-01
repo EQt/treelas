@@ -15,7 +15,8 @@ void
 line_para(const size_t n,
           const float_ *y,
           const float_ lam,
-          float_ *x)
+          float_ *x,
+          const bool parallel)
 {
     std::vector<Event2> event_;
     std::vector<float_> ub_;
@@ -36,19 +37,19 @@ line_para(const size_t n,
     Queue pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
 
     {   Timer _ ("forward");
-#if PARALLEL
-        std::thread t0 ([&]() {
-                dp_forward(y, lam, lb+0, ub+0, event, pq0,  0, n0+1);
-            });
-        std::thread t1 ([&]() {
-                dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
-            });
-        t0.join();
-        t1.join();
-#else
-        dp_forward(y, lam, lb+0, ub+0, event, pq0,  0, n0+1);
-        dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
-#endif
+        if (parallel) {
+            std::thread t0 ([&]() {
+                    dp_forward(y, lam, lb+0, ub+0, event, pq0,  0, n0+1);
+                });
+            std::thread t1 ([&]() {
+                    dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
+                });
+            t0.join();
+            t1.join();
+        } else {
+            dp_forward(y, lam, lb+0, ub+0, event, pq0,  0, n0+1);
+            dp_reverse(y, lam, lb+1, ub+1, event, pq1, n0, n);
+        }
     }
 
     Queue pq = merge(pq0, pq1, event);
@@ -72,4 +73,5 @@ void
 line_para(const size_t n,
           const double *y,
           const double lam,
-          double *x);
+          double *x,
+          const bool parallel);
