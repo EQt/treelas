@@ -1,6 +1,7 @@
 #pragma once
 #include <sstream>          // for std::stringstream
 #include <iomanip>          // std::setw
+#include <cmath>            // std::abs
 
 #include "../event.hpp"
 #include "../queue.hpp"
