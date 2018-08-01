@@ -13,10 +13,11 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
+    - pybind11 >=2.2
   host:
     - python
     - setuptools
-    - pybind11 >=2.2
+    - numpy
   run:
     - h5py
     - numba
