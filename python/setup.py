@@ -69,10 +69,11 @@ class BuildExt(build_ext):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
         if ct == 'unix':
-            opts.append('-std=c++11')
-            opts.append('-g')
+            opts.append('-std=c++14')
+            # opts.append('-g')
             opts.append('-O3')
             opts.append('-Wall')
+            opts.append('-s')
             if hasattr(self.compiler, "compiler"):
                 if self.compiler.compiler[0] in ['gcc', 'g++', 'c++']:
                     cso = self.compiler.compiler_so
