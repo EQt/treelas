@@ -31,14 +31,14 @@ tree_dual(const size_t n,
     if (tree_orientation) {
         for (const auto c : postorder) {
             const auto v = parent[c];
-            alpha[c] = +x[c];
-            x[v]    += +x[c];
+            alpha[c] = x[c];
+            x[v]    += x[c];
         }
     } else {
         for (const auto c : postorder) {
             const auto v = parent[c];
-            alpha[c] = c > v ?     -x[c] : +x[c];
-            x[v]    += c > v ? -alpha[c] : +alpha[c];
+            alpha[c] = c > v ? -x[c] : +x[c];
+            x[v]    += x[c];
         }
     }
 
