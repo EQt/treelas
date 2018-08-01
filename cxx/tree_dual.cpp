@@ -22,9 +22,9 @@ tree_dual(const size_t n,
                                  " = parent[root]");
     }
     PostOrder postorder (int(n), parent, _postord, root);
-    if (alpha == nullptr) {
+    if (alpha == nullptr)
         alpha = new double[n];
-    }
+
     alpha[root] = std::nan("");
 
     for (const auto c : postorder) {
