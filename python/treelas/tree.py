@@ -100,11 +100,11 @@ class TreeInstance(Tree):
         assert self.y.dtype == np.float64
 
     def __repr__(self):
-        return f"""TreeInstance(root={self.root}):
-     y = {repr(self.y)}
-    mu = {repr(self.mu)}
-   lam = {repr(self.lam)}
-parent = {repr(self.parent)}"""
+        return f"""TreeInstance(root={self.root},
+     y = {repr(self.y)},
+    mu = {repr(self.mu)},
+   lam = {repr(self.lam)},
+parent = {repr(self.parent)})"""
 
     def solve(self, verbose=False, x=None):
         """Compute a primal solution self.x (return self)"""
