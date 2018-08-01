@@ -55,7 +55,7 @@ def describe_tag(default="0.9.9"):
         ver = ver.decode().strip()
         m = re.match(r'v(?P<ver>\d+(\.\d+)*)((-(?P<dev>\d+))(-.*))?', ver)
         if m.group('dev') is not None:
-            return f"{m.group('ver').dev{m.group('dev')}"
+            return f"{m.group('ver')}.dev{m.group('dev')}"
         return m.group('ver')
     except:
         return default
