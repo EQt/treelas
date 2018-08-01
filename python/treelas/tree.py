@@ -19,8 +19,10 @@ def find_root(parent):
 
 class Tree:
     """Rooted tree, stored as a parent np.array"""
-    def __init__(self, parent, root=-1):
+    def __init__(self, parent, root=-1, n=None):
         self.parent = np.asarray(parent, dtype=np.int32)
+        if isinstance(n, int):
+            assert len(self.parent) == n
         if root < 0:
             root = _tl.find_root(parent)
             assert root >= 0
