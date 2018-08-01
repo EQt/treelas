@@ -27,6 +27,7 @@ def test_tree5():
     ti.solve()
     diff = np.abs(ti.x*3 - [22.7, 22.7, 22.7, 18.9, 18.9, 21.9,  9.9,  8.2,  8.2,  8.2])
     assert diff.max() < 1e-14, f'{diff}, x={ti.x}'
+    assert ti.x.mean() == ti.y.mean()
 
     alpha = ti.dual
     assert (np.abs(alpha[1:]) <= lam).all()
@@ -36,3 +37,16 @@ def test_tree5():
 
     gap = ti.gamma
     assert (gap >= 0).all()
+
+
+def test_rtree2015(n=5, seed=2015):
+    t = Tree.random(n, seed=seed)
+    assert t.n == n
+    # np.random.seed(seed); y = np.random.normal(size=5).round(1)
+    y = np.array([ 0.1,  1.7, -0.1,  1. ,  1.1])
+    lam = 0.2
+    ti = TreeInstance(y, t.parent, lam=lam)
+    ti.solve()
+
+    assert ti.x.mean() == ti.y.mean()
+    assert (ti.x == [0.1 , 1.5 , 0.1 , 1.05, 1.05]).all()
