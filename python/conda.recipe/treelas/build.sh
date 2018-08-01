@@ -2,4 +2,4 @@
 
 cd python
 $PYTHON setup.py install
-$STRIP treelas/_treelas.*
+$STRIP $SP_DIR/treelas/_treelas.*
