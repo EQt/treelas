@@ -8,6 +8,7 @@ def test_timer_not_started():
 
 
 def test_timer_run1():
+    t = None
     with Timer("blub") as t:
         assert t is not None
         assert repr(t) == "Timer: running"
