@@ -66,7 +66,14 @@ Tree(n={self.n},
     @classmethod
     def generate(cls, degrees, seed=42):
         return cls.from_prufer(prufer_from_children_spec(degrees, seed=seed))
-    
+
+    @staticmethod
+    def random(n, seed=None):
+        if seed is not None:
+            np.random.seed(seed)
+        t = Tree.from_prufer(np.random.randint(0, n, size=n-2, dtype=np.int32))
+        return t
+
     @staticmethod
     def load(fname):
         with h5py.File(fname) as io:
