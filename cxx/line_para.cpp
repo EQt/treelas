@@ -2,10 +2,8 @@
 #include <vector>
 #include <thread>
 
-#include "utils/viostream.hpp"
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"         // for clip(x, lb, ub)
-#include "utils/plotpwl.hpp"        // for debugging
 #include "line_para.hpp"
 #include "line.hpp"
 #include "clip.hpp"
