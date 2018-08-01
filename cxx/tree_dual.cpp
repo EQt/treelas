@@ -5,6 +5,7 @@
 #include <cmath>
 
 #include "postorder.hpp"
+#include "root.hpp"
 
 
 double*
@@ -16,6 +17,11 @@ tree_dual(const size_t n,
           const int root,
           const bool tree_orientation)
 {
+    if (root < 0)
+        root = find_root(parent);
+    if (root < 0)
+        throw std::runtime_error("parent has no root");
+    
     if (parent[root] != root) {
         throw std::runtime_error(std::string("dp_dual(): ") +
                                  "root = " + std::to_string(root) +
