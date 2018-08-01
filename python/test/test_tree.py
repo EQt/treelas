@@ -39,7 +39,7 @@ def test_tree5():
     assert (gap >= 0).all()
 
 
-def test_rtree(n=5, seed=2015, eps=1e-14):
+def test_rtree(n=5, seed=2018, eps=1e-14):
     t = Tree.random(n, seed=seed)
     assert t.n == n
     y = np.array([ 0.1,  1.7, -0.1,  1. ,  1.1])
