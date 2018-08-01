@@ -1,6 +1,7 @@
 """
 http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
+import re
 import sys
 from setuptools import setup
 from setuptools.extension import Extension
@@ -45,15 +46,17 @@ sources = [
 ]
 
 _treelas = Extension("treelas._treelas", sources, language='c++',
-                     include_dirs=[GetPyBindInc(False),
-                                   GetPyBindInc(True)]
-)
+                     include_dirs=[GetPyBindInc(False), GetPyBindInc(True)])
 
 
-def describe_tag(default):
+def describe_tag(default="0.9.9"):
     try:
         ver = check_output('git describe --tag'.split())
-        return ver.decode().strip()
+        ver = ver.decode().strip()
+        m = re.match(r'v(?P<ver>\d+(\.\d+)*)((-(?P<dev>\d+))(-.*))?', ver)
+        if m.group('dev') is not None:
+            return f"{m.group('ver').dev{m.group('dev')}"
+        return return m.group('ver')
     except:
         return default
 
@@ -84,7 +87,7 @@ class BuildExt(build_ext):
 
 
 setup(name="treelas",
-      version=describe_tag("v0.9"),
+      version=describe_tag(),
       author="Elias Kuthe",
       author_email="elias.kuthe@tu-dortmund.de",
       license="MIT",
