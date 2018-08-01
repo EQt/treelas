@@ -13,7 +13,8 @@ tree_dual(const size_t n,
           const int *parent,
           const int *_postord,
           double *alpha,
-          const int root)
+          const int root,
+          const bool tree_orientation)
 {
     if (parent[root] != root) {
         throw std::runtime_error(std::string("dp_dual(): ") +
@@ -27,10 +28,18 @@ tree_dual(const size_t n,
 
     alpha[root] = std::nan("");
 
-    for (const auto c : postorder) {
-        const auto v = parent[c];
-        alpha[c] = c > v ?     -x[c] : +x[c];
-        x[v]    += c > v ? -alpha[c] : +alpha[c];
+    if (tree_orientation) {
+        for (const auto c : postorder) {
+            const auto v = parent[c];
+            alpha[c] = +x[c];
+            x[v]    += +x[c];
+        }
+    } else {
+        for (const auto c : postorder) {
+            const auto v = parent[c];
+            alpha[c] = c > v ?     -x[c] : +x[c];
+            x[v]    += c > v ? -alpha[c] : +alpha[c];
+        }
     }
 
     return alpha;

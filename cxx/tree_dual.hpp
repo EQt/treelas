@@ -8,7 +8,8 @@ tree_dual(const size_t n,
           const int *parent,
           const int *_postord,
           double *alpha,
-          const int root);
+          const int root,
+          const bool tree_orientation = true);
 
 
 void

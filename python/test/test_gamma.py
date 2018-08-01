@@ -27,5 +27,8 @@ def test_gamma_line3(eps=1e-14):
     ti.solve()
     assert ((ti.x - ti.y)[po] / ti.lam).astype(int).tolist() == [1, -2, 1]
 
+    alpha = ti.dual
+    assert np.isnan(ti.dual[ti.root])
+
     assert ti.gamma.min() >= -eps, ti.gamma.min()
     assert ti.gamma.max() <= +eps, f'gamma = {ti.gamma.max()}\n{ti}'

@@ -32,11 +32,12 @@ def test_tree5():
     alpha = ti.dual
     assert (np.abs(alpha[1:]) <= lam).all()
     assert np.isnan(alpha[0])
-    diff = alpha[1:] * 3 - [ 1.1,  2.8, -3. , -1.5, -3. , -3. , -1.4, -3. ,  0.2]
-    assert np.abs(diff).max() < 1e-14
+    diff = alpha[1:] * 3 - [ -1.1,  -2.8, +3. , +1.5, +3. , -3. , -1.4, +3. ,  -0.2]
+    assert np.abs(diff).max() < 1e-14, f'{diff.max()}:\n{alpha*3}\n{diff.round(1)}'
 
     gap = ti.gamma
     assert (gap >= 0).all()
+    assert gap.max() <= 1e-13, f'{gap}'
 
 
 def test_rtree(n=5, seed=2018, eps=1e-14):

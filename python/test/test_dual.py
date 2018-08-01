@@ -11,5 +11,5 @@ def test_dual3(root=0):
     assert alpha.shape == x.shape
     assert np.isnan(alpha[root])
     assert root == 0
-    assert (alpha[1:] == [-1., -2.]).all()
+    assert (alpha[1:] == [+1., +2.]).all()
     assert x[root] == 0.0
