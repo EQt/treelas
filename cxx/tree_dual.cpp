@@ -21,7 +21,7 @@ tree_dual(const size_t n,
                                  " != " + std::to_string(parent[root]) +
                                  " = parent[root]");
     }
-    PostOrder postorder (int(n), parent, _postord, root);
+    PostOrder postorder (n, parent, _postord, root);
     if (alpha == nullptr)
         alpha = new double[n];
 
