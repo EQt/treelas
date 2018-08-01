@@ -17,9 +17,9 @@ requirements:
     - python
     - setuptools
     - pybind11 >=2.2
-  # run:
-  #   - h5py
-  #   - numba
+  run:
+    - h5py
+    - numba
 # test:
 #   imports:
 #     - treelas._treelas
