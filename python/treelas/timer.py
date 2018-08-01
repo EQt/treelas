@@ -34,6 +34,7 @@ class Timer:
                       file=type(self).out)
             type(self).out.flush()
         self.time0 = now()
+        return self
 
     def __exit__(self, *ign):
         self.time1 = now()
@@ -43,6 +44,7 @@ class Timer:
             print(self.fmt % (1000.0 * float(self)),
                   file=type(self).out)
             type(self).out.flush()
+        return self
 
     def __repr__(self):
         d = float(self)
