@@ -1,5 +1,5 @@
 """
-Metaprogramming stuff like Timer, __line__ method, etc.
+Time a piece of code and print the result (formatted).
 """
 import sys
 from time import process_time as now
