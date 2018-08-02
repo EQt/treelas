@@ -104,14 +104,14 @@ if (HDF5_FOUND)
   target_include_directories(tree_apx PUBLIC ${HDF5_INCLUDE_DIR})
   target_link_libraries(tree_apx ${HDF5_LIBRARIES})
 
-  add_executable(treesolve
-    cxx/app/treesolve.cpp
+  add_executable(tree_solve
+    cxx/app/tree_solve.cpp
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:postorder>
     $<TARGET_OBJECTS:argparser>
   )
-  target_include_directories(treesolve PUBLIC ${HDF5_INCLUDE_DIR})
-  target_link_libraries(treesolve ${HDF5_LIBRARIES})
+  target_include_directories(tree_solve PUBLIC ${HDF5_INCLUDE_DIR})
+  target_link_libraries(tree_solve ${HDF5_LIBRARIES})
 endif()
 
 
