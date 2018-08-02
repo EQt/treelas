@@ -52,7 +52,7 @@ line_para(const size_t n,
         }
     }
 
-    Queue pq = merge(pq0, pq1, event);
+    Queue pq = merge2(pq0, pq1, event);
 
     {   Timer _ ("root value");
         const float_ mu = 1.0;
