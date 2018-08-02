@@ -63,7 +63,7 @@ _tree_dp(
         std::fill(lb, lb + n, 0);
     }
     {   Timer _ ("children index");
-        s.childs.reset(parent, n, root);
+        s.childs.reset(n, parent, root);
     }
 
     init_queues(n, pq, s.proc_order, childs, s.dfs_stack, root);
@@ -176,7 +176,7 @@ tree_dp_w(
     timer.stop();
 
     {   Timer _ ("children index");
-        childs.reset(parent, n, root);
+        childs.reset(n, parent, root);
     }
 
     init_queues(n, pq, proc_order, childs, stack, root);

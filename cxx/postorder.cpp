@@ -40,7 +40,7 @@ post_order(const size_t n,
         postord = new int[n];
     }
     Timer tim("children index");
-    ChildrenIndex childs (parent, n, root);
+    ChildrenIndex childs (n, parent, root);
     tim.stop();
     stack<int> stack;
     post_order(root, childs, stack, postord);

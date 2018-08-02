@@ -232,7 +232,7 @@ tree_12(const size_t n,
     stack<int> stack;
 
     Timer tim ("children index");
-    ChildrenIndex childs (parent, n, root);
+    ChildrenIndex childs (n, parent, root);
     tim.stop();
 
     {   Timer _ ("allocate orders");

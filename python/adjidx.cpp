@@ -1,7 +1,11 @@
 #include <string>
+#include <stdexcept>
 #include <pybind11/pybind11.h>
 
 #include "../cxx/biadjacent.hpp"
+#include "../cxx/children.hpp"
+#include "../cxx/root.hpp"
+
 #include "py_np.hpp"
 
 namespace py = pybind11;
@@ -54,6 +58,26 @@ reg_biadjacent(py::module &m)
                  return std::string("BiAdjacent[") +
                      "m = " + std::to_string(b.num_edges()) + ", " +
                      "n = " + std::to_string(b.num_nodes()) + "]";
+             })
+        ;
+
+    py::class_<ChildrenIndex> (m, "ChildrenIndex", PyAdjacencyIndex_int)
+        .def(py::init([](const py::array_i32 &parent,
+                         const int root_)
+                      {
+                          const auto n = check_1d_len(parent);
+                          const int root = root_ < 0 ? find_root(n, parent.data()) : root_;
+                          if (root < 0)
+                              throw std::runtime_error("root not found");
+                          return ChildrenIndex(n, parent.data(), root);
+                      }),
+             py::arg("parent"),
+             py::arg("root") = 0)
+        .def("__repr__",
+             [](const ChildrenIndex &cidx) -> std::string
+             {
+                 return std::string("ChildrenIndex[ n = ") +
+                     std::to_string(cidx.size()) + "]";
              })
         ;
 
