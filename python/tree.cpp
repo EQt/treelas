@@ -46,7 +46,8 @@ reg_tree(py::module &m)
              const int32_t root,
              py::array_f64 &x,
              const bool verbose,
-             const bool merge_sort) -> py::array_f64
+             const bool merge_sort,
+             const bool lazy_sort) -> py::array_f64
           {
               TimerQuiet _ (verbose);
               const double mu = 1.0;
@@ -57,22 +58,32 @@ reg_tree(py::module &m)
                   x = py::array_t<double>({n}, {sizeof(double)});
               }
               check_len(n, x, "x");
-              if (merge_sort)
-                  tree_dp<false>(n,
-                                 x.mutable_data(),
-                                 y.data(),
-                                 parent.data(),
-                                 lam,
-                                 mu,
-                                 root);
-              else
-                  tree_dp<false>(n,
-                                 x.mutable_data(),
-                                 y.data(),
-                                 parent.data(),
-                                 lam,
-                                 mu,
-                                 root);
+              if (merge_sort) {
+                  tree_dp<true>(n,
+                                x.mutable_data(),
+                                y.data(),
+                                parent.data(),
+                                lam,
+                                mu,
+                                root);
+              } else {
+                  if (lazy_sort)
+                      tree_dp<false, true>(n,
+                                           x.mutable_data(),
+                                           y.data(),
+                                           parent.data(),
+                                           lam,
+                                           mu,
+                                           root);
+                  else
+                      tree_dp<false, false>(n,
+                                            x.mutable_data(),
+                                            y.data(),
+                                            parent.data(),
+                                            lam,
+                                            mu,
+                                            root);
+              }
               Timer::stopit();
               return x;
           },
@@ -85,7 +96,8 @@ reg_tree(py::module &m)
           py::arg("root") = 0,
           py::arg("x") = py::none(),
           py::arg("verbose") = false,
-          py::arg("merge_sort") = false);
+          py::arg("merge_sort") = false,
+          py::arg("lazy_sort") = false);
 
     m.def("tree_dual",
           [](const py::array_i32 &parent,
