@@ -3,7 +3,7 @@
 #include "postorder.hpp"
 
 
-template <bool merge_sort>
+template <bool merge_sort, bool lazy_sort = false>
 const double*
 tree_dp(
     const size_t n,
@@ -29,7 +29,19 @@ tree_dp<true>(
 
 extern template
 const double*
-tree_dp<false>(
+tree_dp<false, true>(
+    const size_t n,
+    double *x,
+    const double *y,
+    const int *parent,
+    const double lam,
+    const double mu,
+    const int root);
+
+
+extern template
+const double*
+tree_dp<false, true>(
     const size_t n,
     double *x,
     const double *y,

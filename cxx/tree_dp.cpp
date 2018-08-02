@@ -37,7 +37,7 @@ struct TreeDPStatus
 };
 
 
-template <bool merge_sort, typename E>
+template <bool merge_sort, bool lazy_sort, typename E>
 inline const double*
 _tree_dp(
     const size_t n,
@@ -102,7 +102,7 @@ _tree_dp(
    Paramters:
     x   Output solution (if NULL, allocate it); x == y possible.
  */
-template <bool merge_sort>
+template <bool merge_sort, bool lazy_sort>
 const double*
 tree_dp(
     const size_t n,
@@ -118,7 +118,7 @@ tree_dp(
         x = new double[n];
     TreeDPStatus<Event2> s(n);
     timer.stop();
-    return _tree_dp<merge_sort>(n, x, y, parent, lam, mu, root, s);
+    return _tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, root, s);
 }
 
 
@@ -251,7 +251,7 @@ tree_dp_w(
 // template instantiation
 template
 const double*
-tree_dp<true>(
+tree_dp<true, false>(    // tree_dp<true, true> does not make sense
     const size_t n,
     double *x,
     const double *y,
@@ -263,7 +263,19 @@ tree_dp<true>(
 
 template
 const double*
-tree_dp<false>(
+tree_dp<false, true>(
+    const size_t n,
+    double *x,
+    const double *y,
+    const int *parent,
+    const double lam,
+    const double mu,
+    const int root);
+
+
+template
+const double*
+tree_dp<false, false>(
     const size_t n,
     double *x,
     const double *y,
