@@ -124,9 +124,6 @@ parent = {repr(self.parent)})"""
                                    root=self.root,
                                    x=x,
                                    verbose=verbose)
-        self.y0 = self.y.copy()
-        self.y0[np.isnan(self.y0)] = 0.0
-        self.z = self.mu * (self.x - self.y0)
         return self
 
     def dsolve(self, max_iter=20):
@@ -135,9 +132,14 @@ parent = {repr(self.parent)})"""
     @property
     def dual(self):
         """Dual solution, corresponding to self.x (if called the first time, compute it)"""
-        if self.alpha is None:
+        if self.z is None:
             if self.x is None:
                 self.solve()
+            self.y0 = self.y.copy()
+            self.y0[np.isnan(self.y0)] = 0.0
+            self.z = self.mu * (self.x - self.y0)
+
+        if self.alpha is None or not np.isnan(self.alpha[self.root]):
             self.alpha = _tl.tree_dual(parent=self.parent,
                                        z=self.z.copy(),
                                        root=self.root,
