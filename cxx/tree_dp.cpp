@@ -192,6 +192,7 @@ tree_dp_w(
 
             const auto lami = lam[i];
             const auto sigi = sig[i];  // backup before it is set in next line
+            sort_events(pq[i], elements);
             {   // EVENT_REC(decltype(elements[0]));
                 lb[i] = clip_fronw(elements, pq[i],
                                    /* slope  */ +mu[i],
@@ -222,6 +223,7 @@ tree_dp_w(
 
     {   Timer _ ("backtrace");
         const auto r = root;
+        sort_events(pq[r], elements);
         x[r] = clip_fronw(elements, pq[r], mu[r], -mu[r]*y[r] -sig[r], 0., min_y);
         if (x[r] > 1e10) {
             fprintf(stdout,
