@@ -29,6 +29,7 @@ class GetPyBindInc():
 sources = [
     "_treelas.cpp",
     "line.cpp",
+    "order.cpp",
     "tree.cpp",
     "adjidx.cpp",
     "spanning.cpp",
