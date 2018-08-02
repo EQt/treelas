@@ -31,8 +31,7 @@ class Timer:
                 print(f"{self.msg}", end=self.end, file=type(self).out)
             else:
                 print("%-*s" % (self.indent, self.msg), end=self.end,
-                      file=type(self).out)
-            type(self).out.flush()
+                      file=type(self).out, flush=True)
         self.time0 = now()
         return self
 
@@ -42,8 +41,7 @@ class Timer:
             if self.end.endswith('\n'):
                 print("%-*s" % (self.indent, " ..."), file=type(self).out, end='')
             print(self.fmt % (1000.0 * float(self)),
-                  file=type(self).out)
-            type(self).out.flush()
+                  file=type(self).out, flush=True)
 
     def __repr__(self):
         d = float(self)
