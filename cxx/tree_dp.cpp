@@ -122,6 +122,7 @@ tree_dp(
 }
 
 
+template <bool lazy_sort>
 const double*
 tree_dp_w(
     const size_t n,
@@ -192,7 +193,8 @@ tree_dp_w(
 
             const auto lami = lam[i];
             const auto sigi = sig[i];  // backup before it is set in next line
-            sort_events(pq[i], elements);
+            if (lazy_sort)
+                sort_events(pq[i], elements);
             {   // EVENT_REC(decltype(elements[0]));
                 lb[i] = clip_fronw(elements, pq[i],
                                    /* slope  */ +mu[i],
@@ -218,12 +220,15 @@ tree_dp_w(
                 }
             }
             pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
+            if (!lazy_sort)
+                sort_events(pq[parent[i]], elements);
         }
     }
 
     {   Timer _ ("backtrace");
         const auto r = root;
-        sort_events(pq[r], elements);
+        if (lazy_sort)
+            sort_events(pq[r], elements);
         x[r] = clip_fronw(elements, pq[r], mu[r], -mu[r]*y[r] -sig[r], 0., min_y);
         if (x[r] > 1e10) {
             fprintf(stdout,
@@ -265,4 +270,28 @@ tree_dp<false>(
     const int *parent,
     const double lam,
     const double mu,
+    const int root);
+
+
+template
+const double*
+tree_dp_w<true>(
+    const size_t n,
+    double *x,
+    const double *y,
+    const int *parent,
+    const double *lam,
+    const double *mu,
+    const int root);
+
+
+template
+const double*
+tree_dp_w<false>(
+    const size_t n,
+    double *x,
+    const double *y,
+    const int *parent,
+    const double *lam,
+    const double *mu,
     const int root);

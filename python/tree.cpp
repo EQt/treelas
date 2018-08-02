@@ -131,7 +131,8 @@ reg_tree(py::module &m)
              const py::array_f64 &lam,
              const py::array_f64 &mu,
              int root,
-             bool verbose,
+             const bool verbose,
+             const bool lazy_sort,
              py::array_f64 &x) -> py::array_f64
           {
               TimerQuiet _ (verbose);
@@ -142,13 +143,22 @@ reg_tree(py::module &m)
               if (is_empty(x))
                   x = py::array_f64({n}, {sizeof(double)});
               check_len(n, x, "x");
-              tree_dp_w(n,
-                        x.mutable_data(),
-                        y.data(),
-                        parent.data(),
-                        lam.data(),
-                        mu.data(),
-                        root);
+              if (lazy_sort)
+                  tree_dp_w<true>(n,
+                                  x.mutable_data(),
+                                  y.data(),
+                                  parent.data(),
+                                  lam.data(),
+                                  mu.data(),
+                                  root);
+              else
+                  tree_dp_w<false>(n,
+                                   x.mutable_data(),
+                                   y.data(),
+                                   parent.data(),
+                                   lam.data(),
+                                   mu.data(),
+                                   root);
               Timer::stopit();
               return x;
           },
@@ -161,6 +171,7 @@ reg_tree(py::module &m)
           py::arg("mu"),
           py::arg("root") = 0,
           py::arg("verbose") = false,
+          py::arg("lazy_sort") = false,
           py::arg("x") = py::none());
 
     m.def("tree_dual_gap",
