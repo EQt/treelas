@@ -20,6 +20,9 @@ class PyChildrenIndex:
     def __getitem__(self, i):
         return self.pi[self.idx[i]:self.idx[i+1]]
 
+    def __len__(self):
+        return len(self.pi)
+
     @staticmethod
     def compute(parent, root=0):
         @njit(cache=True)
