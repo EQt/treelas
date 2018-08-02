@@ -91,7 +91,8 @@ reg_tree(py::module &m)
           [](const py::array_i32 &parent,
              py::array_f64 &x,
              const int root,
-             py::array_f64 &alpha) -> py::array_f64
+             py::array_f64 &alpha,
+             const bool tree_orientation) -> py::array_f64
           {
               const auto n = check_1d_len(parent, "parent");
               check_len(n, x, "x");
@@ -108,12 +109,19 @@ reg_tree(py::module &m)
               return alpha;
           },
           R"pbdoc(
-              Compute dual solution along tree
+              Compute dual solution along tree.
+              Be aware that `z` is supposed to be `mu*(x - y)` and will be changed.
+              After the computation, `z[root]` will contain `z.sum()`
+              (from before the computation).
+
+              If `tree_orientation`, every tree edge is directed from `i` to `parent[i]`;
+              otherwise it goes from `min(i, parent[i])` to `max(i, parent[i])`.
           )pbdoc",
           py::arg("parent"),
-          py::arg("x"),
+          py::arg("z"),
           py::arg("root") = 0,
-          py::arg("alpha") = py::none());
+          py::arg("alpha") = py::none(),
+          py::arg("tree_orientation") = true);
 
     m.def("tree_dp_w",
           [](const py::array_f64 &y,
