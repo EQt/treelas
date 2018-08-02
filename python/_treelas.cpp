@@ -107,12 +107,11 @@ PYBIND11_MODULE(_treelas, m)
 
     m.def("post_order",
           [](const py::array_i32 &parent,
-             int root,
+             const int root_,
              const bool include_root) -> py::array_i32
           {
               const size_t n = check_1d_len(parent, "parent");
-              if (root < 0)
-                  root = find_root(n, parent.data());
+              const int root = root_ < 0 ? find_root(n, parent.data()) : root_;
               int *postord_buf = post_order(n,
                                             parent.data(),
                                             root);
