@@ -25,3 +25,8 @@ def test_children_root2():
     root = 17
     cidx = ChildrenIndex(parent, root)
     assert len(cidx) == len(parent)
+    assert list(cidx[17]) == [8, 15, 16]
+    assert list(cidx[16]) == [12, 13, 14]
+
+    for i in list(range(6)) + list(range(9, 15)):
+        assert list(cidx[i]) == []
