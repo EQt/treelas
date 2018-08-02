@@ -225,6 +225,7 @@ TEST(dptree0, proc_order)
         ASSERT_EQ(sig, std::vector<double>({0.02, 0, 0.02, 0, 0, -0.01, 1.99}));
         const auto sig_i = sig[i];
         ASSERT_DOUBLE_EQ(sig_i, 0.02);
+        sort_events(pq[i], elements);
         ASSERT_EQ(std::vector<double>({-0.01, +0.01, +1.99, +2.01}),
                   std::vector<double>({elements[3].x, elements[4].x,
                                        elements[5].x, elements[6].x}));
