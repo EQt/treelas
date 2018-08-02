@@ -30,4 +30,5 @@ def test_root_sum(n=10, seed=42):
     x_rev = np.flipud(x)
     c = np.cumsum(x_rev)
     assert np.flipud(c)  == approx(z)
-    assert x.sum() - alpha[1:].sum() == approx(z.sum())
+    assert x.sum() + alpha[1:].sum() == approx(z.sum(), rel=1e-4), \
+        f'\nrhs={x.sum() - alpha[1:].sum()}\nlhs={z.sum()}'
