@@ -105,7 +105,8 @@ reg_tree(py::module &m)
                         parent.data(),
                         post_ord,
                         alpha.mutable_data(),
-                        root);
+                        root,
+                        tree_orientation);
               return alpha;
           },
           R"pbdoc(
