@@ -1,1 +1,1 @@
-from ._treelas import BiAdjacent
+from ._treelas import BiAdjacent, ChildrenIndex
