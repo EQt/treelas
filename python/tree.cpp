@@ -92,6 +92,7 @@ reg_tree(py::module &m)
              py::array_f64 &x,
              const int root,
              py::array_f64 &alpha,
+             const py::array_i32 &post_ord,
              const bool tree_orientation) -> py::array_f64
           {
               const auto n = check_1d_len(parent, "parent");
@@ -99,11 +100,10 @@ reg_tree(py::module &m)
               if (is_empty(alpha))
                   alpha = py::array_f64({n}, {sizeof(double)});
               check_len(n, alpha, "alpha");
-              const int *post_ord = nullptr;
               tree_dual(int(n),
                         x.mutable_data(),
                         parent.data(),
-                        post_ord,
+                        is_empty(post_ord) ? nullptr : post_ord.data(),
                         alpha.mutable_data(),
                         root,
                         tree_orientation);
@@ -122,6 +122,7 @@ reg_tree(py::module &m)
           py::arg("z"),
           py::arg("root") = 0,
           py::arg("alpha") = py::none(),
+          py::arg("post_ord") = py::array_i32(),
           py::arg("tree_orientation") = true);
 
     m.def("tree_dp_w",

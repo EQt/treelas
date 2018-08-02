@@ -97,6 +97,7 @@ class TreeInstance(Tree):
         self.z = None
         self.alpha = None
         self._gamma = None
+        self._postord = np.array([], dtype=np.int32)
         assert self.y.dtype == np.float64
 
     def __repr__(self):
@@ -142,6 +143,7 @@ parent = {repr(self.parent)})"""
         if self.alpha is None or not np.isnan(self.alpha[self.root]):
             self.alpha = _tl.tree_dual(parent=self.parent,
                                        z=self.z.copy(),
+                                       post_ord=self._postord,
                                        root=self.root,
                                        alpha=self.alpha)
         return self.alpha
