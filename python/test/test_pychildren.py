@@ -1,5 +1,5 @@
 import numpy as np
-from treelas.children import ChildrenIndex
+from treelas.children import PyChildrenIndex as ChildrenIndex
 
 
 def test_children_root1():

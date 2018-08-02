@@ -6,7 +6,7 @@ from numba import njit
 from . import _treelas as _tl
 from .graphviz import show_tree
 from .prufer import prufer_from_children_spec
-from .children import ChildrenIndex
+from .children import PyChildrenIndex as ChildrenIndex
 
 
 @njit
