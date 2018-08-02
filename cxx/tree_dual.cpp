@@ -18,7 +18,7 @@ tree_dual(const size_t n,
           const bool tree_orientation)
 {
     if (root < 0)
-        root = find_root(parent);
+        root = find_root(n, parent);
     if (root < 0)
         throw std::runtime_error("parent has no root");
     
