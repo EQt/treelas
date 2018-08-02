@@ -11,7 +11,7 @@ except ImportError:
         return f
 
 
-class ChildrenIndex:
+class PyChildrenIndex:
     """Similar to the C++ code"""
     def __init__(self, idx, pi):
         self.idx = idx
@@ -20,6 +20,7 @@ class ChildrenIndex:
     def __getitem__(self, i):
         return self.pi[self.idx[i]:self.idx[i+1]]
 
+    @staticmethod
     def compute(parent, root=0):
         @njit(cache=True)
         def _compute(n, parent, root, idx, pi):
@@ -51,4 +52,4 @@ class ChildrenIndex:
         _compute(n, parent, root, idx, pi)
         assert idx[n] == n-1, f'idx[n] = {idx[n]} != {n-1} = n-1'
         assert pi[-1] == root
-        return ChildrenIndex(idx=idx, pi=pi)
+        return PyChildrenIndex(idx=idx, pi=pi)
