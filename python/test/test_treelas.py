@@ -28,6 +28,7 @@ def test_empty_array_i32():
 
 def test_is_empty():
     assert t._treelas._is_empty(np.array([]))
+    assert t._treelas._is_empty(np.array([], dtype=np.int32))
     assert t._treelas._is_empty(t._treelas._empty_array_f64())
     assert t._treelas._is_empty(t._treelas._empty_array_i32())
 
