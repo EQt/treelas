@@ -9,8 +9,7 @@
 #include "../cxx/event.hpp"
 #include "../cxx/stack.hpp"
 #include "../cxx/clip.hpp"
-
-#include "../cxx/queue.cpp"
+#include "../cxx/merge.hpp"
 
 
 #pragma GCC diagnostic push 

@@ -7,7 +7,7 @@
 #include "line_para.hpp"
 #include "line.hpp"
 #include "clip.hpp"
-#include "queue.cpp"
+#include "merge.hpp"
 
 
 template <typename float_>

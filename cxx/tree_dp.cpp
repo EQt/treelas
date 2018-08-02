@@ -12,8 +12,7 @@
 #include "tree_debug.hpp"
 #include "stack.hpp"
 #include "clip.hpp"
-
-#include "queue.cpp"
+#include "merge.hpp"
 
 
 template<typename E = Event2>
