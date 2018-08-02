@@ -56,6 +56,15 @@ init_queues(const size_t n,
 }
 
 
+
+template <typename E>
+inline void
+sort_events(const Queue &range, E *elements)
+{
+    std::sort(elements + range.start, elements + range.stop + 1);
+}
+
+
 template <typename E>
 inline Queue
 merge(const Queue &parent, const Queue &child, E *elements)
@@ -69,7 +78,7 @@ merge(const Queue &parent, const Queue &child, E *elements)
                 elements[i] = elements[i + gap];
             }
         }
-        std::sort(elements + res.start, elements + res.stop + 1);
+        // std::sort(elements + res.start, elements + res.stop + 1);
         return res;
     }
     return child;

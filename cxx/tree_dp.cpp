@@ -71,6 +71,8 @@ _tree_dp(
         for (auto i : proc_order) {
             sig[parent[i]] += lam;
             const auto sig_i = sig[i];  // backup before it is set in next line
+            if (!merge_sort)
+                sort_events(pq[i], elements);
             lb[i] = clip_front(elements, pq[i], mu, -mu*y[i] -sig_i, -lam);
             ub[i] = clip_back(elements, pq[i], mu, -mu*y[i] +sig_i, +lam);
             if (merge_sort)
@@ -82,6 +84,8 @@ _tree_dp(
 
     {   Timer _ ("backtrace");
         const auto r = root;
+        if (!merge_sort)
+            sort_events(pq[r], elements);
         x[r] = clip_front(elements, pq[r], mu, -mu*y[r] -sig[r], 0.0);
         for (long int j = (long int)(n-2); j >= 0; j--) {
             const auto v = proc_order[j];
