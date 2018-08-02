@@ -54,6 +54,7 @@ if (BUILD_PYEXT)
   pybind11_add_module(_treelas
     python/_treelas.cpp
     python/line.cpp
+    python/order.cpp
     python/tree.cpp
     python/adjidx.cpp
     python/spanning.cpp

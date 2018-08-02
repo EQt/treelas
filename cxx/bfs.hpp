@@ -4,13 +4,13 @@
 */
 #pragma once
 #include <vector>
-#include <algorithm>        // for std::sort
 #include <queue>
 #include <stdexcept>
+
 #include "children.hpp"
 
 
-std::vector<int>
+inline std::vector<int>
 compute_bfs(const std::vector<int> &parent, const int root)
 {
     const auto n = parent.size();
@@ -30,7 +30,7 @@ compute_bfs(const std::vector<int> &parent, const int root)
 }
 
 
-std::vector<int>
+inline std::vector<int>
 compute_levels(const std::vector<int> &bfs,
                const std::vector<int> &parent)
 {
