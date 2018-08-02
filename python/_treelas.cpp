@@ -108,8 +108,10 @@ PYBIND11_MODULE(_treelas, m)
     m.def("post_order",
           [](const py::array_i32 &parent,
              const int root_,
-             const bool include_root) -> py::array_i32
+             const bool include_root,
+             const bool verbose) -> py::array_i32
           {
+              TimerQuiet _ (verbose);
               const size_t n = check_1d_len(parent, "parent");
               const int root = root_ < 0 ? find_root(n, parent.data()) : root_;
               int *postord_buf = post_order(n,
@@ -124,7 +126,8 @@ PYBIND11_MODULE(_treelas, m)
           )pbdoc",
           py::arg("parent"),
           py::arg("root") = -1,
-          py::arg("include_root") = false);
+          py::arg("include_root") = false,
+          py::arg("verbose") = false);
 
     reg_tree(m);
     reg_biadjacent(m);
