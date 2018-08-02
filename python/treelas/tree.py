@@ -139,7 +139,7 @@ parent = {repr(self.parent)})"""
             if self.x is None:
                 self.solve()
             self.alpha = _tl.tree_dual(parent=self.parent,
-                                       x=self.z.copy(),
+                                       z=self.z.copy(),
                                        root=self.root,
                                        alpha=self.alpha)
         return self.alpha
