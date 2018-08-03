@@ -106,7 +106,7 @@ dp_line_c(const int n,
     Malloc<float_> buf (2*n + 2*n + 2*n + n + n);
 #  else
     std::vector<float_> buf (2*n + 2*n + 2*n + n + n);
-#endif
+#  endif
     size_t p = 0;
     float_ *x = buf.data() + p; p += 2*n;
     float_ *a = buf.data() + p; p += 2*n;
