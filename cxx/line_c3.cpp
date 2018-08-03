@@ -111,7 +111,7 @@ dp_line_c3(const int n,
     std::vector<pair2a<float_>> deriv;
     std::vector<pair2<float_>> bounds;
     {   Timer _ ("alloc");
-        deriv.reserve(n);
+        deriv.reserve(2*n);
         bounds.reserve(n);
     }
     _dp_line_c3(n, y, lam, beta, deriv.data(), bounds.data());
