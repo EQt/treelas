@@ -91,30 +91,13 @@ dp_line_c2(const int n,
           const float_ lam,
           float_ *beta)
 {
-    Timer t ("alloc");
-#ifdef BLOCK_ALLOC
-#  ifdef MALLOC
-    Malloc<float_> buf (2*n + 2*n + n);
-#  else
-    std::vector<float_> buf (2*n + 2*n + n);
-#endif
-    size_t p = 0;
-    float_ *x = buf.data() + p; p += 2*n;
-    float_ *a = buf.data() + p; p += 2*n;
-    float_ *ub = buf.data() + p; p += n;
-    t.stop();
-    if (p != buf.size())
-        throw std::runtime_error("Should not happen");
-    _dp_line_c2(n, y, lam, beta, x, a, ub);
-#else
-    std::vector<float_>
-        x (2*n),
-        a (2*n),
-        ub (n);
-    t.stop();
-    _dp_line_c2(n, y, lam, beta,
-                x.data(), a.data(), ub.data());
-#endif
+    std::vector<float_> x, a, ub;
+    {   Timer _ ("alloc");
+        x.reserve(2*n);
+        a.reserve(2*n);
+        ub.reserve(n);
+    }
+    _dp_line_c2(n, y, lam, beta, x.data(), a.data(), ub.data());
 }
 
 
