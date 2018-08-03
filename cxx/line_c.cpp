@@ -115,7 +115,9 @@ dp_line_c(const int n,
     float_ *ub = buf.data() + p; p += n;
     t.stop();
     if (p != buf.size())
-        throw std::runtime_error("Should not happen");
+        throw std::runtime_error(std::string("dp_line_c(): ERROR during allocation") +
+                                 "p = " + std::to_string(p) + " != " +
+                                 std::to_string(buf.size()) + " = buf.size()");
     _dp_line_c(n, y, lam, beta, x, a, b, lb, ub);
 #else
     std::vector<float_>
