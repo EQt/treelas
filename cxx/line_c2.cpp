@@ -7,9 +7,6 @@
 #include <vector>
 #include <stdexcept>
 
-#ifdef MALLOC
-#  include "utils/malloc.hpp"
-#endif
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
 
