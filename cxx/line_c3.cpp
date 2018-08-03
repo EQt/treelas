@@ -111,30 +111,13 @@ dp_line_c3(const int n,
           const float_ lam,
           float_ *beta)
 {
-    Timer t ("alloc");
-#ifdef BLOCK_ALLOC
-#  ifdef MALLOC
-    Malloc<pair2a<float_>>  deriv  (2*n);
-    Malloc<pair2<float_>> bounds (1*n);
-#  else
-    # error "not implemented"
-    std::vector<float_> buf (6*n);
-    size_t p = 0;
-    if (p != buf.size())
-        throw std::runtime_error("Should not happen");
-#endif
-    t.stop();
+    std::vector<pair2a<float_>> deriv;
+    std::vector<pair2<float_>> bounds;
+    {   Timer _ ("alloc");
+        deriv.reserve(n);
+        bounds.reserve(n);
+    }
     _dp_line_c3(n, y, lam, beta, deriv.data(), bounds.data());
-#else
-# error "not implemented"
-    std::vector<float_>
-        x (2*n),
-        a (2*n),
-        ub (n);
-    t.stop();
-    _dp_line_c3(n, y, lam, beta,
-                x.data(), a.data(), ub.data());
-#endif
 }
 
 
