@@ -192,7 +192,9 @@ tree_dp_w(
     {   Timer _ ("forward");
         for (auto i : proc_order) {
             if (parent[i] == i)
-                throw std::runtime_error("Should not happen i");
+                throw std::runtime_error(std::string("tree_dp_w(): FATAL ERROR: ") +
+                                         "parent[" + std::to_string(i) + "] = " +
+                                         std::to_string(parent[i]));
 
             const auto lami = lam[i];
             const auto sigi = sig[i];  // backup before it is set in next line
