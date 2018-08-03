@@ -100,8 +100,8 @@ dp_line_c(const int n,
           const float_ lam,
           float_ *beta)
 {
-    Timer t ("alloc");
 #ifdef BLOCK_ALLOC
+    Timer t ("alloc");
 #  ifdef MALLOC
     Malloc<float_> buf (2*n + 2*n + 2*n + n + n);
 #  else
@@ -120,15 +120,15 @@ dp_line_c(const int n,
                                  std::to_string(buf.size()) + " = buf.size()");
     _dp_line_c(n, y, lam, beta, x, a, b, lb, ub);
 #else
-    std::vector<float_>
-        x (2*n),
-        a (2*n),
-        b (2*n),
-        lb (n),
-        ub (n);
-    t.stop();
-    _dp_line_c(n, y, lam, beta,
-               x.data(), a.data(), b.data(), lb.data(), ub.data());
+    std::vector<float_> x, a, b, lb, ub;
+    {   Timer _ ("alloc");
+        x.reserve(2*n);
+        a.reserve(2*n);
+        b.reserve(2*n);
+        lb.reserve(n);
+        ub.reserve(n);
+    }
+    _dp_line_c(n, y, lam, beta, x.data(), a.data(), b.data(), lb.data(), ub.data());
 #endif
 }
 
