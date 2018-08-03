@@ -176,7 +176,7 @@ HDF5::~HDF5()
           std::cerr << (std::string("HDF5: Error while closing ") +
                         std::to_string(err));
     } else {
-        // throw std::runtime_error("Should not happen");
+        std::cerr << "HDF5::~HDF5(): This should not happen" << std::endl;
     }
 }
 
