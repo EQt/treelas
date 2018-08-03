@@ -23,7 +23,7 @@ option(BUILD_PYEXT "Build python extension module"     ON)
 
 add_subdirectory(extern/glmgen)
 add_subdirectory(extern/condat)
-add_subdirectory(cmake)
+add_subdirectory(ci)
 
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
