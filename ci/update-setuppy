@@ -1,6 +1,10 @@
 #!/usr/bin/env python
+"""
+Parse CMakeLists.txt and update the source file list in setup.py.
+"""
 import re
 from os import path
+
 
 __dir__ = path.dirname(path.realpath(__file__))
 cmake_txt = path.join(__dir__, '..', 'CMakeLists.txt')
