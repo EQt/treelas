@@ -18,6 +18,32 @@
 #include "../tree_12.hpp"
 
 
+
+template<typename float_, typename int_>
+std::vector<double>
+tree_12(const TreeLasso<float_, int_> &tree,
+        const std::vector<int_> &ipostordv,
+        const std::vector<int_> &iorderv,
+        const size_t max_iter = 20)
+{
+    const auto n = tree.parent.size();
+    std::vector<double> xv (n);
+
+    const float_ lam = tree.lam[0];
+    const float_ *y = tree.y.data();
+    const int_ *parent = tree.parent.data();
+    const int  *order = tree.postorder.data();
+    const int_ *ipostord = ipostordv.data();
+    const int_ *iorder = iorderv.data();
+    double *x = xv.data();
+
+    tree_12(n, y, lam, parent, order, iorder, ipostord, x, max_iter);
+
+    return xv;
+}
+
+
+
 template<typename float_ = float, typename int_ = int>
 void
 process_tree(const char *fname,

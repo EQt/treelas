@@ -76,40 +76,6 @@ compute_dfs_orders(const size_t n,
 
 
 
-template<typename float_, typename int_>
-void
-compute_orders(TreeLasso<float_, int_> &tree,
-               std::vector<int_> &ipostord,
-               std::vector<int_> &iorder,
-               const bool use_dfs,
-               const size_t PRINT_MAX = 0)
-{
-    const auto n = tree.parent.size();
-    {   Timer _ ("Computing BFS");
-        if (use_dfs) {
-            tree.preorder = std::move(tree.dfs);
-        } else {
-            tree.preorder = (tree.bfs.size() == n) ?
-                tree.bfs : compute_bfs(tree.parent, tree.root);
-        }
-        // for testing:
-        // preorder = {0, 2, 3, 4, 1, 5, 6, 7};
-        tree.postorder = reverse(tree.preorder);
-        ipostord = iperm(tree.postorder);
-        iorder = concat(ipostord, tree.preorder);
-    }
-    if (n <= PRINT_MAX) {
-        printf("   parent: ");
-        print(tree.parent, 0);
-        printf(" preorder: ");
-        print(tree.preorder, 0);
-        printf("postorder: ");
-        print(tree.postorder, 0);
-        printf(" ipostord: ");
-        print(ipostord, 0);
-    }
-}
-
 
 template<typename float_, typename int_>
 void
@@ -166,8 +132,6 @@ tree_12(const size_t n,
 }
 
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
 template<typename float_>
 void
 tree_12(const size_t n,
@@ -176,58 +140,6 @@ tree_12(const size_t n,
         const int *parent,
         double *x,
         const size_t max_iter = 20,
-        int root = -1)
-{
-
-    if (root < 0) {
-        Timer _ ("find root");
-        root = find_root(n, parent);
-    }
-
-    std::vector<int> postord, iorder, ipostord;
-    stack<int> stack;
-
-    Timer tim ("children index");
-    ChildrenIndex childs (n, parent, root);
-    tim.stop();
-
-    {   Timer _ ("allocate orders");
-        postord.reserve(n);
-        iorder.reserve(n);
-        ipostord.reserve(n);
-        stack.reserve(2*n);
-    }
-    {   Timer _ ("postorder");
-        post_order(root, childs, stack, postord.data());
-    }
-    {   Timer _ ("iorder");
-        iperm(n, iorder.data(), postord.data());
-    }
-}
-#pragma GCC diagnostic pop
-
-
-template<typename float_, typename int_>
-std::vector<double>
-tree_12(const TreeLasso<float_, int_> &tree,
-        const std::vector<int_> &ipostordv,
-        const std::vector<int_> &iorderv,
-        const size_t max_iter = 20)
-{
-    const auto n = tree.parent.size();
-    std::vector<double> xv (n);
-
-    const float_ lam = tree.lam[0];
-    const float_ *y = tree.y.data();
-    const int_ *parent = tree.parent.data();
-    const int  *order = tree.postorder.data();
-    const int_ *ipostord = ipostordv.data();
-    const int_ *iorder = iorderv.data();
-    double *x = xv.data();
-
-    tree_12(n, y, lam, parent, order, iorder, ipostord, x, max_iter);
-
-    return xv;
-}
+        int root = -1);
 
 }   // namespace approx::

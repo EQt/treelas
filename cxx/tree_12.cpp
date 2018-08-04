@@ -51,3 +51,41 @@ tree12_iter(Nodes<float_, int_> &nodes,
     }
     return changed;
 }
+
+
+template<typename float_>
+void
+tree_12(const size_t n,
+        const float_ *y,
+        const float_ lam,
+        const int *parent,
+        double *x,
+        const size_t max_iter = 20,
+        int root = -1)
+{
+
+    if (root < 0) {
+        Timer _ ("find root");
+        root = find_root(n, parent);
+    }
+
+    std::vector<int> postord, iorder, ipostord;
+    stack<int> stack;
+
+    Timer tim ("children index");
+    ChildrenIndex childs (n, parent, root);
+    tim.stop();
+
+    {   Timer _ ("allocate orders");
+        postord.reserve(n);
+        iorder.reserve(n);
+        ipostord.reserve(n);
+        stack.reserve(2*n);
+    }
+    {   Timer _ ("postorder");
+        post_order(root, childs, stack, postord.data());
+    }
+    {   Timer _ ("iorder");
+        iperm(n, iorder.data(), postord.data());
+    }
+}
