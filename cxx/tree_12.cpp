@@ -53,8 +53,6 @@ tree12_iter(Nodes<float_, int_> &nodes,
 }
 
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
 template<typename float_>
 void
 tree_12(const size_t n,
@@ -91,8 +89,6 @@ tree_12(const size_t n,
         iperm(n, iorder.data(), postord.data());
     }
 }
-#pragma GCC diagnostic pop
-
 
 
 template<typename float_, typename int_>
