@@ -24,25 +24,35 @@
 template<typename float_ = float, typename int_ = int>
 struct Tree12xStatus
 {
-    Tree12xStatus(const size_t n, const int_ *forder) : n(n), forder(forder) {
+    Tree12xStatus(const size_t n, const int_ *forder)
+        : n(n),
+          forder(forder) {
         y = new float_[n];
         x = new float_[n];
         deriv = new float_[n];
-        parent = new int_[n];
+        parent_ = new int_[n];
     }
+
+    static constexpr int_ one =             //  b"100...0"
+        (int_(1)<<(8*sizeof(int_)-1));
+
+    inline void divorce(size_t i) { parent_[i] &= ~one; }
+    inline void init_parent(size_t i, int_ p) { parent_[i] = p | one; }
+    inline bool same(size_t i) { return bool(parent_[i] & one); }
+    inline int_ parent(size_t i) { return parent_[i] & (~one); }
 
     ~Tree12xStatus() {
         if (y) delete[] y;
         if (x) delete[] x;
         if (deriv) delete[] deriv;
-        if (parent) delete[] parent;
+        if (parent_) delete[] parent_;
     }
 
     const size_t n = 0;
     float_ *y = nullptr;
     float_ *x = nullptr;
     float_ *deriv = nullptr;
-    int_ *parent = nullptr;
+    int_ *parent_ = nullptr;
     const int_ *forder;
 };
 
@@ -61,7 +71,9 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
     {   Timer _ ("forward");
         for (size_t i = 0; i < s.n-1; i++) {
             const auto v = s.forder[i];
-            s.deriv[s.parent[v]] += clip(s.deriv[v], -lam, +lam);
+            const auto p = s.parent(v);
+            printf("p = %d\n", p);
+            s.deriv[p] += clip(s.deriv[v], -lam, +lam);
         }
     }
 
@@ -73,13 +85,31 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
 
         for (size_t i = s.n-1; i > 0; i--) {
             const auto v = s.forder[i-1];
-            printf("v = %d  (p = %d)\n", v, s.parent[v]);
-            if (s.deriv[v] > lam) {
-                s.x[v] -= delta;
-            } else if (s.deriv[v] < -lam) {
-                s.x[v] += delta;
+            printf("v = %d  (p = %d)\n", v, s.parent(v));
+            if (s.same(v)) {
+                if (s.deriv[v] > lam) {
+                    s.x[v] -= delta;
+                } else if (s.deriv[v] < -lam) {
+                    s.x[v] += delta;
+                } else {
+                    s.x[v] = s.x[s.parent(v)];
+                    continue;
+                }
+
+                const auto p = s.parent(v);
+                if (s.x[v] < s.x[p]) {
+                    changed++;
+                    s.divorce(v);
+                    s.y[p] -= lam;
+                    s.y[v] += lam;
+                } else if (s.x[v] > s.x[p]) {
+                    changed++;
+                    s.divorce(v);
+                    s.y[p] += lam;
+                    s.y[v] -= lam;
+                }
             } else {
-                s.x[v] = s.x[s.parent[v]];
+                s.x[v] += s.deriv[v] < 0 ? +delta : -delta;
             }
         }
     }
@@ -125,8 +155,10 @@ tree_12x(
             s.x[i] = x0;
         for (size_t i = 0; i < n; i++)
             s.y[i] = y[i];
-        for (size_t i = 0; i < n; i++)
-            s.parent[i] = parent[i];
+        for (size_t i = 0; i < n; i++) {
+            s.init_parent(i, parent[i]);
+            printf("parent[%d] = %d\n", int(i), s.parent(i));
+        }
     }
 
     for (int k = 0; k < max_iter; k++) {
