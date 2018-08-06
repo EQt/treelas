@@ -73,6 +73,7 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
 
         for (size_t i = s.n-1; i > 0; i--) {
             const auto v = s.forder[i-1];
+            printf("v = %d\n", v);
             if (s.deriv[v] > lam) {
                 s.x[v] += -delta;
             } else if (s.deriv[v] < -lam) {
