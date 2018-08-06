@@ -51,13 +51,15 @@ template<typename float_ = float, typename int_ = int>
 size_t
 tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ delta)
 {
+    const auto root = s.forder[s.n-1];
+
     {   Timer _ ("deriv init");
         for (size_t i = 0; i < s.n; i++)
             s.deriv[i] = s.x[i] - s.y[i];
     }
 
     {   Timer _ ("forward");
-        for (size_t i = 0; i < s.n; i++) {
+        for (size_t i = 0; i < s.n-1; i++) {
             const auto v = s.forder[i];
             s.deriv[v] = clip(s.deriv[v], -lam, +lam);
             s.deriv[s.parent[v]] += s.deriv[v];
@@ -66,6 +68,11 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
 
     size_t changed = 0;
     {   Timer _ ("backward");
+        const auto xr = s.deriv[root] > 0 ? -delta : +delta;
+        printf("\nxr = %f\n", xr);
+
+        s.x[root] += xr;
+
     }
 
     return changed;
@@ -89,6 +96,8 @@ tree_12x(
 
     {   Timer _ ("dfs postorder\n");
         post_order(n, parent, root, forder_.data());
+        if (forder_[n-1] != root)
+            throw std::runtime_error("tree_12x(): Fatal");
     }
 
     Timer tim ("alloc");
@@ -113,6 +122,7 @@ tree_12x(
 
     for (int k = 0; k < max_iter; k++) {
         tree_12x_iter(s, lam, delta);
+        delta = 0.5*delta;
     }
 
 
