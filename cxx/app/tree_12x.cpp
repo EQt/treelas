@@ -49,9 +49,26 @@ struct Tree12xStatus
 
 template<typename float_ = float, typename int_ = int>
 size_t
-tree_12x_iter(Tree12xStatus<float_, int_> *s, const float_ lam, const float_ delta)
+tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ delta)
 {
-    return 1;
+    {   Timer _ ("deriv init");
+        for (size_t i = 0; i < s.n; i++)
+            s.deriv[i] = s.x[i] - s.y[i];
+    }
+
+    {   Timer _ ("forward");
+        for (size_t i = 0; i < s.n; i++) {
+            const auto v = s.forder[i];
+            s.deriv[v] = clip(s.deriv[v], -lam, +lam);
+            s.deriv[s.parent[v]] += s.deriv[v];
+        }
+    }
+
+    size_t changed = 0;
+    {   Timer _ ("backward");
+    }
+
+    return changed;
 }
 
 
@@ -84,16 +101,18 @@ tree_12x(
         delta = float_((max_y - min_y) * 0.25);
     }
 
-    {   Timer _ ("init x");
+    {   Timer _ ("init x,y,parent");
         const float_ x0 = float_(0.5 * (min_y + max_y));
         for (size_t i = 0; i < n; i++)
             s.x[i] = x0;
         for (size_t i = 0; i < n; i++)
             s.y[i] = y[i];
+        for (size_t i = 0; i < n; i++)
+            s.parent[i] = parent[i];
     }
 
     for (int k = 0; k < max_iter; k++) {
-        tree_12x_iter(&s, lam, delta);
+        tree_12x_iter(s, lam, delta);
     }
 
 
