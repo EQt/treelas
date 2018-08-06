@@ -63,29 +63,29 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
 {
     const auto root = s.forder[s.n-1];
 
-    {   Timer _ ("deriv init");
+    {   // Timer _ ("deriv init");
         for (size_t i = 0; i < s.n; i++)
             s.deriv[i] = s.x[i] - s.y[i];
     }
 
-    {   Timer _ ("forward");
+    {   // Timer _ ("forward");
         for (size_t i = 0; i < s.n-1; i++) {
             const auto v = s.forder[i];
             const auto p = s.parent(v);
-            printf("p = %d\n", p);
+            // printf("v = %d (p = %d)\n", v, p);
             s.deriv[p] += clip(s.deriv[v], -lam, +lam);
         }
     }
 
     size_t changed = 0;
-    {   Timer _ ("backward");
+    {   // Timer _ ("backward");
         const auto xr = s.deriv[root] > 0 ? -delta : +delta;
-        printf("\nxr = %f\n", xr);
+        // printf("\nxr = %f\n", xr);
         s.x[root] += xr;
 
         for (size_t i = s.n-1; i > 0; i--) {
             const auto v = s.forder[i-1];
-            printf("v = %d  (p = %d)\n", v, s.parent(v));
+            // printf("v = %d  (p = %d)\n", v, s.parent(v));
             if (s.same(v)) {
                 if (s.deriv[v] > lam) {
                     s.x[v] -= delta;
@@ -162,7 +162,12 @@ tree_12x(
     }
 
     for (int k = 0; k < max_iter; k++) {
-        tree_12x_iter(s, lam, delta);
+        Timer::log("%2ld ...", k+1);
+        const auto changed = tree_12x_iter(s, lam, delta);
+        if (changed)
+            Timer::log("  %d", changed);
+        Timer::log("\n");
+
         delta = 0.5*delta;
     }
 
