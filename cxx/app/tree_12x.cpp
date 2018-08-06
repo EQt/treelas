@@ -61,8 +61,7 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
     {   Timer _ ("forward");
         for (size_t i = 0; i < s.n-1; i++) {
             const auto v = s.forder[i];
-            s.deriv[v] = clip(s.deriv[v], -lam, +lam);
-            s.deriv[s.parent[v]] += s.deriv[v];
+            s.deriv[s.parent[v]] += clip(s.deriv[v], -lam, +lam);
         }
     }
 
@@ -70,9 +69,18 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
     {   Timer _ ("backward");
         const auto xr = s.deriv[root] > 0 ? -delta : +delta;
         printf("\nxr = %f\n", xr);
-
         s.x[root] += xr;
 
+        for (size_t i = s.n-1; i > 0; i--) {
+            const auto v = s.forder[i-1];
+            if (s.deriv[v] > lam) {
+                s.x[v] += -delta;
+            } else if (s.deriv[v] < -lam) {
+                s.x[v] += +delta;
+            } else {
+                s.x[v] = s.x[s.parent[v]];
+            }
+        }
     }
 
     return changed;
