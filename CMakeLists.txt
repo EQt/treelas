@@ -100,6 +100,11 @@ if (HDF5_FOUND)
   #   $<TARGET_OBJECTS:argparser>
   # )
 
+  add_executable_h5(tree_12x
+    cxx/app/tree_12x.cpp
+    $<TARGET_OBJECTS:argparser>
+  )
+
   add_executable_h5(tree_solve
     cxx/app/tree_solve.cpp
     $<TARGET_OBJECTS:tree_dp>
