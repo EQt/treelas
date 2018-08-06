@@ -4,9 +4,11 @@
 
 
 /**
-   Compute a post_order; more specific the DFS finish time.
+   Compute a post_order, i.e. parent come after its children;
+   more specific the DFS finish time.
+
    If postord is preallocated, it must have a length >= n.
-   If postord == nullptr, it will be allocated.
+   If postord  == nullptr, it will be allocated.
  */
 int*
 post_order(const size_t n,

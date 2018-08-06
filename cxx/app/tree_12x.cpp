@@ -15,6 +15,10 @@
 #include "../utils/thousand.hpp"
 #include "../utils/viostream.hpp"
 
+#include "../root.hpp"
+#include "../postorder.hpp"
+
+
 
 template<typename float_ = float, typename int_ = int>
 struct Tree12xStatus
@@ -22,7 +26,7 @@ struct Tree12xStatus
     Tree12xStatus(const size_t n) : n(n) {
         y = new float_[n];
         deriv = new float_[n];
-        parent = new float_[n];
+        parent = new int_[n];
     }
 
     ~Tree12xStatus() {
@@ -54,13 +58,19 @@ tree_12x(
     const float_ *y,
     const float_ lam,
     float_ *x,
+    const int_ root_ = int_(-1),
     const int max_iter = 3)
 {
+    std::vector<int> forder;
+
     Timer tim ("alloc");
     Tree12xStatus<float_, int_> s (n);
+    forder.reserve(n);
     tim.stop();
 
-    
+    int_ root = root < 0 ? find_root(n, parent) : root_;
+
+    post_order(n, parent, root, forder.data());
 
     for (int k = 0; k < max_iter; k++) {
         tree_12x_iter(&s);
@@ -103,6 +113,7 @@ process_file(const char *fname,
              y.data(),
              lam[0],
              x.data(),
+             -1 /* root*/,
              max_iter);
 
     if (n <= PRINT_MAX) {
