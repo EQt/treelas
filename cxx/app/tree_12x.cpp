@@ -16,14 +16,31 @@
 #include "../utils/viostream.hpp"
 
 
+template<typename float_ = float, typename int_ = int>
 struct Tree12xStatus
 {
+    Tree12xStatus(const size_t n) : n(n) {
+        y = new float_[n];
+        deriv = new float_[n];
+        parent = new float_[n];
+    }
+
+    ~Tree12xStatus() {
+        if (y) delete[] y;
+        if (deriv) delete[] deriv;
+        if (parent) delete[] parent;
+    }
+
+    const size_t n = 0;
+    float_ *y = nullptr;
+    float_ *deriv = nullptr;
+    int_ *parent = nullptr;
 };
 
 
 template<typename float_ = float, typename int_ = int>
 size_t
-tree_12x_iter(Tree12xStatus *s)
+tree_12x_iter(Tree12xStatus<float_, int_> *s)
 {
     return 1;
 }
@@ -39,7 +56,12 @@ tree_12x(
     float_ *x,
     const int max_iter = 3)
 {
-    Tree12xStatus s;
+    Timer tim ("alloc");
+    Tree12xStatus<float_, int_> s (n);
+    tim.stop();
+
+    
+
     for (int k = 0; k < max_iter; k++) {
         tree_12x_iter(&s);
     }
