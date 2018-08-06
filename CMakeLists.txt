@@ -89,30 +89,23 @@ if (HDF5_FOUND)
     add_definitions(-DH5_BUILT_AS_DYNAMIC_LIB)
   endif()
 
-  add_executable(traverse
+  add_executable_h5(traverse
     cxx/app/traverse.cpp
     $<TARGET_OBJECTS:argparser>
     $<TARGET_OBJECTS:postorder>
   )
-  target_include_directories(traverse PUBLIC ${HDF5_INCLUDE_DIR})
-  target_link_libraries(traverse ${HDF5_LIBRARIES})
 
-
-  add_executable(tree_apx
+  add_executable_h5(tree_apx
     cxx/app/tree_apx.cpp
     $<TARGET_OBJECTS:argparser>
   )
-  target_include_directories(tree_apx PUBLIC ${HDF5_INCLUDE_DIR})
-  target_link_libraries(tree_apx ${HDF5_LIBRARIES})
 
-  add_executable(tree_solve
+  add_executable_h5(tree_solve
     cxx/app/tree_solve.cpp
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:postorder>
     $<TARGET_OBJECTS:argparser>
   )
-  target_include_directories(tree_solve PUBLIC ${HDF5_INCLUDE_DIR})
-  target_link_libraries(tree_solve ${HDF5_LIBRARIES})
 endif()
 
 
