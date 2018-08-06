@@ -84,6 +84,12 @@ public:
     template<typename T>
     std::vector<T> read(const char *data_name, Dims *dims = nullptr);
 
+    template<typename T>
+    size_t readv(std::vector<T> &v, const char *data_name) {
+        v = read<T>(data_name);
+        return v.size();
+    }
+
     /** Return the value of an existing attribute */
     template<typename T>
     T attr(const char *attr_name, const char *obj_name = "/");
