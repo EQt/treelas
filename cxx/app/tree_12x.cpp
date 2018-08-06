@@ -68,7 +68,7 @@ tree_12x(
     forder.reserve(n);
     tim.stop();
 
-    int_ root = root < 0 ? find_root(n, parent) : root_;
+    int_ root = root_ < 0 ? find_root(n, parent) : root_;
 
     post_order(n, parent, root, forder.data());
 
