@@ -94,7 +94,7 @@ main(int argc, char *argv[])
     try {
         set_thousand_sep(std::cout, '\'');
 
-        ArgParser ap ("tree12 [file]\n");
+        ArgParser ap ("tree_apx [file]\n");
         ap.add_option('i', "max-iter",
                       "Number of iterations [default 3]",
                       "INT", "3");
