@@ -14,6 +14,7 @@
 #include "../utils/argparser.hpp"
 #include "../utils/thousand.hpp"
 #include "../utils/viostream.hpp"
+#include "../utils/minmax.hpp"
 
 #include "../root.hpp"
 #include "../postorder.hpp"
@@ -23,28 +24,32 @@
 template<typename float_ = float, typename int_ = int>
 struct Tree12xStatus
 {
-    Tree12xStatus(const size_t n) : n(n) {
+    Tree12xStatus(const size_t n, const int_ *forder) : n(n), forder(forder) {
         y = new float_[n];
+        x = new float_[n];
         deriv = new float_[n];
         parent = new int_[n];
     }
 
     ~Tree12xStatus() {
         if (y) delete[] y;
+        if (x) delete[] x;
         if (deriv) delete[] deriv;
         if (parent) delete[] parent;
     }
 
     const size_t n = 0;
     float_ *y = nullptr;
+    float_ *x = nullptr;
     float_ *deriv = nullptr;
     int_ *parent = nullptr;
+    const int_ *forder;
 };
 
 
 template<typename float_ = float, typename int_ = int>
 size_t
-tree_12x_iter(Tree12xStatus<float_, int_> *s)
+tree_12x_iter(Tree12xStatus<float_, int_> *s, const float_ lam, const float_ delta)
 {
     return 1;
 }
@@ -61,19 +66,40 @@ tree_12x(
     const int_ root_ = int_(-1),
     const int max_iter = 3)
 {
-    std::vector<int> forder;
-
-    Timer tim ("alloc");
-    Tree12xStatus<float_, int_> s (n);
-    forder.reserve(n);
-    tim.stop();
-
+    std::vector<int> forder_;
+    forder_.reserve(n);
     int_ root = root_ < 0 ? find_root(n, parent) : root_;
 
-    post_order(n, parent, root, forder.data());
+    {   Timer _ ("dfs postorder\n");
+        post_order(n, parent, root, forder_.data());
+    }
+
+    Timer tim ("alloc");
+    Tree12xStatus<float_, int_> s (n, forder_.data());
+    tim.stop();
+
+    float_ min_y, max_y, delta;
+    {   Timer _ ("minmax y");
+        find_minmax(y, n, min_y, max_y);
+        delta = float_((max_y - min_y) * 0.25);
+    }
+
+    {   Timer _ ("init x");
+        const float_ x0 = float_(0.5 * (min_y + max_y));
+        for (size_t i = 0; i < n; i++)
+            s.x[i] = x0;
+        for (size_t i = 0; i < n; i++)
+            s.y[i] = y[i];
+    }
 
     for (int k = 0; k < max_iter; k++) {
-        tree_12x_iter(&s);
+        tree_12x_iter(&s, lam, delta);
+    }
+
+
+    {   Timer _ ("extract x");
+        for (size_t i = 0; i < n; i++)
+            x[i] = s.x[i];
     }
 }
 
