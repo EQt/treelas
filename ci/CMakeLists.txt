@@ -7,8 +7,9 @@ function (add_object name source)
 endfunction()
 
 
-function (add_executable_h5 name source)
-  add_executable(${name} ${source})
+function (add_executable_h5 name)
+  list(REMOVE_AT ARGV 0)
+  add_executable(${name} ${ARGV})
   target_include_directories(${name} PUBLIC ${HDF5_INCLUDE_DIR})
   target_link_libraries(${name} ${HDF5_LIBRARIES})
 endfunction()
