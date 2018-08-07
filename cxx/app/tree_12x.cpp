@@ -136,7 +136,10 @@ tree_12x(
     {   Timer _ ("dfs postorder\n");
         post_order(n, parent, root, forder_.data());
         if (forder_[n-1] != root)
-            throw std::runtime_error("tree_12x(): Fatal");
+            throw std::runtime_error(std::string("tree_12x(): FATAL: ") +
+                                     "forder[" + std::to_string(n-1) + "] = " +
+                                     std::to_string(forder_[n-1]) + " != " +
+                                     std::to_string(root) + " = root");
     }
 
     Timer tim ("alloc");
