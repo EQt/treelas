@@ -1,5 +1,10 @@
 #include "tree_12.hpp"
 
+#include <algorithm>        // for std::sort
+
+
+namespace approx {
+
 
 template<typename float_ = float, typename int_ = int>
 size_t
@@ -60,8 +65,8 @@ tree_12(const size_t n,
         const float_ lam,
         const int *parent,
         double *x,
-        const size_t max_iter = 20,
-        int root = -1)
+        const size_t max_iter,
+        int root)
 {
 
     if (root < 0) {
@@ -144,3 +149,6 @@ tree_12(const size_t n,
             x[order[i]] = nodes[i].x;
     }
 }
+
+
+} // namespace approx::
