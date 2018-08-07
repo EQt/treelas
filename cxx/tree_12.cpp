@@ -6,7 +6,7 @@
 namespace approx {
 
 
-template<typename float_ = float, typename int_ = int>
+template<typename float_, typename int_>
 size_t
 tree12_iter(Nodes<float_, int_> &nodes,
             const int_ *preorder,
