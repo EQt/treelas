@@ -18,6 +18,42 @@
 #include "../tree_12.hpp"
 
 
+template<typename float_, typename int_>
+void
+compute_orders(TreeLasso<float_, int_> &tree,
+               std::vector<int_> &ipostord,
+               std::vector<int_> &iorder,
+               const bool use_dfs,
+               const size_t PRINT_MAX = 0)
+{
+    const auto n = tree.parent.size();
+    {   Timer _ ("Computing BFS");
+        if (use_dfs) {
+            tree.preorder = std::move(tree.dfs);
+        } else {
+            tree.preorder = (tree.bfs.size() == n) ?
+                tree.bfs : compute_bfs(tree.parent, tree.root);
+        }
+        // for testing:
+        // preorder = {0, 2, 3, 4, 1, 5, 6, 7};
+        tree.postorder = reverse(tree.preorder);
+        ipostord = iperm(tree.postorder);
+        iorder = concat(ipostord, tree.preorder);
+    }
+    if (n <= PRINT_MAX) {
+        printf("   parent: ");
+        print(tree.parent, 0);
+        printf(" preorder: ");
+        print(tree.preorder, 0);
+        printf("postorder: ");
+        print(tree.postorder, 0);
+        printf(" ipostord: ");
+        print(ipostord, 0);
+    }
+}
+
+
+
 
 template<typename float_, typename int_>
 std::vector<double>
