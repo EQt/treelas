@@ -70,9 +70,12 @@ def compute_children(parent):
     return vc, ci
 
 
-@njit(cache=True)
+@njit(cache=False)
 def compute_bfs(vc, ci, root=0):
-    """Return bfs   whereby bfs[i] is the BFS number of i"""
+    """
+    Return bfs whereby bfs[i] is the BFS number of i.
+    Not possible to cache, because Queue makes problems.
+    """
     n = len(ci)
     bfs = -np.ones(n, dtype=np.int64)
     q = Queue(n)
