@@ -70,8 +70,7 @@ def compute_children(parent):
     return vc, ci
 
 
-@njit(locals=dict(vc=int64[:], ci=int64[:], root=int64, n=int64, bfs=int64[:],
-                  b=int64, v=int64, u=int64), cache=False)
+@njit(cache=True)
 def compute_bfs(vc, ci, root=0):
     """Return bfs   whereby bfs[i] is the BFS number of i"""
     n = len(ci)
