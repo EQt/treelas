@@ -39,6 +39,7 @@ def njit(**args):
     return numba.njit(cache=True, **args)
     # return lambda f: f
 
+
 def iperm(perm):
     """Return an inverse permutation"""
 
@@ -153,7 +154,8 @@ def process_tree(treeh5, args=None):
             lam = io['lam'].value
             if not isinstance(lam, float):
                 lam = lam[0]
-            xt = io['xt'][:] if 'xt' in io else io['x++'][:] if 'x++' in io else None
+            xt = io['xt'][:] if 'xt' in io else \
+                 io['x++'][:] if 'x++' in io else None
 
     y = y.flatten()
     n = len(parent)
