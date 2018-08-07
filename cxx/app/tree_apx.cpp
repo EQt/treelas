@@ -73,6 +73,8 @@ tree_12(const TreeLasso<float_, int_> &tree,
     const int_ *iorder = iorderv.data();
     double *x = xv.data();
 
+    using approx::tree_12;
+
     tree_12(n, y, lam, parent, order, iorder, ipostord, x, max_iter);
 
     return xv;
