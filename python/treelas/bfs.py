@@ -54,7 +54,7 @@ class Queue(object):
 
 def compute_children(parent):
     """Return V, I such that V[I[j]:I[j+1]] are the children of j"""
-    @njit(locals=dict(sort=int64[:], vc=int64[:], n=int64, k=int64), cache=True)
+    @njit(cache=True)
     def _compute_children(sort, vc, n):
         k = 0
         for i in range(n-1):
