@@ -17,7 +17,7 @@ post_order(const int root,
         stack.push_back(root);
     }
     Timer _ ("dfs walk");
-    int pos = 0;
+    size_t pos = 0;
     while (!stack.empty()) {
         const auto v = stack.back();
         stack.pop_back(); // stack.pop()
