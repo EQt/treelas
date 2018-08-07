@@ -120,16 +120,16 @@ def compute_levels(bfs, parent):
     return levels[:levels_len]
 
 
-# @njit
-def _reverse_levels(rev, levels, bfs):
-    k = 0
-    for i in range(len(levels)-2, -1, -1):
-        for j in range(levels[i], levels[i+1]):
-            rev[k] = bfs[j]
-            k += 1
-
 
 def reverse_levels(levels, bfs):
+    # @njit
+    def _reverse_levels(rev, levels, bfs):
+        k = 0
+        for i in range(len(levels)-2, -1, -1):
+            for j in range(levels[i], levels[i+1]):
+                rev[k] = bfs[j]
+                k += 1
+
     rev = np.empty_like(bfs)
     _reverse_levels(rev, levels, bfs)
     return rev
