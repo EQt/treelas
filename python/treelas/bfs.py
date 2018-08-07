@@ -95,26 +95,26 @@ def bfs_order(parent, root=0):
     return compute_bfs(vc, ci, root=root)
 
 
-@njit(locals=dict(levels=int64[:], bfs=int64[:], parent=int64[:]))
-def _compute_levels(levels, bfs, parent):
-    n = len(parent)
-    depth = np.zeros(n, dtype=np.int64)
-    d = 0
-    levels[0] = 0
-    pos = 1
-    for i in range(1, n):
-        db = 1 + depth[parent[bfs[i]]]
-        depth[bfs[i]] = db
-        if db > d:
-            levels[pos] = i
-            pos += 1
-            d += 1
-    levels[pos] = n
-    pos += 1
-    return pos
-
 
 def compute_levels(bfs, parent):
+    @njit(locals=dict(levels=int64[:], bfs=int64[:], parent=int64[:]))
+    def _compute_levels(levels, bfs, parent):
+        n = len(parent)
+        depth = np.zeros(n, dtype=np.int64)
+        d = 0
+        levels[0] = 0
+        pos = 1
+        for i in range(1, n):
+            db = 1 + depth[parent[bfs[i]]]
+            depth[bfs[i]] = db
+            if db > d:
+                levels[pos] = i
+                pos += 1
+                d += 1
+        levels[pos] = n
+        pos += 1
+        return pos
+
     levels = np.empty_like(parent)
     levels_len = _compute_levels(levels, bfs.astype(np.int64), parent)
     return levels[:levels_len]
