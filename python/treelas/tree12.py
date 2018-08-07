@@ -255,7 +255,7 @@ def process_tree(treeh5, args=None):
                     sol = discrete_solution(xt, xb, delta)
                     print("  sol:", sol)
                     print(" diff:", sol - x)
-                    if np.linalg.norm(sol - x, np.inf) >= 1e-10:
+                    if np.abs(sol - x).max() >= 1e-7:
                         raise RuntimeError("!!!! INTERNAL ERROR !!!!")
             delta /= 2
 
