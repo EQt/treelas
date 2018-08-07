@@ -155,7 +155,7 @@ def process_tree(treeh5, args=None):
             lam = io['lam'].value
             if not isinstance(lam, float):
                 lam = lam[0]
-            xt = io['xt'].value if 'xt' in io else None
+            xt = io['xt'][:] if 'xt' in io else io['x++'][:] if 'x++' in io else None
 
     y = y.flatten()
     n = len(parent)
@@ -256,8 +256,7 @@ def process_tree(treeh5, args=None):
                     print("  sol:", sol)
                     print(" diff:", sol - x)
                     if np.linalg.norm(sol - x, np.inf) >= 1e-10:
-                        print("{}:{}: !!!! INTERNAL ERROR !!!!"
-                              .format(__file__, __line__))
+                        raise RuntimeError("{}: !!!! INTERNAL ERROR !!!!".format(__file__))
                         break
             delta /= 2
 
