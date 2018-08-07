@@ -256,8 +256,7 @@ def process_tree(treeh5, args=None):
                     print("  sol:", sol)
                     print(" diff:", sol - x)
                     if np.linalg.norm(sol - x, np.inf) >= 1e-10:
-                        raise RuntimeError("{}: !!!! INTERNAL ERROR !!!!".format(__file__))
-                        break
+                        raise RuntimeError("!!!! INTERNAL ERROR !!!!")
             delta /= 2
 
     with Timer("Extract solution"):
