@@ -39,7 +39,6 @@ def njit(**args):
     return numba.njit(cache=True, **args)
     # return lambda f: f
 
-
 def iperm(perm):
     """Return an inverse permutation"""
 
@@ -131,15 +130,14 @@ def discrete_solution(x_opt, x_base, delta):
     return xr
 
 
-@njit(locals=dict(x=double[:], nodes=Node[:], order=int64[:]))
-def _extract_x(x, nodes, order):
-    for i, ii in enumerate(order):
-        x[ii] = nodes[i].x
-    return x
-
-
 def extract_x(nodes, order):
     """Reorder the nodes.x values and return as numpy array"""
+    @njit()
+    def _extract_x(x, nodes, order):
+        for i, ii in enumerate(order):
+            x[ii] = nodes[i].x
+        return x
+
     return _extract_x(np.empty(len(nodes), dtype=Node.fields['x'][0].name),
                       nodes, order)
 
