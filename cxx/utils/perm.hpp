@@ -3,6 +3,7 @@
  */
 #pragma once
 #include <vector>
+#include <algorithm>        // for std::sort
 
 
 /** Concatenate two permutations */
