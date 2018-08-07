@@ -2,6 +2,7 @@
    Approximate the tree solution by iterative refinement.
    Push formulation (each node updates its parent).
  */
+#pragma once
 #include <vector>
 #include <array>
 
@@ -76,6 +77,21 @@ tree_12(const size_t n,
         const size_t max_iter = 20);
 
 
+/*
+extern template
+void
+tree_12(const size_t n,
+        const double *y,
+        const double lam,
+        const int *parent,
+        const int *order,
+        const int *iorder,
+        const int *ipostord,
+        double *x,
+        const size_t max_iter);
+*/
+
+
 template<typename float_>
 void
 tree_12(const size_t n,
@@ -87,3 +103,6 @@ tree_12(const size_t n,
         int root = -1);
 
 }   // namespace approx::
+
+
+#include "tree_12.cpp"
