@@ -1,4 +1,8 @@
 #include "postorder.hpp"
+
+#include <stdexcept>
+#include <string>
+
 #include "utils/timer.hpp"
 
 
@@ -13,9 +17,8 @@ post_order(const int root,
         stack.push_back(root);
     }
     Timer _ ("dfs walk");
-    int t = 0, pos = 0;
+    int pos = 0;
     while (!stack.empty()) {
-        t++;
         const auto v = stack.back();
         stack.pop_back(); // stack.pop()
         if (v >= 0) {
