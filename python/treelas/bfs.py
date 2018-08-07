@@ -94,9 +94,8 @@ def bfs_order(parent, root=0):
     return compute_bfs(vc, ci, root=root)
 
 
-
 def compute_levels(bfs, parent):
-    @njit(locals=dict(levels=int64[:], bfs=int64[:], parent=int64[:]))
+    @njit(cache=True)
     def _compute_levels(levels, bfs, parent):
         n = len(parent)
         depth = np.zeros(n, dtype=np.int64)
