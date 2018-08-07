@@ -12,10 +12,10 @@ import numpy as np
 import numba
 import multiprocessing
 
-from graphio import load_tree
-from timer import Timer
-from graphviz import show_tree
-from bfs import bfs_order, compute_children, compute_levels, reverse_levels
+from .graphio import load_tree
+from .timer import Timer
+from .graphviz import show_tree
+from .bfs import bfs_order, compute_children, compute_levels, reverse_levels
 
 
 PRINT_MAX = 10
