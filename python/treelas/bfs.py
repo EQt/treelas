@@ -7,10 +7,9 @@ However, it should be possible to compute it in linear time if you know the tree
 """
 import argparse
 import sys
-import h5py
 import numpy as np
 import matplotlib.pyplot as plt
-from numba import njit, jit, jitclass, int64
+from numba import njit, jitclass, int64
 
 from .graphviz import print_tree
 from .graphio import load_tree
@@ -118,7 +117,6 @@ def compute_levels(bfs, parent):
     levels = np.empty_like(parent)
     levels_len = _compute_levels(levels, bfs.astype(np.int64), parent)
     return levels[:levels_len]
-
 
 
 def reverse_levels(levels, bfs):
