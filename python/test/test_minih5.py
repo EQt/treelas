@@ -3,7 +3,6 @@ import h5py
 from os import path
 import numpy as np
 import sys
-import gc
 
 
 def load_mini_h5():
@@ -41,7 +40,6 @@ def test_mini_h5():
 
 def test_mini_h5_w():
     y, parent, xt, lam, root = load_mini_h5()
-    x1 = tl.tree_dp(y, parent, lam, root)
     n = len(y)
     mua = np.ones(n)
     lama = lam * np.ones(n)
@@ -51,7 +49,6 @@ def test_mini_h5_w():
 
 def test_gamma():
     y, parent, xt, lam, root = load_mini_h5()
-    n = len(y)
     t = tl.tree.TreeInstance(y=y, parent=parent, lam=lam, root=root)
     x = t.solve().x
     assert np.abs(x - xt.flatten()).max() < 1e-14
