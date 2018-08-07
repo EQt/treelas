@@ -47,3 +47,14 @@ def test_mini_h5_w():
     lama = lam * np.ones(n)
     x2 = tl.tree_dp_w(y=y, parent=parent, lam=lama, mu=mua, root=root)
     assert (x2.reshape(xt.shape) == xt).all()
+
+
+def test_gamma():
+    y, parent, xt, lam, root = load_mini_h5()
+    n = len(y)
+    t = tl.tree.TreeInstance(y=y, parent=parent, lam=lam, root=root)
+    x = t.solve().x
+    assert np.abs(x - xt.flatten()).max() < 1e-14
+    gam = t.gamma
+    assert gam.min() >= -1e-14
+    assert gam.max() <= +1e-14
