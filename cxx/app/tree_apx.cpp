@@ -53,8 +53,6 @@ compute_orders(TreeLasso<float_, int_> &tree,
 }
 
 
-
-
 template<typename float_, typename int_>
 std::vector<double>
 tree_12(const TreeLasso<float_, int_> &tree,

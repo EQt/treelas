@@ -55,7 +55,7 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
             s.deriv[i] = s.x[i] - s.y[i];
     }
 
-    {   // Timer _ ("forward");
+    {   Timer _ ("forward");
         for (size_t i = 0; i < s.n-1; i++) {
             const auto v = s.forder[i];
             if (s.same(v)) {
@@ -66,7 +66,7 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
     }
 
     size_t changed = 0;
-    {   // Timer _ ("backward");
+    {   Timer _ ("backward");
         const auto xr = s.deriv[root] > 0 ? -delta : +delta;
         s.x[root] += xr;
 
@@ -150,7 +150,7 @@ tree_12x(
 
     {   Timer _ ("Iterations:\n");
         for (int k = 0; k < max_iter; k++) {
-            Timer::log("%2ld ...", k+1);
+            Timer::log("%2ld ...\n", k+1);
             delta = float_(0.5*delta);
             const auto changed = tree_12x_iter(s, lam, delta);
             if (changed)
