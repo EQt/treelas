@@ -73,7 +73,6 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
             const auto v = s.forder[i];
             if (s.same(v)) {
                 const auto p = s.parent(v);
-                // printf("v = %d (p = %d)\n", v, p);
                 s.deriv[p] += clip(s.deriv[v], -lam, +lam);
             }
         }
@@ -82,12 +81,10 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
     size_t changed = 0;
     {   // Timer _ ("backward");
         const auto xr = s.deriv[root] > 0 ? -delta : +delta;
-        // printf("\nxr = %f\n", xr);
         s.x[root] += xr;
 
         for (size_t i = s.n-1; i > 0; i--) {
             const auto v = s.forder[i-1];
-            // printf("v = %d  (p = %d)\n", v, s.parent(v));
             if (s.same(v)) {
                 if (s.deriv[v] > lam) {
                     s.x[v] -= delta;
@@ -210,8 +207,9 @@ process_file(const char *fname,
     }
     const size_t n = parent.size();
     if (y.size() != n)
-        throw std::runtime_error(std::string("y.size() = ") + std::to_string(y.size()) +
-                                             " != " + std::to_string(n));
+        throw std::runtime_error(std::string("y.size() = ") +
+                                 std::to_string(y.size()) +
+                                 " != " + std::to_string(n));
     x.resize(n);
 
     tree_12x(n,
@@ -269,8 +267,8 @@ main(int argc, char *argv[])
                                        ap.has_option("dfs"));
         } else {
             process_file<float, int_>(fname, group,
-                                       max_iter,
-                                       ap.has_option("dfs"));
+                                      max_iter,
+                                      ap.has_option("dfs"));
         }
     } catch (const char *msg) {
         fprintf(stderr, "EXCEPTION: %s\n", msg);
