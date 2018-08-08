@@ -192,6 +192,12 @@ parent = {repr(self.parent)})"""
             for n, v in {'x': self.x, 'alpha': self.alpha}.items():
                 if v is not None:
                     to_write[n] = v
+
+            if self.mu == 1.0:
+                del to_write['mu']
+            if isinstance(self.lam, float):
+                to_write['lam'] = [to_write['lam']]
+
             for n, v in to_write.items():
                 if n in io:
                     if overwrite:
