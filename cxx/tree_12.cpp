@@ -142,8 +142,6 @@ tree_12(const size_t n,
             if (changed)
                 Timer::log("  %d", changed);
             Timer::log("\n");
-            Timer::log("order[%d] = %d\n", n-1, order[n-1]);
-            Timer::log("x[0] = %f\n", nodes[n-1].x);
         }
     }
 

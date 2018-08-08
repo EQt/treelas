@@ -86,7 +86,6 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
         s.x[root] += xr;
 
         Timer::log("delta = %f\n", delta);
-        Timer::log("x[0] = %f\n", s.x[root]);
         for (size_t i = s.n-1; i > 0; i--) {
             const auto v = s.forder[i-1];
             // printf("v = %d  (p = %d)\n", v, s.parent(v));
