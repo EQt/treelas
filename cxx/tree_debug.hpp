@@ -27,10 +27,10 @@
 #pragma once
 #define DEBUG 0
 
-#include <cstring>      // memcpy
-
 #include "event.hpp"
 #include "queue.hpp"
+#include "utils/hex.hpp"
+
 
 #ifdef DEBUG
 #  define CLIP_START()  const Queue pq0 (pq); const double slope0 = slope;
@@ -92,23 +92,6 @@
     }
 
 
-inline std::string
-hexify(uint64_t x)
-{
-    char h [2*sizeof(x) + 3 + 3 + 2];
-    snprintf(h, sizeof(h), "d64(0x%016lx)", x);
-    return std::string(h);
-}
-
-
-inline std::string
-hex(double x)
-{
-    static_assert(sizeof(uint64_t) == sizeof(double), "Wrong architecture");
-    uint64_t i;
-    memcpy(&i, &x, sizeof(uint64_t));
-    return hexify(i);
-}
 
 #else
 #  define CLIP_START() {}
