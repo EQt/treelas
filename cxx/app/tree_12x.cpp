@@ -71,9 +71,11 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
     {   // Timer _ ("forward");
         for (size_t i = 0; i < s.n-1; i++) {
             const auto v = s.forder[i];
-            const auto p = s.parent(v);
-            // printf("v = %d (p = %d)\n", v, p);
-            s.deriv[p] += clip(s.deriv[v], -lam, +lam);
+            if (s.same(v)) {
+                const auto p = s.parent(v);
+                // printf("v = %d (p = %d)\n", v, p);
+                s.deriv[p] += clip(s.deriv[v], -lam, +lam);
+            }
         }
     }
 
