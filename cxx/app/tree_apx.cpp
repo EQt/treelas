@@ -109,10 +109,10 @@ process_tree(const char *fname,
     }
     if (n <= PRINT_MAX) {
         fprintf(stdout, " x: ");
-        print(x, 3, stdout);
+        print(x, 5, stdout);
         if (xt.size() == n) {
             fprintf(stdout, "xt: ");
-            print(xt, 3, stdout);
+            print(xt, 5, stdout);
         }
     }
 
