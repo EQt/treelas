@@ -1,4 +1,6 @@
 #pragma once
+#include <cstddef>      // for std::size_t
+
 
 template<typename float_ = float, typename int_ = int>
 void

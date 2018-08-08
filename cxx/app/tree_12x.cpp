@@ -10,14 +10,10 @@
 #include <algorithm>    // for std::min_element
 
 #include "../utils/hdf5.hpp"
-#include "../utils/timer.hpp"
 #include "../utils/argparser.hpp"
 #include "../utils/thousand.hpp"
 #include "../utils/viostream.hpp"
-#include "../utils/minmax.hpp"
 
-#include "../root.hpp"
-#include "../postorder.hpp"
 #include "../tree_12x.hpp"
 
 
