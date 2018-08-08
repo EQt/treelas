@@ -100,13 +100,13 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
                 if (s.x[v] < s.x[p]) {
                     changed++;
                     s.divorce(v);
-                    s.y[p] -= lam;
                     s.y[v] += lam;
+                    s.y[p] -= lam;
                 } else if (s.x[v] > s.x[p]) {
                     changed++;
                     s.divorce(v);
-                    s.y[p] += lam;
                     s.y[v] -= lam;
+                    s.y[p] += lam;
                 }
             } else {
                 s.x[v] += s.deriv[v] < 0 ? +delta : -delta;
