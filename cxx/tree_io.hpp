@@ -1,6 +1,8 @@
 #pragma once
-#include "tree.hpp"
 #include "utils/hdf5.hpp"
+
+#include "tree.hpp"
+#include "root.hpp"
 
 
 template <typename float_, typename int_>
@@ -16,22 +18,18 @@ load_treelasso(const char *fname, const char *group)
         t.y = io.read<typename decltype(t.y)::value_type>("y");
         t.lam = io.read<typename decltype(t.lam)::value_type>("lam");
         t.parent = io.read<typename decltype(t.dfs)::value_type>("parent");
+        assert(t.lam.size() >= 1);
+
         if (io.has("dfs"))
             t.dfs = io.read<typename decltype(t.dfs)::value_type>("dfs");
-        assert(t.lam.size() >= 1);
-        // lam = float_(lams[0]);
-        assert(t.dfs.size() >= 1);
-        t.root = t.dfs[0];
-        if (t.root == 1) {
-            t.root--;
-            for (auto &i : t.dfs)
-                i--;
-            for (auto &i : t.parent)
-                i--;
-        }
-        if (io.has("bfs")) {
+        if (t.dfs.size() >= 1)
+            t.root = t.dfs[0];
+        else
+            t.root = find_root(t.parent);
+        
+        if (io.has("bfs"))
             t.bfs = io.read<typename decltype(t.bfs)::value_type>("bfs");
-        }
+
         t.mu = io.has("mu") ?
             io.read<typename decltype(t.mu)::value_type>("mu") :
             decltype(t.mu)({0.5});
