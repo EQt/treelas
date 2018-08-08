@@ -36,10 +36,3 @@ load_treelasso(const char *fname, const char *group)
     }
     return t;
 }
-
-
-void
-load_tree(const char * /*fname*/, const char * /*group = "/" */)
-{
-    throw std::logic_error("Not implemented, yet");
-}
