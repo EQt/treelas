@@ -7,17 +7,17 @@ template <typename float_, typename int_>
 TreeLasso<float_, int_>
 load_treelasso(const char *fname, const char *group)
 {
-    if (std::string("/") != group) {
+    if (std::string("/") != group)
         throw std::logic_error("Not implemented yet");
-    }
 
     TreeLasso<float_, int_> t;
     {   Timer _ ("Loading Tree");
         HDF5 io (fname, "r+");
         t.y = io.read<typename decltype(t.y)::value_type>("y");
         t.lam = io.read<typename decltype(t.lam)::value_type>("lam");
-        t.dfs = io.read<typename decltype(t.dfs)::value_type>("dfs"),
         t.parent = io.read<typename decltype(t.dfs)::value_type>("parent");
+        if (io.has("dfs"))
+            t.dfs = io.read<typename decltype(t.dfs)::value_type>("dfs");
         assert(t.lam.size() >= 1);
         // lam = float_(lams[0]);
         assert(t.dfs.size() >= 1);
