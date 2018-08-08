@@ -1,5 +1,12 @@
 #include "tree_12x.hpp"
 
+#include "utils/timer.hpp"
+#include "utils/minmax.hpp"
+
+#include "root.hpp"
+#include "postorder.hpp"
+
+
 
 template<typename float_ = float, typename int_ = int>
 struct Tree12xStatus
@@ -128,7 +135,7 @@ tree_12x(
     float_ min_y, max_y, delta;
     {   Timer _ ("minmax y");
         find_minmax(y, n, min_y, max_y);
-        delta = float_((max_y - min_y) * 0.25);
+        delta = float_((max_y - min_y) * 0.5);
     }
 
     {   Timer _ ("init x,y,parent");
@@ -145,12 +152,11 @@ tree_12x(
 
     for (int k = 0; k < max_iter; k++) {
         Timer::log("%2ld ...", k+1);
+        delta = float_(0.5*delta);
         const auto changed = tree_12x_iter(s, lam, delta);
         if (changed)
             Timer::log("  %d", changed);
         Timer::log("\n");
-
-        delta = 0.5*delta;
     }
 
 
