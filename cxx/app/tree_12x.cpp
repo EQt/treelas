@@ -20,6 +20,18 @@
 #include "../postorder.hpp"
 
 
+template<typename float_ = float, typename int_ = int>
+void
+tree_12x(
+    const size_t n,
+    const int_ *parent,
+    const float_ *y,
+    const float_ lam,
+    float_ *x,
+    const int_ root_ = int_(-1),
+    const int max_iter = 3);
+
+
 
 template<typename float_ = float, typename int_ = int>
 struct Tree12xStatus
@@ -117,7 +129,7 @@ tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ del
 }
 
 
-template<typename float_ = float, typename int_ = int>
+template<typename float_, typename int_>
 void
 tree_12x(
     const size_t n,
@@ -125,8 +137,8 @@ tree_12x(
     const float_ *y,
     const float_ lam,
     float_ *x,
-    const int_ root_ = int_(-1),
-    const int max_iter = 3)
+    const int_ root_,
+    const int max_iter)
 {
     std::vector<int> forder_;
     forder_.reserve(n);
