@@ -144,10 +144,8 @@ tree_12x(
             s.x[i] = x0;
         for (size_t i = 0; i < n; i++)
             s.y[i] = y[i];
-        for (size_t i = 0; i < n; i++) {
+        for (size_t i = 0; i < n; i++)
             s.init_parent(i, parent[i]);
-            printf("parent[%d] = %d\n", int(i), s.parent(i));
-        }
     }
 
     for (int k = 0; k < max_iter; k++) {
