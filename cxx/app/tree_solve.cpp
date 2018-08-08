@@ -105,6 +105,8 @@ main(int argc, char *argv[])
                      repeat);
     } catch (const char *msg) {
         fprintf(stderr, "EXCEPTION: %s\n", msg);
+    } catch (std::exception &e) {
+        fprintf(stderr, "EXCEPTION: %s\n", e.what());
     }
     return 0;
 }
