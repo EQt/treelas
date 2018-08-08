@@ -102,6 +102,7 @@ if (HDF5_FOUND)
 
   add_executable_h5(tree_12x
     cxx/app/tree_12x.cpp
+    cxx/tree_12x.cpp
     $<TARGET_OBJECTS:argparser>
     $<TARGET_OBJECTS:postorder>
   )
