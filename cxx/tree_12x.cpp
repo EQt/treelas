@@ -148,15 +148,16 @@ tree_12x(
             s.init_parent(i, parent[i]);
     }
 
-    for (int k = 0; k < max_iter; k++) {
-        Timer::log("%2ld ...", k+1);
-        delta = float_(0.5*delta);
-        const auto changed = tree_12x_iter(s, lam, delta);
-        if (changed)
-            Timer::log("  %d", changed);
-        Timer::log("\n");
+    {   Timer _ ("Iterations:\n");
+        for (int k = 0; k < max_iter; k++) {
+            Timer::log("%2ld ...", k+1);
+            delta = float_(0.5*delta);
+            const auto changed = tree_12x_iter(s, lam, delta);
+            if (changed)
+                Timer::log("  %d", changed);
+            Timer::log("\n");
+        }
     }
-
 
     {   Timer _ ("extract x");
         for (size_t i = 0; i < n; i++)
