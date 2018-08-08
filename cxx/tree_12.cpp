@@ -38,17 +38,18 @@ tree12_iter(Nodes<float_, int_> &nodes,
                 v.x += delta;
             } else {
                 v.x = p.x;
+                continue;
             }
 
             if (v.x != p.x) {               // update whether still same
                 v.set_same(false);
                 changed++;
                 if (v.x < p.x) {
-                    p.y -= lam;
                     v.y += lam;
+                    p.y -= lam;
                 } else {
-                    p.y += lam;
                     v.y -= lam;
+                    p.y += lam;
                 }
             }
         } else
