@@ -137,6 +137,7 @@ tree_12(const size_t n,
             //     print(xv, 3, stdout);
             // }
             Timer::log("%2ld ...", it+1);
+            Timer::log("delta = %f\n", delta);
             const auto changed = tree12_iter(nodes, iorder, delta, lam);
             if (changed)
                 Timer::log("  %d", changed);
