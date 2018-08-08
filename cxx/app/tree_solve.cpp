@@ -11,6 +11,7 @@
 #include "../utils/viostream.hpp"      // std::cout << std::vector<..>
 
 #include "../tree_dp.hpp"
+#include "../root.hpp"
 
 
 // #define DEBUG
@@ -37,7 +38,6 @@ process_tree(const char *fname,
         parent = io.read<decltype(parent)::value_type>("parent");
         assert(lams.size() >= 1);
         lam = float_(lams[0]);
-        root = parent[0];
         if (root == 1) {
             root--;
             for (auto &i : parent)
@@ -46,6 +46,9 @@ process_tree(const char *fname,
         if (io.has("xt")) {
             xt = io.read<double>("xt");
         }
+    }
+    {   Timer _ ("find root");
+        root = find_root(parent);
     }
 
     Timer::log("%'d nodes\n", y.size());
