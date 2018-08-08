@@ -19,41 +19,45 @@ tree12_iter(Nodes<float_, int_> &nodes,
     for (auto &v : nodes)
         v.deriv = v.x - v.y;
 
-    for (const auto &v : nodes) {
-        auto &p = nodes[v.parent()];
-        if (v.same())
-            p.deriv += clip(v.deriv, -lam, +lam);
+    {   Timer _ ("forward");
+        for (const auto &v : nodes) {
+            auto &p = nodes[v.parent()];
+            if (v.same())
+                p.deriv += clip(v.deriv, -lam, +lam);
+        }
     }
 
     auto &r = nodes[preorder[0]];
     r.x += r.deriv < 0 ? delta : -delta;   // optimize root node
 
-    for (size_t i = 1; i < n; i++) {       // backtracing
-        auto &v = nodes[preorder[i]];
-        auto &p = nodes[v.parent()];
-        if (v.same()) {                    // same region, so far?
-            if (v.deriv > lam) {
-                v.x -= delta;
-            } else if (v.deriv < -lam) {
-                v.x += delta;
-            } else {
-                v.x = p.x;
-                continue;
-            }
-
-            if (v.x != p.x) {               // update whether still same
-                v.set_same(false);
-                changed++;
-                if (v.x < p.x) {
-                    v.y += lam;
-                    p.y -= lam;
+    {   Timer _ ("backward");
+        for (size_t i = 1; i < n; i++) {       // backtracing
+            auto &v = nodes[preorder[i]];
+            auto &p = nodes[v.parent()];
+            if (v.same()) {                    // same region, so far?
+                if (v.deriv > lam) {
+                    v.x -= delta;
+                } else if (v.deriv < -lam) {
+                    v.x += delta;
                 } else {
-                    v.y -= lam;
-                    p.y += lam;
+                    v.x = p.x;
+                    continue;
                 }
-            }
-        } else
-            v.x += v.deriv < 0 ? +delta : -delta;
+
+                if (v.x != p.x) {               // update whether still same
+                    v.set_same(false);
+                    changed++;
+                    if (v.x < p.x) {
+                        v.y += lam;
+                        p.y -= lam;
+                    } else {
+                        v.y -= lam;
+                        p.y += lam;
+                    }
+                }
+            } else
+                v.x += v.deriv < 0 ? +delta : -delta;
+        }
     }
     return changed;
 }
@@ -137,7 +141,7 @@ tree_12(const size_t n,
             //         x[order[i]] = nodes[i].x;
             //     print(x, 3, stdout);
             // }
-            Timer::log("%2ld ...", it+1);
+            Timer::log("%2ld ...\n", it+1);
             const auto changed = tree12_iter(nodes, iorder, delta, lam);
             if (changed)
                 Timer::log("  %d", changed);
