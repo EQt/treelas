@@ -39,9 +39,9 @@ struct ChildrenIndex : public AdjacencyIndex<int>
 
         value.resize(n);
         index.assign(n+1, 0);       // compute number of children
-        for (int i = 0; i < int(n); i++) {
+        for (int i = 0; i < int(n); i++)
             index[parent[i]]++;
-        }
+
         index[root]--;              // root isn't child of itself
         {
             int acc = 0,
