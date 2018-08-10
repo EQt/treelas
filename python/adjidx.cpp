@@ -72,7 +72,7 @@ reg_biadjacent(py::module &m)
                           return ChildrenIndex(n, parent.data(), root);
                       }),
              py::arg("parent"),
-             py::arg("root") = 0)
+             py::arg("root") = -1)
         .def("__repr__",
              [](const ChildrenIndex &cidx) -> std::string
              {
