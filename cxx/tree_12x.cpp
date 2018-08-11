@@ -113,7 +113,8 @@ tree_12x(
     const float_ lam,
     float_ *x,
     const int_ root_,
-    const int max_iter)
+    const int max_iter,
+    const bool reorder)
 {
     std::vector<int> forder_;
     forder_.reserve(n);
@@ -175,7 +176,8 @@ tree_12x(
     const float lam,
     float *x,
     const int root_,
-    const int max_iter);
+    const int max_iter,
+    const bool reorder);
 
 
 template
@@ -187,4 +189,5 @@ tree_12x(
     const double lam,
     double *x,
     const int root_,
-    const int max_iter);
+    const int max_iter,
+    const bool reorder);

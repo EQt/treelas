@@ -11,7 +11,8 @@ tree_12x(
     const float_ lam,
     float_ *x,
     const int_ root_ = int_(-1),
-    const int max_iter = 3);
+    const int max_iter = 3,
+    const bool reorder = false);
 
 
 extern template
@@ -23,7 +24,8 @@ tree_12x(
     const float lam,
     float *x,
     const int root_,
-    const int max_iter);
+    const int max_iter,
+    const bool reorder);
 
 
 extern template
@@ -35,4 +37,5 @@ tree_12x(
     const double lam,
     double *x,
     const int root_,
-    const int max_iter);
+    const int max_iter,
+    const bool reorder);
