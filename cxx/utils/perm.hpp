@@ -21,6 +21,7 @@ concat(const std::vector<int_> &a, const std::vector<int_> &idx)
 }
 
 
+/** Set q to be the inverse permutation of p*/
 template<typename int_ = int>
 inline void
 iperm(const size_t n, int_ *q, const int_ *p)
