@@ -26,9 +26,9 @@ tree12_iter(Nodes<float_, int_> &nodes,
                 p.deriv += clip(v.deriv, -lam, +lam);
         }
     }
-
+ 
     auto &r = nodes[preorder[0]];
-    r.x += r.deriv < 0 ? delta : -delta;   // optimize root node
+    r.x += r.deriv < 0 ? +delta : -delta;      // optimize root node
 
     {   Timer _ ("backward");
         for (size_t i = 1; i < n; i++) {       // backtracing
