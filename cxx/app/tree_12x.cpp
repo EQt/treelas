@@ -25,8 +25,8 @@ process_file(const char *fname,
              const bool /*use_dfs*/,
              const unsigned PRINT_MAX = 10)
 {
-    std::vector<double> xt, y, lam, x;
-    std::vector<int> parent;
+    std::vector<float_> xt, y, lam, x;
+    std::vector<int_> parent;
     {   // Read extra information
         HDF5 io (fname, "r+");
         io.group(group);
@@ -36,9 +36,9 @@ process_file(const char *fname,
         io.readv(parent, "parent");
 
         if (io.has("xt")) {
-            xt = io.read<double>("xt");
+            io.readv(xt, "xt");
         } else if (io.has("x++")) {
-            xt = io.read<double>("x++");
+            io.readv(xt, "x++");
         }
     }
     const size_t n = parent.size();
@@ -68,7 +68,7 @@ process_file(const char *fname,
     if (xt.size() == n) {
         double max_diff = 0.0;
         for (unsigned i = 0; i < n; i++)
-            max_diff = std::max(max_diff, std::abs(x[i] - xt[i]));
+            max_diff = std::max(max_diff, std::abs(double(x[i] - xt[i])));
 
         fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_diff);
     }
@@ -98,10 +98,12 @@ main(int argc, char *argv[])
         const char *group = "/";
         printf("max_iter = %d\n", max_iter);
         if (ap.has_option("float64")) {
+            printf("float64\n");
             process_file<double, int_>(fname, group,
                                        max_iter,
                                        ap.has_option("dfs"));
         } else {
+            printf("float32\n");
             process_file<float, int_>(fname, group,
                                       max_iter,
                                       ap.has_option("dfs"));
