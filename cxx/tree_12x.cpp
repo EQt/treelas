@@ -119,6 +119,7 @@ tree_12x(
 {
     std::vector<int> forder_;
     std::vector<int> iorder;
+    std::vector<int> newp;
     forder_.reserve(n);
     if (reorder)
         iorder.reserve(n);
@@ -133,8 +134,16 @@ tree_12x(
                                      std::to_string(root) + " = root");
     }
     if (reorder) {
-        Timer _ ("inverse order");
-        iperm(n, iorder.data(), forder_.data());
+        {   Timer _ ("inverse order");
+            iperm(n, iorder.data(), forder_.data());
+        }
+        {   Timer _ ("relabel");
+            newp.reserve(n);
+            for (size_t i = 0; i < n; i++)
+                newp[i] = iorder[parent[forder_[i]]];
+            for (size_t i = 0; i < n; i++)
+                forder_[i] = i;
+        }
     }
 
     Timer tim ("alloc");
@@ -147,6 +156,7 @@ tree_12x(
         delta = float_((max_y - min_y) * 0.5);
     }
 
+    const auto *pi = reorder ? newp.data() : parent;
     {   Timer _ ("init x,y,parent");
         const float_ x0 = float_(0.5 * (min_y + max_y));
         for (size_t i = 0; i < n; i++)
@@ -154,7 +164,7 @@ tree_12x(
         for (size_t i = 0; i < n; i++)
             s.y[i] = y[i];
         for (size_t i = 0; i < n; i++)
-            s.init_parent(i, parent[i]);
+            s.init_parent(i, pi[i]);
     }
 
     {   Timer _ ("Iterations:\n");
