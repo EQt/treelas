@@ -2,6 +2,7 @@
 
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
+#include "utils/perm.hpp"
 
 #include "root.hpp"
 #include "postorder.hpp"
@@ -117,7 +118,10 @@ tree_12x(
     const bool reorder)
 {
     std::vector<int> forder_;
+    std::vector<int> iorder;
     forder_.reserve(n);
+    if (reorder)
+        iorder.reserve(n);
     int_ root = root_ < 0 ? find_root(n, parent) : root_;
 
     {   Timer _ ("dfs postorder\n");
@@ -127,6 +131,10 @@ tree_12x(
                                      "forder[" + std::to_string(n-1) + "] = " +
                                      std::to_string(forder_[n-1]) + " != " +
                                      std::to_string(root) + " = root");
+    }
+    if (reorder) {
+        Timer _ ("inverse order");
+        iperm(n, iorder.data(), forder_.data());
     }
 
     Timer tim ("alloc");

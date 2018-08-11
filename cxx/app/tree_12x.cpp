@@ -22,7 +22,8 @@ void
 process_file(const char *fname,
              const char *group,
              const int max_iter,
-             const bool /*use_dfs*/,
+             const bool /* dfs */,
+             const bool reorder = false,
              const unsigned PRINT_MAX = 10)
 {
     std::vector<float_> xt, y, lam, x;
@@ -54,7 +55,8 @@ process_file(const char *fname,
              lam[0],
              x.data(),
              -1 /* root*/,
-             max_iter);
+             max_iter,
+             reorder);
 
     if (n <= PRINT_MAX) {
         fprintf(stdout, " x: ");
@@ -87,6 +89,7 @@ main(int argc, char *argv[])
                       "INT", "3");
         ap.add_option('d', "dfs",     "Use DFS instead of BFS order");
         ap.add_option('6', "float64", "Calculate in float64_t precision");
+        ap.add_option('r', "reorder", "Relabel nodes in post-order");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No tree file!\n");
@@ -96,17 +99,22 @@ main(int argc, char *argv[])
         const int max_iter = atoi(ap.get_option("max-iter"));
         typedef int   int_;
         const char *group = "/";
+        const bool reorder = ap.has_option("reorder");
+
+        printf("reorder  = %s\n", reorder ? "true" : "false");
         printf("max_iter = %d\n", max_iter);
         if (ap.has_option("float64")) {
             printf("float64\n");
             process_file<double, int_>(fname, group,
                                        max_iter,
-                                       ap.has_option("dfs"));
+                                       ap.has_option("dfs"),
+                                       reorder);
         } else {
             printf("float32\n");
             process_file<float, int_>(fname, group,
                                       max_iter,
-                                      ap.has_option("dfs"));
+                                      ap.has_option("dfs"),
+                                      reorder);
         }
     } catch (const char *msg) {
         fprintf(stderr, "EXCEPTION: %s\n", msg);
