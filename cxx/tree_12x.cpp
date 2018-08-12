@@ -143,6 +143,7 @@ tree_12x(
                 newp[i] = iorder[parent[forder_[i]]];
             for (size_t i = 0; i < n; i++)
                 forder_[i] = i;
+            // TODO: also relabel y!
         }
     }
 
@@ -179,6 +180,7 @@ tree_12x(
     }
 
     {   Timer _ ("extract x");
+        // TODO: take care of reorder
         for (size_t i = 0; i < n; i++)
             x[i] = s.x[i];
     }
