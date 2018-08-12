@@ -4,7 +4,7 @@
 #include <cmath>            // std::abs
 
 #include "../event.hpp"
-#include "../queue.hpp"
+#include "../range.hpp"
 
 
 /** end is exclusive! */

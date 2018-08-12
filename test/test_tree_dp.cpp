@@ -5,7 +5,7 @@
 #include "../cxx/utils/minmax.hpp"      // find_minmax
 
 #include "../cxx/tree_dp.hpp"
-#include "../cxx/queue.hpp"
+#include "../cxx/range.hpp"
 #include "../cxx/event.hpp"
 #include "../cxx/stack.hpp"
 #include "../cxx/clip.hpp"

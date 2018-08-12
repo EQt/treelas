@@ -1,6 +1,6 @@
 #pragma once
 #include "event.hpp"
-#include "queue.hpp"
+#include "range.hpp"
 
 /**
    Compute bounds lb and ub from y[n-1] to y[1].
