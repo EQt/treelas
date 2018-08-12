@@ -9,7 +9,7 @@
 */
 template<typename float_ = double,
          typename Event_ = Event2>
-Queue
+Range
 dp_forward_w(
     const int n,
     float_ *lb,
@@ -23,7 +23,7 @@ dp_forward_w(
 
 // template is compiled somewhere else for those types
 extern template
-Queue
+Range
 dp_forward_w(
     const int n,
     double *lb,
@@ -42,7 +42,7 @@ dp_forward_w(
 */
 template<typename float_ = double,
          typename Event_ = Event2>
-Queue
+Range
 dp_reverse_w(
     const int n,
     float_ *lb,
@@ -55,7 +55,7 @@ dp_reverse_w(
 
 
 extern template
-Queue
+Range
 dp_reverse_w(
     const int n,
     double *lb,

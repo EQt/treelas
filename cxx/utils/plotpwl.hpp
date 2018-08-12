@@ -45,7 +45,7 @@ pwl_csv(const Event *begin, const Event *end, const double margin = 1.0)
 /** Printout the knots given by events `els` in the range `q` */
 template<typename Event = Event>
 std::string
-pwl_csv(const Queue &q, const Event *els)
+pwl_csv(const Range &q, const Event *els)
 {
     return pwl_csv(els + q.start, els + q.stop + 1);
 }
@@ -53,7 +53,7 @@ pwl_csv(const Queue &q, const Event *els)
 
 template<typename Event = Event>
 std::string
-pwl_csv(const Queue &q, const std::vector<Event> els)
+pwl_csv(const Range &q, const std::vector<Event> els)
 {
     return pwl_csv(q, els.data());
 }

@@ -32,7 +32,7 @@ struct TreeDPStatus
 
     std::vector<int> proc_order;
     std::vector<E> elements_;
-    std::vector<Queue> pq;
+    std::vector<Range> pq;
     std::vector<double> lb;
 };
 
@@ -173,7 +173,7 @@ tree_dp_w(
     std::vector<Event2> elements_ (2*n);
     std::vector<int> proc_order;
     ChildrenIndex childs (n);
-    std::vector<Queue> pq (n);
+    std::vector<Range> pq (n);
     stack<int> stack;
     std::vector<double>
         lb (n, 0.0),

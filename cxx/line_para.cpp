@@ -33,8 +33,8 @@ line_para(const size_t n,
     const size_t n0 = n / 2;
     const size_t n1 = n - n0;
 
-    Queue pq0 {int(0*n0 + n0), int(0*n0 + n0-1)};
-    Queue pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
+    Range pq0 {int(0*n0 + n0), int(0*n0 + n0-1)};
+    Range pq1 {int(2*n0 + n1), int(2*n0 + n1-1)};
 
     {   Timer _ ("forward");
         if (parallel) {
@@ -52,7 +52,7 @@ line_para(const size_t n,
         }
     }
 
-    Queue pq = merge2(pq0, pq1, event);
+    Range pq = merge2(pq0, pq1, event);
 
     {   Timer _ ("root value");
         const float_ mu = 1.0;

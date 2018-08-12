@@ -33,7 +33,7 @@ dp_forward(
     float_ *lb,
     float_ *ub,
     Event *event,
-    Queue &pq,
+    Range &pq,
     const size_t begin,
     const size_t end);
 
@@ -46,7 +46,7 @@ dp_forward(
     double *lb,
     double *ub,
     Event2 *event,
-    Queue &pq,
+    Range &pq,
     const size_t begin,
     const size_t end);
 
@@ -59,7 +59,7 @@ dp_reverse(
     float_ *lb,
     float_ *ub,
     Event *event,
-    Queue &pq,
+    Range &pq,
     const size_t begin,
     const size_t end);
 
@@ -72,6 +72,6 @@ dp_reverse(
     double *lb,
     double *ub,
     Event2 *event,
-    Queue &pq,
+    Range &pq,
     const size_t begin,
     const size_t end);

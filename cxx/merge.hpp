@@ -21,7 +21,7 @@
 */
 inline void
 init_queues(const size_t n,
-            std::vector<Queue> &pq,
+            std::vector<Range> &pq,
             std::vector<int> &proc_order,
             const ChildrenIndex &childs,
             stack<int> &stack,
@@ -48,7 +48,7 @@ init_queues(const size_t n,
             } else {
                 const auto w = -v -1;
                 proc_order.push_back(w);
-                pq[w] = Queue({t+0, t-1});
+                pq[w] = Range({t+0, t-1});
             }
         }
         proc_order.pop_back();
@@ -59,20 +59,20 @@ init_queues(const size_t n,
 
 template <typename E>
 inline void
-sort_events(const Queue &range, E *elements)
+sort_events(const Range &range, E *elements)
 {
     std::sort(elements + range.start, elements + range.stop + 1);
 }
 
 
 template <typename E>
-inline Queue
-merge(const Queue &parent, const Queue &child, E *elements)
+inline Range
+merge(const Range &parent, const Range &child, E *elements)
 {
     if (parent.start <= parent.stop) {
         const auto gap = child.start - parent.stop - 1;
         const auto old_stop = parent.stop;
-        const Queue res {parent.start, child.stop - gap};
+        const Range res {parent.start, child.stop - gap};
         if (gap > 0) {
             for (int i = old_stop+1; i <= res.stop; i++) {
                 elements[i] = elements[i + gap];
@@ -86,13 +86,13 @@ merge(const Queue &parent, const Queue &child, E *elements)
 
 
 template <typename E>
-inline Queue
-merge2(const Queue &parent, const Queue &child, E *elements)
+inline Range
+merge2(const Range &parent, const Range &child, E *elements)
 {
     static std::vector<E> buf (15);
     if (parent.start <= parent.stop) {
         const auto gap = child.start - parent.stop -1;
-        const Queue res {parent.start, child.stop - gap};
+        const Range res {parent.start, child.stop - gap};
         buf.reserve(parent.length());
         buf.clear();
         /*
@@ -117,16 +117,16 @@ merge2(const Queue &parent, const Queue &child, E *elements)
 
 
 template <typename E>
-inline Queue
-merge(const Queue &parent, const Queue &child, std::vector<E> &elements)
+inline Range
+merge(const Range &parent, const Range &child, std::vector<E> &elements)
 {
     return merge(parent, child, elements.data());
 }
 
 
 template <typename E>
-inline Queue
-merge2(const Queue &parent, const Queue &child, std::vector<E> &elements)
+inline Range
+merge2(const Range &parent, const Range &child, std::vector<E> &elements)
 {
     return merge2(parent, child, elements.data());
 }

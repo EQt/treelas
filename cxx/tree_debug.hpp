@@ -33,7 +33,7 @@
 
 
 #ifdef DEBUG
-#  define CLIP_START()  const Queue pq0 (pq); const double slope0 = slope;
+#  define CLIP_START()  const Range pq0 (pq); const double slope0 = slope;
 #  define CLIP_THROW(msg)  if (pq.start > 40) {                     \
       std::ostringstream io;                                        \
       io << __FILE__ << ": " << __LINE__ << ": INTERNAL ERROR:  "   \
@@ -44,7 +44,7 @@
       throw std::runtime_error(io.str());                           \
     }
 #  define EVENT_REC(Ev)                             \
-    const Queue q0 (pq[i]);                         \
+    const Range q0 (pq[i]);                         \
     const double offset0 = -mu[i]*y[i] -sigi;       \
     std::vector<Ev> ev0 (elements + q0.start,       \
                          elements + q0.stop+1);
@@ -160,7 +160,7 @@ template<typename E = Event>
 inline void
 dump_events(std::ostream &io,
             const E *elements,
-            const Queue &pq)
+            const Range &pq)
 {
     dump_events(io, elements, pq.start, pq.stop);
 }
@@ -169,7 +169,7 @@ dump_events(std::ostream &io,
 inline void
 dump_events(std::ostream &io,
             const std::vector<Event> &elements,
-            const Queue &pq)
+            const Range &pq)
 {
     return dump_events(io, elements.data(), pq);
 }
@@ -180,9 +180,9 @@ template<typename E = Event>
 inline void
 debug_dump(std::ostream &io,
            const E *e,
-           const Queue &pq0,
+           const Range &pq0,
            const double slope0,
-           const Queue &pq,
+           const Range &pq,
            const double slope,
            const double offset,
            const double t,

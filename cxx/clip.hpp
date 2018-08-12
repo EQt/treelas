@@ -5,7 +5,7 @@
 template<typename E = Event2>
 inline double
 clip_front(E *elements,
-           Queue &pq,
+           Range &pq,
            double slope,
            double offset,
            const double t)
@@ -29,7 +29,7 @@ clip_front(E *elements,
 template<typename E = Event2>
 inline double
 clip_back(E *elements,
-          Queue &pq,
+          Range &pq,
           double slope,
           double offset,
           const double t)
@@ -48,7 +48,7 @@ clip_back(E *elements,
 
 
 inline double
-clip_fronw(Event2 *elements, Queue &pq, double slope, double offset,
+clip_fronw(Event2 *elements, Range &pq, double slope, double offset,
            const double t, const double lower_bound)
 {
 //    CLIP_START();
@@ -87,7 +87,7 @@ clip_fronw(Event2 *elements, Queue &pq, double slope, double offset,
 
 
 inline double
-clip_backw(Event2 *elements, Queue &pq, double slope, double offset,
+clip_backw(Event2 *elements, Range &pq, double slope, double offset,
            const double t, const double upper_bound)
 {
     const auto stop0 = pq.stop;

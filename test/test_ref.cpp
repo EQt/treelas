@@ -16,7 +16,7 @@ TEST(reference, problem_clip_front)
 
     const auto ecopy (elements);
 
-    Queue pq ({1, 3});
+    Range pq ({1, 3});
     ASSERT_EQ(elements, ecopy);
     {   // simulate old clip_front
         auto &e = elements[pq.start];
@@ -43,7 +43,7 @@ TEST(reference, solved_clip_front)
 
     const auto ecopy (elements);
 
-    Queue pq ({1, 3});
+    Range pq ({1, 3});
     ASSERT_EQ(elements, ecopy);
     {   // simulate old clip_front
         const auto *e = &elements[pq.start];
