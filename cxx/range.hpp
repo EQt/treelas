@@ -2,16 +2,15 @@
 #include <iostream>
 
 /**
-   Range is represented as an interval on an array
+   Range is an interval on an array (inclusive boundaries!).
+   They represent double-ended priority queues.
  */
 struct Range
 {
     int start;      // first element's index (inclusive)
     int stop;       // last  element's index (inclusive! unlike Python)
 
-    int length() const {
-        return stop - start + 1;
-    }
+    int length() const { return stop - start + 1; }
 
     bool operator==(const Range &other) const {
         return this->start == other.start && this->stop == other.stop;
