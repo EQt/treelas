@@ -58,6 +58,7 @@ if (BUILD_PYEXT)
     python/tree.cpp
     python/adjidx.cpp
     python/spanning.cpp
+    cxx/tree_12x.cpp
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
@@ -137,6 +138,7 @@ if (BUILD_TESTS)
     test/test_strtok.cpp
     test/test_timer.cpp
     test/test_stack.cpp
+    test/test_queue.cpp
     test/test_vecalloc.cpp
     test/test_ref.cpp
     test/test_unionfind.cpp

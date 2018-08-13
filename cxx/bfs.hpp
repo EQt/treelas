@@ -8,6 +8,7 @@
 #include <stdexcept>
 
 #include "children.hpp"
+#include "queue.hpp"
 
 
 inline std::vector<int>
@@ -17,7 +18,9 @@ compute_bfs(const std::vector<int> &parent, const int root)
     ChildrenIndex children (parent, root);
     std::vector<int> bfs (n, -1);
     int b = 0;
-    std::queue<int> q({root});
+    queue<int> q (n);
+
+    q.push(root);
     while (!q.empty()) {
         auto u = q.front(); q.pop();
         bfs[u] = b++;
