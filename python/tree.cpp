@@ -1,7 +1,9 @@
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
 
-#include "../cxx/tree_12.hpp"
+#include "../cxx/utils/timer.hpp"       // for TimerQuiet
+
+#include "../cxx/tree_12x.hpp"
 #include "../cxx/tree_dp.hpp"
 #include "../cxx/tree_dual.hpp"
 
@@ -12,7 +14,7 @@ namespace py = pybind11;
 void
 reg_tree(py::module &m)
 {
-    m.def("tree_12",
+    m.def("tree_12x",
           [](const py::array_i32 &parent,
              const py::array_f64 &y,
              const double lam,
@@ -22,11 +24,12 @@ reg_tree(py::module &m)
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(parent, "parent");
+              const int root = -1;
               check_len(n, y, "y");
               if (is_empty(x))
                   x = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, x, "x");
-              approx::tree_12(n, y.data(), lam, parent.data(), x.mutable_data(), max_iter);
+              tree_12x(n, parent.data(), y.data(), lam, x.mutable_data(), root, max_iter);
               return x;
           },
           R"pbdoc(
