@@ -3,12 +3,19 @@
   computation.
 */
 #pragma once
+#ifndef STD_QUEUE
+#   define STD_QUEUE 0
+#endif
+
 #include <vector>
-#include <queue>
 #include <stdexcept>
+#if STD_QUEUE
+#  include <queue>
+#else
+#  include "queue.hpp"
+#endif
 
 #include "children.hpp"
-#include "queue.hpp"
 
 
 inline std::vector<int>
@@ -18,7 +25,11 @@ compute_bfs(const std::vector<int> &parent, const int root)
     ChildrenIndex children (parent, root);
     std::vector<int> bfs (n, -1);
     int b = 0;
+#if STD_QUEUE
+    std::queue<int> q;
+#else
     queue<int> q (n);
+#endif
 
     q.push(root);
     while (!q.empty()) {
