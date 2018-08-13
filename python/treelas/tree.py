@@ -133,13 +133,17 @@ parent = {repr(self.parent)})"""
         raise NotImplementedError()
 
     @property
+    def y0(self):
+        y0 = self.y.copy()
+        y0[np.isnan(y0)] = 0.0
+        return y0
+
+    @property
     def dual(self):
         """Dual solution, corresponding to self.x (if called the first time, compute it)"""
         if self.z is None:
             if self.x is None:
                 self.solve()
-            self.y0 = self.y.copy()
-            self.y0[np.isnan(self.y0)] = 0.0
             self.z = self.mu * (self.x - self.y0)
 
         if self.alpha is None or not np.isnan(self.alpha[self.root]):
