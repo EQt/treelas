@@ -141,7 +141,7 @@ tree_12x(
             newp.reserve(n);
             for (size_t i = 0; i < n; i++)
                 newp[i] = iorder[parent[forder_[i]]];
-            for (size_t i = 0; i < n; i++)
+            for (int i = 0; i < int(n); i++)
                 forder_[i] = i;
             // TODO: also relabel y!
         }
