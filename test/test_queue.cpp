@@ -25,10 +25,16 @@ TEST(queue, push1)
     queue<int> queue;
     ASSERT_TRUE(queue.empty());
     ASSERT_EQ(queue.size(), 0);
+
     queue.reserve(1);
     ASSERT_EQ(queue.size(), 0);
     ASSERT_EQ(queue.capacity(), 1);
+
+    ASSERT_EQ(queue.head, 0);
+    ASSERT_EQ(queue.tail, 0);
     queue.push(-42);
+    ASSERT_EQ(queue.tail, 1);
+    ASSERT_EQ(queue.head, 0);
     ASSERT_EQ(queue.size(), 1);
     ASSERT_EQ(queue.front(), -42);
 }

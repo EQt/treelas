@@ -46,8 +46,13 @@ public:
 
     inline bool empty() const { return head == tail; }
 
-    inline size_t size() const { return head <= tail ? tail - head : tail - head - n; }
+    inline size_t size() const { return head <= tail ? tail - head : tail - head + n; }
 
     inline size_t capacity() const { return n; }
+
+#ifdef GTEST_INCLUDE_GTEST_GTEST_PROD_H_
+    FRIEND_TEST(queue, push1);
+#endif
+
 };
 
