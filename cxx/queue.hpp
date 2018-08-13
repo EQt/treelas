@@ -52,6 +52,7 @@ public:
 
 #ifdef GTEST_INCLUDE_GTEST_GTEST_PROD_H_
     FRIEND_TEST(queue, push1);
+    FRIEND_TEST(queue, push2);
 #endif
 
 };

@@ -53,6 +53,8 @@ TEST(queue, push2)
 
     queue.push(1);
     ASSERT_EQ(queue.size(), 1);
+    ASSERT_EQ(queue.tail, 1);
+    ASSERT_EQ(queue.head, 0);
     queue.push(2);
     ASSERT_EQ(queue.size(), 2);
     ASSERT_EQ(queue.capacity(), 2);
