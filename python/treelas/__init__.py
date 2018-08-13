@@ -31,7 +31,7 @@ from ._treelas import (
     find_root,
     tree_dp,
     tree_dp_w,
-    tree_12,
+    tree_12x,
     tree_dual,
     tree_dual_gap,
     random_spanning_tree,
