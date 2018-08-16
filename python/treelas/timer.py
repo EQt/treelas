@@ -7,7 +7,20 @@ from math import isnan, isinf
 
 
 class Timer:
-    """Measure elapsed process time using Python's `with` statement"""
+    """
+    Measure elapsed *process time* using Python's `with` statement,
+    i.e. timing for instance `time.sleep(5)` won't report 5 seconds
+    but a few milliseconds as the process will be suspended by the
+    sleep method.
+
+    >>> def slow(n=100_000):
+    ...    i = 0
+    ...    for _ in range(n):
+    ...       i += 1
+    >>> with Timer("call slow"):
+    ...    slow()
+
+    """
     verbose = True
     out = sys.stderr
 
