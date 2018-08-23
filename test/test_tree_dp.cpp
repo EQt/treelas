@@ -32,7 +32,7 @@ TEST(dptree, init_queues)
     TimerQuiet _;
 
     const std::vector<int> parent = {0, 0, 1, 2, 3, 0, 7, 8, 3, 8};
-    const int n = parent.size();
+    const auto n = parent.size();
     std::vector<Range> pq (n);
     ChildrenIndex childs (parent);
     stack<int> stack;
