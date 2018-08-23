@@ -26,7 +26,7 @@ struct Tree12xStatus
 
     inline void divorce(size_t i) { parent_[i] &= ~one; }
     inline void init_parent(size_t i, int_ p) { parent_[i] = p | one; }
-    inline bool same(size_t i) { return bool(parent_[i] & one); }
+    inline bool same(size_t i) { return (parent_[i] & one) != 0; }
     inline int_ parent(size_t i) { return parent_[i] & (~one); }
 
     ~Tree12xStatus() {
