@@ -39,7 +39,7 @@ TEST(postorder, is_perm)
 TEST(postorder, tree_mini)
 {
     const std::vector<int> parent {0, 0, 1, 0, 1, 2};
-    const int n = parent.size();
+    const auto n = parent.size();
     const int root = 0;
 
     std::vector<int> postord (n, -1);
