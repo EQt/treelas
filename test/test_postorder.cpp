@@ -1,10 +1,13 @@
 #include <gtest/gtest.h>
-#include "../cxx/postorder.hpp"
 #include "../cxx/utils/perm.hpp"
+#include "../cxx/utils/timer.hpp"
+
+#include "../cxx/postorder.hpp"
 
 
 TEST(postorder, size)
 {
+    TimerQuiet _;
     const std::vector<int> parent = {0, 0, 1, 2, 3, 0, 7, 8, 3, 8};
     PostOrder pord (parent);
     ASSERT_EQ(parent.size(), 10);
@@ -14,6 +17,7 @@ TEST(postorder, size)
 
 TEST(postorder, size_with_root)
 {
+    TimerQuiet _;
     const std::vector<int> parent = {0, 0, 1, 2, 3, 0, 7, 8, 3, 8};
     int *postord = nullptr;
     const int root = 0;
@@ -26,6 +30,7 @@ TEST(postorder, size_with_root)
 
 TEST(postorder, is_perm)
 {
+    TimerQuiet _;
     const std::vector<int> parent = {0, 0, 1, 2, 3, 0, 7, 8, 3, 8};
     int *postord = nullptr;
     const int root = 0;
@@ -38,6 +43,7 @@ TEST(postorder, is_perm)
 
 TEST(postorder, tree_mini)
 {
+    TimerQuiet _;
     const std::vector<int> parent {0, 0, 1, 0, 1, 2};
     const auto n = parent.size();
     const int root = 0;
