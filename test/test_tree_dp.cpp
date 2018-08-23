@@ -51,7 +51,7 @@ TEST(dptree, init_queues)
         {14, 13},
         {15, 14},
         {10,  9}};
-    for (int i = 0; i < n; i++) {
+    for (size_t i = 0; i < n; i++) {
         EXPECT_EQ(pq[i].start, pq_expect[i].start -1);
         EXPECT_EQ(pq[i].stop, pq_expect[i].stop -1);
         // if (pq[i].start != pq_expect[i].start ||
