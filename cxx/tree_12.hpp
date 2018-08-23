@@ -31,7 +31,7 @@ struct Node
     static constexpr int_ one =             //  b"100...0"
         (int_(1)<<(8*sizeof(int_)-1));
 
-    inline bool same() const { return bool(_parent & one); }
+    inline bool same() const { return (_parent & one) != 0; }
 
     inline void set_same(bool v) {
         if (v) _parent |= one;
