@@ -38,8 +38,8 @@ TEST(Nodes, empty_class)
 {
     // https://stackoverflow.com/a/621648
     // https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Empty_Base_Optimization
-    struct Empty{} e;
-    ASSERT_EQ(sizeof(e), 1);
+    using empty_t = struct Empty{};
+    ASSERT_EQ(sizeof(empty_t), 1);
 }
 
 
