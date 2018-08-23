@@ -356,6 +356,5 @@ TEST(dptree0, proc_order)
     }
     */
 }
-#else
 #  pragma GCC diagnostic pop
 #endif
