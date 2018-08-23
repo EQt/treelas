@@ -95,7 +95,7 @@ is_perm_mut(std::vector<int_> &a)
 {
     static_assert(std::is_integral<int_>::value, "expected int type");
     std::sort(a.begin(), a.end());
-    const int_ n = a.size();
+    const int_ n = int_(a.size());
     for (int_ i = 0; i < n; i++) {
         if (a[i] != i) {
             return false;
