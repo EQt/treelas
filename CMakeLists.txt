@@ -125,9 +125,6 @@ if (BUILD_TESTS)
   set(BUILD_GTEST ON)
   set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
   add_subdirectory(extern/googletest)
-  if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    target_compile_options(gtest PUBLIC -Wno-missing-field-initializers)
-  endif()
   include_directories(extern/googletest/googletest/include)
   set(TESTS
     test/test_strtok.cpp
