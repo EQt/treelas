@@ -7,7 +7,7 @@ inline std::string
 hexify(uint64_t x)
 {
     char h [2*sizeof(x) + 3 + 3 + 2];
-    snprintf(h, sizeof(h), "d64(0x%016lx)", x);
+    snprintf(h, sizeof(h), "d64(0x%016llx)", x);
     return std::string(h);
 }
 
