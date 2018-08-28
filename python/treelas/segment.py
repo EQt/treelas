@@ -1,3 +1,4 @@
+import numpy as np
 from numba import njit
 
 
@@ -19,7 +20,15 @@ def line_segments(x, eps=1e-10):
         return i
 
     n = len(x)
-    idx = np.zeros(n+1, dtype=str(int64))
+    idx = np.zeros(n+1, dtype=int)
     i = _compute_segments(x, idx, eps)
     idx.resize(i+1)
     return idx
+
+
+def mean_segments(y, segs):
+    x = np.zeros_like(y)
+    for i in range(len(segs)-1):
+        a, b = segs[i], segs[i+1]
+        x[a:b] = y[a:b].mean()
+    return x
