@@ -16,6 +16,7 @@ See https://github.com/eqt/treelas.
 """
 import re
 from .tree import Tree, TreeInstance
+from .segment import line_segments
 from .children import PyChildrenIndex
 from ._treelas import (
     __compiler__,
@@ -38,4 +39,3 @@ from ._treelas import (
     post_order,
 #   dp_forward, dp_reverse,
 )
-
