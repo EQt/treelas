@@ -16,7 +16,7 @@ See https://github.com/eqt/treelas.
 """
 import re
 from .tree import Tree, TreeInstance
-from .segment import line_segments
+from .segment import line_mean
 from .children import PyChildrenIndex
 from ._treelas import (
     __compiler__,

@@ -1,5 +1,6 @@
 import numpy as np
 from numba import njit
+from ._treelas import line_las
 
 
 def line_segments(x, eps=1e-10):
@@ -26,9 +27,18 @@ def line_segments(x, eps=1e-10):
     return idx
 
 
-def mean_segments(y, segs):
-    x = np.zeros_like(y)
+def mean_segments(y, segs, x=None):
+    if x is None:
+        x = np.zeros_like(y)
     for i in range(len(segs)-1):
         a, b = segs[i], segs[i+1]
         x[a:b] = y[a:b].mean()
     return x
+
+
+def line_mean(y, lam, eps=1e-10, x=None):
+    if x is None:
+        x = np.zeros_like(y)
+    line_las(y, lam=lam, out=x)
+    segs = line_segments(x, eps=eps)
+    return mean_segments(y, segs, x)
