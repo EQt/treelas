@@ -42,6 +42,7 @@ Directory Structure
 ------------------
 
 ```
+├── ci          Continous integration
 ├── cxx         C++ source/header files
 ├── data        Some test data (needed for `py.test`)
 ├── extern      External libraries
