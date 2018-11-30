@@ -1,7 +1,7 @@
 #pragma once
 #include <random>
 
-#include "stack.hpp"
+#include "../stack.hpp"
 
 
 void
