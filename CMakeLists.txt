@@ -27,12 +27,12 @@ add_subdirectory(ci)
 
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
 
-add_object(line       cxx/line.cpp)
-add_object(line_w     cxx/line_w.cpp)
-add_object(line_para  cxx/line_para.cpp)
-add_object(line_c     cxx/line_c.cpp)
-add_object(line_c2    cxx/line_c2.cpp)
-add_object(line_c3    cxx/line_c3.cpp)
+add_object(line       cxx/line/line.cpp)
+add_object(line_w     cxx/line/line_w.cpp)
+add_object(line_para  cxx/line/line_para.cpp)
+add_object(line_c     cxx/line/line_c.cpp)
+add_object(line_c2    cxx/line/line_c2.cpp)
+add_object(line_c3    cxx/line/line_c3.cpp)
 add_object(postorder  cxx/postorder.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
@@ -127,26 +127,26 @@ if (BUILD_TESTS)
   add_subdirectory(extern/googletest)
   include_directories(extern/googletest/googletest/include)
   set(TESTS
-    test/test_strtok.cpp
-    test/test_timer.cpp
-    test/test_stack.cpp
-    test/test_queue.cpp
-    test/test_vecalloc.cpp
-    test/test_ref.cpp
-    test/test_unionfind.cpp
-    test/test_children.cpp
-    test/test_biadjacent.cpp
-    test/test_postorder.cpp
-    test/test_prufer.cpp
-    test/test_line.cpp
-    test/test_tree_12.cpp
-    test/test_tree_dp.cpp
+    cxx/test/test_strtok.cpp
+    cxx/test/test_timer.cpp
+    cxx/test/test_stack.cpp
+    cxx/test/test_queue.cpp
+    cxx/test/test_vecalloc.cpp
+    cxx/test/test_ref.cpp
+    cxx/test/test_unionfind.cpp
+    cxx/test/test_children.cpp
+    cxx/test/test_biadjacent.cpp
+    cxx/test/test_postorder.cpp
+    cxx/test/test_prufer.cpp
+    cxx/test/test_line.cpp
+    cxx/test/test_tree_12.cpp
+    cxx/test/test_tree_dp.cpp
   )
   if (HDF5_FOUND)
-    list(APPEND TESTS test/test_hdf5.cpp)
+    list(APPEND TESTS cxx/test/test_hdf5.cpp)
   endif()
   add_executable(tests
-    test/tests.cpp
+    cxx/test/tests.cpp
     ${TESTS}
     $<TARGET_OBJECTS:line>
     $<TARGET_OBJECTS:postorder>
