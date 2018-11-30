@@ -14,6 +14,7 @@ find_root(const size_t n, const int_ *parent)
 }
 
 
+/** Find the root node of a tree given its parent vector */
 template <typename int_ = int>
 inline int_
 find_root(const std::vector<int_> &parent)
