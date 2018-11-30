@@ -59,6 +59,27 @@ reg_biadjacent(py::module &m)
                      "m = " + std::to_string(b.num_edges()) + ", " +
                      "n = " + std::to_string(b.num_nodes()) + "]";
              })
+        .def("num_nodes",
+             [](const BiAdjacent &b) -> std::size_t
+             {
+                 return b.num_nodes();
+             })
+        .def("num_edges",
+             [](const BiAdjacent &b) -> std::size_t
+             {
+                 return b.num_edges();
+             })
+        .def("degrees",
+             [](const BiAdjacent &b) -> py::array_t<int>
+             {
+                 const auto n = b.num_nodes();
+                 py::array_t<int> deg_ (n);
+                 int *deg = deg_.mutable_data();
+                 for (size_t i = 0; i < n; i++) {
+                     deg[i] = b.index[i+1] - b.index[i];
+                 }
+                 return deg_;
+             })
         ;
 
     py::class_<ChildrenIndex> (m, "ChildrenIndex", PyAdjacencyIndex_int)
