@@ -3,7 +3,7 @@
 #include <regex>
 
 #include "path.hpp"
-#include "../cxx/utils/hdf5.hpp"
+#include "../utils/hdf5.hpp"
 
 
 // https://github.com/google/googletest/blob/master/googletest/docs/Primer.md

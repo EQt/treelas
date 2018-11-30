@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../cxx/utils/timer.hpp"
+#include "../utils/timer.hpp"
 
 
 TEST(Timer, endsnewline)

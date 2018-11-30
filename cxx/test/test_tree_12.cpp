@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <cstdint>
 
-#include "../cxx/tree_12.hpp"
+#include "../tree_12.hpp"
 
 
 TEST(Nodes, set_parent)

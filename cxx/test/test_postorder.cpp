@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
-#include "../cxx/utils/perm.hpp"
-#include "../cxx/utils/timer.hpp"
+#include "../utils/perm.hpp"
+#include "../utils/timer.hpp"
 
-#include "../cxx/postorder.hpp"
+#include "../postorder.hpp"
 
 
 TEST(postorder, size)

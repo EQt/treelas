@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <vector>
-#include "../cxx/event.hpp"
-#include "../cxx/range.hpp"
+#include "../event.hpp"
+#include "../range.hpp"
 
 
 

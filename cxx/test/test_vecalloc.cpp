@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../cxx/utils/vecalloc.hpp"
+#include "../utils/vecalloc.hpp"
 
 
 TEST(vecalloc, null)

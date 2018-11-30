@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../cxx/queue.hpp"
+#include "../queue.hpp"
 
 TEST(queue, nothing)
 {

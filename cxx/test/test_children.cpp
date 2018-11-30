@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <set>
-#include "../cxx/children.hpp"
-#include "../cxx/utils/perm.hpp"
+#include "../children.hpp"
+#include "../utils/perm.hpp"
 
 
 TEST(children, generate5)

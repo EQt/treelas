@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../cxx/unionfind.hpp"
+#include "../unionfind.hpp"
 
 
 TEST(UnionFind, mini_test_2)

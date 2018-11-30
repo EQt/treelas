@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
 
-#include "../cxx/utils/timer.hpp"       // TimerQuiet
-#include "../cxx/utils/plotpwl.hpp"
-#include "../cxx/utils/minmax.hpp"      // find_minmax
+#include "../utils/timer.hpp"       // TimerQuiet
+#include "../utils/plotpwl.hpp"
+#include "../utils/minmax.hpp"      // find_minmax
 
-#include "../cxx/tree_dp.hpp"
-#include "../cxx/range.hpp"
-#include "../cxx/event.hpp"
-#include "../cxx/stack.hpp"
-#include "../cxx/clip.hpp"
-#include "../cxx/merge.hpp"
+#include "../tree_dp.hpp"
+#include "../range.hpp"
+#include "../event.hpp"
+#include "../stack.hpp"
+#include "../clip.hpp"
+#include "../merge.hpp"
 
 
 #ifdef __GNUC__

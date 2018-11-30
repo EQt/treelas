@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../cxx/stack.hpp"
+#include "../stack.hpp"
 #if !_STACK_DEBUG
 #  error "Need to compile stack.hpp with #define _STACK_DEBUG 1"
 #endif
