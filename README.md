@@ -47,7 +47,6 @@ Directory Structure
 ├── data        Some test data (needed for `py.test`)
 ├── extern      External libraries
 ├── python      Python bindings
-└── test        GTest cases
 ```
 
 
