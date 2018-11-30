@@ -62,8 +62,8 @@ main(int argc, char *argv[])
             "Read in a graph (edge list) and compute a random spanning tree.\n"
             "Store this tree (parent)."
         );
-        ap.add_option('s', "srand",   "Random seed [default 2018]", "INT", "2018");
-        ap.add_option('g', "group",   "HDF5 group [default \"/\"]", "STR", "/");
+        ap.add_option('s', "srand", "Random seed [default 2018]", "INT", "2018");
+        ap.add_option('g', "group", "HDF5 group [default \"/\"]", "STR", "/");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No file!\n");
