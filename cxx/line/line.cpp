@@ -6,10 +6,10 @@
 #include <memory>               // for std::unique_ptr
 #include <cstdlib>              // for malloc
 
-#include "utils/timer.hpp"
-#include "utils/malloc.hpp"
-#include "utils/vecalloc.hpp"
-#include "utils/minmax.hpp"     // for clip(x, lb, ub)
+#include "../utils/timer.hpp"
+#include "../utils/malloc.hpp"
+#include "../utils/vecalloc.hpp"
+#include "../utils/minmax.hpp"     // for clip(x, lb, ub)
 
 #include "line.hpp"
 #include "clip.hpp"
