@@ -6,8 +6,8 @@
 #include "../utils/minmax.hpp"         // for clip(x, lb, ub)
 #include "line_para.hpp"
 #include "line.hpp"
-#include "clip.hpp"
-#include "merge.hpp"
+#include "../clip.hpp"
+#include "../merge.hpp"
 
 
 template <typename float_>

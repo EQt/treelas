@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../line.hpp"
+#include "../line/line.hpp"
 #include "../clip.hpp"
 
 

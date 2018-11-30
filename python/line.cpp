@@ -4,12 +4,12 @@
 #include "../extern/glmgen/tf.hpp"
 #include "../extern/condat/condat_tv_v2.hpp"
 
-#include "../cxx/line.hpp"
-#include "../cxx/line_w.hpp"
-#include "../cxx/line_para.hpp"
-#include "../cxx/line_c.hpp"
-#include "../cxx/line_c2.hpp"
-#include "../cxx/line_c3.hpp"
+#include "../cxx/line/line.hpp"
+#include "../cxx/line/line_w.hpp"
+#include "../cxx/line/line_para.hpp"
+#include "../cxx/line/line_c.hpp"
+#include "../cxx/line/line_c2.hpp"
+#include "../cxx/line/line_c3.hpp"
 
 
 namespace py = pybind11;

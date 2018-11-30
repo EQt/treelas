@@ -12,7 +12,7 @@
 #include "../utils/minmax.hpp"     // for clip(x, lb, ub)
 
 #include "line.hpp"
-#include "clip.hpp"
+#include "../clip.hpp"
 
 
 template<typename float_, typename Event>
