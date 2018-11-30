@@ -12,7 +12,11 @@ _f_(_x_) :=
 
 whereby _E_ are the edges of a tree.
 
-There are also specialized algorithms for one dimensional line graphs (also called “trail graphs”), including the implementation by [Laurent Condat][condat] and the [`glmgen` R package][glmgen].
+There are several implementations to be able assess e.g. different memory layouts, traversing orders, etc.
+
+We  also provide specialized algorithms for one dimensional **line graphs** (also called “trail graphs”). 
+For the sake of benchmarks the implementation by [Laurent Condat][condat] and the [`glmgen` R package][glmgen] are included as well.
+
 
 
 Python Interface
