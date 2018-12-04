@@ -1,6 +1,7 @@
-authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 name = "TreeLas"
 uuid = "decf69ae-f803-11e8-24bb-4d7d814a6f3f"
+authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 version = "0.1.0"
 
 [deps]
+CMakeWrapper = "d5fb7624-851a-54ee-a528-d3f3bac0b4a0"
