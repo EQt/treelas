@@ -1,8 +1,8 @@
 """
-Complete rewrite of the old FLSA code for tree graphs 
-=====================================================
+Dynamic Programming Tree Solver
+===============================
 
-GOAL: avoid reallocation of memory in the event queue.
+GOAL: avoid reallocation of memory as much as possible.
 
 Ideas
 -----
@@ -11,7 +11,7 @@ The position is just the intersection of two neighboring event line segments.
 However, the end position is complicated to compute.
 For sorting the events, it is also necessary
 """
-module FLSA2
+module DPTree
 using Printf: @sprintf
 
 include("children.jl")
@@ -47,6 +47,7 @@ Base.show(io::IO, e::Event) =
 # Queue -----------------------------------------------------------------
 """
 A range in a `Vector` containing the `Event`s of a nodes "queue".
+
 ATTENTION: unlike in Python, `start` and `stop` are inclusive!
 """
 struct Range
@@ -108,8 +109,9 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
 end
 
 
-@inline function merge(elements::Vector{Event},
-                       parent::Range, child::Range)::Range
+@inline
+function merge(elements::Vector{Event},
+               parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
@@ -128,8 +130,9 @@ end
 end
 
 
-@inline function merge2(buf::Vector{Event}, elements::Vector{Event},
-                       parent::Range, child::Range)::Range
+@inline
+function merge2(buf::Vector{Event}, elements::Vector{Event},
+                parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
@@ -166,8 +169,9 @@ end
 end
 
 
-@inline function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                            slope::Float64, offset::Float64, t::Float64)
+@inline
+function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
+                    slope::Float64, offset::Float64, t::Float64)
     begin
         pq = pqs[i]::Range
         start = pq.start
@@ -188,8 +192,9 @@ end
 end
 
 
-@inline function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                           slope::Float64, offset::Float64, t::Float64)
+@inline
+function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
+                   slope::Float64, offset::Float64, t::Float64)
     begin
         pq = pqs[i]::Range
         start = pq.start
@@ -269,12 +274,13 @@ end
 
 
 # Debug ---------------------------------------------------------------
+#=
 function _print_elments(elements)
     println("[", join([@sprintf("Event(% 4.2f, % 4.2f % 4.2f)\n",
                                 e.x, e.slope, e.offset)
                        for e in elements], ", "), "]")
 
 end
-
+=#
 
 end
