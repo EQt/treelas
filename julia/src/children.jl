@@ -47,7 +47,8 @@ struct ChildrenIndex
     pi::Vector{Int}
     idx::Vector{Int}
 end
-ChildrenIndex(n::Int) = ChildrenIndex(Vector{Int}(n), Vector{Int}(n+1))
+ChildrenIndex(n::Int) =
+    ChildrenIndex(Vector{Int}(undef, n), Vector{Int}(undef, n+1))
 
 
 @inline Base.getindex(c::ChildrenIndex, j::Int) =
@@ -55,7 +56,8 @@ ChildrenIndex(n::Int) = ChildrenIndex(Vector{Int}(n), Vector{Int}(n+1))
 
 Base.length(c::ChildrenIndex) = length(c.pi)
 
-children_index(parent) = ChildrenIndex(compute_children3(parent)...)
+children_index(parent) =
+    ChildrenIndex(compute_children3(parent)...)
 
 
 function compute_children3(parent::Vector{T}, root::Int = 1) where T <: Integer
