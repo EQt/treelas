@@ -16,14 +16,6 @@ using Printf: @sprintf
 const MERGESORT = false
 include("children.jl")
 
-# macro INBOUNDS(exp)
-#     return :($(esc(exp)))
-# end
-
-# macro INLINE(exp)
-#     return :($(esc(exp)))
-# end
-
 
 # Tree -------------------------------------------------------------------
 struct Tree
