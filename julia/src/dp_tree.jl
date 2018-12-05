@@ -45,16 +45,20 @@ Base.show(io::IO, e::Event) =
     end
 
 # Queue -----------------------------------------------------------------
-struct Queue
+"""
+A range in a `Vector` containing the `Event`s of a nodes "queue".
+ATTENTION: unlike in Python, `start` and `stop` are inclusive!
+"""
+struct Range
     start::Int
     stop::Int
 end
 
-Base.length(q::Queue) = q.stop - q.start + 1
-Base.show(io::IO, q::Queue) = print(io, q.start, ":", q.stop)
+Base.length(q::Range) = q.stop - q.start + 1
+Base.show(io::IO, q::Range) = print(io, q.start, ":", q.stop)
 
 function _alloc_queues(n::Int)
-    pq = Vector{Queue}(n)
+    pq = Vector{Range}(n)
     proc_order = Vector{Int}()
     stack = Vector{Int}()
     sizehint!(stack, n)
@@ -96,7 +100,7 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
         else
             v = -v
             push!(proc_order, v)
-            pq[v] = Queue(t, t-1)
+            pq[v] = Range(t, t-1)
         end
     end
     pop!(proc_order)    # remove root
@@ -105,11 +109,11 @@ end
 
 
 @inline function merge(elements::Vector{Event},
-                       parent::Queue, child::Queue)::Queue
+                       parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
-        res = Queue(parent.start, child.stop - gap)
+        res = Range(parent.start, child.stop - gap)
         if gap > 0
             for i in old_stop+1:res.stop
                 elements[i] = elements[i+gap]
@@ -125,11 +129,11 @@ end
 
 
 @inline function merge2(buf::Vector{Event}, elements::Vector{Event},
-                       parent::Queue, child::Queue)::Queue
+                       parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
-        res = Queue(parent.start, child.stop - gap)
+        res = Range(parent.start, child.stop - gap)
 
         i = 1
         if length(buf) < length(parent)
@@ -162,10 +166,10 @@ end
 end
 
 
-@inline function clip_front(elements::Vector{Event}, pqs::Vector{Queue}, i::Int,
+@inline function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
                             slope::Float64, offset::Float64, t::Float64)
     begin
-        pq = pqs[i]::Queue
+        pq = pqs[i]::Range
         start = pq.start
         stop = pq.stop
         e = elements[start]::Event
@@ -178,16 +182,16 @@ end
         x = (t - offset)/slope
         start -= 1
         elements[start] = Event(x, slope, offset - t)
-        pqs[i] = Queue(start, stop)
+        pqs[i] = Range(start, stop)
         return x
     end
 end
 
 
-@inline function clip_back(elements::Vector{Event}, pqs::Vector{Queue}, i::Int,
+@inline function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
                            slope::Float64, offset::Float64, t::Float64)
     begin
-        pq = pqs[i]::Queue
+        pq = pqs[i]::Range
         start = pq.start
         stop = pq.stop
         e = elements[stop]::Event
@@ -200,7 +204,7 @@ end
         x = (t - offset)/slope
         stop += 1
         elements[stop] = Event(x, -slope, -offset + t)
-        pqs[i] = Queue(start, stop)
+        pqs[i] = Range(start, stop)
         return x
     end
 end
@@ -234,7 +238,7 @@ function _dp_tree(y::Vector{Float64},
                   lb::Vector{Float64},
                   ub::Vector{Float64},
                   elements::Vector{Event},
-                  pq::Vector{Queue},
+                  pq::Vector{Range},
                   proc_order::Vector{Int},
                   stack::Vector{Int},
                   childs::ChildrenIndex)
