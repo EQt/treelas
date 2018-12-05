@@ -283,27 +283,4 @@ function _print_elments(elements)
 end
 
 
-# Precompile ----------------------------------------------------------
-import Base.precompile
-@static if !method_exists(precompile, (Function, Int))
-function precompile(f::Function, i::Int = 1)
-    m = methods(f)
-    @assert length(m) >= i
-    ml = m.ms[i]
-    if ml.sig isa UnionAll
-        error("Free type parameter {$(ml.sig.var.name)} in $f: $(ml.sig.body)")
-    end
-    types = tuple(ml.sig.types...)::Tuple
-    precompile(f, types)
-end
-end
-
-precompile(_alloc_queues, (Int,))
-precompile(_compute_children, (Vector{Int}, Vector{Int}, Vector{Int}))
-precompile(_dp_tree)
-precompile(init_queues, (Vector{Int}, Int))
-precompile(clip_front)
-precompile(clip_back)
-precompile(dp_tree, (Vector{Float64}, Function, Function, Tree))
-
 end
