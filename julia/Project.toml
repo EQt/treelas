@@ -5,3 +5,4 @@ version = "0.1.0"
 
 [deps]
 CMakeWrapper = "d5fb7624-851a-54ee-a528-d3f3bac0b4a0"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
