@@ -1,7 +1,7 @@
 function compute_children2(parent::Vector{T}, root::Int = 1) where T <: Integer
     @assert root == 1
     n = length(parent)
-    pi = Vector{T}(n)
+    pi = Vector{T}(undef, n)
 
     idx = zeros(T, n+1)
     for p in parent     # compute number of children
