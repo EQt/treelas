@@ -12,6 +12,7 @@ However, the end position is complicated to compute.
 For sorting the events, it is also necessary
 """
 module FLSA2
+using Printf: @sprintf
 const MERGESORT = false
 include("children.jl")
 
