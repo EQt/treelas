@@ -13,7 +13,7 @@ For sorting the events, it is also necessary
 """
 module FLSA2
 using Printf: @sprintf
-const MERGESORT = false
+
 include("children.jl")
 
 
@@ -239,9 +239,6 @@ function _dp_tree(y::Vector{Float64},
                   stack::Vector{Int},
                   childs::ChildrenIndex)
     sig = lb
-    @static if MERGESORT
-        buf = Vector{Event}(10)
-    end
     _init_queues(parent, root, pq, proc_order, stack, childs)
     sig .= 0.0
     for i in proc_order
@@ -253,14 +250,7 @@ function _dp_tree(y::Vector{Float64},
         ub[i] = clip_back( elements, pq, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
         # println("ub[$(i-1)] = ", @sprintf("% 4.2f", ub[i]))
         # _print_elments(elements)
-        @static if MERGESORT
-            pq[parent[i]] = merge2(buf, elements, pq[parent[i]], pq[i])
-        else
-            pq[parent[i]] = merge(elements, pq[parent[i]], pq[i])
-            if length(parent) <= 10
-                println("pq[$(parent[i])] = ", pq)
-            end
-        end
+        pq[parent[i]] = merge(elements, pq[parent[i]], pq[i])
     end
 
     x = ub
