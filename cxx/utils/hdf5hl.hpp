@@ -2,8 +2,9 @@
 #include <hdf5.h>
 
 
+
 /*-------------------------------------------------------------------------
-* Function: H5LT_get_attribute_mem
+* Function: H5LTget_attribute
 *
 * Purpose: Reads an attribute named attr_name with the memory type mem_type_id
 *
@@ -19,14 +20,12 @@
 *
 *-------------------------------------------------------------------------
 */
-
-
-static herr_t
-_get_attribute_mem(hid_t loc_id,
-                   const char *obj_name,
-                   const char *attr_name,
-                   hid_t mem_type_id,
-                   void *data)
+herr_t
+_get_attribute( hid_t loc_id,
+                         const char *obj_name,
+                         const char *attr_name,
+                         hid_t mem_type_id,
+                         void *data )
 {
     /* identifiers */
     hid_t obj_id = -1;
@@ -65,38 +64,6 @@ out:
     if(attr_id > 0)
         H5Aclose(attr_id);
     return -1;
-}
-
-
-/*-------------------------------------------------------------------------
-* Function: H5LTget_attribute
-*
-* Purpose: Reads an attribute named attr_name with the memory type mem_type_id
-*
-* Return: Success: 0, Failure: -1
-*
-* Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
-*
-* Date: September 19, 2002
-*
-* Comments: Private function
-*
-* Modifications:
-*
-*-------------------------------------------------------------------------
-*/
-herr_t
-_get_attribute( hid_t loc_id,
-                         const char *obj_name,
-                         const char *attr_name,
-                         hid_t mem_type_id,
-                         void *data )
-{
-    /* Get the attribute */
-    if(_get_attribute_mem(loc_id, obj_name, attr_name, mem_type_id, data) < 0)
-        return -1;
-
-    return 0;
 }
 
 
