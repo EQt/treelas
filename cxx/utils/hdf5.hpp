@@ -115,7 +115,8 @@ public:
     std::string group(const char *g = "");
     std::string group(const std::string &g) {  return group(g.c_str()); }
 
-    /** Return the HDF5 liberary version */
+    /** Return the HDF5 liberary version (extracted dynamically), e.g.
+        "1.10.10" */
     static std::string libversion();
 
 private:
@@ -471,7 +472,6 @@ HDF5::owrite(const char *name, const std::vector<T> &data, Dims *dims)
 }
 
 
-/** Return the version of the underlying linked libhdf5, e.g. "1.10.10" */
 std::string
 HDF5::libversion()
 {
