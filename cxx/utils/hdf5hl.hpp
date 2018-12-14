@@ -128,12 +128,13 @@ out:
  *-------------------------------------------------------------------------
  */
 herr_t
-_get_dataset_ndims( hid_t loc_id,
-                    const char *dset_name,
-                    int *rank )
+_get_dataset_ndims(hid_t loc_id,
+                   const char *dset_name,
+                   int *rank )
 {
     hid_t       did = -1;
     hid_t       sid = -1;
+
 
     /* check the arguments */
     if (dset_name == NULL) 
