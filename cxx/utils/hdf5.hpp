@@ -471,6 +471,7 @@ HDF5::owrite(const char *name, const std::vector<T> &data, Dims *dims)
 }
 
 
+/** Return the version of the underlying linked libhdf5, e.g. "1.10.10" */
 std::string
 HDF5::libversion()
 {
