@@ -101,26 +101,30 @@ _get_attribute( hid_t loc_id,
 
 
 
+
 /*-------------------------------------------------------------------------
-* Function: H5LT_read_dataset
+* Function: H5LTread_dataset
 *
 * Purpose: Reads a dataset from disk.
 *
 * Return: Success: 0, Failure: -1
 *
-* Programmer: Quincey Koziol, koziol@hdfgroup.org
+* Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
 *
-* Date: October 8, 2007
+* Date: June 13, 2001
 *
 *-------------------------------------------------------------------------
 */
-static herr_t
-_read_dataset_numerical(hid_t loc_id, const char *dset_name, hid_t tid, void *data)
+herr_t
+_read_dataset(hid_t loc_id,
+              const char *dset_name,
+              hid_t tid,
+              void *data)
 {
     hid_t   did;
 
     /* check the arguments */
-    if (dset_name == NULL) 
+    if (dset_name == NULL)
       return -1;
 
     /* Open the dataset. */
@@ -140,28 +144,7 @@ _read_dataset_numerical(hid_t loc_id, const char *dset_name, hid_t tid, void *da
 out:
     H5Dclose(did);
     return -1;
-}
 
-/*-------------------------------------------------------------------------
-* Function: H5LTread_dataset
-*
-* Purpose: Reads a dataset from disk.
-*
-* Return: Success: 0, Failure: -1
-*
-* Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
-*
-* Date: June 13, 2001
-*
-*-------------------------------------------------------------------------
-*/
-herr_t
-_read_dataset(hid_t loc_id,
-                        const char *dset_name,
-                        hid_t tid,
-                        void *data)
-{
-    return(_read_dataset_numerical(loc_id, dset_name, tid, data));
 }
 
 
