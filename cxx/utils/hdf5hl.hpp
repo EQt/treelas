@@ -2,30 +2,29 @@
 #include <hdf5.h>
 
 
-
 /*-------------------------------------------------------------------------
-* Function: H5LTget_attribute
-*
-* Purpose: Reads an attribute named attr_name with the memory type mem_type_id
-*
-* Return: Success: 0, Failure: -1
-*
-* Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
-*
-* Date: September 19, 2002
-*
-* Comments: Private function
-*
-* Modifications:
-*
-*-------------------------------------------------------------------------
-*/
+ * Function: H5LTget_attribute
+ *
+ * Purpose: Reads an attribute named attr_name with the memory type mem_type_id
+ *
+ * Return: Success: 0, Failure: -1
+ *
+ * Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
+ *
+ * Date: September 19, 2002
+ *
+ * Comments: Private function
+ *
+ * Modifications:
+ *
+ *-------------------------------------------------------------------------
+ */
 herr_t
 _get_attribute( hid_t loc_id,
-                         const char *obj_name,
-                         const char *attr_name,
-                         hid_t mem_type_id,
-                         void *data )
+                const char *obj_name,
+                const char *attr_name,
+                hid_t mem_type_id,
+                void *data )
 {
     /* identifiers */
     hid_t obj_id = -1;
@@ -33,26 +32,26 @@ _get_attribute( hid_t loc_id,
 
     /* check the arguments */
     if (obj_name == NULL) 
-      return -1;
+        return -1;
     if (attr_name == NULL) 
-      return -1;
+        return -1;
 
     /* Open the object */
-    if((obj_id = H5Oopen(loc_id, obj_name, H5P_DEFAULT)) < 0)
+    if ((obj_id = H5Oopen(loc_id, obj_name, H5P_DEFAULT)) < 0)
         goto out;
 
-    if((attr_id = H5Aopen(obj_id, attr_name, H5P_DEFAULT)) < 0)
+    if ((attr_id = H5Aopen(obj_id, attr_name, H5P_DEFAULT)) < 0)
         goto out;
 
-    if(H5Aread(attr_id, mem_type_id, data) < 0)
+    if (H5Aread(attr_id, mem_type_id, data) < 0)
         goto out;
 
-    if(H5Aclose(attr_id) < 0)
+    if (H5Aclose(attr_id) < 0)
         goto out;
     attr_id = -1;
 
     /* Close the object */
-    if(H5Oclose(obj_id) < 0)
+    if (H5Oclose(obj_id) < 0)
         goto out;
     obj_id = -1;
 
@@ -70,18 +69,18 @@ out:
 
 
 /*-------------------------------------------------------------------------
-* Function: H5LTread_dataset
-*
-* Purpose: Reads a dataset from disk.
-*
-* Return: Success: 0, Failure: -1
-*
-* Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
-*
-* Date: June 13, 2001
-*
-*-------------------------------------------------------------------------
-*/
+ * Function: H5LTread_dataset
+ *
+ * Purpose: Reads a dataset from disk.
+ *
+ * Return: Success: 0, Failure: -1
+ *
+ * Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
+ *
+ * Date: June 13, 2001
+ *
+ *-------------------------------------------------------------------------
+ */
 herr_t
 _read_dataset(hid_t loc_id,
               const char *dset_name,
@@ -92,18 +91,18 @@ _read_dataset(hid_t loc_id,
 
     /* check the arguments */
     if (dset_name == NULL)
-      return -1;
+        return -1;
 
     /* Open the dataset. */
-    if((did = H5Dopen2(loc_id, dset_name, H5P_DEFAULT)) < 0)
+    if ((did = H5Dopen2(loc_id, dset_name, H5P_DEFAULT)) < 0)
         return -1;
 
     /* Read */
-    if(H5Dread(did, tid, H5S_ALL, H5S_ALL, H5P_DEFAULT, data) < 0)
+    if (H5Dread(did, tid, H5S_ALL, H5S_ALL, H5P_DEFAULT, data) < 0)
         goto out;
 
     /* End access to the dataset and release resources used by it. */
-    if(H5Dclose(did))
+    if (H5Dclose(did))
         return -1;
 
     return 0;
@@ -115,51 +114,49 @@ out:
 }
 
 
-
 /*-------------------------------------------------------------------------
-* Function: H5LTget_dataset_ndims
-*
-* Purpose: Gets the dimensionality of a dataset.
-*
-* Return: Success: 0, Failure: -1
-*
-* Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
-*
-* Date: September 4, 2001
-*
-*-------------------------------------------------------------------------
-*/
-
+ * Function: H5LTget_dataset_ndims
+ *
+ * Purpose: Gets the dimensionality of a dataset.
+ *
+ * Return: Success: 0, Failure: -1
+ *
+ * Programmer: Pedro Vicente, pvn@ncsa.uiuc.edu
+ *
+ * Date: September 4, 2001
+ *
+ *-------------------------------------------------------------------------
+ */
 herr_t
 _get_dataset_ndims( hid_t loc_id,
-                             const char *dset_name,
-                             int *rank )
+                    const char *dset_name,
+                    int *rank )
 {
     hid_t       did = -1;
     hid_t       sid = -1;
 
     /* check the arguments */
     if (dset_name == NULL) 
-      return -1;
+        return -1;
 
     /* Open the dataset. */
-    if((did = H5Dopen2(loc_id, dset_name, H5P_DEFAULT)) < 0)
+    if ((did = H5Dopen2(loc_id, dset_name, H5P_DEFAULT)) < 0)
         return -1;
 
     /* Get the dataspace handle */
-    if((sid = H5Dget_space(did)) < 0)
+    if ((sid = H5Dget_space(did)) < 0)
         goto out;
 
     /* Get rank */
-    if((*rank = H5Sget_simple_extent_ndims(sid)) < 0)
+    if ((*rank = H5Sget_simple_extent_ndims(sid)) < 0)
         goto out;
 
     /* Terminate access to the dataspace */
-    if(H5Sclose(sid) < 0)
+    if (H5Sclose(sid) < 0)
         goto out;
 
     /* End access to the dataset */
-    if(H5Dclose(did))
+    if (H5Dclose(did))
         return -1;
 
     return 0;
@@ -186,7 +183,7 @@ _get_dataset_info(hid_t loc_id,
 
     /* check the arguments */
     if (dset_name == NULL) 
-      return -1;
+        return -1;
 
     /* open the dataset. */
     if ((did = H5Dopen2(loc_id, dset_name, H5P_DEFAULT)) < 0)
@@ -304,7 +301,7 @@ out:
 
 /* TODO: Error handling
    https://support.hdfgroup.org/HDF5/doc/H5.user/Errors.html
- */
+*/
 inline herr_t
 H5Ewalk_error(int n, H5E_error_t *err_desc, void *client_data)
 {
