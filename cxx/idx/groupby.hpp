@@ -29,17 +29,17 @@ groupby(std::vector<int_> &value,
         int_ acc = 0,
              deg_i = 0,
              deg_ii = index[0];
-        for (int i = 0; i < int(n); i++) {
+        for (int i = 0; i < int(k); i++) {
             index[i] = acc;
             acc += deg_i;
             deg_i = deg_ii;
             deg_ii = index[i+1];
         }
-        index[n] = acc;
+        index[k] = acc;
     }
     for (int v = 0; v < int(n); v++) {
         const auto p = parent[v];
-        if (v == p) continue;   // skip root
+        if (v == root) continue;   // skip root
         value[index[p+1]++] = v;
     }
     if (root >= 0) {
