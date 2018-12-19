@@ -42,7 +42,7 @@ sources = [
     "line.cpp",
     "order.cpp",
     "tree.cpp",
-    "adjidx.cpp",
+    "idx.cpp",
     "spanning.cpp",
     "../cxx/tree_12x.cpp",
     "../extern/condat/condat_tv_v2.cpp",
