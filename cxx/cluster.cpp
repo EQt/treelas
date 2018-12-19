@@ -1,8 +1,7 @@
 #include <random>                   // std::default_random_engine
 #include <algorithm>                // std::shuffle
 
-#include "idx/biadjacent.hpp"
-#include "idx/partition.hpp"
+#include "cluster.hpp"
 #include "stack.hpp"
 
 
