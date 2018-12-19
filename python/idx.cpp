@@ -12,7 +12,7 @@ namespace py = pybind11;
 
 
 void
-reg_biadjacent(py::module &m)
+reg_idx(py::module &m)
 {
     using IndexIter_int = IndexIter<int>;
     using AdjacencyIndex_int = AdjacencyIndex<int>;
@@ -125,9 +125,9 @@ reg_biadjacent(py::module &m)
 
 
 #ifdef OWN_MODULE
-PYBIND11_MODULE(adjidx, m)
+PYBIND11_MODULE(idx, m)
 {
-    reg_biadjacent(m);
+    reg_idx(m);
 }
 #endif
 

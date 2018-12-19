@@ -56,7 +56,7 @@ if (BUILD_PYEXT)
     python/line.cpp
     python/order.cpp
     python/tree.cpp
-    python/adjidx.cpp
+    python/idx.cpp
     python/spanning.cpp
     cxx/tree_12x.cpp
     $<TARGET_OBJECTS:condat_tv>
