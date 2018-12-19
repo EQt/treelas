@@ -11,3 +11,12 @@ cluster(const size_t n,
         const BiAdjacent &neighidx,
         const double eps,
         const int seed);
+
+
+extern template
+PartitionIndex<int>
+cluster(const size_t n,
+        const double *x,
+        const BiAdjacent &neighidx,
+        const double eps,
+        const int seed);

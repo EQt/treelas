@@ -17,14 +17,14 @@ cluster(const size_t n,
     std::vector<int_> parts (n, -1);
     std::vector<int_> randperm;
     randperm.resize(n);
-    for (size_t i = 0; i < n; i++)
+    for (int_ i = 0; i < int_(n); i++)
         randperm[i] = i;
 
     std::shuffle(randperm.begin(), randperm.end(),
                  std::default_random_engine(seed));
 
     int_ nextp = 0;
-    for (const auto i : randperm) {
+    for (const int_ i : randperm) {
         if (parts[i] < 0) {         // unexplored?
             s.push_back(i);         // DFS from i
             while (!s.empty()) {
@@ -38,5 +38,14 @@ cluster(const size_t n,
             nextp++;
         }
     }
-    return PartionIndex(parts);
+    return PartitionIndex<int_>(parts);
 }
+
+
+template
+PartitionIndex<int>
+cluster(const size_t n,
+        const double *x,
+        const BiAdjacent &neighidx,
+        const double eps,
+        const int seed);
