@@ -4,6 +4,7 @@
 
 #include "../cxx/idx/biadjacent.hpp"
 #include "../cxx/idx/children.hpp"
+#include "../cxx/idx/partition.hpp"
 #include "../cxx/root.hpp"
 
 #include "py_np.hpp"
@@ -16,6 +17,7 @@ reg_idx(py::module &m)
 {
     using IndexIter_int = IndexIter<int>;
     using AdjacencyIndex_int = AdjacencyIndex<int>;
+    using PartitionIndex_int = PartitionIndex<int>;
 
     py::class_<AdjacencyIndex_int> PyAdjacencyIndex_int (m, "AdjacencyIndex_int");
     PyAdjacencyIndex_int
@@ -99,6 +101,20 @@ reg_idx(py::module &m)
              {
                  return std::string("ChildrenIndex[ n = ") +
                      std::to_string(cidx.size()) + "]";
+             })
+        ;
+
+    py::class_<PartitionIndex_int> (m, "PartitionIndex", PyAdjacencyIndex_int)
+        .def(py::init([](const py::array_i32 &ungrouped) {
+                          const size_t n = check_1d_len(ungrouped);
+                          return PartitionIndex_int(n, ungrouped.data());
+                      }),
+            py::arg("ungrouped"))
+        .def("__repr__",
+             [](const PartitionIndex_int &pidx) -> std::string
+             {
+                 return std::string("PartionIndex[ n = ") +
+                     std::to_string(pidx.size()) + "]";
              })
         ;
 
