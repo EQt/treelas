@@ -1,5 +1,5 @@
 import numpy as np
-from treelas.adjidx import BiAdjacent
+from treelas.idx import BiAdjacent
 
 
 def test_1():
