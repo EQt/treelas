@@ -57,7 +57,13 @@ Directory Structure
 ChangeLog
 ---------
 
-### v0.10.0  2018-12-19
+### v0.10.1
+Released 2018-12-20
+- `cluster`
+
+
+### v0.10.0 
+Released 2018-12-19
 - `PartitionIndex`, `groupby`
 
 
