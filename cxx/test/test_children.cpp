@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <set>
-#include "../children.hpp"
+#include "../idx/children.hpp"
 #include "../utils/perm.hpp"
 
 

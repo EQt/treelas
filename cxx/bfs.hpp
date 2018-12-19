@@ -15,7 +15,7 @@
 #  include "queue.hpp"
 #endif
 
-#include "children.hpp"
+#include "idx/children.hpp"
 
 
 inline std::vector<int>

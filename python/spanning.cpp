@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 
-#include "../cxx/biadjacent.hpp"
+#include "../cxx/idx/biadjacent.hpp"
 #include "../cxx/spanning/prim_mst.hpp"
 #include "py_np.hpp"
 

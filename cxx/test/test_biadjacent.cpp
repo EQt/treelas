@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../biadjacent.hpp"
+#include "../idx/biadjacent.hpp"
 
 
 TEST(biadj, unequal_len)

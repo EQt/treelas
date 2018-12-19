@@ -11,7 +11,7 @@
 #include "../utils/timer.hpp"
 #include "../utils/thousand.hpp"
 
-#include "../biadjacent.hpp"
+#include "../idx/biadjacent.hpp"
 // #include "../kruskal_mst.hpp"
 #include "../spanning/prim_mst.hpp"
 

@@ -8,7 +8,7 @@
 
 #include "stack.hpp"
 #include "range.hpp"
-#include "children.hpp"
+#include "idx/children.hpp"
 
 
 /**

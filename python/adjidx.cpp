@@ -2,8 +2,8 @@
 #include <stdexcept>
 #include <pybind11/pybind11.h>
 
-#include "../cxx/biadjacent.hpp"
-#include "../cxx/children.hpp"
+#include "../cxx/idx/biadjacent.hpp"
+#include "../cxx/idx/children.hpp"
 #include "../cxx/root.hpp"
 
 #include "py_np.hpp"
