@@ -100,7 +100,7 @@ reg_idx(py::module &m)
              [](const ChildrenIndex &cidx) -> std::string
              {
                  return std::string("ChildrenIndex[ n = ") +
-                     std::to_string(cidx.size()) + "]";
+                     std::to_string(cidx.size()) + " ]";
              })
         ;
 
@@ -114,7 +114,7 @@ reg_idx(py::module &m)
              [](const PartitionIndex_int &pidx) -> std::string
              {
                  return std::string("PartionIndex[ n = ") +
-                     std::to_string(pidx.size()) + "]";
+                     std::to_string(pidx.size()) + " ]";
              })
         ;
 
@@ -123,7 +123,7 @@ reg_idx(py::module &m)
              [](const IndexIter_int &self) -> std::string
              {
                  std::ostringstream os;
-                 os << "IndexIter_int(" << (void*)&self << ")";
+                 os << "<IndexIter_int(" << self.size() <<") @" << (void*)&self << ">";
                  return os.str();
              })
         .def("__len__",
