@@ -22,8 +22,19 @@ class GetPyBindInc():
          self.user = user
 
     def __str__(self):
-        import pybind11
-        return pybind11.get_include(self.user)
+        try:
+            import pybind11
+            return pybind11.get_include(self.user)
+        except ImportError:
+            from os import path
+            pybind11_include = path.join(path.dirname(__file__), '..',
+                                         'extern', 'pybind11', 'include')
+            pybind11_h = path.join(pybind11_include, 'pybind11', 'pybind11.h')
+
+            if path.exists(pybind11_h):
+                return pybind11_include
+            else:
+                raise RuntimeError(f'Please install pybind11')
 
 
 sources = [
