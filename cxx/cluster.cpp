@@ -31,7 +31,7 @@ cluster(const size_t n,
                 const auto v = s.pop_back();
                 parts[v] = nextp;
                 for (const auto u : neighidx[v]) {
-                    if (std::abs(x[v] - x[u]) < eps && parts[u] < 0)
+                    if (std::abs(x[v] - x[u]) <= eps && parts[u] < 0)
                         s.push_back(u);
                 }
             }

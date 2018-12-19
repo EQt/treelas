@@ -1,1 +1,1 @@
-from ._treelas import BiAdjacent, ChildrenIndex, PartitionIndex
+from ._treelas import BiAdjacent, ChildrenIndex, PartitionIndex, cluster

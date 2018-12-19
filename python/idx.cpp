@@ -5,6 +5,7 @@
 #include "../cxx/idx/biadjacent.hpp"
 #include "../cxx/idx/children.hpp"
 #include "../cxx/idx/partition.hpp"
+#include "../cxx/cluster.hpp"
 #include "../cxx/root.hpp"
 
 #include "py_np.hpp"
@@ -136,6 +137,26 @@ reg_idx(py::module &m)
              {
                  return py::make_iterator(self.begin(), self.end());
              })
+        ;
+
+    m.def("cluster",
+          [](const py::array_f64 &x,
+             const BiAdjacent &neighidx,
+             const double eps,
+             const int seed) -> PartitionIndex_int {
+              return cluster(x.size(),
+                             x.data(),
+                             neighidx,
+                             eps,
+                             seed);
+          },
+          R"pbdoc(
+            Find a partition of x such that TO BE CONTINUED
+          )pbdoc",
+          py::arg("x"),
+          py::arg("neighidx"),
+          py::arg("eps") = 1e-5,
+          py::arg("seed") = 42)
         ;
 }
 
