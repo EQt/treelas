@@ -9,6 +9,7 @@
 /**
    Bidirected adjacency vectors
  **/
+// template <typename int_ = int>
 struct BiAdjacent : public AdjacencyIndex<int>
 {
     BiAdjacent(const int m, const int *head, const int *tail, int n = -1) {
@@ -17,6 +18,8 @@ struct BiAdjacent : public AdjacencyIndex<int>
             n = std::max(n, *std::max_element(tail, tail + m));
             n++;
         }
+        // auto value = this->value;
+        // auto index = this->index;
         value.resize(2*m);
         index.assign(n+1, 0);
         for (int i = 0; i < m; i++) {   // compute degree
@@ -62,8 +65,8 @@ struct BiAdjacent : public AdjacencyIndex<int>
         }
     }
 
-    size_t num_edges() const { return value.size() / 2; }
-    size_t num_nodes() const { return index.size() - 1; }
+    size_t num_edges() const { return this->value.size() / 2; }
+    size_t num_nodes() const { return this->index.size() - 1; }
 };
 
 
