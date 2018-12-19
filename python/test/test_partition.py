@@ -15,3 +15,7 @@ def test_0001():
     assert len(pidx) == 2
     assert set(pidx[0]) == {0, 1, 2}
     assert set(pidx[1]) == {3}
+
+
+if __name__ == '__main__':
+    test_0001();
