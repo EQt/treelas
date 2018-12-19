@@ -135,6 +135,7 @@ if (BUILD_TESTS)
     cxx/test/test_ref.cpp
     cxx/test/test_unionfind.cpp
     cxx/test/test_children.cpp
+    cxx/test/test_partition.cpp
     cxx/test/test_biadjacent.cpp
     cxx/test/test_postorder.cpp
     cxx/test/test_prufer.cpp
