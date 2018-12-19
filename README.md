@@ -20,7 +20,7 @@ For the sake of benchmarks the implementation by [Laurent Condat][condat] and th
 
 
 Python Interface
----------------
+----------------
 
 ... is realized via
 [`pybind11`](https://github.com/pybind/pybind11).
@@ -43,7 +43,7 @@ python setup.py develop
 
 
 Directory Structure
-------------------
+-------------------
 
 ```
 ├── ci          Continous integration
@@ -54,5 +54,14 @@ Directory Structure
 ```
 
 
+ChangeLog
+---------
+
+### v0.10.0  2018-12-19
+- `PartitionIndex`, `groupby`
+
+
+
 [condat]: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
 [glmgen]: https://github.com/glmgen/glmgen
+
