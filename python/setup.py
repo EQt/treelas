@@ -3,10 +3,10 @@ http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
 import re
 import sys
+import subprocess as sp
 from setuptools import setup
 from setuptools.extension import Extension
 from setuptools.command.build_ext import build_ext
-from subprocess import check_output
 
 
 class GetPyBindInc():
@@ -19,7 +19,7 @@ class GetPyBindInc():
     Copied from github.com:pybind/pybind11_example/setup.py
     """
     def __init__(self, user=False):
-         self.user = user
+        self.user = user
 
     def __str__(self):
         try:
@@ -64,19 +64,20 @@ _treelas = Extension("treelas._treelas", sources, language='c++',
 
 def describe_tag(default="0.9.9"):
     try:
-        ver = check_output('git describe --tag'.split())
+        ver = sp.check_output('git describe --tag'.split())
         ver = ver.decode().strip()
         m = re.match(r'v(?P<ver>\d+(\.\d+)*)((-(?P<dev>\d+))(-.*))?', ver)
         if m.group('dev') is not None:
             return f"{m.group('ver')}.dev{m.group('dev')}"
         return m.group('ver')
-    except:
+    except sp.CalledProcessError:
         return default
 
 
 class BuildExt(build_ext):
     """A custom build extension for adding compiler-specific options."""
-    c_opts = {'msvc': ['/EHsc'],'unix': []}
+    c_opts = {'msvc': ['/EHsc'],
+              'unix': []}
 
     if sys.platform == 'darwin':
         c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
@@ -108,5 +109,4 @@ setup(name="treelas",
       packages=['treelas'],
       install_requires=['pybind11>=2.2'],
       ext_modules=[_treelas],
-      cmdclass={'build_ext': BuildExt}
-)
+      cmdclass={'build_ext': BuildExt})
