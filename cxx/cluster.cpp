@@ -29,6 +29,7 @@ cluster(const size_t n,
             s.push_back(i);         // DFS from i
             while (!s.empty()) {
                 const auto v = s.pop_back();
+                // printf("i = %d, v = %d, nextp = %d\n", i, v, nextp);
                 parts[v] = nextp;
                 for (const auto u : neighidx[v]) {
                     if (std::abs(x[v] - x[u]) <= eps && parts[u] < 0)
@@ -38,6 +39,7 @@ cluster(const size_t n,
             nextp++;
         }
     }
+    // std::cout << parts << std::endl;
     return PartitionIndex<int_>(parts);
 }
 
