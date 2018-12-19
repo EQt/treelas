@@ -55,7 +55,8 @@ sources = [
     "../cxx/line/line_c3.cpp",
     "../cxx/tree_dp.cpp",
     "../cxx/tree_dual.cpp",
-    "../cxx/postorder.cpp"
+    "../cxx/postorder.cpp",
+    "../cxx/cluster.cpp"
 ]
 
 _treelas = Extension("treelas._treelas", sources, language='c++',

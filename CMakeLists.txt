@@ -36,6 +36,7 @@ add_object(line_c3    cxx/line/line_c3.cpp)
 add_object(postorder  cxx/postorder.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
+add_object(cluster    cxx/cluster.cpp)
 
 # PYTHON
 set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11"
@@ -70,6 +71,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:tree_dual>
     $<TARGET_OBJECTS:postorder>
+    $<TARGET_OBJECTS:cluster>
   )
   # target_link_libraries(_treelas PUBLIC -pthread)
   add_custom_target(pysetup  DEPENDS _treelas
