@@ -4,18 +4,31 @@ Parse CMakeLists.txt and update the source file list in setup.py.
 """
 import re
 from os import path
+import sys
 
 
 __dir__ = path.dirname(path.realpath(__file__))
 cmake_txt = path.join(__dir__, '..', 'CMakeLists.txt')
 setuppy   = path.join(__dir__, '..', 'python', 'setup.py')
 
+
+def git_version_tag():
+    sys.path.append(path.join(__dir__, '..', 'python'))
+    from gitversion import describe_tag
+
+    v = describe_tag(None, with_dev=False)
+    if v is None:
+        raise RuntimeError("Could not find Git version tags")
+    return v
+
+
 with open(setuppy) as io:
     setup = io.read()
 with open(cmake_txt) as io:
     cmake = io.read()
 
-[mod] = re.findall(r'pybind11_add_module\(_treelas(.+?)\)', cmake, flags=re.DOTALL)
+[mod] = re.findall(r'pybind11_add_module\(_treelas(.+?)\)',
+                   cmake, flags=re.DOTALL)
 
 objs = {n : p.strip() for n, p in
         re.findall(r'add_object\((.+?) (.+?)\)', cmake, flags=re.DOTALL)}
@@ -27,6 +40,8 @@ source = ['"../' + s.strip() + '"' for s in mods.strip().split('\n')]
 new_source = "sources = [\n    " + ",\n    ".join(source) + "\n]"
 new_source = new_source.replace('../python/', '')
 new_setup = re.sub(r'sources = \[(.+?)\]', new_source, setup, flags=re.DOTALL)
+new_setup = re.sub(r'describe_tag\(default="[\d.]+"\)',
+                   f'describe_tag(default="{git_version_tag()}")', new_setup)
 
 with open(setuppy, 'w') as io:
     io.write(new_setup)
