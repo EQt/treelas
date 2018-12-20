@@ -17,5 +17,12 @@ def test_0001():
     assert set(pidx[1]) == {3}
 
 
+def test_iter():
+    assert hasattr(PartitionIndex, '__iter__')
+    pidx = PartitionIndex([0, 0, 0, 1])
+    assert iter(pidx) is not None
+    assert list(map(set, pidx)) == [{0, 1,  2}, {3}]
+
+
 if __name__ == '__main__':
     test_0001();

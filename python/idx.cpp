@@ -112,10 +112,14 @@ reg_idx(py::module &m)
                       }),
             py::arg("ungrouped"))
         .def("__repr__",
-             [](const PartitionIndex_int &pidx) -> std::string
+             [](const PartitionIndex_int &self) -> std::string
              {
                  return std::string("PartionIndex[ n = ") +
-                     std::to_string(pidx.size()) + " ]";
+                     std::to_string(self.size()) + " ]";
+             })
+        .def("__iter__",
+             [](const PartitionIndex_int &self) {
+                 return py::make_iterator(self.begin(), self.end());
              })
         ;
 
