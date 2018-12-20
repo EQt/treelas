@@ -57,6 +57,11 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.10.2
+Released 2018-12-20
+- Iterator over `PartitionIndex`
+
+
 ### v0.10.1
 Released 2018-12-20
 - `cluster`
