@@ -1,12 +1,11 @@
 """
 http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
-import re
 import sys
-import subprocess as sp
 from setuptools import setup
 from setuptools.extension import Extension
 from setuptools.command.build_ext import build_ext
+from gitversion import describe_tag
 
 
 class GetPyBindInc():
@@ -63,18 +62,6 @@ _treelas = Extension("treelas._treelas", sources, language='c++',
                      include_dirs=[GetPyBindInc(False), GetPyBindInc(True)])
 
 
-def describe_tag(default="0.9.9"):
-    try:
-        ver = sp.check_output('git describe --tag'.split())
-        ver = ver.decode().strip()
-        m = re.match(r'v(?P<ver>\d+(\.\d+)*)((-(?P<dev>\d+))(-.*))?', ver)
-        if m.group('dev') is not None:
-            return f"{m.group('ver')}.dev{m.group('dev')}"
-        return m.group('ver')
-    except sp.CalledProcessError:
-        return default
-
-
 class BuildExt(build_ext):
     """A custom build extension for adding compiler-specific options."""
     c_opts = {'msvc': ['/EHsc'],
@@ -103,7 +90,7 @@ class BuildExt(build_ext):
 
 
 setup(name="treelas",
-      version=describe_tag(),
+      version=describe_tag(default="0.9.9"),
       author="Elias Kuthe",
       author_email="elias.kuthe@tu-dortmund.de",
       license="MIT",
