@@ -29,7 +29,6 @@ prufer2parent(const int_ n,
                                         std::to_string(n));
         degree[pi]++;
     } // degree[v] is now the degree of node v
-    // std::cout << degree << std::endl;
 
     int_ index = 0, u = 0;
     auto find_min = [&](int_ start) { // index = minimal k with degree[k] == 1
@@ -37,9 +36,10 @@ prufer2parent(const int_ n,
         while (index < n && degree[index] > 1) 
             index++;
         if (degree[index] != 1)
-            throw std::runtime_error(std::string("This should not happen: degree[") +
-                                     std::to_string(index) + "] = " +
-                                     std::to_string(degree[index]));
+            throw std::runtime_error(
+                std::string("This should not happen: degree[") +
+                std::to_string(index) + "] = " +
+                std::to_string(degree[index]));
         u = index;
     };
 
@@ -48,15 +48,13 @@ prufer2parent(const int_ n,
         const auto v = prufer[i];
         parent[u] = v;
         degree[v]--;
-        // printf("i = %d: index = %d, u = %d, v = %d, degree[index] = %d, degree[v] = %d\n",
-        //        i, index, u, v, degree[index], degree[v]);
         if (v < index && degree[v] == 1)
             u = v;
         else {
             find_min(++index);
         }
     }
-    // std::cout << degree << std::endl;
+
     while (u < n && parent[u] >= 0)
         u++;
     if (u >= n)
@@ -70,7 +68,7 @@ prufer2parent(const int_ n,
         throw std::runtime_error(std::string("Strange: index = ") +
                                  std::to_string(index) + "; n = " +
                                  std::to_string(n));
-    // printf("index = %d, u = %d\n", index, u);
+
     parent[u] = index;
     parent[index] = index;
     return index;
