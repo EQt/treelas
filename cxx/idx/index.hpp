@@ -5,7 +5,7 @@
 #include "../utils/viostream.hpp"
 
 
-template<typename int_=int>
+template<typename int_ = int>
 struct IndexIter
 {
     const int_ *start;
