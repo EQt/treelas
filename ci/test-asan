@@ -1,0 +1,12 @@
+#!/bin/bash
+# Run C++ unit tests using Address Sanitizers
+#
+set -x  # print out commands
+set -e  # stop after first error
+
+build_dir="$(dirname $0)/../build.asan"
+mkdir -p $build_dir
+pushd $build_dir
+cmake -DASAN=ON ..
+make tests -j6
+ASAN_OPTIONS="verbosity=1" ./tests > /dev/null
