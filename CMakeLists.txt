@@ -1,12 +1,20 @@
 cmake_minimum_required(VERSION 3.1)
 project(treelas)
 
+option(BUILD_TESTS "Build unit tests using googletest" ON)
+option(BUILD_PYEXT "Build python extension module"     ON)
+option(ASAN        "Use Address SANitizer"             OFF)
+
 # FLAGS
 set(CMAKE_CXX_STANDARD 14)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
   add_definitions(-Wall -Wno-error=conversion -Wextra -Wconversion)
   add_definitions(-pedantic -ansi -g)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O1")
+  if (ASAN)
+    message("-- Enable Address Sanitizer")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=leak")
+  endif()
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3 -mtune=native -march=native")
   if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
     add_definitions(-Wno-sign-conversion)
@@ -17,8 +25,6 @@ endif()
 if (APPLE)
   set(HDF5_USE_STATIC_LIBRARIES ON)
 endif()
-option(BUILD_TESTS "Build unit tests using googletest" ON)
-option(BUILD_PYEXT "Build python extension module"     ON)
 
 
 add_subdirectory(extern/glmgen)
