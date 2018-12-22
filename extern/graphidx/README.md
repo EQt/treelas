@@ -17,3 +17,12 @@ Here, we use it to store
 - Children in a rooted tree.
 - Partitions of numbers `0..n`
 - Neighbors in a bidirectional graph
+
+
+Programming Languages
+---------------------
+
+This is a multilanguage project.
+We support bindings to Python.
+Parts are rewritten in Rust.
+
