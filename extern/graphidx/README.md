@@ -7,7 +7,10 @@ So instead of storing
 ```
 [ TODO: create an example ]
 ```
-we concatenate the adjacencies, resulting in a single vector of length `m`, and create an index containing the first element for each node (`n + 1` elements).
+we concatenate the adjacencies, resulting in a single vector of length `m`, and create an index containing the first element for each node (`n + 1` elements):
+```
+[ TODO: transformed graph ]
+```
 
 This data structure is usually found in sparse matrices like CSC or CSR format.
 Here, we use it to store
