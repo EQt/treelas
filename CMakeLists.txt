@@ -136,6 +136,9 @@ if (BUILD_TESTS)
   add_subdirectory(extern/googletest)
   include_directories(extern/googletest/googletest/include)
   set(TESTS
+    extern/graphidx/cxx/test/test_children.cpp
+    extern/graphidx/cxx/test/test_partition.cpp
+    extern/graphidx/cxx/test/test_biadjacent.cpp
     cxx/test/test_strtok.cpp
     cxx/test/test_timer.cpp
     cxx/test/test_stack.cpp
@@ -143,9 +146,6 @@ if (BUILD_TESTS)
     cxx/test/test_vecalloc.cpp
     cxx/test/test_ref.cpp
     cxx/test/test_unionfind.cpp
-    cxx/test/test_children.cpp
-    cxx/test/test_partition.cpp
-    cxx/test/test_biadjacent.cpp
     cxx/test/test_postorder.cpp
     cxx/test/test_prufer.cpp
     cxx/test/test_line.cpp

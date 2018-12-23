@@ -2,7 +2,7 @@
 #include <unordered_set>
 #include <utility>
 
-#include "../utils/viostream.hpp"
+#include "idx/utils/viostream.hpp"
 #include "../prufer.hpp"
 
 TEST(prufer, networkx_example_parent)

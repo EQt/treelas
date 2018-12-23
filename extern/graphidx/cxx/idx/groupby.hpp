@@ -4,7 +4,7 @@
 #include <algorithm>        // std::max_element
 #include <sstream>
 
-#include "viostream.hpp"
+#include "utils/viostream.hpp"
 
 
 template <typename int_ = int>
