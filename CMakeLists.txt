@@ -26,6 +26,7 @@ if (APPLE)
   set(HDF5_USE_STATIC_LIBRARIES ON)
 endif()
 
+include_directories(extern/graphidx/cxx)
 
 add_subdirectory(extern/glmgen)
 add_subdirectory(extern/condat)
