@@ -7,7 +7,7 @@
 #include <array>
 
 #include "idx/viostream.hpp"
-#include "utils/perm.hpp"
+#include "idx/utils/perm.hpp"   // for iperm
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
 

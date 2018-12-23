@@ -1,8 +1,8 @@
 #include "tree_12x.hpp"
 
+#include "idx/utils/perm.hpp"
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
-#include "utils/perm.hpp"
 
 #include "root.hpp"
 #include "postorder.hpp"
