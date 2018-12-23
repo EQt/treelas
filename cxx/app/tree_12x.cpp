@@ -9,10 +9,11 @@
 #include <vector>
 #include <algorithm>    // for std::min_element
 
+#include "idx/viostream.hpp"
+
 #include "../utils/hdf5.hpp"
 #include "../utils/argparser.hpp"
 #include "../utils/thousand.hpp"
-#include "../utils/viostream.hpp"
 
 #include "../tree_12x.hpp"
 
