@@ -2,6 +2,7 @@
 http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
 import sys
+from os import path
 from setuptools import setup
 from setuptools.extension import Extension
 from setuptools.command.build_ext import build_ext
@@ -25,7 +26,6 @@ class GetPyBindInc():
             import pybind11
             return pybind11.get_include(self.user)
         except ImportError:
-            from os import path
             pybind11_include = path.join(path.dirname(__file__), '..',
                                          'extern', 'pybind11', 'include')
             pybind11_h = path.join(pybind11_include, 'pybind11', 'pybind11.h')
@@ -58,8 +58,14 @@ sources = [
     "../cxx/cluster.cpp"
 ]
 
+
+includes = [
+    path.join(path.dirname(__file__), "..", "extern", "graphidx", "cxx")
+]
+
 _treelas = Extension("treelas._treelas", sources, language='c++',
-                     include_dirs=[GetPyBindInc(False), GetPyBindInc(True)])
+                     include_dirs=[GetPyBindInc(False), GetPyBindInc(True),
+                                   *includes])
 
 
 class BuildExt(build_ext):
