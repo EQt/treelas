@@ -139,6 +139,7 @@ if (BUILD_TESTS)
     extern/graphidx/cxx/test/test_children.cpp
     extern/graphidx/cxx/test/test_partition.cpp
     extern/graphidx/cxx/test/test_biadjacent.cpp
+    extern/graphidx/cxx/test/test_grid.cpp
     cxx/test/test_strtok.cpp
     cxx/test/test_timer.cpp
     cxx/test/test_stack.cpp
