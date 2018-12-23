@@ -2,7 +2,7 @@
 #include <set>
 #include <iostream>
 
-#include "../utils/viostream.hpp"
+#include "viostream.hpp"
 
 
 template<typename int_ = int>
