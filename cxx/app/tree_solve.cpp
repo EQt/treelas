@@ -5,7 +5,7 @@
 #include <vector>
 #include <iostream>
 
-#include "idx/viostream.hpp"      // std::cout << std::vector<..>
+#include "idx/utils/viostream.hpp"      // std::cout << std::vector<..>
 
 #include "../utils/hdf5.hpp"
 #include "../utils/timer.hpp"

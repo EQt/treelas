@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../utils/perm.hpp"
+#include "idx/utils/perm.hpp"
 #include "../utils/timer.hpp"
 
 #include "../postorder.hpp"
