@@ -6,9 +6,9 @@
 #include <vector>
 #include <array>
 
+#include "idx/viostream.hpp"
 #include "utils/perm.hpp"
 #include "utils/timer.hpp"
-#include "utils/viostream.hpp"
 #include "utils/minmax.hpp"
 
 #include "bfs.hpp"
