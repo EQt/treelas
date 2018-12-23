@@ -2,7 +2,7 @@
 #include <vector>
 #include <stdexcept>
 
-#include "utils/viostream.hpp"
+#include "idx/viostream.hpp"
 
 /** See `pruefer2edges` for details.
 
