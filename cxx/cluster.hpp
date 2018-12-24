@@ -4,17 +4,17 @@
 #include "idx/partition.hpp"
 
 
-template <typename int_ = int>
+template <typename int_ = int, typename Idx = BiAdjacent>
 PartitionIndex<int_>
 cluster(const size_t n,
         const double *x,
-        const BiAdjacent &neighidx,
+        const Idx &neighidx,
         const double eps,
         const int seed);
 
 
 extern template
-PartitionIndex<int>
+PartitionIndex<int, BiAdjacent>
 cluster(const size_t n,
         const double *x,
         const BiAdjacent &neighidx,

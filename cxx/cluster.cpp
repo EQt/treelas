@@ -5,7 +5,7 @@
 #include "stack.hpp"
 
 
-template <typename int_>
+template <typename int_, typename Idx>
 PartitionIndex<int_>
 cluster(const size_t n,
         const double *x,
