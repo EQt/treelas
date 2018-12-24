@@ -2,8 +2,11 @@
 #include <cstdint>
 #include <stdexcept>
 
+const int L = 0b10;  // left
+const int R = 0b01;  // right
+const int M = 0b00;  // middle
 
-enum GridPointKind { // L = 0b10, R = 0b01, M = 0b00
+enum GridPointKind {
     LL = 0b1010, LR = 0b1001, LM = 0b1000,
     RL = 0b0110, RR = 0b0101, RM = 0b0100,
     ML = 0b0010, MR = 0b0001, MM = 0b0000
