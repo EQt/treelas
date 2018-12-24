@@ -1,6 +1,11 @@
 /** "Index" on a grid graph */
 #include <cstdint>
 
+enum GridPointKinds {
+    LL, LM, LR,
+    ML, MM, MR,
+    RL, RM, RR
+};
 
 struct GridNeighbors;
 
@@ -70,6 +75,8 @@ public:
             i2 = i / n2;
         return {n1, n2, i1, i2};
     }
+
+    
 
 private:
     int n1, n2;
