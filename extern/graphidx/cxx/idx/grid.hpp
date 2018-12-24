@@ -1,11 +1,14 @@
 /** "Index" on a grid graph */
 #include <cstdint>
+#include <stdexcept>
 
-enum GridPointKinds {
-    LL, LM, LR,
-    ML, MM, MR,
-    RL, RM, RR
+
+enum GridPointKind { // L = 0b10, R = 0b01, M = 0b00
+    LL = 0b1010, LR = 0b1001, LM = 0b1000,
+    RL = 0b0110, RR = 0b0101, RM = 0b0100,
+    ML = 0b0010, MR = 0b0001, MM = 0b0000
 };
+
 
 struct GridNeighbors;
 
@@ -76,7 +79,24 @@ public:
         return {n1, n2, i1, i2};
     }
 
-    
+    GridPointKind kind(int i) {
+        const int
+            i1 = i % n1,
+            i2 = i / n1;
+        int k = 0;
+        if (i1 == 0)
+            k = 0b10;
+        else if (i1 == n1 - 1)
+            k = 0b01;
+        k <<= 2;
+        if (i2 == 0)
+            k |= 0b10;
+        else if (i2 == n2 - 1)
+            k |= 0b01;
+        if (k > 0b1010)
+            throw std::runtime_error("Should not happen");
+        return GridPointKind(k);
+    }
 
 private:
     int n1, n2;
