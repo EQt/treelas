@@ -92,14 +92,14 @@ class GridIndex
 public:
     GridIndex(int n1, int n2)  : n1(n1), n2(n2) { }
 
-    GridNeighbors operator[](int i) {
+    GridNeighbors operator[](int i) const {
         const int
             i1 = i % n1,
             i2 = i / n2;
         return {n1, n2, i1, i2};
     }
 
-    GridPointKind kind(int i) {
+    GridPointKind kind(int i) const {
         const int
             i1 = i % n1,
             i2 = i / n1;
