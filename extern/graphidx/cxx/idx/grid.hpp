@@ -10,6 +10,26 @@ enum GridPointKind { // L = 0b10, R = 0b01, M = 0b00
 };
 
 
+inline int
+num_neighbors(GridPointKind k)
+{
+    switch (k) {
+    case LL: 
+    case LR: return 2;
+    case LM: return 3;
+    case RL:
+    case RR: return 2;
+    case RM: return 3;
+    case ML:
+    case MR: return 3;
+    case MM: return 4;
+    default: return -2;
+            
+    }
+    return -1;
+}
+
+
 struct GridNeighbors;
 
 

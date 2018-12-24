@@ -38,3 +38,25 @@ TEST(GridIndex, kind_3x2)
     ASSERT_EQ(g.kind(1 + 1*3), MR);
     ASSERT_EQ(g.kind(2 + 1*3), RR);
 }
+
+
+TEST(GridIndex, num_neighbors)
+{
+    ASSERT_EQ(num_neighbors(MM), 4);
+    {
+        const int k1 = 0b10;
+        {
+            const int k2 = 0;
+            ASSERT_EQ(num_neighbors(GridPointKind(k1 << 2 | k2)), 3);
+            ASSERT_EQ(num_neighbors(GridPointKind(k2 << 2 | k1)), 3);
+        }
+    }
+    {
+        const int k1 = 0b01;
+        {
+            const int k2 = 0;
+            ASSERT_EQ(num_neighbors(GridPointKind(k1 << 2 | k2)), 3);
+            ASSERT_EQ(num_neighbors(GridPointKind(k2 << 2 | k1)), 3);
+        }
+    }
+}
