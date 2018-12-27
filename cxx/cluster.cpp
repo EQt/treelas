@@ -15,11 +15,14 @@ cluster(const size_t n,
 {
     stack<int_> s {n};
     std::vector<int_> parts (n, -1);
+
+    // One could avoid the allocation of n*sizeof(int) by computing a
+    // random permutation dynamically.  However, then we would need to
+    // compute the rank operation efficiently.
     std::vector<int_> randperm;
     randperm.resize(n);
     for (int_ i = 0; i < int_(n); i++)
         randperm[i] = i;
-
     std::shuffle(randperm.begin(), randperm.end(),
                  std::default_random_engine(seed));
 
@@ -38,6 +41,7 @@ cluster(const size_t n,
             nextp++;
         }
     }
+    // Can't we reuse the stack's memory for computing the PartitionIndex?
     return PartitionIndex<int_>(parts);
 }
 
