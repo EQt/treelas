@@ -1,10 +1,11 @@
 /** "Index" on a grid graph */
-#include <cstdint>
 #include <stdexcept>
+
 
 const int L = 0b10;  // left
 const int R = 0b01;  // right
 const int M = 0b00;  // middle
+
 
 enum GridPointKind {
     LL = 0b1010, LR = 0b1001, LM = 0b1000,
