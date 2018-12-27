@@ -1,3 +1,6 @@
+/*
+  This is NOT part of graphidx because we need the stack to perform a DFS.
+*/
 #pragma once
 
 #include "idx/biadjacent.hpp"
