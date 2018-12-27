@@ -60,7 +60,8 @@ public:
     };
 
 
-    /** Open or create a file. Valid `mode`s are "r", "r+" and "w". */
+    /** Open existing or create a new file.
+        Valid `mode`s are "r", "r+" and "w". */
     HDF5(const char *fname, const char *mode = "r", int compress = 3);
 
    ~HDF5();
@@ -75,7 +76,7 @@ public:
     /** Dimensions of an hdf5 array */
     typedef std::vector<hsize_t> Dims;
 
-    /** Dimensions of a dataset */
+    /** Obtain dimensions of an existing dataset */
     Dims dimensions(const char *data_name);
     void dimensions(const char *data_name, Dims *dims, H5T_class_t *c = nullptr);
 
@@ -91,6 +92,7 @@ public:
     template<typename T>
     std::vector<T> read(const char *data_name, Dims *dims = nullptr);
 
+    /** Read into vector `v` */
     template<typename T>
     size_t readv(std::vector<T> &v, const char *data_name) {
         v = read<T>(data_name);
@@ -101,13 +103,14 @@ public:
     template<typename T>
     T attr(const char *attr_name, const char *obj_name = "/");
 
-    /** Write into a new dataset, i.e. data_name must not exist */
+    /** Install a compression filter for writing; assert 0 <= c <= 9. */
+    void set_compression(int c);
+
+    /** Write into a new dataset, i.e. data_name must not exist.
+        Compare to `owrite`. */
     template<typename T>
     void write(const char *data_name, const std::vector<T> &data,
                Dims *dims = nullptr);
-
-    /** Install a compression filter for writing; assert 0 <= c <= 9. */
-    void set_compression(int c);
 
     /** Overwrite (if exists) */
     template<typename T>
