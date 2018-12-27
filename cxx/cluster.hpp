@@ -14,7 +14,7 @@ cluster(const size_t n,
 
 
 extern template
-PartitionIndex<int, BiAdjacent>
+PartitionIndex<int>
 cluster(const size_t n,
         const double *x,
         const BiAdjacent &neighidx,
