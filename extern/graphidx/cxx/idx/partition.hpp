@@ -3,7 +3,7 @@
 #include "groupby.hpp"
 
 template <typename int_>
-class PartitionIter;           // forward declaration
+struct PartitionIter;           // forward declaration
 
 
 template <typename int_ = int>
