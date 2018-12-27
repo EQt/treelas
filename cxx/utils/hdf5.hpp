@@ -83,7 +83,11 @@ public:
     size_t size(const char *data_name);
     static size_t size(const Dims &dims);
 
-    /** Read the content of a dataset */
+    /** Read the content of a dataset.
+        Be aware that HDF5 stores arrays in C-order.
+
+        https://support.hdfgroup.org/HDF5/doc1.6/UG/12_Dataspaces.html
+    */
     template<typename T>
     std::vector<T> read(const char *data_name, Dims *dims = nullptr);
 
