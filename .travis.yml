@@ -1,37 +1,38 @@
 language: cpp
+
 git:
   submodules: false
 
+branches:
+  only:
+    - master
+
 matrix:
   include:
-  - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
-    os: linux
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - g++-7
-  ## https://formulae.brew.sh/formula/gcc@7
-  - env:
-    - CXX_COMPILER=clang++
-    - C_COMPILER=clang
-    - BREW=llvm@5
-    - BREW_OPTS="--with-tools"
-    os: osx
+    - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
+      os: linux
+      addons:
+        apt:
+          sources:
+          - ubuntu-toolchain-r-test
+          packages:
+          - g++-7
+    ## https://formulae.brew.sh/formula/gcc@7
+    - env:
+      - CXX_COMPILER=clang++
+      - C_COMPILER=clang
+      - BREW=llvm@5
+      - BREW_OPTS="--with-tools"
+      os: osx
 
 cache:
   directories:
-  - "$TRAVIS_BUILD_DIR/miniconda3"
+    - "$TRAVIS_BUILD_DIR/miniconda3"
 
 before_cache:
-- pip uninstall -y treelas
-- rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
-- rm -fr $TRAVIS_BUILD_DIR/miniconda3/lib/python*/site-packages/treelas*
-
-branches:
-  only:
-  - master
+  - pip uninstall -y treelas
+  - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
+  - rm -fr $TRAVIS_BUILD_DIR/miniconda3/lib/python*/site-packages/treelas*
 
 before_install:
   - git describe --tags
@@ -44,30 +45,30 @@ before_install:
     fi
 
 install:
-- uname -a && echo $TRAVIS_OS_NAME && pwd
-- export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
-- export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
-- if [[ ! -d $PWD/miniconda3/bin ]]; then
-    url="https://repo.continuum.io/miniconda/Miniconda3-latest";
-    if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-      wget $url-Linux-x86_64.sh -O miniconda.sh;
-    elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-      wget $url-MacOSX-x86_64.sh -O miniconda.sh;
-  fi; rm -fr miniconda3; bash miniconda.sh -b -p $PWD/miniconda3; fi
-- export PATH=$PWD/miniconda3/bin:$PATH;
-- which conda
-- conda install -y pytest h5py numba
-- which python
-- pip install pybind11
-- python -m pybind11 --include
+  - uname -a && echo $TRAVIS_OS_NAME && pwd
+  - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
+  - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
+  - if [[ ! -d $PWD/miniconda3/bin ]]; then
+      url="https://repo.continuum.io/miniconda/Miniconda3-latest";
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        wget $url-Linux-x86_64.sh -O miniconda.sh;
+      elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        wget $url-MacOSX-x86_64.sh -O miniconda.sh;
+    fi; rm -fr miniconda3; bash miniconda.sh -b -p $PWD/miniconda3; fi
+  - export PATH=$PWD/miniconda3/bin:$PATH;
+  - which conda
+  - conda install -y pytest h5py numba
+  - which python
+  - pip install pybind11
+  -  python -m pybind11 --include
 
 script:
-- mkdir -p build && cd build
-- cmake .. -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$CC -DCMAKE_BUILD_TYPE=Debug
-- make && ./tests
-- cd ../python && pwd && rm -fr build
-- CC=$CXX python setup.py install
-- py.test --color=yes test
+  - mkdir -p build && cd build
+  - cmake .. -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$CC -DCMAKE_BUILD_TYPE=Debug
+  - make && ./tests
+  - cd ../python && pwd && rm -fr build
+  - CC=$CXX python setup.py install
+  - py.test --color=yes test
 
 notifications:
   email:
