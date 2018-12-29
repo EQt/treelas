@@ -20,9 +20,6 @@ lang() {
     set -x
 }
 
-NCPUS=$(grep -c '^processor' /proc/cpuinfo)
-CORES=$((NCPUS-1))
-
 if (program_exists g++-5 && program_exists gcc-5); then
     export CXX=g++-5
     export CC=gcc-5
@@ -36,7 +33,7 @@ if (program_exists cmake); then
     mkdir -p $build_dir
     pushd $build_dir
     cmake ..
-    make -j${CORES}
+    make -j$(nproc --ignore=1)
     ./tests
     popd
 fi
