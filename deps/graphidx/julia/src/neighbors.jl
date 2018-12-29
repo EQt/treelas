@@ -18,8 +18,8 @@ by the edges `zip(head, tail)`.
 If `head[i] <= 0` then edge `i` is excluded.
 """ 
 function NeighborIndex(n::Int, head::Vector{Int}, tail::Vector{Int})
-    m = length(head)
     @assert length(head) == length(tail)
+    m = count(i -> i > 0, head)
     pi = Vector{Tuple{Int,Int}}(undef, 2m)
     idx = zeros(Int, n+1)
     for (h, t) in zip(head, tail)  # compute degrees
