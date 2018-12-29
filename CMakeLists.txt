@@ -147,6 +147,7 @@ if (BUILD_TESTS)
     cxx/test/test_vecalloc.cpp
     cxx/test/test_ref.cpp
     cxx/test/test_unionfind.cpp
+    cxx/test/test_kruskal_mst.cpp
     cxx/test/test_postorder.cpp
     cxx/test/test_prufer.cpp
     cxx/test/test_line.cpp
