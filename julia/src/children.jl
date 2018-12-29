@@ -106,8 +106,9 @@ function _compute_children(pi::Vector{T}, idx::Vector{T},
 end
 
 
-
-"""Return V, I such that V[I[j]:I[j+1]-1] are the children of j"""
+"""
+Return V, I such that V[I[j]:I[j+1]-1] are the children of j
+"""
 function compute_children(parent::Vector{T}) where T
     n = length(parent)
     pi = sortperm(parent)
