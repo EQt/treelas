@@ -26,10 +26,10 @@ if (APPLE)
   set(HDF5_USE_STATIC_LIBRARIES ON)
 endif()
 
-include_directories(extern/graphidx/cxx)
+include_directories(deps/graphidx/cxx)
 
-add_subdirectory(extern/glmgen)
-add_subdirectory(extern/condat)
+add_subdirectory(deps/glmgen)
+add_subdirectory(deps/condat)
 add_subdirectory(ci)
 
 add_library(argparser OBJECT cxx/utils/argparser.cpp)
@@ -45,16 +45,16 @@ add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
 
 # PYTHON
-set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11"
+set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/pybind11"
     CACHE STRING "Directory where pybind is located")
 if (BUILD_PYEXT)
   # download as submodule?
-  # if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/pybind11/CMakeLists.txt")
-  #   execute_process(COMMAND git submodule update --init extern/pybind11
+  # if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/pybind11/CMakeLists.txt")
+  #   execute_process(COMMAND git submodule update --init deps/pybind11
   #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   # endif()
   if (NOT EXISTS "${PYBIND_DIR}/CMakeLists.txt")
-    execute_process(COMMAND git submodule update --init extern/pybind11
+    execute_process(COMMAND git submodule update --init deps/pybind11
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   endif()
   add_subdirectory(${PYBIND_DIR})
@@ -124,20 +124,20 @@ endif()
 
 # TESTS
 if (BUILD_TESTS)
-  if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/extern/googletest/CMakeLists.txt")
-    execute_process(COMMAND git submodule update --init extern/googletest
+  if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/googletest/CMakeLists.txt")
+    execute_process(COMMAND git submodule update --init deps/googletest
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
   endif()
   set(BUILD_GMOCK OFF)
   set(BUILD_GTEST ON)
   set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
-  add_subdirectory(extern/googletest)
-  include_directories(extern/googletest/googletest/include)
+  add_subdirectory(deps/googletest)
+  include_directories(deps/googletest/googletest/include)
   set(TESTS
-    extern/graphidx/cxx/test/test_children.cpp
-    extern/graphidx/cxx/test/test_partition.cpp
-    extern/graphidx/cxx/test/test_biadjacent.cpp
-    extern/graphidx/cxx/test/test_grid.cpp
+    deps/graphidx/cxx/test/test_children.cpp
+    deps/graphidx/cxx/test/test_partition.cpp
+    deps/graphidx/cxx/test/test_biadjacent.cpp
+    deps/graphidx/cxx/test/test_grid.cpp
     cxx/test/test_strtok.cpp
     cxx/test/test_timer.cpp
     cxx/test/test_stack.cpp

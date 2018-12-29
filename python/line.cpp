@@ -1,8 +1,8 @@
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
 
-#include "../extern/glmgen/tf.hpp"
-#include "../extern/condat/condat_tv_v2.hpp"
+#include "../deps/glmgen/tf.hpp"
+#include "../deps/condat/condat_tv_v2.hpp"
 
 #include "../cxx/line/line.hpp"
 #include "../cxx/line/line_w.hpp"
