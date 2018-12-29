@@ -1,3 +1,6 @@
+import re
+
+
 def cxxdemangle(mangled):
     try:
         import cxxfilt
@@ -43,15 +46,15 @@ def test_cluster_name():
     n1 = "_Z7clusterIi10BiAdjacentE14PartitionIndexIT_EmPKdRKS0_di"
     n2 = "_Z7clusterIi10BiAdjacentE14PartitionIndexIT_EmPKdRKT0_di"
 
-    assert_mangled(n1,
-                   "PartitionIndex<int> " +
-                   "cluster<int, BiAdjacent>(unsigned long, " +
-                   "double const*, BiAdjacent const&, double, int)")
+    d = """
+    PartitionIndex<int>
+    cluster<int, BiAdjacent>(unsigned long,
+    double const*, BiAdjacent const&, double, int)
+    """
+    d = re.sub(r'\n *', ' ', d).strip()
 
-    assert_mangled(n2,
-                   "PartitionIndex<int> " +
-                   "cluster<int, BiAdjacent>(unsigned long, " +
-                   "double const*, BiAdjacent const&, double, int)")
-    
+    assert_mangled(n1, d)
+    assert_mangled(n2, d)
+
     diff = [(i, a, b) for i, (a, b) in enumerate(zip(n1, n2)) if a != b]
     assert diff == [(51, 'S', 'T')]
