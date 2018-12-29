@@ -67,6 +67,9 @@ function compute_children3(parent::Vector{T}, root::Int = 1) where T <: Integer
 end
 
 
+"""
+Return V, I such that V[I[j]:I[j+1]-1] are the children of j
+"""
 function _compute_children(pi::Vector{T}, idx::Vector{T},
                            parent::Vector{T}, root::T) where T <: Integer
     n = length(parent)
@@ -102,27 +105,6 @@ function _compute_children(pi::Vector{T}, idx::Vector{T},
     end
     @assert(idx[end] == n+1,
             "idx[$(length(idx))] + $deg_i = $(idx[end]) != $(n+1)")
-    return pi, idx
-end
-
-
-"""
-Return V, I such that V[I[j]:I[j+1]-1] are the children of j
-"""
-function compute_children(parent::Vector{T}) where T
-    n = length(parent)
-    pi = sortperm(parent)
-    # Sort s.t. nodes having the same parent (sisters) are neighbored.
-    # In other words: collect(zip(pi, parent[pi])) will contain
-    # exactly the (child, parent) but with the right column sorted!
-    idx = fill(n+1, n+1)
-    k = 1
-    for i in 2:n
-        while parent[pi[i]] >= k
-            idx[k] = i
-            k += 1
-        end
-    end
     return pi, idx
 end
 
