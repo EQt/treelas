@@ -223,7 +223,7 @@ end
 
 
 _init_dp_tree(n) =
-    Vector{Float64}(n), Vector{Float64}(n), Vector{Event}(2n)
+    Vector{Float64}(undef, n), Vector{Float64}(undef, n), Vector{Event}(undef, 2n)
 
 
 function _dp_tree(y::Vector{Float64},
