@@ -3,7 +3,7 @@ using Test
 
 include("../src/children.jl")
 
-@testset "generate(width=5): low level" begin
+@testset "generate(width=5): low level   " begin
     # root, parent = TreeInstance.generate(5)[3:4]
     root = 1
     parent = Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9]
