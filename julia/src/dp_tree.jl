@@ -12,7 +12,7 @@ However, the end position is complicated to compute.
 For sorting the events, it is also necessary
 """
 module DPTree
-using Printf: @sprintf
+import Printf: @sprintf
 
 include("children.jl")
 
