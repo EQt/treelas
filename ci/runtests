@@ -45,13 +45,13 @@ if (program_exists julia); then
     julia  --color=yes -E "$jltest"
 fi
 
-# python_dir="$(dirname $0)/../python"
-# lang "Python setup.py"
-# if (program_exists python); then
-#     pushd $python_dir
-#     python setup.py develop
-#     popd
-# fi
+python_dir="$(dirname $0)/../python"
+lang "Python setup.py"
+if (program_exists python); then
+    pushd $python_dir
+    python setup.py build
+    popd
+fi
 
 # lang "Pytest"
 # if (program_exists pytest); then
