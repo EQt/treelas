@@ -14,7 +14,6 @@ include("children.jl")
 struct Tree
     root::Int
     parent::Vector{Int}
-    dfs::Vector{Int}
 end
 
 
