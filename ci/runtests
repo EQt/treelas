@@ -1,0 +1,68 @@
+#!/bin/bash
+# Run all tests in all languages
+#
+set -x  # print out commands
+set -e  # stop after first error
+
+# check whether bash can find a program
+program_exists() {
+   hash $1 2> /dev/null
+}
+
+lang() {
+    set +x
+    stars="***************************************************************************"
+    echo ""
+    echo -e "\e[94m$stars\e[0m"
+    echo -e "\e[95;1m$1\e[0m"
+    echo -e "\e[94m$stars\e[0m"
+    echo ""
+    set -x
+}
+
+NCPUS=$(grep -c '^processor' /proc/cpuinfo)
+CORES=$((NCPUS-1))
+
+if (program_exists g++-5 && program_exists gcc-5); then
+    export CXX=g++-5
+    export CC=gcc-5
+    build_dir="$(dirname $0)/../build.gcc-5"
+else
+    build_dir="$(dirname $0)/../build.test"
+fi
+
+lang "CMake: C++"
+if (program_exists cmake); then
+    mkdir -p $build_dir
+    pushd $build_dir
+    cmake ..
+    make -j${CORES}
+    ./tests
+    popd
+fi
+
+lang "Julia"
+if (program_exists julia); then
+    julia_dir="$(dirname $0)/../julia"
+    jltest='import Pkg; Pkg.activate("'$julia_dir'"); Pkg.test();'
+    julia  --color=yes -E "$jltest"
+fi
+
+# python_dir="$(dirname $0)/../python"
+# lang "Python setup.py"
+# if (program_exists python); then
+#     pushd $python_dir
+#     python setup.py develop
+#     popd
+# fi
+
+# lang "Pytest"
+# if (program_exists pytest); then
+#     pytest $python_dir/test
+# fi
+
+# lang "Conda"
+# if (program_exists conda-build); then
+#     conda_dir="$(dirname $0)/../python/conda.recipe"
+#     echo "cd $conda_dir && conda build libtv"
+# fi
