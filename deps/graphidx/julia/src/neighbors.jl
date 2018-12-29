@@ -7,7 +7,7 @@ end
     view(c.pi, c.idx[j]:c.idx[j+1]-1)
 
 
-Base.length(c::NeighborIndex) = length(c.idx)
+Base.length(c::NeighborIndex) = length(c.idx) -1
 
 
 """
