@@ -148,11 +148,12 @@ reg_idx(py::module &m)
              const BiAdjacent &neighidx,
              const double eps,
              const int seed) -> PartitionIndex_int {
-              return cluster(x.size(),
-                             x.data(),
-                             neighidx,
-                             eps,
-                             seed);
+              return cluster<int, BiAdjacent>(
+                  size_t(x.size()),
+                  x.data(),
+                  neighidx,
+                  eps,
+                  seed);
           },
           R"pbdoc(
             Find a partition of x such that TO BE CONTINUED
