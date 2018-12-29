@@ -7,7 +7,7 @@ include("../src/children.jl")
     # root, parent = TreeInstance.generate(5)[3:4]
     root = 1
     parent = Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9]
-    pi_, idx_ = compute_children2(parent, root)
+    pi_, idx_ = _compute_children(parent, root)
     @test pi_ == [1, 2, 6, 3, 4, 5, 9, 7, 8, 10]
     @test idx_ == [2, 4, 5, 6, 8, 8, 8, 8, 9, 11, 11]
 end
