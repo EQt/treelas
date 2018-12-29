@@ -53,7 +53,7 @@ Base.length(q::Range) = q.stop - q.start + 1
 Base.show(io::IO, q::Range) = print(io, q.start, ":", q.stop)
 
 function _alloc_queues(n::Int)
-    pq = Vector{Range}(n)
+    pq = Vector{Range}(undef, n)
     proc_order = Vector{Int}()
     stack = Vector{Int}()
     sizehint!(stack, n)
