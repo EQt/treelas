@@ -7,7 +7,7 @@ GOAL: avoid reallocation of memory as much as possible.
 module DPTree
 import Printf: @sprintf
 
-include("children.jl")
+include("graphidx/children.jl")
 
 
 # Tree -------------------------------------------------------------------

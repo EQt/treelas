@@ -1,7 +1,7 @@
 module TestChildren
 using Test
 
-include("../src/children.jl")
+include("../src/graphidx/children.jl")
 
 @testset "generate(width=5): low level   " begin
     # root, parent = TreeInstance.generate(5)[3:4]
