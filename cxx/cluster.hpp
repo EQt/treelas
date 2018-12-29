@@ -18,8 +18,8 @@ cluster(const size_t n,
 
 extern template
 PartitionIndex<int>
-cluster(const size_t n,
-        const double *x,
-        const BiAdjacent &neighidx,
-        const double eps,
-        const int seed);
+cluster<int, BiAdjacent>(const size_t n,
+                         const double *x,
+                         const BiAdjacent &neighidx,
+                         const double eps,
+                         const int seed);
