@@ -1,19 +1,14 @@
-function node_degrees(parent::Vector{Int}, root = 1)
-    @assert parent[root] == root
-    idx = similar(parent)
-    idx .= 0
-    for p in parent
-        idx[p] += 1
-    end
-    idx[root] -= 1      # root does not have itself as children
-    return idx
-end
-
-
 struct ChildrenIndex
     pi::Vector{Int}
     idx::Vector{Int}
 end
+
+
+@inline Base.getindex(c::ChildrenIndex, j::Int) =
+    view(c.pi, c.idx[j]:c.idx[j+1]-1)
+
+
+Base.length(c::ChildrenIndex) = length(c.pi)
 
 
 """
@@ -24,11 +19,6 @@ Initialize enough space for a tree with `n` nodes.
 ChildrenIndex(n::Int) =
     ChildrenIndex(Vector{Int}(undef, n), Vector{Int}(undef, n+1))
 
-
-@inline Base.getindex(c::ChildrenIndex, j::Int) =
-    view(c.pi, c.idx[j]:c.idx[j+1]-1)
-
-Base.length(c::ChildrenIndex) = length(c.pi)
 
 children_index(parent) =
     ChildrenIndex(_compute_children(parent)...)

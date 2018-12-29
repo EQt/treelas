@@ -2,6 +2,7 @@ module TestChildren
 using Test
 
 include("../src/children.jl")
+include("../src/degrees.jl")        # for node_degrees
 
 @testset "generate(width=5): low level   " begin
     # root, parent = TreeInstance.generate(5)[3:4]
