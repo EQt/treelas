@@ -23,10 +23,10 @@ ChildrenIndex(n::Int) =
 Base.length(c::ChildrenIndex) = length(c.pi)
 
 children_index(parent) =
-    ChildrenIndex(compute_children3(parent)...)
+    ChildrenIndex(_compute_children(parent)...)
 
 
-function compute_children3(parent::Vector{T}, root::Int = 1) where T <: Integer
+function _compute_children(parent::Vector{T}, root::Int = 1) where T <: Integer
     @assert root == 1
     cidx = ChildrenIndex(length(parent))
     return _compute_children(cidx.pi, cidx.idx, parent, root)
