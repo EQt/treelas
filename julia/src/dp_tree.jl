@@ -3,13 +3,6 @@ Dynamic Programming Tree Solver
 ===============================
 
 GOAL: avoid reallocation of memory as much as possible.
-
-Ideas
------
-Is it possible to omit the position x from the events?
-The position is just the intersection of two neighboring event line segments.
-However, the end position is complicated to compute.
-For sorting the events, it is also necessary
 """
 module DPTree
 import Printf: @sprintf
