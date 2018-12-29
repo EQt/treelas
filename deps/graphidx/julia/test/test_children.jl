@@ -8,7 +8,8 @@ include("../src/degrees.jl")        # for node_degrees
     # root, parent = TreeInstance.generate(5)[3:4]
     root = 1
     parent = Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9]
-    pi_, idx_ = _compute_children(parent, root)
+    cidx = ChildrenIndex(parent, root)
+    pi_, idx_ = cidx.pi, cidx.idx
     @test pi_ == [1, 2, 6, 3, 4, 5, 9, 7, 8, 10]
     @test idx_ == [2, 4, 5, 6, 8, 8, 8, 8, 9, 11, 11]
 end
@@ -18,7 +19,7 @@ end
     # root, parent = TreeInstance.generate(5)[3:4]
     root = 1
     parent = Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9]
-    cidx = children_index(parent)
+    cidx = ChildrenIndex(parent)
     @test cidx[1] == [2,6]
     @test cidx[2] == [3]
     @test cidx[9] == [8, 10]
@@ -43,7 +44,7 @@ end
     153, 132, 153, 154, 155, 156, 137, 138, 159, 140, 163, 142, 163,
     166, 145, 146, 147]
 
-    cidx = children_index(pi)
+    cidx = ChildrenIndex(pi)
     @test cidx[162] == []
     @test Set(cidx[137]) == Set([138, 136, 158])
     @test Set(cidx[1]) == Set([2, 22])
@@ -135,7 +136,7 @@ end
     @test all(pi .<= n)
     deg = node_degrees(pi)
     @test maximum(deg) == 3
-    cidx = children_index(pi)
+    cidx = ChildrenIndex(pi)
 end
 
 end

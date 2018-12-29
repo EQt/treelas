@@ -12,31 +12,45 @@ Base.length(c::ChildrenIndex) = length(c.pi)
 
 
 """
-    ChildrenIndex(n)
+    ChildrenIndex(n::Int)
 
-Initialize enough space for a tree with `n` nodes.
+Allocate enough space for a tree with `n` nodes.
 """
 ChildrenIndex(n::Int) =
     ChildrenIndex(Vector{Int}(undef, n), Vector{Int}(undef, n+1))
 
 
-children_index(parent) =
-    ChildrenIndex(_compute_children(parent)...)
+"""
+    ChildrenIndex(parent, [root])
 
-
-function _compute_children(parent::Vector{T}, root::Int = 1) where T <: Integer
-    @assert root == 1
-    cidx = ChildrenIndex(length(parent))
-    return _compute_children(cidx.pi, cidx.idx, parent, root)
-end
+Initialize enough space for a tree with `n` nodes.
+"""
+ChildrenIndex(pi::Vector{Int}, root::Int = 1) =
+    ChildrenIndex(_compute_children(pi, root)...)
 
 
 """
-Return V, I such that V[I[j]:I[j+1]-1] are the children of j
+    _compute_children([pi, idx,], parent, [root])
+
+Actually compute the index structure (implementation).
+If not provided, the output vectors `pi` and `idx` will be allocated.
 """
-function _compute_children(pi::Vector{T}, idx::Vector{T},
-                           parent::Vector{T}, root::T) where T <: Integer
+_compute_children(parent::Vector{Int}, root::Int = 1) =
+    let n = length(parent)
+        _compute_children(Vector{Int}(undef, n),
+                          Vector{Int}(undef, n+1),
+                          parent,
+                          root)
+    end
+
+
+function _compute_children(pi::Vector{Int},
+                           idx::Vector{Int},
+                           parent::Vector{Int},
+                           root::Int)
     n = length(parent)
+
+    @assert root == 1
     @assert length(pi) == n
     @assert length(idx) == n+1
 
