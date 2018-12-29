@@ -109,8 +109,7 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
 end
 
 
-@inline
-function merge(elements::Vector{Event},
+@inline function merge(elements::Vector{Event},
                parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
@@ -130,8 +129,7 @@ function merge(elements::Vector{Event},
 end
 
 
-@inline
-function merge2(buf::Vector{Event}, elements::Vector{Event},
+@inline function merge2(buf::Vector{Event}, elements::Vector{Event},
                 parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
@@ -169,8 +167,7 @@ function merge2(buf::Vector{Event}, elements::Vector{Event},
 end
 
 
-@inline
-function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
+@inline function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
                     slope::Float64, offset::Float64, t::Float64)
     begin
         pq = pqs[i]::Range
@@ -192,8 +189,7 @@ function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
 end
 
 
-@inline
-function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
+@inline function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
                    slope::Float64, offset::Float64, t::Float64)
     begin
         pq = pqs[i]::Range
@@ -213,6 +209,7 @@ function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
         return x
     end
 end
+
 
 # Actual Implementation -----------------------------------------------
 dp_tree(y::Vector{Float64}, λ::Float64, t::Tree) =
