@@ -12,7 +12,7 @@
 
 
 template <typename int_, typename Idx>
-PartitionIndex<int_>
+inline PartitionIndex<int_>
 cluster(const size_t n,
         const double *x,
         const BiAdjacent &neighidx,
@@ -50,13 +50,3 @@ cluster(const size_t n,
     // Can't we reuse the stack's memory for computing the PartitionIndex?
     return PartitionIndex<int_>(parts);
 }
-
-
-extern template
-PartitionIndex<int>
-cluster<int, BiAdjacent>(
-    const size_t n,
-    const double *x,
-    const BiAdjacent &neighidx,
-    const double eps,
-    const int seed);
