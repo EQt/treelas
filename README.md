@@ -50,12 +50,18 @@ Directory Structure
 ├── cxx         C++ source/header files
 ├── data        Some test data (needed for `py.test`)
 ├── extern      External libraries
+├── julia       Julia Bindings/Implementation
 ├── python      Python bindings
 ```
 
 
 ChangeLog
 ---------
+
+### v0.10.3
+Released 2018-12-29
+- Julia: `dp_tree`
+- CXX: Test `kruskal_mst`
 
 ### v0.10.2
 Released 2018-12-20
