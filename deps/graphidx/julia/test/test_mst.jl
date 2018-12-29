@@ -1,6 +1,6 @@
 module TestMST
 using Test
 
-include("../src/graphidx/mst.jl")
+include("../src/mst.jl")
 
 end

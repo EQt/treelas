@@ -1,5 +1,5 @@
 module GraphIdx
 
-greet() = print("Hello World!")
+include("children.jl")
 
 end # module

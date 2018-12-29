@@ -1,3 +1,4 @@
-include("test_children.jl")
-include("test_order.jl")
+using Test
+
+include(joinpath("..", "..", "deps", "graphidx", "julia", "test", "runtests.jl"))
 include("test_dp_tree.jl")
