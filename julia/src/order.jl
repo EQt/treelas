@@ -6,8 +6,8 @@ function find_root(pi::Vector{Int})::Int
 end
 
 
-function dfs_finish(parent::Vector{Int}, root=0)
-    if root <= 0    # find root node
+function dfs_finish(parent::Vector{Int}, root=0)::Vector{Int}
+    if root <= 0                            # find root node
         root = find_root(pi)
     end
     @assert parent[root] == root
@@ -27,9 +27,7 @@ function dfs_finish(parent::Vector{Int}, root=0)
         v = pop!(stack)
         dfs[time] = v
         for u in neigh[v]
-            if parent[v] == u
-                continue
-            end
+            parent[v] == u && continue      # skip root
             push!(stack, u)
         end
     end
