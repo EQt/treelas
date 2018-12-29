@@ -10,13 +10,10 @@ import .Heap: PriorityQueue, dequeue!
 function kruskal_mst(n::Int, edges, weight::Vector{Float64})
     m = length(edges)
     @assert length(weight) == m
-    selected, order, uf = _init_kruskal_mst(m, n)
+
+    selected, order, uf = Vector{Int}(), Vector{Int}(undef, m), UnionFind(n)
     return _kruskal_mst(m, weight, edges, selected, order, uf)
 end
-
-
-_init_kruskal_mst(m, n) =
-    Vector{Int}(), Vector{Int}(undef, m), UnionFind(n)
 
 
 function _kruskal_mst(m, weight, edges, selected, order, uf)
