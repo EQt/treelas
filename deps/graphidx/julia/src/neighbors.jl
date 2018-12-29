@@ -6,7 +6,8 @@ end
 @inline Base.getindex(c::NeighborIndex, j::Int) =
     view(c.pi, c.idx[j]:c.idx[j+1]-1)
 
-Base.length(c::NeighborIndex) = length(c.pi)
+
+Base.length(c::NeighborIndex) = length(c.idx)
 
 
 """
