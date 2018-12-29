@@ -32,8 +32,8 @@ with open(cmake_txt) as io:
 
 objs = {n : p.strip() for n, p in
         re.findall(r'add_object\((.+?) (.+?)\)', cmake, flags=re.DOTALL)}
-objs['condat_tv'] = 'extern/condat/condat_tv_v2.cpp'
-objs['tf_dp'] = 'extern/glmgen/tf_dp.cpp'
+objs['condat_tv'] = 'deps/condat/condat_tv_v2.cpp'
+objs['tf_dp'] = 'deps/glmgen/tf_dp.cpp'
 
 mods = re.sub(r'\$<TARGET_OBJECTS:(.+?)>', lambda n: objs[n.group(1)], mod)
 source = ['"../' + s.strip() + '"' for s in mods.strip().split('\n')]

@@ -27,7 +27,7 @@ class GetPyBindInc():
             return pybind11.get_include(self.user)
         except ImportError:
             pybind11_include = path.join(path.dirname(__file__), '..',
-                                         'extern', 'pybind11', 'include')
+                                         'deps', 'pybind11', 'include')
             pybind11_h = path.join(pybind11_include, 'pybind11', 'pybind11.h')
 
             if path.exists(pybind11_h):
@@ -44,8 +44,8 @@ sources = [
     "idx.cpp",
     "spanning.cpp",
     "../cxx/tree_12x.cpp",
-    "../extern/condat/condat_tv_v2.cpp",
-    "../extern/glmgen/tf_dp.cpp",
+    "../deps/condat/condat_tv_v2.cpp",
+    "../deps/glmgen/tf_dp.cpp",
     "../cxx/line/line.cpp",
     "../cxx/line/line_w.cpp",
     "../cxx/line/line_para.cpp",
@@ -59,7 +59,7 @@ sources = [
 
 
 includes = [
-    path.join(path.dirname(__file__), "..", "extern", "graphidx", "cxx")
+    path.join(path.dirname(__file__), "..", "deps", "graphidx", "cxx")
 ]
 
 _treelas = Extension("treelas._treelas", sources, language='c++',
