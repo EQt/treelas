@@ -7,9 +7,13 @@ end
     view(c.pi, c.idx[j]:c.idx[j+1]-1)
 
 
-function compute_undirected_index(selected, edges, n, T::Type = Int)
+function compute_undirected_index(selected::Vector{Bool},
+                                  head::Vector{Int},
+                                  tail::Vector{Int},
+                                  n::Int)
     m = length(selected)
-    pi = Vector{Tuple{T,T}}(undef, 2m)
+    @assert m >= n-1
+    pi = Vector{Tuple{Int,Int}}(undef, 2m)
     idx = zeros(T, n+1)
     for eii in selected         # compute degrees
         ei = edges[eii]

@@ -2,12 +2,7 @@ include("heap.jl")
 include("neighbors.jl")
 include("unionfind.jl")
 
-const PriorityQueue = Heap.PriorityQueue
-const dequeue! = Heap.dequeue!
-
-# import Heap
-# import Heap: PriorityQueue, enqueue!, dequeue!
-# import DataStructures: PriorityQueue, enqueue!, dequeue!
+import .Heap: PriorityQueue, dequeue!
 
 
 # -- Kruskal's minimum spanning tree algorithm ----------------------------
