@@ -1,5 +1,4 @@
-#ifndef UNIONFIND_HPP
-#define UNIONFIND_HPP
+#pragma once
 
 #include <vector>
 
@@ -8,35 +7,38 @@
  * See Cormen, Leiserson, Rivest und Stein: "Introduction to Algorithms",
  * Section 21.3, in particular pseudocode on page 571.
  */
+template <typename int_ = int>
 class UnionFind
 {
-    std::vector<int> p;
-    std::vector<int> rank;
+    std::vector<int_> p;
+    std::vector<int_> rank;
 
 public:
     /** Initialize as n singleton sets. */
-    UnionFind(int n);
+    UnionFind(size_t n);
 
     /** Find representant for x. */
-    int find(int x);
+    int_ find(int_ x);
 
     /** Unit the sets with representants fx und fy. */
-    void unite(int fx, int fy);
+    void unite(int_ fx, int_ fy);
 };
 
 
-UnionFind::UnionFind(int n)
+template <typename int_>
+UnionFind<int_>::UnionFind(size_t n)
     : p(n), rank(n)
 {
-    for (int i = 0; i < n; i++) {
+    for (int_ i = 0; i < int_(n); i++) {
         p[i] = i;
         rank[i] = 0;
     }
 }
 
 
+template <typename int_>
 void
-UnionFind::unite(int fx, int fy)
+UnionFind<int_>::unite(int_ fx, int_ fy)
 {
     if (rank[fx] > rank[fy])
         p[fy] = fx;
@@ -48,13 +50,12 @@ UnionFind::unite(int fx, int fy)
 }
 
 
-int
-UnionFind::find(int x)
+template <typename int_>
+int_
+UnionFind<int_>::find(int_ x)
 {
     if (p[x] != x)
         p[x] = find(p[x]);
     return p[x];
 }
 
-
-#endif /* UNIONFIND_HPP */

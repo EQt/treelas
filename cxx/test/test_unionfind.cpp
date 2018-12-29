@@ -4,7 +4,7 @@
 
 TEST(UnionFind, mini_test_2)
 {
-    UnionFind u (2);
+    UnionFind<int> u (2);
     ASSERT_EQ(u.find(1), 1);
     ASSERT_EQ(u.find(0), 0);
 
@@ -16,7 +16,7 @@ TEST(UnionFind, mini_test_2)
 
 TEST(UnionFind, mini_test_3)
 {
-    UnionFind u (3);
+    UnionFind<int> u (3);
     ASSERT_EQ(u.find(2), 2);
     ASSERT_EQ(u.find(1), 1);
     ASSERT_EQ(u.find(0), 0);
@@ -37,7 +37,7 @@ TEST(UnionFind, mini_test_3)
 
 TEST(UnionFind, mini_test_4)
 {
-    UnionFind u (4);
+    UnionFind<int> u (4);
     ASSERT_EQ(u.find(3), 3);
     ASSERT_EQ(u.find(2), 2);
     ASSERT_EQ(u.find(1), 1);
@@ -65,7 +65,7 @@ TEST(UnionFind, mini_test_4)
 
 TEST(UnionFind, mini_test_4a)
 {
-    UnionFind u (4);
+    UnionFind<int> u (4);
     u.unite(u.find(3), u.find(0));
 
     EXPECT_NE(u.find(2), u.find(3));

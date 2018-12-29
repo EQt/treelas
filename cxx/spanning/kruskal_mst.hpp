@@ -15,7 +15,7 @@ _spanning_tree(const int n,
                const std::vector<int> &edges)
 {
     std::vector<bool> included(m, false);
-    UnionFind uf (n);
+    UnionFind<int> uf (n);
     for (const auto e : edges) {
         const int
             u = source[e],
