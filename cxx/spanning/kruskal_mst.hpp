@@ -8,8 +8,8 @@
 
 
 std::vector<bool>
-_spanning_tree(const int n,
-               const int m,
+_spanning_tree(const size_t n,
+               const size_t m,
                const std::vector<int> &source,
                const std::vector<int> &target,
                const std::vector<int> &edges)
@@ -39,18 +39,18 @@ _spanning_tree(const int n,
   the edges is comparably fast.
 */
 std::vector<bool>
-minimum_spanning_tree(const int n,
+minimum_spanning_tree(const size_t n,
                       const std::vector<int> &source,
                       const std::vector<int> &target,
                       const std::vector<double> &weight)
 {
-    const int m = int(source.size());
-    if (m != int(target.size()))
+    const size_t m = source.size();
+    if (m != target.size())
         throw __FILE__ "source.size() != target.size()";
-    if (m != int(weight.size()))
+    if (m != weight.size())
         throw __FILE__ "source.size() != weight.size()";
     std::vector<int> edges (m);
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < int(m); i++)
         edges[i] = i;
     std::sort(edges.begin(), edges.end(), [&](int i, int j)
               { return weight[i] < weight[j]; });
@@ -59,17 +59,17 @@ minimum_spanning_tree(const int n,
 
 
 std::vector<bool>
-random_spanning_tree(const int n,
+random_spanning_tree(const size_t n,
                      const std::vector<int> &source,
                      const std::vector<int> &target,
                      const int seed = 2018)
 {
-    const int m = int(source.size());
-    if (m != int(target.size()))
+    const size_t m = source.size();
+    if (m != target.size())
         throw __FILE__ "source.size() != target.size()";
 
     std::vector<int> edges (m);
-    for (int i = 0; i < m; i++)
+    for (int i = 0; i < int(m); i++)
         edges[i] = i;
 
     std::mt19937_64 generator (seed);
