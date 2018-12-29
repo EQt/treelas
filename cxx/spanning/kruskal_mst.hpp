@@ -49,7 +49,8 @@ minimum_spanning_tree(const size_t n,
         throw __FILE__ "source.size() != target.size()";
     if (m != weight.size())
         throw __FILE__ "source.size() != weight.size()";
-    std::vector<int> edges (m);
+    std::vector<int> edges;
+    edges.resize(m);
     for (int i = 0; i < int(m); i++)
         edges[i] = i;
     std::sort(edges.begin(), edges.end(), [&](int i, int j)
@@ -68,7 +69,8 @@ random_spanning_tree(const size_t n,
     if (m != target.size())
         throw __FILE__ "source.size() != target.size()";
 
-    std::vector<int> edges (m);
+    std::vector<int> edges;
+    edges.resize(m);
     for (int i = 0; i < int(m); i++)
         edges[i] = i;
 
