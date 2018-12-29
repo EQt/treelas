@@ -9,10 +9,18 @@ function node_degrees(parent::Vector{Int}, root = 1)
     return idx
 end
 
+
 struct ChildrenIndex
     pi::Vector{Int}
     idx::Vector{Int}
 end
+
+
+"""
+    ChildrenIndex(n)
+
+Initialize enough space for a tree with `n` nodes.
+"""
 ChildrenIndex(n::Int) =
     ChildrenIndex(Vector{Int}(undef, n), Vector{Int}(undef, n+1))
 
@@ -93,5 +101,10 @@ function inverse(p::Vector{Int}, n::Int = 0)
 end
 
 
+"""
+    concat(a, b)
+
+TODO
+"""
 concat(a::Vector{T}, i::Vector{Int}) where T =
     T[a[j] for j in i if j > 0]
