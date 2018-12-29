@@ -1,37 +1,3 @@
-function compute_children2(parent::Vector{T}, root::Int = 1) where T <: Integer
-    @assert root == 1
-    n = length(parent)
-    pi = Vector{T}(undef, n)
-
-    idx = zeros(T, n+1)
-    for p in parent     # compute number of children
-        idx[p] += 1
-    end
-    deg_i = idx[root]
-    idx[root] -= 1      # root does not have itself as children
-    pos = 1
-    for i = 1:n         # accumulate degrees before ==> idx
-        pos += deg_i
-        deg_i = idx[i+1]
-        idx[i+1] = pos
-    end
-    # idx - idx_
-
-
-    pi[root] = 1        # root ==> isperm(pi) holds (root is not any child)
-    found = copy(idx)   # position where next child is inserted
-    for (v, p) in enumerate(parent)     # collect children values
-        if v == p
-            continue
-        end
-        pi[found[p]] = v
-        found[p] += 1
-    end
-
-    return pi, idx
-end
-
-
 function node_degrees(parent::Vector{Int}, root = 1)
     @assert parent[root] == root
     idx = similar(parent)
