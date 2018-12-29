@@ -37,8 +37,10 @@ Base.show(io::IO, e::Event) =
                        e.x, e.slope, e.offset))
     end
 
-# Queue -----------------------------------------------------------------
+# Queues ----------------------------------------------------------------
 """
+    Range(start, stop)
+
 A range in a `Vector` containing the `Event`s of a nodes "queue".
 
 ATTENTION: unlike in Python, `start` and `stop` are inclusive!
