@@ -4,6 +4,7 @@ include("incmat.jl")
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "mst.jl"))
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.jl"))
 
+import SparseArrays: mul!
 import Printf: @sprintf
 import .DPTree: _alloc_queues, _dp_tree, _init_dp_tree
 import .GraphIdx: ChildrenIndex
@@ -21,9 +22,9 @@ function gap_vec!(γ::Vector{Float64},
                   D::IncMat,
                   Dt::IncMat,
                   α::Vector{Float64})
-    A_mul_B!(x, Dt, α)
+    mul!(x, Dt, α)
     x .-= y
-    A_mul_B!(dif, D, x)
+    mul!(dif, D, x)
     γ .= (α .* dif) .+ abs.(dif)
     return γ
 end
