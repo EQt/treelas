@@ -63,7 +63,7 @@ function _init_spantree(edges, n)
     finished = Vector{Bool}(undef, n)
     dist = Vector{Float64}(undef, n)
     parent = Vector{Int}(undef, n)
-    neighbors = compute_undirected_index(edges, n)
+    neighbors = NeighborIndex(n, edges)
     pq = PriorityQueue{Int, Float64}(n)
     return finished, dist, parent, neighbors, pq
 end
