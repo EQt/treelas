@@ -10,6 +10,8 @@ import .GraphIdx: ChildrenIndex
 
 
 """
+    gap_vec!(...)
+
 Compute the gap vector (modifies dif and x) and stores it in γ.
 """
 function gap_vec!(γ::Vector{Float64},
@@ -25,6 +27,11 @@ function gap_vec!(γ::Vector{Float64},
     γ .= (α .* dif) .+ abs.(dif)
     return γ
 end
+
+
+max_gap_tree(y::Matrix{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
+    reshape(max_gap_tree(vec(y), create_D(edges, lambda, length(y)); args...),
+            size(y)...)
 
 
 max_gap_tree(y::Vector{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
