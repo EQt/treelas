@@ -24,3 +24,11 @@ def test_networkx1():
 
     [lca_31] = lca_networkx(G, root, [(3, 1)])
     assert lca_31 == ((3, 1), 1)
+
+    [lca_16] = lca_networkx(G, root, [(1, 6)])
+    assert lca_61 == ((1, 6), 1)
+
+    try:
+        [lca_61] = lca_networkx(G, root, [(6, 1)])
+    except ValueError:
+        pass
