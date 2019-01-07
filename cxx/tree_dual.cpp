@@ -5,7 +5,7 @@
 #include <cmath>
 
 #include "tree/root.hpp"
-#include "postorder.hpp"
+#include "tree/postorder.hpp"
 
 
 double*

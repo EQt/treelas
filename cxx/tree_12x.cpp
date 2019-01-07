@@ -4,9 +4,7 @@
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
 #include "tree/root.hpp"
-
-#include "postorder.hpp"
-
+#include "tree/postorder.hpp"
 
 
 template<typename float_ = float, typename int_ = int>

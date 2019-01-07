@@ -11,9 +11,9 @@
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
 #include "tree/bfs.hpp"
+#include "tree/postorder.hpp"
 #include "tree/root.hpp"
 
-#include "postorder.hpp"
 #include "tree.hpp"
 
 

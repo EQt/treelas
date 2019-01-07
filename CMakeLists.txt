@@ -40,7 +40,7 @@ add_object(line_para  cxx/line/line_para.cpp)
 add_object(line_c     cxx/line/line_c.cpp)
 add_object(line_c2    cxx/line/line_c2.cpp)
 add_object(line_c3    cxx/line/line_c3.cpp)
-add_object(postorder  cxx/postorder.cpp)
+add_object(postorder  graphidx/cxx/tree/postorder.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
 
@@ -146,7 +146,7 @@ if (BUILD_TESTS)
     cxx/test/test_ref.cpp
     graphidx/cxx/test/test_unionfind.cpp
     graphidx/cxx/test/test_kruskal_mst.cpp
-    cxx/test/test_postorder.cpp
+    graphidx/cxx/test/test_postorder.cpp
     graphidx/cxx/test/test_prufer.cpp
     cxx/test/test_line.cpp
     cxx/test/test_tree_12.cpp

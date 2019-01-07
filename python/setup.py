@@ -54,7 +54,7 @@ sources = [
     "../cxx/line/line_c3.cpp",
     "../cxx/tree_dp.cpp",
     "../cxx/tree_dual.cpp",
-    "../cxx/postorder.cpp"
+    "../graphidx/cxx/tree/postorder.cpp"
 ]
 
 

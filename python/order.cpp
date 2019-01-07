@@ -3,10 +3,10 @@
 
 #include "tree/bfs.hpp"
 #include "tree/prufer.hpp"
+#include "tree/postorder.hpp"
 #include "tree/root.hpp"
 
 #include "../cxx/utils/timer.hpp"
-#include "../cxx/postorder.hpp"
 
 
 namespace py = pybind11;
