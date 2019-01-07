@@ -9,9 +9,9 @@ function create_D(E::Edges,
                   lam::Vector{Float64}, n::Int,
                   T = Int)::IncMat
     m = length(E)
-    I = Vector{T}(2m)
-    J = Vector{T}(2m)
-    V = Vector{eltype(lam)}(2m)
+    I = Vector{T}(undef, 2m)
+    J = Vector{T}(undef, 2m)
+    V = Vector{eltype(lam)}(undef, 2m)
     for (i,(u,v)) in enumerate(E)
         I[2i-1] = i
         J[2i-1] = u
