@@ -49,7 +49,7 @@ Directory Structure
 ├── ci          Continous integration
 ├── cxx         C++ source/header files
 ├── data        Some test data (needed for `py.test`)
-├── extern      External libraries
+├── deps        External dependencies/libraries
 ├── julia       Julia Bindings/Implementation
 ├── python      Python bindings
 ```
