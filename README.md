@@ -58,10 +58,16 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.10.4
+Released 2019-01-07
+- Python: started on "lowest common ancestor" (`lca.py`)
+
+
 ### v0.10.3
 Released 2018-12-29
 - Julia: `dp_tree`
 - CXX: Test `kruskal_mst`
+
 
 ### v0.10.2
 Released 2018-12-20
@@ -76,7 +82,6 @@ Released 2018-12-20
 ### v0.10.0 
 Released 2018-12-19
 - `PartitionIndex`, `groupby`
-
 
 
 [condat]: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
