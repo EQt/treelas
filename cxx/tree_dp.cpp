@@ -8,9 +8,9 @@
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
 #include "utils/finite.hpp"
+#include "std/stack.hpp"
 
 #include "tree_debug.hpp"
-#include "stack.hpp"
 #include "clip.hpp"
 #include "merge.hpp"
 

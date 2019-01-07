@@ -12,7 +12,7 @@
 #if STD_QUEUE
 #  include <queue>
 #else
-#  include "queue.hpp"
+#  include "std/queue.hpp"
 #endif
 
 #include "idx/children.hpp"

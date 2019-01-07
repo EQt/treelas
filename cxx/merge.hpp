@@ -5,8 +5,8 @@
 #include <cstring>          // for std::memmove
 
 #include "utils/timer.hpp"
+#include "std/stack.hpp"
 
-#include "stack.hpp"
 #include "range.hpp"
 #include "idx/children.hpp"
 

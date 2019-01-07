@@ -8,7 +8,7 @@
 
 #include "idx/biadjacent.hpp"
 #include "idx/partition.hpp"
-#include "stack.hpp"
+#include "std/stack.hpp"
 
 
 template <typename int_, typename Idx>

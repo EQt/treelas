@@ -3,11 +3,11 @@
 #include "../utils/timer.hpp"       // TimerQuiet
 #include "../utils/plotpwl.hpp"
 #include "../utils/minmax.hpp"      // find_minmax
+#include "../std/stack.hpp"
 
 #include "../tree_dp.hpp"
 #include "../range.hpp"
 #include "../event.hpp"
-#include "../stack.hpp"
 #include "../clip.hpp"
 #include "../merge.hpp"
 
