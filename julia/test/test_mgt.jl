@@ -4,6 +4,9 @@ using Test
 include("../src/mgt.jl")
 include("square.jl")
 
+mean(x) =
+    sum(x)/length(x)
+
 
 @testset "MGT     : Square               " begin
     edges, n = square_edges()
@@ -13,6 +16,7 @@ include("square.jl")
     x = MGT.max_gap_tree(y, edges, lambda)
     @test size(x) == size(y)
     @test sum(x) ≈ sum(y)
+    @test x ≈ mean(y) * ones(size(y)...)
 end
 
 end
