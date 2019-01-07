@@ -10,8 +10,8 @@
 #include "idx/utils/perm.hpp"   // for iperm
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
+#include "tree/bfs.hpp"
 
-#include "bfs.hpp"
 #include "postorder.hpp"
 #include "tree.hpp"
 #include "root.hpp"
