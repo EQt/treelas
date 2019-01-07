@@ -3,13 +3,11 @@ using Test
 import SparseArrays: nnz
 
 include("../src/incmat.jl")
+include("square.jl")
 
 @testset "Create D: Square               " begin
-    head = [1, 1, 2, 3]
-    tail = [2, 3, 4, 4]
-    n = max(maximum(tail), maximum(head))
+    edges, n = square_edges()
     m = length(edges)
-    edges = collect(zip(head, tail))::Edges
     lambda = fill(0.5, length(edges))
     D = create_D(edges, lambda, n)
     D_expected =
