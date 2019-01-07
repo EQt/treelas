@@ -3,7 +3,7 @@ using Test
 
 include("../src/cluster.jl")
 
-@testset "Partition 1112      " begin
+@testset "Partition 1112                 " begin
     nums = [1, 1, 1, 2]
     @test all(nums .> 0)
     p = Cluster.PartitionIndex(nums)
@@ -13,7 +13,7 @@ include("../src/cluster.jl")
 end
 
 
-@testset "Test Partition5     " begin
+@testset "Test Partition5                " begin
     nums = [2, 3, 1, 1, 3]
     @test all(nums .> 0)
     p = Cluster.PartitionIndex(nums)
@@ -24,7 +24,7 @@ end
 end
 
 
-@testset "Test Cluster        " begin
+@testset "Test Cluster                   " begin
     neigh = Dict(1 => [2, 3],
                  2 => [1, 4],
                  3 => [1, 4],
