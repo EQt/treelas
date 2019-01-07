@@ -38,15 +38,11 @@ def __understand_networkx_code(G, root, pairs):
     for node in G:
         ancestors[node] = uf[node]
 
-    colors = defaultdict(bool)
+    colors = defaultdict(bool)  
     for node in dfs_postorder_nodes(G, root):
         colors[node] = True
         for v in pair_dict[node]:
             if colors[v]:
-                # If the user requested both directions of a pair, give it.
-                # Otherwise, just give one.
-                if (node, v) in pairs:
-                    yield (node, v), ancestors[uf[v]]
                 if (v, node) in pairs:
                     yield (v, node), ancestors[uf[v]]
         if node != root:
