@@ -57,7 +57,7 @@ install:
     fi; rm -fr miniconda3; bash miniconda.sh -b -p $PWD/miniconda3; fi
   - export PATH=$PWD/miniconda3/bin:$PATH;
   - which conda
-  - conda install -y pytest h5py numba
+  - conda install -y pytest networkx h5py numba
   - which python
   - pip install pybind11
   -  python -m pybind11 --include
