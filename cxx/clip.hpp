@@ -1,4 +1,5 @@
 #include <cmath>            // std::abs(double) -> double
+#include "event.hpp"
 #define SLOPE_EPS (1e-8)
 
 
