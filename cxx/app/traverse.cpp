@@ -12,8 +12,8 @@
 #include "../utils/thousand.hpp"
 
 #include "idx/biadjacent.hpp"
-// #include "../kruskal_mst.hpp"
-#include "../spanning/prim_mst.hpp"
+// #include "spanning/kruskal_mst.hpp"
+#include "spanning/prim_mst.hpp"
 
 
 void
