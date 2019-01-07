@@ -147,7 +147,7 @@ if (BUILD_TESTS)
     graphidx/cxx/test/test_unionfind.cpp
     graphidx/cxx/test/test_kruskal_mst.cpp
     cxx/test/test_postorder.cpp
-    cxx/test/test_prufer.cpp
+    graphidx/cxx/test/test_prufer.cpp
     cxx/test/test_line.cpp
     cxx/test/test_tree_12.cpp
     cxx/test/test_tree_dp.cpp

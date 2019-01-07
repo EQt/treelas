@@ -1,8 +1,9 @@
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
 
+#include "tree/prufer.hpp"
+
 #include "../cxx/utils/timer.hpp"
-#include "../cxx/prufer.hpp"
 #include "../cxx/root.hpp"
 #include "../cxx/postorder.hpp"
 #include "../cxx/bfs.hpp"
