@@ -23,7 +23,7 @@ def lca_networkx(G, root, pairs):
 
     """
     from collections import defaultdict
-    from networkx.utils import UnionFind
+    from networkx.utils import UnionFind, arbitrary_element
     from networkx import dfs_postorder_nodes
 
 
