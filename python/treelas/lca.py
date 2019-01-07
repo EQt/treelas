@@ -14,12 +14,13 @@ def test_defaultdict():
 
 def lca_networkx(G, root, pairs):
     """
-    https://raw.githubusercontent.com/networkx/networkx/master/networkx/algorithms/lowest_common_ancestors.py
+    [`networkx.algorithms.lowest_common_ancestor`][nx]
+    Implemented according to CLRS page 584 (3rd edition).
+    Compare to [epp]
 
-    Compare to
-    https://www.ics.uci.edu/~eppstein/PADS/LCA.py
+    [nx]: https://github.com/networkx/networkx/master/
+    [epp]: https://www.ics.uci.edu/~eppstein/PADS/LCA.py
 
-    CLRS page 584 (3rd edition).
     """
     from collections import defaultdict
     from networkx.utils import UnionFind
