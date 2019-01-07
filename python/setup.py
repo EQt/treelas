@@ -95,7 +95,7 @@ class BuildExt(build_ext):
 
 
 setup(name="treelas",
-      version=describe_tag(default="0.10.3"),
+      version=describe_tag(default="0.10.4"),
       author="Elias Kuthe",
       author_email="elias.kuthe@tu-dortmund.de",
       license="MIT",
