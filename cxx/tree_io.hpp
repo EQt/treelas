@@ -1,8 +1,8 @@
 #pragma once
 #include "utils/hdf5.hpp"
+#include "tree/root.hpp"
 
 #include "tree.hpp"
-#include "root.hpp"
 
 
 template <typename float_, typename int_>

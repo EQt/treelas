@@ -2,13 +2,14 @@
 #include <stdexcept>
 #include <pybind11/pybind11.h>
 
+#include "py_np.hpp"
+
+#include "tree/root.hpp"
+
 #include "../cxx/idx/biadjacent.hpp"
 #include "../cxx/idx/children.hpp"
 #include "../cxx/idx/partition.hpp"
 #include "../cxx/cluster.hpp"
-#include "../cxx/root.hpp"
-
-#include "py_np.hpp"
 
 namespace py = pybind11;
 

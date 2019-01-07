@@ -3,8 +3,8 @@
 #include "idx/utils/perm.hpp"
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
+#include "tree/root.hpp"
 
-#include "root.hpp"
 #include "postorder.hpp"
 
 

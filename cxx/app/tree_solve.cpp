@@ -6,13 +6,14 @@
 #include <iostream>
 
 #include "idx/utils/viostream.hpp"      // std::cout << std::vector<..>
+#include "tree/root.hpp"
+
 
 #include "../utils/hdf5.hpp"
 #include "../utils/timer.hpp"
 #include "../utils/argparser.hpp"
 
 #include "../tree_dp.hpp"
-#include "../root.hpp"
 
 
 // #define DEBUG

@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <cmath>
 
+#include "tree/root.hpp"
 #include "postorder.hpp"
-#include "root.hpp"
 
 
 double*

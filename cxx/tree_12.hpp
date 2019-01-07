@@ -11,10 +11,10 @@
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
 #include "tree/bfs.hpp"
+#include "tree/root.hpp"
 
 #include "postorder.hpp"
 #include "tree.hpp"
-#include "root.hpp"
 
 
 namespace approx {
