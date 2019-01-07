@@ -3,10 +3,10 @@ include("tree_dp.jl")
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "mst.jl"))
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.jl"))
 
-import SparseArrays: SparseMatrixCSC
 import Printf: @sprintf
-import .GraphIdx: ChildrenIndex
+import SparseArrays: SparseMatrixCSC
 import .DPTree: _alloc_queues, _dp_tree, _init_dp_tree
+import .GraphIdx: ChildrenIndex
 
 const IncMat = SparseMatrixCSC{Float64,Int}
 
@@ -33,50 +33,6 @@ end
 #     reshape(max_gap_tree(vec(y), g; args...), size(y)...)
 
 
-# ONE_FUNCTION = i -> 1.0
-
-        # if gap <= eps_gap
-        #     break
-        # end
-        # if verbose
-        #     time = toq()
-        #     total += time
-        #     _field(logger, "time", time)
-        #     _field(logger, "flsa", dual_mu ? flsa0(x, y, g.D, mu)
-        #                                    : flsa(x, y, g.D))
-        #     gap = FLSA.duality_gap(vec(y), alpha, g)
-        #     _field(logger, "gap", gap)
-        #     _field(logger, "dual", FLSA.dual_obj(alpha, y, g.D))
-        #     process(x)
-        #     dprocess(alpha)
-        #     println(@sprintf("%4d %f %f %f",
-        #                      it,
-        #                      logger["flsa"][end],
-        #                      logger["dual"][end],
-        #                      logger["gap"][end]))
-        #     if assert_decreasing && length(logger["flsa"]) >= 2
-        #         @assert logger["flsa"][end] <= logger["flsa"][end-1]
-        #     end
-        # end
-        # it >= max_iter && break
-
-                      # dual_mu::Bool = false,
-                      # mu_f::Function = ONE_FUNCTION,
-                      # c0::Real = 0.0,
-                      # mu::Vector{Float64} = Vector{Float64}(),
-                      # alpha::Vector{Float64} = Vector{Float64}(),
-                      # max_iter::Integer=1,
-                      # random_tree::Bool=false,
-                      # logger::LoggerT = LoggerT(),
-                      # abs_tree::Bool=false,
-                      # eps_gap::Float64 = 1e-14,
-                      # verbose::Bool=true,
-                      # process::Function=x->nothing,
-                      # assert_decreasing::Bool=false,
-                      # verbose_debug::Bool=false,
-                      # root_node::Int = 1)
-
-
 function max_gap_tree(y::Vector{Float64},
                       D::IncMat,
                       edges::Vector{E},
@@ -90,8 +46,8 @@ function max_gap_tree(y::Vector{Float64},
                       tprocess::Function=(t,w)->nothing,
                       c0::Float64 = 0.0) where E
     r = Int(root_node)
-    Dt = copy(D')
     m, n = size(D)
+    Dt = copy(D')
     alpha = c0 * sign.(D*vec(y))
     dif = zeros(m)
     γ = zeros(m)
@@ -104,27 +60,21 @@ function max_gap_tree(y::Vector{Float64},
     pq, proc_order, stack, childs = _alloc_queues(n)
     tlam = Vector{Float64}(undef, n)
     finished, dist, parent, neighbors, mst_pq = _init_spantree(edges, n)
+
     total = 0.0
-    # if length(alpha) <= 30
-    #     println("α0 ≈ ", round.(alpha, 2))
-    # end
     for it in 0:max_iter
-        # @time begin
         dprocess(alpha)
-        # # println("part1")
-        # @time begin
         it >= max_iter && break
         gap_vec!(γ, dif, x, y, D, Dt, alpha)
         gap_value = sum(γ)
         if verbose
-            #     time = toq()
-                println(@sprintf("%4d %f",
-                                 it, gap_value))
+            println(@sprintf("%4d %f",
+                             it, gap_value))
         end
         γ .*= -1.0
         _minimum_spantree_e(γ, finished, dist, parent,
                             neighbors, selected, mst_pq, r)
-        # tprocess(γ, parent)
+        tprocess(γ, parent)
         z .= y
         for (i, e) in enumerate(edges)
             v, u = e
@@ -139,15 +89,6 @@ function max_gap_tree(y::Vector{Float64},
         end
 
         x_old = x
-        # if length(z) == 10
-        #     println("z:")
-        #     show(STDOUT, MIME("text/plain"), reshape(z, 5, 2))
-        #     println("\n")
-        # end
-        # if length(z) <= 10
-        #     println("weights:  ", round.(γ*10, 2))
-        #     println("parent:   ", parent)
-        # end
         x = _dp_tree(z,
                      i -> tlam[i],
                      i -> mu,
@@ -160,11 +101,6 @@ function max_gap_tree(y::Vector{Float64},
                      proc_order,
                      stack,
                      childs)
-        # if length(z) == 10
-        #     println("x:")
-        #     show(STDOUT, MIME("text/plain"), reshape(x, 5, 2))
-        #     println("\n")
-        # end
         process(x)
         ub = x_old
         begin # compute dual ==> update alpha
@@ -179,11 +115,6 @@ function max_gap_tree(y::Vector{Float64},
                 alpha[eidx] = c / lambda[eidx]
             end
         end
-        # if length(alpha) <= 30
-        #     println("α ≈ ", round.(alpha, 2))
-        # end
-    # end
-    # end
     end
     return x
 end
