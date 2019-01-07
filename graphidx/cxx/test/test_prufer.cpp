@@ -2,7 +2,7 @@
 #include <unordered_set>
 #include <utility>
 
-#include "../idx/utils/viostream.hpp"
+#include "../utils/viostream.hpp"
 #include "../tree/prufer.hpp"
 
 

@@ -138,16 +138,16 @@ if (BUILD_TESTS)
     graphidx/cxx/test/test_partition.cpp
     graphidx/cxx/test/test_biadjacent.cpp
     graphidx/cxx/test/test_grid.cpp
-    cxx/test/test_strtok.cpp
-    cxx/test/test_timer.cpp
+    graphidx/cxx/test/test_timer.cpp
     graphidx/cxx/test/test_stack.cpp
     graphidx/cxx/test/test_queue.cpp
-    cxx/test/test_vecalloc.cpp
-    cxx/test/test_ref.cpp
     graphidx/cxx/test/test_unionfind.cpp
     graphidx/cxx/test/test_kruskal_mst.cpp
     graphidx/cxx/test/test_postorder.cpp
     graphidx/cxx/test/test_prufer.cpp
+    cxx/test/test_vecalloc.cpp
+    cxx/test/test_ref.cpp
+    cxx/test/test_strtok.cpp
     cxx/test/test_line.cpp
     cxx/test/test_tree_12.cpp
     cxx/test/test_tree_dp.cpp

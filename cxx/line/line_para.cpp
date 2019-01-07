@@ -1,13 +1,15 @@
+#include "line_para.hpp"
+
 #include <iostream>
 #include <vector>
 #include <thread>
 
-#include "../utils/timer.hpp"
-#include "../utils/minmax.hpp"         // for clip(x, lb, ub)
-#include "line_para.hpp"
-#include "line.hpp"
+#include "utils/timer.hpp"
+
+#include "../utils/minmax.hpp"          // for clip(x, lb, ub)
 #include "../clip.hpp"
 #include "../merge.hpp"
+#include "line.hpp"                     // for dp_forward(...)
 
 
 template <typename float_>

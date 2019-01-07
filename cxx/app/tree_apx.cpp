@@ -9,8 +9,9 @@
 #include <vector>
 #include <algorithm>    // for std::min_element
 
+#include "utils/timer.hpp"
+
 #include "../utils/hdf5.hpp"
-#include "../utils/timer.hpp"
 #include "../utils/argparser.hpp"
 #include "../utils/thousand.hpp"
 

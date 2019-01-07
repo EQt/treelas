@@ -9,7 +9,7 @@
 #include <vector>
 #include <algorithm>    // for std::min_element
 
-#include "idx/utils/viostream.hpp"
+#include "utils/viostream.hpp"
 
 #include "../utils/hdf5.hpp"
 #include "../utils/argparser.hpp"

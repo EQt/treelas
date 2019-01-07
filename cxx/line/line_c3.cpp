@@ -6,7 +6,8 @@
 #include <vector>
 #include <stdexcept>
 
-#include "../utils/timer.hpp"
+#include "utils/timer.hpp"
+
 #include "../utils/minmax.hpp"
 
 

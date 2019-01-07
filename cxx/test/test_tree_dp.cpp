@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "std/stack.hpp"
-#include "../utils/timer.hpp"       // TimerQuiet
+#include "utils/timer.hpp"          // TimerQuiet
+
 #include "../utils/plotpwl.hpp"
 #include "../utils/minmax.hpp"      // find_minmax
 

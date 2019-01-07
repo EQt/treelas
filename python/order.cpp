@@ -5,8 +5,7 @@
 #include "tree/prufer.hpp"
 #include "tree/postorder.hpp"
 #include "tree/root.hpp"
-
-#include "../cxx/utils/timer.hpp"
+#include "utils/timer.hpp"
 
 
 namespace py = pybind11;
