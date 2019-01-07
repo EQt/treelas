@@ -2,4 +2,4 @@
 using Test
 
 include(joinpath("..", "..", "graphidx", "julia", "test", "runtests.jl"))
-include("test_dp_tree.jl")
+include("test_tree_dp.jl")
