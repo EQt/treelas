@@ -18,6 +18,8 @@ def __understand_networkx_code(G, root, pairs):
 
     Compare to
     https://www.ics.uci.edu/~eppstein/PADS/LCA.py
+
+    CLRS page 584 (3rd edition).
     """
     from collections import defaultdict
     from networkx.utils import UnionFind
