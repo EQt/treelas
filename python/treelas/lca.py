@@ -12,7 +12,7 @@ def test_defaultdict():
     assert colors[1] == False
 
 
-def __understand_networkx_code(G, root, pairs):
+def lca_networkx(G, root, pairs):
     """
     https://raw.githubusercontent.com/networkx/networkx/master/networkx/algorithms/lowest_common_ancestors.py
 
