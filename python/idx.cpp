@@ -4,11 +4,11 @@
 
 #include "py_np.hpp"
 
+#include "idx/biadjacent.hpp"
+#include "idx/children.hpp"
+#include "idx/partition.hpp"
 #include "tree/root.hpp"
 
-#include "../cxx/idx/biadjacent.hpp"
-#include "../cxx/idx/children.hpp"
-#include "../cxx/idx/partition.hpp"
 #include "../cxx/cluster.hpp"
 
 namespace py = pybind11;
