@@ -50,7 +50,7 @@ end
 
 function minimum_spantree_e(g, weights, root = 1)
     n = length(g.graph.vertices)
-    selected = Vector{Int}(n)
+    selected = Vector{Int}(undef, n)
     finished, dist, parent, neighbors, pq = _init_spantree(g.graph.edges, n)
     _minimum_spantree_e(weights, finished,dist, parent, neighbors,
                         selected, pq, root)
@@ -60,9 +60,9 @@ end
 
 function _init_spantree(edges, n)
     m = length(edges)
-    finished = Vector{Bool}(n)
-    dist = Vector{Float64}(n)
-    parent = Vector{Int}(n)
+    finished = Vector{Bool}(undef, n)
+    dist = Vector{Float64}(undef, n)
+    parent = Vector{Int}(undef, n)
     neighbors = compute_undirected_index(edges, n)
     pq = PriorityQueue{Int, Float64}(n)
     return finished, dist, parent, neighbors, pq
