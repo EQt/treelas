@@ -26,7 +26,7 @@ if (APPLE)
   set(HDF5_USE_STATIC_LIBRARIES ON)
 endif()
 
-include_directories(deps/graphidx/cxx)
+include_directories(graphidx/cxx)
 
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
@@ -134,10 +134,10 @@ if (BUILD_TESTS)
   add_subdirectory(deps/googletest)
   include_directories(deps/googletest/googletest/include)
   set(TESTS
-    deps/graphidx/cxx/test/test_children.cpp
-    deps/graphidx/cxx/test/test_partition.cpp
-    deps/graphidx/cxx/test/test_biadjacent.cpp
-    deps/graphidx/cxx/test/test_grid.cpp
+    graphidx/cxx/test/test_children.cpp
+    graphidx/cxx/test/test_partition.cpp
+    graphidx/cxx/test/test_biadjacent.cpp
+    graphidx/cxx/test/test_grid.cpp
     cxx/test/test_strtok.cpp
     cxx/test/test_timer.cpp
     cxx/test/test_stack.cpp

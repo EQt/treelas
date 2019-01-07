@@ -59,7 +59,7 @@ sources = [
 
 
 includes = [
-    path.join(path.dirname(__file__), "..", "deps", "graphidx", "cxx")
+    path.join(path.dirname(__file__), "..", "graphidx", "cxx")
 ]
 
 _treelas = Extension("treelas._treelas", sources, language='c++',
