@@ -16,7 +16,7 @@ struct PriorityQueue{K,V,O<:Ordering}
     function PriorityQueue{K,V}(n::Integer, o::O=Forward) where {K,V, O<:Ordering}
         xs = Vector{Pair{K,V}}()
         sizehint!(xs, n)
-        new{K,V,O}(xs, Vector{Int}(n), o)
+        new{K,V,O}(xs, Vector{Int}(undef, n), o)
     end
 end
 
