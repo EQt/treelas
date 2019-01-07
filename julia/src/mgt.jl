@@ -30,12 +30,11 @@ end
 
 
 max_gap_tree(y::Matrix{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
-    reshape(max_gap_tree(vec(y), create_D(edges, lambda, length(y)); args...),
-            size(y)...)
+    reshape(max_gap_tree(vec(y), edges, lambda; args...), size(y)...)
 
 
 max_gap_tree(y::Vector{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
-    max_gap_tree(y, create_D(edges, lambda, length(y)); args...)
+    max_gap_tree(y, create_D(edges, lambda, length(y)), edges, lambda; args...)
 
 
 function max_gap_tree(y::Vector{Float64},
