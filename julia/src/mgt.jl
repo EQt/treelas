@@ -4,13 +4,11 @@ include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "mst.jl"))
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.jl"))
 
 import SparseArrays: SparseMatrixCSC
+import Printf: @sprintf
 import .GraphIdx: ChildrenIndex
 import .DPTree: _alloc_queues, _dp_tree, _init_dp_tree
 
 const IncMat = SparseMatrixCSC{Float64,Int}
-
-import FLSA.Graph: source, target
-import FLSA
 
 
 """
@@ -31,8 +29,8 @@ function gap_vec!(γ::Vector{Float64},
 end
 
 
-max_gap_tree(y::Matrix{Float64}, g::FLSA.ImgGraph; args...) =
-    reshape(max_gap_tree(vec(y), g; args...), size(y)...)
+# max_gap_tree(y::Matrix{Float64}, g::FLSA.ImgGraph; args...) =
+#     reshape(max_gap_tree(vec(y), g; args...), size(y)...)
 
 
 # ONE_FUNCTION = i -> 1.0
@@ -80,7 +78,9 @@ max_gap_tree(y::Matrix{Float64}, g::FLSA.ImgGraph; args...) =
 
 
 function max_gap_tree(y::Vector{Float64},
-                      g::FLSA.ImgGraph;
+                      D::IncMat,
+                      edges::Vector{E},
+                      lambda::Vector{Float64};
                       root_node::Int = 1,
                       mu::Float64 = 1.0,
                       max_iter::Int = 3,
@@ -88,12 +88,10 @@ function max_gap_tree(y::Vector{Float64},
                       process::Function=x->nothing,
                       dprocess::Function=α->nothing,
                       tprocess::Function=(t,w)->nothing,
-                      c0::Float64 = 0.0)
+                      c0::Float64 = 0.0) where E
     r = Int(root_node)
-    edges = g.graph.edges
-    D = g.D
     Dt = copy(D')
-    m, n = size(g.D)
+    m, n = size(D)
     alpha = c0 * sign.(D*vec(y))
     dif = zeros(m)
     γ = zeros(m)
@@ -129,14 +127,14 @@ function max_gap_tree(y::Vector{Float64},
         # tprocess(γ, parent)
         z .= y
         for (i, e) in enumerate(edges)
-            v, u = source(e), target(e)
+            v, u = e
             if parent[v] == u
-                tlam[v] = g.lambda[i]
+                tlam[v] = lambda[i]
             elseif parent[u] == v
-                tlam[u] = g.lambda[i]
+                tlam[u] = lambda[i]
             else
-                z[v] -= g.lambda[i] * alpha[i]
-                z[u] += g.lambda[i] * alpha[i]
+                z[v] -= lambda[i] * alpha[i]
+                z[u] += lambda[i] * alpha[i]
             end
         end
 
@@ -170,7 +168,7 @@ function max_gap_tree(y::Vector{Float64},
         process(x)
         ub = x_old
         begin # compute dual ==> update alpha
-            const mu_i = mu
+            local mu_i = mu
             xbuf .= x .- z
             for i in proc_order
                 p = parent[i]
@@ -178,7 +176,7 @@ function max_gap_tree(y::Vector{Float64},
                 # e = edges[eidx]
                 xbuf[p] += mu_i * xbuf[i]
                 c = xbuf[i] * (i < p ? -mu_i : +mu_i)
-                alpha[eidx] = c / g.lambda[eidx]
+                alpha[eidx] = c / lambda[eidx]
             end
         end
         # if length(alpha) <= 30
