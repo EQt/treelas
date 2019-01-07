@@ -58,6 +58,9 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.11.0
+- CXX: moved most general graph code to `graphidx`
+
 ### v0.10.4
 Released 2019-01-07
 - Python: started on "lowest common ancestor" (`lca.py`)
