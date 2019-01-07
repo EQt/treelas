@@ -53,10 +53,10 @@ if (program_exists python); then
     popd
 fi
 
-# lang "Pytest"
-# if (program_exists pytest); then
-#     pytest $python_dir/test
-# fi
+lang "Pytest"
+if (program_exists pytest); then
+    pytest $python_dir/test
+fi
 
 # lang "Conda"
 # if (program_exists conda-build); then
