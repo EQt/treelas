@@ -49,24 +49,21 @@ function NeighborIndex(n::Int, head::Vector{Int}, tail::Vector{Int})
     return NeighborIndex(idx, pi)
 end
 
-#=
-function compute_undirected_index(edges::E, n, T::Type = Int) where E
+
+"""
+    NeighborIndex(n, edges)
+
+Same but for edges like `[(1, 2), (2, 3)]`
+"""
+function NeighborIndex(n::Int, edges::Vector{Tuple{Int, Int}})
     m = length(edges)
-    pi = Vector{Tuple{T,T}}(undef, 2m)
-    idx = Vector{T}(undef, n+1)
-
-    return _neighbor_index(m, n, pi, idx, edges)
-end
-
-
-function _neighbor_index(m::Int, n::Int, pi::Vector{Tuple{Int,Int}},
-                         idx::Vector{Int}, edges::E) where E
-    idx .= 0
-    for ei in edges             # compute degrees
-        idx[source(ei)] += 1
-        idx[target(ei)] += 1
+    pi = Vector{Tuple{Int,Int}}(undef, 2m)
+    idx = zeros(Int, n+1)
+    for (h, t) in edges
+        idx[h] += 1
+        idx[t] += 1
     end
-    acc = 1                     # accumulate degrees ==> positions
+    acc = 1                        # accumulate degrees ==> positions
     deg_i = 0
     deg_ii = idx[1]
     for i = 1:n
@@ -77,8 +74,7 @@ function _neighbor_index(m::Int, n::Int, pi::Vector{Tuple{Int,Int}},
     idx[n+1] = acc
     @assert(idx[end] + deg_i == 2m + 1,
             "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
-    for (i, ei) in enumerate(edges)
-        u, v = source(ei), target(ei)
+    for (i, (u, v)) in enumerate(edges)
         pi[idx[u+1]] = (v, i)
         idx[u+1] += 1
         pi[idx[v+1]] = (u, i)
@@ -87,4 +83,3 @@ function _neighbor_index(m::Int, n::Int, pi::Vector{Tuple{Int,Int}},
     @assert(idx[end] == 2m + 1, "$(idx[end]) vs $(2m + 1)")
     return NeighborIndex(idx, pi)
 end
-=#
