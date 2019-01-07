@@ -1,14 +1,11 @@
-/*
-  This is NOT part of graphidx because we need the stack to perform a DFS.
-*/
 #pragma once
 
 #include <random>                   // std::default_random_engine
 #include <algorithm>                // std::shuffle
 
-#include "idx/biadjacent.hpp"
-#include "idx/partition.hpp"
-#include "std/stack.hpp"
+#include "../idx/biadjacent.hpp"
+#include "../idx/partition.hpp"
+#include "../std/stack.hpp"
 
 
 template <typename int_, typename Idx>
