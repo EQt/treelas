@@ -92,9 +92,9 @@ function max_gap_tree(y::Vector{Float64},
     r = Int(root_node)
     edges = g.graph.edges
     D = g.D
-    Dt = g.D'
+    Dt = copy(D')
     m, n = size(g.D)
-    alpha = c0 * sign.(g.D*vec(y))
+    alpha = c0 * sign.(D*vec(y))
     dif = zeros(m)
     γ = zeros(m)
     x = copy(y)
