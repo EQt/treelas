@@ -1,14 +1,12 @@
 module MGT
 include("tree_dp.jl")
+include("incmat.jl")
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "mst.jl"))
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.jl"))
 
 import Printf: @sprintf
-import SparseArrays: SparseMatrixCSC
 import .DPTree: _alloc_queues, _dp_tree, _init_dp_tree
 import .GraphIdx: ChildrenIndex
-
-const IncMat = SparseMatrixCSC{Float64,Int}
 
 
 """
