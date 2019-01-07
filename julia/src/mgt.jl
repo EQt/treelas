@@ -1,8 +1,11 @@
 module MGT
 include("tree_dp.jl")
 include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "mst.jl"))
+include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.jl"))
 
-import FLSA2: _alloc_queues, _dp_tree, _init_dp_tree, ChildrenIndex, Queue
+import .GraphIdx: ChildrenIndex
+import .DPTree: _alloc_queues, _dp_tree, _init_dp_tree
+
 import FLSA.Graph: source, target
 import FLSA: IncMat
 import FLSA
