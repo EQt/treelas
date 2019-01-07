@@ -58,6 +58,11 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.11.1
+Released 2019-01-07
+- Julia: Maximum Gap Tree seems to work
+
+
 ### v0.11.0
 - CXX: moved most general graph code to `graphidx`
 
