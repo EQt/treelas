@@ -220,15 +220,23 @@ dp_tree(y::Matrix{Float64}, λ::Float64, t::Tree) =
 
 function dp_tree(y, λ, µ, t::Tree)
     n = length(y)
-    lb, ub, elements = _init_dp_tree(n)
+    mem = DPMem(n)
     pq, proc_order, stack, childs = _alloc_queues(n)
-    return _dp_tree(y, λ, μ, t.root, t.parent, lb, ub, elements,
+    return _dp_tree(y, λ, μ, t.root, t.parent,
+                    mem.lb, mem.ub, mem.elements,
                     pq, proc_order, stack, childs)
 end
 
 
-_init_dp_tree(n) =
-    Vector{Float64}(undef, n), Vector{Float64}(undef, n), Vector{Event}(undef, 2n)
+struct DPMem
+    lb::Vector{Float64}
+    ub::Vector{Float64}
+    elements::Vector{Event}
+    DPMem(n) =
+        new(Vector{Float64}(undef, n),
+            Vector{Float64}(undef, n),
+            Vector{Event}(undef, 2n))
+end
 
 
 function _dp_tree(y::Vector{Float64},

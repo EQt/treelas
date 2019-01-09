@@ -6,7 +6,7 @@ include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.j
 
 import SparseArrays: mul!
 import Printf: @sprintf
-import .DPTree: _alloc_queues, _dp_tree, _init_dp_tree
+import .DPTree: _alloc_queues, _dp_tree, DPMem
 import .GraphIdx: ChildrenIndex
 
 
@@ -61,7 +61,10 @@ function max_gap_tree(y::Vector{Float64},
     z = similar(y)
     selected = Vector{Int}(undef, n)
     selected[root_node] = 0
-    lb, ub, elements = _init_dp_tree(n)
+    mem = DPMem(n)
+    lb = mem.lb
+    ub = mem.ub
+    elements = mem.elements
     pq, proc_order, stack, childs = _alloc_queues(n)
     tlam = Vector{Float64}(undef, n)
     finished, dist, parent, neighbors, mst_pq = _init_spantree(edges, n)
