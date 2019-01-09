@@ -32,13 +32,12 @@ Base.zero(::Type{Event}) = Event(NaN, NaN, NaN)
 Base.isnan(e::Event) = isnan(e.x)
 
 Base.show(io::IO, e::Event) =
-    if isnan(e)
-        print(io, "Event(NaN)")
-    else
-        print(io,
+    print(io,
+          if isnan(e) "Event(NaN)"
+          else
               @sprintf("% .2f -> % .2ft + % .3f",
-                       e.x, e.slope, e.offset))
-    end
+                       e.x, e.slope, e.offset)
+          end)
 
 # Queues ----------------------------------------------------------------
 """
@@ -54,6 +53,7 @@ struct Range
 end
 
 Base.length(q::Range) = q.stop - q.start + 1
+
 Base.show(io::IO, q::Range) = print(io, q.start, ":", q.stop)
 
 
