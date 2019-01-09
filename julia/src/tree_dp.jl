@@ -167,7 +167,7 @@ end
 
 
 @inline function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                    slope::Float64, offset::Float64, t::Float64)
+                            slope::Float64, offset::Float64, t::Float64)::Float64
     begin
         pq = pqs[i]::Range
         start = pq.start
@@ -189,7 +189,7 @@ end
 
 
 @inline function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                   slope::Float64, offset::Float64, t::Float64)
+                           slope::Float64, offset::Float64, t::Float64)::Float64
     begin
         pq = pqs[i]::Range
         start = pq.start
