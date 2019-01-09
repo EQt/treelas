@@ -129,7 +129,7 @@ end
 
 
 @inline function merge2(buf::Vector{Event}, elements::Vector{Event},
-                parent::Range, child::Range)::Range
+                        parent::Range, child::Range)::Range`
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
@@ -274,11 +274,7 @@ function _dp_tree(y::Vector{Float64},
         sig[parent[i]] += λ(i)
         sig_i = sig[i]
         lb[i] = clip_front(elements, pq, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
-        # println("lb[$(i-1)] = ", @sprintf("% 4.2f", lb[i]))
-        # _print_elments(elements)
         ub[i] = clip_back( elements, pq, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
-        # println("ub[$(i-1)] = ", @sprintf("% 4.2f", ub[i]))
-        # _print_elments(elements)
         pq[parent[i]] = merge(elements, pq[parent[i]], pq[i])
     end
 
