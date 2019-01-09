@@ -239,6 +239,22 @@ struct DPMem
 end
 
 
+_dp_tree(
+    y::Vector{Float64},
+    λ::Function,
+    μ::Function,
+    root::Int,
+    parent::Vector{Int},
+    mem::DPMem,
+    pq::Vector{Range},
+    proc_order::Vector{Int},
+    stack::Vector{Int},
+    childs::ChildrenIndex) =
+        _dp_tree(y, λ, μ, root, parent,
+                 mem.lb, mem.ub, mem.elements, pq,
+                 proc_order, stack, childs)
+
+
 function _dp_tree(y::Vector{Float64},
                   λ::Function,
                   μ::Function,
