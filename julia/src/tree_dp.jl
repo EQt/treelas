@@ -26,8 +26,11 @@ struct Event
 end
 
 Base.isless(e1::Event, e2::Event) = isless(e1.x, e2.x)
+
 Base.zero(::Type{Event}) = Event(NaN, NaN, NaN)
+
 Base.isnan(e::Event) = isnan(e.x)
+
 Base.show(io::IO, e::Event) =
     if isnan(e)
         print(io, "Event(NaN)")
@@ -106,7 +109,7 @@ end
 
 
 @inline function merge(elements::Vector{Event},
-               parent::Range, child::Range)::Range
+                       parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
