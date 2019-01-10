@@ -30,6 +30,11 @@ function gap_vec!(γ::Vector{Float64},
 end
 
 
+"""
+    max_gap_tree(y, edges, λ)
+
+Optimize in each iteration along a tree.
+"""
 max_gap_tree(y::Matrix{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
     reshape(max_gap_tree(vec(y), edges, lambda; args...), size(y)...)
 
