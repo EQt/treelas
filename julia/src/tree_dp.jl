@@ -129,7 +129,7 @@ end
 
 
 @inline function merge2(buf::Vector{Event}, elements::Vector{Event},
-                        parent::Range, child::Range)::Range`
+                        parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
