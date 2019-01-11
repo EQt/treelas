@@ -47,7 +47,8 @@ end
 """
     minimum_spantree(n, edges, weights, [root = 1])
 
-Prim's minimum spanning tree algorithm.
+[Prim's algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
+for minimum spanning tree.
 Start from node `root` (will become the root node of the spanning tree).
 Return the parent vector of the tree.
 """
@@ -65,7 +66,7 @@ Like `minimum_spantree` but return the parent vector and a Boolean vector
 indicating for each edge whether the edge is part of the spanning tree.
 """
 function minimum_spantree_edges(n, edges, weights, root = 1)
-    selected = Vector{Int}(undef, n)
+    selected = Vector{Int}(undef, n-1)
     finished, dist, parent, neighbors, pq = _init_spantree(edges, n)
     _minimum_spantree_edges(weights, finished,dist, parent, neighbors,
                             selected, pq, root)
@@ -97,6 +98,7 @@ function _minimum_spantree(weights, finished, dist, parent, neighbors,
     while !isempty(pq)
         u = dequeue!(pq)
         for (v, eidx) in neighbors[u]
+            v == u && continue
             if !finished[v] && weights[eidx] < dist[v]
                 dist[v] = weights[eidx]
                 decrease_key!(pq, v, dist[v])
@@ -123,18 +125,23 @@ function _minimum_spantree_edges(weights, finished, dist,
     dist[root] = 0.0
     parent[root] = root
     pq[root] = dist[root]
+    i = 1
     while !isempty(pq)
         u = dequeue!(pq)
-        for ii in neighbors.idx[u]:neighbors.idx[u+1]-1
-            v, eidx = neighbors.pi[ii]
-            if !finished[v] && weights[eidx] < dist[v]
+        finished[u] = true
+        for (v, eidx) in neighbors[u]
+            v == u && continue
+            if weights[eidx] < dist[v]
                 dist[v] = weights[eidx]
                 decrease_key!(pq, v, dist[v])
                 parent[v] = u
-                selected[v] = eidx
+                println("pq=$pq")
+                println("dist=$dist")
+                println("u=$u v=$v i=$i eidx=$eidx")
+                selected[i] = eidx
+                i += 1
             end
         end
-        finished[u] = true
     end
     return parent
 end
