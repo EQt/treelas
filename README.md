@@ -51,12 +51,16 @@ Directory Structure
 ├── data        Some test data (needed for `py.test`)
 ├── deps        External dependencies/libraries
 ├── julia       Julia Bindings/Implementation
-├── python      Python bindings
+└── python      Python bindings
 ```
 
 
 ChangeLog
 ---------
+
+### v0.11.2
+Released 2019-01-11
+- Julia: Reimplement and test `kruskal_mst`
 
 ### v0.11.1
 Released 2019-01-07
