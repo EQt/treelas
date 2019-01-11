@@ -40,7 +40,14 @@ function decrease_key!(pq::PriorityQueue{K,V}, k::K, new_val::V) where {K, V}
 end
 
 
-function minimum_spantree(g, weights, root = 1)
+"""
+    minimum_spantree(g, weights, root = 1)
+
+Prim's minimum spanning tree algorithm.
+Start from node `root` (will become the root node of the spanning tree).
+Return the parent vector of the tree.
+"""
+function minimum_spantree(g, weights, root = 1)::Vector{Int}
     n = length(g.graph.vertices)
     finished, dist, parent, neighbors, pq = _init_spantree(g.graph.edges, n)
     return _minimum_spantree(weights, finished,
@@ -48,6 +55,12 @@ function minimum_spantree(g, weights, root = 1)
 end
 
 
+"""
+    minimum_spantree_e(g, weights, root = 1)
+
+Like `minimum_spantree` but return the parent vector and a Boolean vector
+indicating for each edge whether the edge is part of the spanning tree.
+"""
 function minimum_spantree_e(g, weights, root = 1)
     n = length(g.graph.vertices)
     selected = Vector{Int}(undef, n)

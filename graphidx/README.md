@@ -12,7 +12,10 @@ we concatenate the adjacencies, resulting in a single vector of length `m`, and 
 [ TODO: transformed graph ]
 ```
 
-This data structure is usually found in sparse matrices like CSC or CSR format.
+This data structure is usually found in sparse matrices like CSC or CSR format (the Rust crate
+[`petgraph`](https://github.com/bluss/petgraph)
+calls this structure therefore 
+[`Csr`](https://docs.rs/petgraph/0.4.13/petgraph/csr/struct.Csr.html)).
 Here, we use it to store
 - Children in a rooted tree.
 - Partitions of numbers `0..n`
