@@ -117,7 +117,6 @@ function max_gap_tree(y::Vector{Float64},
             for i in proc_order
                 p = parent[i]
                 eidx = selected[i]
-                # e = edges[eidx]
                 xbuf[p] += mu_i * xbuf[i]
                 c = xbuf[i] * (i < p ? -mu_i : +mu_i)
                 alpha[eidx] = c / lambda[eidx]
