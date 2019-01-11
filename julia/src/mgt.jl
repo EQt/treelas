@@ -6,7 +6,7 @@ include("graphidx.jl")
 import SparseArrays: mul!
 import Printf: @sprintf
 import .DPTree: _alloc_queues, _dp_tree, DPMem
-import .GraphIdx: ChildrenIndex
+import .GraphIdx: ChildrenIndex, _init_spantree, _minimum_spantree_e
 
 
 """
