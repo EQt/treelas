@@ -107,9 +107,12 @@ function _minimum_spantree(weights, finished, dist, parent, neighbors,
 end
 
 
-function _minimum_spantree_e(weights, finished, dist, parent,
-                             neighbors::NeighborIndex, selected::Vector{Int},
-                             pq::PriorityQueue{Int, Float64}, root::Int = 1)
+function _minimum_spantree_e(weights, finished, dist,
+                             parent::Vector{Int},
+                             neighbors::NeighborIndex,
+                             selected::Vector{Int},
+                             pq::PriorityQueue{Int, Float64},
+                             root::Int = 1)::Vector{Int}
     @assert isempty(pq)
     sizehint!(pq, length(parent))
     finished .= false
