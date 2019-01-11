@@ -123,6 +123,8 @@ function _minimum_spantree_edges(weights, finished, dist,
     @assert length(selected) == n
     @assert isempty(pq)
     sizehint!(pq, n)
+
+    # see CLRS page 572 (2nd edition)
     finished .= false
     finished[root] = true
     selected[root] = -1
@@ -134,7 +136,7 @@ function _minimum_spantree_edges(weights, finished, dist,
         u = dequeue!(pq)
         for (v, eidx) in neighbors[u]
             v == u && continue
-            if !finished[v] && dist[v] > weights[eidx]
+            if !finished[v] && weights[eidx] < dist[v]
                 dist[v] = weights[eidx]
                 decrease_key!(pq, v, dist[v])
                 parent[v] = u
