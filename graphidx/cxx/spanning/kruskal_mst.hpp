@@ -32,11 +32,13 @@ _spanning_tree(const size_t n,
 }
 
 
-/** Compute minimum spanning tree by Kruskal's algorithm.
+/** Compute minimum spanning tree by [Kruskal's algorithm][1].
 
   We prefer Kruskal's algorithm to Prim's because here, mostly the
   number of edges grow linearly with the number of nodes, so sorting
   the edges is comparably fast.
+
+  [1]: https://en.wikipedia.org/wiki/Kruskal%27s_algorithm
 */
 std::vector<bool>
 minimum_spanning_tree(const size_t n,
