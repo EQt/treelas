@@ -66,7 +66,7 @@ Like `minimum_spantree` but return the parent vector and a Boolean vector
 indicating for each edge whether the edge is part of the spanning tree.
 """
 function minimum_spantree_edges(n, edges, weights, root = 1)
-    selected = Vector{Int}(undef, n-1)
+    selected = Vector{Int}(undef, n)
     finished, dist, parent, neighbors, pq = _init_spantree(edges, n)
     _minimum_spantree_edges(weights, finished,dist, parent, neighbors,
                             selected, pq, root)
@@ -121,25 +121,21 @@ function _minimum_spantree_edges(weights, finished, dist,
     sizehint!(pq, length(parent))
     finished .= false
     finished[root] = true
-    dist .= Inf
-    dist[root] = 0.0
+    selected[root] = -1
+    dist .= typemax(Float64)
+    dist[root] = typemin(Float64)
     parent[root] = root
     pq[root] = dist[root]
-    i = 1
     while !isempty(pq)
         u = dequeue!(pq)
         finished[u] = true
         for (v, eidx) in neighbors[u]
             v == u && continue
-            if weights[eidx] < dist[v]
+            if dist[v] > weights[eidx]
                 dist[v] = weights[eidx]
                 decrease_key!(pq, v, dist[v])
                 parent[v] = u
-                println("pq=$pq")
-                println("dist=$dist")
-                println("u=$u v=$v i=$i eidx=$eidx")
-                selected[i] = eidx
-                i += 1
+                selected[v] = eidx
             end
         end
     end
