@@ -55,12 +55,12 @@ end
 
 
 """
-    minimum_spantree_e(g, weights, [root = 1])
+    minimum_spantree_edges(g, weights, [root = 1])
 
 Like `minimum_spantree` but return the parent vector and a Boolean vector
 indicating for each edge whether the edge is part of the spanning tree.
 """
-function minimum_spantree_e(n, edges, weights, root = 1)
+function minimum_spantree_edges(n, edges, weights, root = 1)
     selected = Vector{Int}(undef, n)
     finished, dist, parent, neighbors, pq = _init_spantree(edges, n)
     _minimum_spantree_e(weights, finished,dist, parent, neighbors,
