@@ -41,30 +41,28 @@ end
 
 
 """
-    minimum_spantree(g, weights, root = 1)
+    minimum_spantree(n, edges, weights, [root = 1])
 
 Prim's minimum spanning tree algorithm.
 Start from node `root` (will become the root node of the spanning tree).
 Return the parent vector of the tree.
 """
-function minimum_spantree(g, weights, root = 1)::Vector{Int}
-    n = length(g.graph.vertices)
-    finished, dist, parent, neighbors, pq = _init_spantree(g.graph.edges, n)
+function minimum_spantree(n, edges, weights, root = 1)::Vector{Int}
+    finished, dist, parent, neighbors, pq = _init_spantree(edges, n)
     return _minimum_spantree(weights, finished,
                              dist, parent, neighbors, pq, root)
 end
 
 
 """
-    minimum_spantree_e(g, weights, root = 1)
+    minimum_spantree_e(g, weights, [root = 1])
 
 Like `minimum_spantree` but return the parent vector and a Boolean vector
 indicating for each edge whether the edge is part of the spanning tree.
 """
-function minimum_spantree_e(g, weights, root = 1)
-    n = length(g.graph.vertices)
+function minimum_spantree_e(n, edges, weights, root = 1)
     selected = Vector{Int}(undef, n)
-    finished, dist, parent, neighbors, pq = _init_spantree(g.graph.edges, n)
+    finished, dist, parent, neighbors, pq = _init_spantree(edges, n)
     _minimum_spantree_e(weights, finished,dist, parent, neighbors,
                         selected, pq, root)
     return parent, selected
