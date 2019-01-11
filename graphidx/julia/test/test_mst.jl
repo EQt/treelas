@@ -52,7 +52,7 @@ const expected_max_x = [
 @testset "MST: Kruskal Wikipedia         " begin
     n, edges, weights = from_networkx(graph_x)
 
-    selected = kruskal_mst(n, edges, weights)
+    selected = kruskal_mst(n, edges, +weights)
     expected = [e in expected_min_x for e in graph_x]
     # println(Int.(selected .⊻ expected))
     @test selected == expected
@@ -60,6 +60,19 @@ const expected_max_x = [
     selected = kruskal_mst(n, edges, -weights)
     expected = [e in expected_max_x for e in graph_x]
     @test selected == expected
+end
+
+
+@testset "MST: Prim    Wikipedia         " begin
+    n, edges, weights = from_networkx(graph_x)
+
+    _, selected = minimum_spantree_edges(n, edges, +weights)
+    expected = Set(i for (i, e) in enumerate(graph_x) if e in expected_min_x)
+    @test Set(selected) == expected
+
+    _, selected = minimum_spantree_edges(n, edges, -weights)
+    expected = Set(i for (i, e) in enumerate(graph_x) if e in expected_max_x)
+    @test Set(selected) == expected
 end
 
 end
