@@ -7,7 +7,14 @@ import .Heap: PriorityQueue, dequeue!
 
 # -- Kruskal's minimum spanning tree algorithm ----------------------------
 
-function kruskal_mst(n::Int, edges, weight::Vector{Float64})
+"""
+    kruskal_mst(n, edges, weight)
+
+Kruskal's minimum spanning tree algorithm.
+Return a vector indicating for each edge whether it is part of the
+spanning tree.
+"""
+function kruskal_mst(n::Int, edges, weight::Vector{Float64})::Vector{Bool}
     m = length(edges)
     @assert length(weight) == m
 
