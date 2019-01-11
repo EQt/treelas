@@ -51,7 +51,7 @@ end
         (2, 2),
         (2, 4),
     ]
-    edges = reshape(collect(Iterators.flatten(edges)), 2, length(edges))' .+ 1
+    edges = reshape(reinterpret(Int, edges), 2, length(edges))' .+ 1
     n = maximum(edges)
     @assert n == 5
     edges = vec(mapslices(Tuple, edges, dims = [2]))
