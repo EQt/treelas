@@ -42,7 +42,7 @@ end
 end
 
 
-@testset "NeighborIndex: Petgraph::Csr  " begin
+@testset "NeighborIndex: Petgraph::Csr   " begin
     edges = [   # zero indexed!
         (0, 1),
         (0, 2),
