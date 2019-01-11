@@ -15,26 +15,23 @@ Return a vector indicating for each edge whether it is part of the
 spanning tree.
 """
 function kruskal_mst(n::Int, edges, weight::Vector{Float64})::Vector{Bool}
+    @assert length(weight) == length(edges)
     m = length(edges)
-    @assert length(weight) == m
-
-    selected, order, uf = Vector{Int}(), Vector{Int}(undef, m), UnionFind(n)
-    return _kruskal_mst(m, weight, edges, selected, order, uf)
+    selected, order, uf = Vector{Bool}(undef, m), Vector{Int}(undef, m), UnionFind(n)
+    return _kruskal_mst(weight, edges, selected, order, uf)
 end
 
 
-function _kruskal_mst(m, weight, edges, selected, order, uf)
-    empty!(selected)
-    sizehint!(selected, m)
+function _kruskal_mst(weight, edges, selected, order, unfi)
+    selected .= false
     sortperm!(order, weight, rev=true)
     init(uf)
     for ei in order
-        e = edges[ei]
-        u, v = e.source, e.target
-        fu, fv = find(uf, u), find(uf, v)
+        (u, v) = edges[ei]
+        fu, fv = find(unfi, u), find(unfi, v)
         if fu != fv
-            unite!(uf, fu, fv)
-            push!(selected, ei)
+            unite!(unfi, fu, fv)
+            selected[ei] = true
         end
     end
     return selected
