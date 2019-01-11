@@ -5,7 +5,7 @@ Dynamic Programming Tree Solver
 GOAL: avoid reallocation of memory as much as possible.
 """
 module DPTree
-include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.jl"))
+include("graphidx.jl")
 
 import Printf: @sprintf
 import .GraphIdx: ChildrenIndex, _compute_children
