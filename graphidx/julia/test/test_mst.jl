@@ -40,6 +40,16 @@ end
     expected = [e in expected_x for e in graph_x]
     # println(Int.(selected .⊻ expected))
     @test selected == expected
+
+    selected = kruskal_mst(n, edges, -weights)
+    expected_x = [(0, 1, 7),
+                  (1, 2, 8),
+                  (1, 3, 9),
+                  (3, 4, 15),
+                  (4, 6, 9),
+                  (5, 6, 11)]
+    expected = [e in expected_x for e in graph_x]
+    @test selected == expected
 end
 
 end
