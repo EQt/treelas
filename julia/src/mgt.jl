@@ -1,8 +1,7 @@
 module MGT
 include("tree_dp.jl")
 include("incmat.jl")
-include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "mst.jl"))
-include(joinpath(@__DIR__(), "..", "..", "graphidx", "julia", "src", "GraphIdx.jl"))
+include("graphidx.jl")
 
 import SparseArrays: mul!
 import Printf: @sprintf
