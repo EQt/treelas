@@ -53,14 +53,14 @@ end
     ]
     edges = reshape(reinterpret(Int, edges), 2, length(edges))' .+ 1
     n = maximum(edges)
-    @assert n == 5
+    @test n == 5
     edges = vec(mapslices(Tuple, edges, dims = [2]))
     idx = NeighborIndex(n, edges)
-    @assert Set(map(first, idx[1])) == Set([2, 3])
-    @assert Set(map(first, idx[2])) == Set([0, 1] .+ 1)
-    @assert Set(map(first, idx[3])) == Set([0, 2, 4] .+ 1)  # we take both directions!
-    @assert Set(map(first, idx[4])) == Set([])
-    @assert Set(map(first, idx[5])) == Set([3])     # both directions!
+    @test Set(map(first, idx[1])) == Set([2, 3])
+    @test Set(map(first, idx[2])) == Set([0, 1] .+ 1)
+    @test Set(map(first, idx[3])) == Set([0, 2, 4] .+ 1)  # we take both directions!
+    @test Set(map(first, idx[4])) == Set([])
+    @test Set(map(first, idx[5])) == Set([3])     # both directions!
 end
 
 
