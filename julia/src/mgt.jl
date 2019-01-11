@@ -6,7 +6,7 @@ include("graphidx.jl")
 import SparseArrays: mul!
 import Printf: @sprintf
 import .DPTree: _alloc_queues, _dp_tree, DPMem
-import .GraphIdx: ChildrenIndex, _init_spantree, _minimum_spantree_e
+import .GraphIdx: ChildrenIndex, _init_spantree, _minimum_spantree_edges
 
 
 """
@@ -81,8 +81,8 @@ function max_gap_tree(y::Vector{Float64},
                              it, gap_value))
         end
         γ .*= -1.0
-        _minimum_spantree_e(γ, finished, dist, parent,
-                            neighbors, selected, mst_pq, r)
+        _minimum_spantree_edges(γ, finished, dist, parent,
+                                neighbors, selected, mst_pq, r)
         tprocess(γ, parent)
         z .= y
         for (i, e) in enumerate(edges)

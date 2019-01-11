@@ -63,8 +63,8 @@ indicating for each edge whether the edge is part of the spanning tree.
 function minimum_spantree_edges(n, edges, weights, root = 1)
     selected = Vector{Int}(undef, n)
     finished, dist, parent, neighbors, pq = _init_spantree(edges, n)
-    _minimum_spantree_e(weights, finished,dist, parent, neighbors,
-                        selected, pq, root)
+    _minimum_spantree_edges(weights, finished,dist, parent, neighbors,
+                            selected, pq, root)
     return parent, selected
 end
 
@@ -105,12 +105,12 @@ function _minimum_spantree(weights, finished, dist, parent, neighbors,
 end
 
 
-function _minimum_spantree_e(weights, finished, dist,
-                             parent::Vector{Int},
-                             neighbors::NeighborIndex,
-                             selected::Vector{Int},
-                             pq::PriorityQueue{Int, Float64},
-                             root::Int = 1)::Vector{Int}
+function _minimum_spantree_edges(weights, finished, dist,
+                                 parent::Vector{Int},
+                                 neighbors::NeighborIndex,
+                                 selected::Vector{Int},
+                                 pq::PriorityQueue{Int, Float64},
+                                 root::Int = 1)::Vector{Int}
     @assert isempty(pq)
     sizehint!(pq, length(parent))
     finished .= false
