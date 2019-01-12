@@ -1,7 +1,8 @@
 module TestMST
 using Test
 
-include("../src/mst.jl")
+include("../src/kruskal_mst.jl")
+include("../src/prim_mst.jl")
 
 
 function from_networkx(graph; print_it = false)
