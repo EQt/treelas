@@ -35,7 +35,7 @@ function _init_spantree(edges, n)
 end
 
 
-function _minimum_spantree_edges(weights, finished, dist,
+function _minimum_spantree_edges(edge_weight, finished, dist,
                                  parent::Vector{Int},
                                  neighbors::NeighborIndex,
                                  selected::Vector{Int},
@@ -58,8 +58,8 @@ function _minimum_spantree_edges(weights, finished, dist,
         u = dequeue!(pq)
         for (v, eidx) in neighbors[u]
             v == u && continue
-            if !finished[v] && weights[eidx] < dist[v]
-                dist[v] = weights[eidx]
+            if !finished[v] && edge_weight[eidx] < dist[v]
+                dist[v] = edge_weight[eidx]
                 pq[v] = dist[v]    # decrease_key!(v)
                 parent[v] = u
                 selected[v] = eidx
