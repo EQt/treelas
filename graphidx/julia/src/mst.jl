@@ -39,10 +39,6 @@ end
 
 # -- Prim's minimum spanning tree algorithm --------------------------------
 
-function decrease_key!(pq::PriorityQueue{K,V}, k::K, new_val::V) where {K, V}
-    pq[k] = new_val
-end
-
 
 """
     minimum_spantree_edges(g, weights, [root = 1])
@@ -100,7 +96,7 @@ function _minimum_spantree_edges(weights, finished, dist,
             v == u && continue
             if !finished[v] && weights[eidx] < dist[v]
                 dist[v] = weights[eidx]
-                decrease_key!(pq, v, dist[v])
+                pq[v] = dist[v]    # decrease_key!(v)
                 parent[v] = u
                 selected[v] = eidx
             end
@@ -142,7 +138,7 @@ function _minimum_spantree(weights, finished, dist, parent, neighbors,
             v == u && continue
             if !finished[v] && weights[eidx] < dist[v]
                 dist[v] = weights[eidx]
-                decrease_key!(pq, v, dist[v])
+                pq[v] = dist[v]    # decrease_key!(v)
                 parent[v] = u
             end
         end
