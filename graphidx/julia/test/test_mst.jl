@@ -4,8 +4,14 @@ using Test
 include("../src/mst.jl")
 
 
-function from_networkx(graph)
+function from_networkx(graph; print_it = false)
     graph = reshape(reinterpret(Int, graph), 3, length(graph))'
+    if print_it
+        for i in 1:size(graph, 1)
+            e = graph[i, :]
+            println("$('A' + e[1]) -- $('A' + e[2]): $(e[3])")
+        end
+    end
     edges = vec(mapslices(Tuple, graph[:, 1:2] .+ 1, dims = [2]))
     weights = Float64.(graph[:, 3])
     n = maximum(map(maximum, edges))
