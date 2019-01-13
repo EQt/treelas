@@ -113,11 +113,7 @@ function max_gap_tree(y::Vector{Float64},
         dprocess(alpha)
         it >= max_iter && break
         gap_vec!(γ, dif, x, y, D, Dt, alpha)
-        gap_value = sum(γ)
-        if verbose
-            println(@sprintf("%4d %f",
-                             it, gap_value))
-        end
+        verbose && println(@sprintf("%4d %f", it, sum(γ)))
         γ .*= -1.0
         _minimum_spantree_edges(γ, finished, dist, parent,
                                 neighbors, selected, mst_pq,
