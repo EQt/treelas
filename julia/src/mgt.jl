@@ -100,13 +100,13 @@ function max_gap_tree(y::Vector{Float64},
     dif = zeros(m)
     γ = zeros(m)
     x = copy(y)
-    xbuf = Vector{Float64}(undef, n)
     z = similar(y)
+    tlam = Vector{Float64}(undef, n)
+    xbuf = Vector{Float64}(undef, n)
     selected = Vector{Int}(undef, n)
     selected[root_node] = 0
     mem = DPMem(n)
     pq, proc_order, stack, childs = _alloc_queues(n)
-    tlam = Vector{Float64}(undef, n)
     finished, dist, parent, neighbors, mst_pq = _init_spantree(edges, n)
 
     total = 0.0
