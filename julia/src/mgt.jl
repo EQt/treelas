@@ -109,7 +109,6 @@ function max_gap_tree(y::Vector{Float64},
     pq, proc_order, stack, childs = _alloc_queues(n)
     finished, dist, parent, neighbors, mst_pq = _init_spantree(edges, n)
 
-    total = 0.0
     for it in 0:max_iter
         dprocess(alpha)
         it >= max_iter && break
