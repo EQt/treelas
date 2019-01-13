@@ -26,6 +26,16 @@ lambda::Vector{Float}
 
 Which of those could be brought together?
 
+Obviously, D can be constructed from `edges` and `lambda` (which is
+already implemented).
+
+Looking into the future, we might not have an explicit list of edges:
+for a grid graph, e.g. it makes no sense to explicitly compute all
+edges.  So what do we need?
+
+Prim's MST algorithm needs an index telling for each node the
+neighbors.  The same is needed for DFS traversal.
+
 """
 module MGT
 include("incmat.jl")
@@ -83,7 +93,6 @@ function max_gap_tree(y::Vector{Float64},
                       dprocess::Function=α->nothing,
                       tprocess::Function=(t,w)->nothing,
                       c0::Float64 = 0.0) where E
-    r = Int(root_node)
     m, n = size(D)
     Dt = copy(D')
     alpha = c0 * sign.(D*vec(y))
@@ -111,7 +120,8 @@ function max_gap_tree(y::Vector{Float64},
         end
         γ .*= -1.0
         _minimum_spantree_edges(γ, finished, dist, parent,
-                                neighbors, selected, mst_pq, r)
+                                neighbors, selected, mst_pq,
+                                root_node)
         tprocess(γ, parent)
         z .= y
         for (i, e) in enumerate(edges)
