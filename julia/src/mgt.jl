@@ -5,6 +5,15 @@ In the central function `max_gap_tree`, a tree having the largest gap
 values (computed by `gap_vec!`) is selected.  The non-tree edge-flows
 are forwarded into the input `y`.  Then the tree solver is used and
 the tree-edges are updated.
+
+## Refactoring
+
+At the moment (2019-01-13), the code is pretty unorganized und hard to
+understand.
+
+- What could we do to better organize the code?
+- What should be adaptable in the future?
+
 """
 module MGT
 include("incmat.jl")
