@@ -34,7 +34,8 @@ for a grid graph, e.g. it makes no sense to explicitly compute all
 edges.  So what do we need?
 
 Prim's MST algorithm needs an index telling for each node the
-neighbors.  The same is needed for DFS traversal.
+neighbors.  The same is needed for DFS traversal.  Furtheron, an edge
+order need to be specified, i.e. we should provide an edge iterator.
 
 """
 module MGT
