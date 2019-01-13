@@ -1,7 +1,15 @@
+"""
+# Maximum Gap Tree
+
+In the central function `max_gap_tree`, a tree having the largest gap
+values (computed by `gap_vec!`) is selected.  The non-tree edge-flows
+are forwarded into the input `y`.  Then the tree solver is used and
+the tree-edges are updated.
+"""
 module MGT
-include("tree_dp.jl")
 include("incmat.jl")
 include("graphidx.jl")
+include("tree_dp.jl")
 
 import SparseArrays: mul!
 import Printf: @sprintf
