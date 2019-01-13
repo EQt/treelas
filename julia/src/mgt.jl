@@ -14,6 +14,18 @@ understand.
 - What could we do to better organize the code?
 - What should be adaptable in the future?
 
+
+## Input
+
+At the moment, I need a lot of redundant information:
+```
+D::IncMat,
+edges::Vector{E},
+lambda::Vector{Float}
+```
+
+Which of those could be brought together?
+
 """
 module MGT
 include("incmat.jl")
