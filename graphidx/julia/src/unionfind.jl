@@ -1,5 +1,10 @@
-# -- Union find data structure --------------------------------------------
+"""
+    UnionFind(n)
 
+
+Classical Union-Find data structure with path compression as described
+eg in CLRS page XY
+"""
 struct UnionFind
     p::Vector{Int}
     rank::Vector{Int}
