@@ -22,6 +22,11 @@ Here, we use it to store
 - Neighbors in a bidirectional graph
 
 
+This library will never be as extensive as e.g. 
+[C++'s Boost Graph Library](https://www.boost.org/doc/libs/1_69_0/libs/graph/doc/index.htlm) or
+[Julia's LightGraphs](https://github.com/JuliaGraphs/LightGraphs.jl).
+
+
 Programming Languages
 ---------------------
 
