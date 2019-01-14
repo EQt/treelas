@@ -2,8 +2,9 @@
 Computations related to grid graphs
 """
 module Grid
-import SparseArrays
+using SparseArrays
 import LinearAlgebra
+import LinearAlgebra: norm
 
 """
 Position in a grid graph
@@ -59,6 +60,53 @@ function compute_dirs(dn::Int)::Vector{Pixel}
         throw(ArgumentError("dn >= 4 not supported"))
     end
 end
+
+
+function incmat(n1::Int, n2::Int, dn::Int = 1)
+
+    pix2ind(i, j) = i + (j-1)*n1
+
+    n = n1 * n2
+    m = 0
+    dirs = compute_dirs(dn)
+    for d in dirs
+        m += (n1-d.x)*(n2-d.y) + (n1-d.y)*(n2-d.x)
+    end
+
+    I = Vector{Int}(undef, 2m)
+    J = Vector{Int}(undef, 2m)
+    W = zeros(Float64, 2m)
+
+    k = Int(1)   # number of edge
+    for d in dirs
+        len = 1/norm(d)
+        for j = 1:(n2-d.y)
+            for i = 1:(n1-d.x)
+                I[2k-1] = k
+                J[2k-1] = pix2ind(i, j)
+                W[2k-1] = +len
+                I[2k-0] = k
+                J[2k-0] = pix2ind(i+d.x, j+d.y)
+                W[2k-0] = -len
+                k +=1
+            end
+        end
+        for j = 1:(n2-d.x)
+            for i = 1+d.y:n1
+                I[2k-1] = k
+                J[2k-1] = pix2ind(i, j)
+                W[2k-1] = +len
+                I[2k-0] = k
+                J[2k-0] = pix2ind(i-d.y, j+d.x)
+                W[2k-0] = -len
+                k +=1
+            end
+        end
+    end
+
+    D = sparse(I, J, W, m, n)
+end
+
 
 
 # """

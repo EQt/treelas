@@ -6,4 +6,6 @@ include("children.jl")
 include("prim_mst.jl")
 include("kruskal_mst.jl")
 
+include("grid.jl")
+
 end
