@@ -28,7 +28,7 @@ Base.getindex(p::Pixel, i::Int) =
 
 LinearAlgebra.norm2(p::Pixel) = p.x^2 + p.y^2
 
-LinearAlgebra.norm(x::Pixel) = sqrt(norm2(x))
+LinearAlgebra.norm(x::Pixel) = sqrt(LinearAlgebra.norm2(x))
 
 
 """
