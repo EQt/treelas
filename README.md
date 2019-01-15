@@ -1,4 +1,4 @@
-Treelas
+TreeLas
 =======
 [![Travis](https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master)](https://travis-ci.com/EQt/treelas)
 
