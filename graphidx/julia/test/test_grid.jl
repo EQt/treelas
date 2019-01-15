@@ -3,7 +3,7 @@ include("../src/grid.jl")
 
 using Test
 import LinearAlgebra: norm, norm2
-import .Grid: Pixel, line_D
+import .Grid: Pixel, line_D, incmat
 
 
 @testset "Pixel                          " begin
@@ -29,6 +29,11 @@ end
                0  +1  -1   0   0
                0   0  +1  -1   0
                0   0   0  +1  -1]
+
+    for n in [11, 13, 42]
+        @test line_D(n) == incmat(n, 1)
+        @test line_D(n) == incmat(1, n)
+    end
 end
 
 end
