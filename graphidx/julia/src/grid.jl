@@ -108,6 +108,21 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
 end
 
 
+"""
+    line_D(n)
+
+Return the incidence matrix for a line graph of length `n`.
+Is equivalent to `incmat(1, n, 1)`
+"""
+function line_D(n)
+    D = spzeros(n-1, n)
+    for i = 1:n-1
+        D[i, i+0] = +1
+        D[i, i+1] = -1
+    end
+    return D
+end
+
 
 # """
 # `ds` species the directions explicitly (vector d is scaled by 1/norm(d))
