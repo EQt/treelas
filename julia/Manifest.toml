@@ -38,10 +38,10 @@ deps = ["LinearAlgebra", "Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[GraphIdx]]
-deps = ["Random", "Test"]
+deps = ["LinearAlgebra", "Random", "SparseArrays", "Test"]
 path = "../graphidx/julia"
 uuid = "6f20e514-06e4-11e9-04c5-39592f74a46d"
-version = "0.1.0"
+version = "0.11.1"
 
 [[InteractiveUtils]]
 deps = ["LinearAlgebra", "Markdown"]
