@@ -11,8 +11,11 @@ we concatenate the adjacencies, resulting in a single vector of length `m`, and 
 ```
 [ TODO: transformed graph ]
 ```
+The transformation from above to below is done using a linear time integer sorting procedure (called [Counting Sort](https://en.wikipedia.org/wiki/Counting_sort)), i.e. it is quite fast.
+However afterwards, we cannot add further new edges (unless we reserved extra space for that; not implemented at the moment).
 
-This data structure is usually found in sparse matrices like CSC or CSR format (the Rust crate
+
+This kind of data structure we use to store "adajacency information" is usually found in sparse matrices like CSC or CSR format (the Rust crate
 [`petgraph`](https://github.com/bluss/petgraph)
 calls this structure therefore 
 [`Csr`](https://docs.rs/petgraph/0.4.13/petgraph/csr/struct.Csr.html)).
@@ -20,7 +23,6 @@ Here, we use it to store
 - Children in a rooted tree.
 - Partitions of numbers `0..n`
 - Neighbors in a bidirectional graph
-
 
 This library will never be as extensive as e.g. 
 [C++'s Boost Graph Library](https://www.boost.org/doc/libs/1_69_0/libs/graph/doc/index.htlm) or
