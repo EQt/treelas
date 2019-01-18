@@ -7,6 +7,15 @@
 #include "utils/viostream.hpp"
 
 
+/** Group the elements in `parent` (stored in `value`, group index `index`)
+
+    If `root >= 0` treat it as the root of the tree given by `parent`.
+
+    Algorithm: Counting Sort
+    https://en.wikipedia.org/wiki/Counting_sort
+
+    Linear Runtime.
+*/
 template <typename int_ = int>
 void
 groupby(std::vector<int_> &value,
@@ -19,7 +28,7 @@ groupby(std::vector<int_> &value,
     size_t k = root >= 0 ? n :
         size_t(*std::max_element(parent, parent + n) + 1);
 
-    index.assign(k+1, 0);           // compute number of children
+    index.assign(k+1, 0);           // compute histogram, i.e. number of children
     for (int i = 0; i < int(n); i++)
         index[parent[i]]++;
 
