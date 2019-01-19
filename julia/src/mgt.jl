@@ -39,7 +39,6 @@ order need to be specified, i.e. we should provide an edge iterator.
 
 """
 module MGT
-include("incmat.jl")
 include("graphidx.jl")
 include("tree_dp.jl")
 
@@ -47,6 +46,7 @@ import SparseArrays: mul!
 import Printf: @sprintf
 import .DPTree: _alloc_queues, _dp_tree, DPMem
 import .GraphIdx: ChildrenIndex, _init_spantree, _minimum_spantree_edges
+import .GraphIdx.LinA: IncMat, Edges, create_D
 
 
 """

@@ -1,9 +1,11 @@
 module TestIncMat
+include("../src/lina.jl")
+include("../../../julia/test/square.jl")
+
 using Test
 import SparseArrays: nnz
+import .LinA: create_D
 
-include("../src/incmat.jl")
-include("square.jl")
 
 @testset "Create D: Square               " begin
     edges, n = square_edges()

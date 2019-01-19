@@ -1,10 +1,13 @@
 """
-Linear Algebra related graph functions
+Linear Algebra related graph functions.
+Especially, methods for handling incidence matrixes (`IncMat`).
 """
 module LinA
-using SparseArrays
+import SparseArrays: SparseMatrixCSC, sparse
 
 const IncMat = SparseMatrixCSC{Float64,Int64}
+const Edges = Vector{Tuple{Int, Int}}
+
 
 function is_incmat(d::IncMat)::Bool
     dt = IncMat(d')
@@ -36,4 +39,21 @@ function edges_from_incmat(d::IncMat)
 end
 
 
+function create_D(E::Edges,
+                  lam::Vector{Float64}, n::Int,
+                  T = Int)::IncMat
+    m = length(E)
+    I = Vector{T}(undef, 2m)
+    J = Vector{T}(undef, 2m)
+    V = Vector{eltype(lam)}(undef, 2m)
+    for (i,(u,v)) in enumerate(E)
+        I[2i-1] = i
+        J[2i-1] = u
+        V[2i-1] = lam[i]
+        I[2i-0] = i
+        J[2i-0] = v
+        V[2i-0] = -lam[i]
+    end
+    sparse(I, J, V, m, n)
+end
 end
