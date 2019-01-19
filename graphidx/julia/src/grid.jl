@@ -35,8 +35,8 @@ LinearAlgebra.norm(x::Pixel) = sqrt(LinearAlgebra.norm2(x))
 """
     compute_dirs(dn)
 
-Setting the neighborhood degree (`dn`) to `i` will set all numbers less or equal `i` in the following diagram as neighbors of `[*]`.
-
+Setting the neighborhood degree (`dn`) to `i` will set all numbers
+less or equal `i` in the following diagram as neighbors of `[*]`.
 ```
 […] […] […] […] […] […] […]
 […] […] [4] [3] [4] […] […]
