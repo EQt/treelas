@@ -46,7 +46,7 @@ import SparseArrays: mul!
 import Printf: @sprintf
 import .DPTree: _alloc_queues, _dp_tree, DPMem
 import .GraphIdx: ChildrenIndex, _init_spantree, _minimum_spantree_edges
-import .GraphIdx.LinA: IncMat, Edges, create_D
+import .GraphIdx.LinA: IncMat, Edges
 
 
 """
@@ -79,7 +79,7 @@ max_gap_tree(y::Matrix{Float64}, edges::Edges, lambda::Vector{Float64}; args...)
 
 
 max_gap_tree(y::Vector{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
-    max_gap_tree(y, create_D(edges, lambda, length(y)), edges, lambda; args...)
+    max_gap_tree(y, IncMat(edges, lambda, length(y)), edges, lambda; args...)
 
 
 function max_gap_tree(y::Vector{Float64},
