@@ -85,7 +85,7 @@ end
 
 
 function incmat(n1::Int, n2::Int, dn::Int = 1)
-
+    """Fortran index of the matrix entry `(i,j)`"""
     pix2ind(i, j) = i + (j-1)*n1
 
     n = n1 * n2
@@ -100,7 +100,7 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     W = zeros(Float64, 2m)
 
     k = Int(1)   # number of edge
-    proc = (i, j, i2, j2, len) -> begin
+    iter_edges(n1, n2, dirs) do (i, j, i2, j2, len)
         I[2k-1] = k
         J[2k-1] = pix2ind(i, j)
         W[2k-1] = +len
@@ -109,9 +109,6 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
         W[2k-0] = -len
         k +=1
     end
-
-    iter_edges(proc, n1, n2, dirs)
-
     D = sparse(I, J, W, m, n)
 end
 
