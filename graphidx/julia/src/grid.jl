@@ -88,19 +88,23 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     W = zeros(Float64, 2m)
 
     k = Int(1)   # number of edge
+    proc = (i, j, i2, j2, len) -> begin
+        I[2k-1] = k
+        J[2k-1] = pix2ind(i, j)
+        W[2k-1] = +len
+        I[2k-0] = k
+        J[2k-0] = pix2ind(i2, j2)
+        W[2k-0] = -len
+        k +=1
+    end
+
     for d in dirs
         len = 1/norm(d)
         for j = 1:(n2-d.y)
             for i = 1:(n1-d.x)
                 i2 = i+d.x
                 j2 = j+d.y
-                I[2k-1] = k
-                J[2k-1] = pix2ind(i, j)
-                W[2k-1] = +len
-                I[2k-0] = k
-                J[2k-0] = pix2ind(i2, j2)
-                W[2k-0] = -len
-                k +=1
+                proc(i, j, i2, j2, len)
             end
         end
         for j = 1:(n2-d.x)
