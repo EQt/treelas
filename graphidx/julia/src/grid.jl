@@ -61,6 +61,7 @@ function compute_dirs(dn::Int)::Vector{Pixel}
     end
 end
 
+
 """
     iter_edges(proc, n1, n2, dirs)
 
@@ -100,7 +101,7 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     W = zeros(Float64, 2m)
 
     k = Int(1)   # number of edge
-    iter_edges(n1, n2, dirs) do (i, j, i2, j2, len)
+    iter_edges(n1, n2, dirs) do i, j, i2, j2, len
         I[2k-1] = k
         J[2k-1] = pix2ind(i, j)
         W[2k-1] = +len
@@ -111,7 +112,6 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     end
     D = sparse(I, J, W, m, n)
 end
-
 
 """
     line_D(n)
