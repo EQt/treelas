@@ -85,22 +85,38 @@ function iter_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
 end
 
 
+"""
+    num_edges(n1, n2, dirs)
+    num_edges(n1, n2, dn::Int)
+
+Number of edges in a grid graph `n1×n2` along directions `dirs`.
+If called with last argument a number, first generate `dirs`.
+"""
+function num_edges(n1::Int, n2::Int, dirs::Vector{Pixel})::Int
+    m = 0
+    for d in dirs
+        m += (n1-d.x)*(n2-d.y) + (n1-d.y)*(n2-d.x)
+    end
+    return m
+end
+
+num_edges(n1::Int, n2::Int, dn::Int = 1)::Int =
+    num_edges(n1, n2, compute_dirs(dn))
+
+
 function incmat(n1::Int, n2::Int, dn::Int = 1)
     """Fortran index of the matrix entry `(i,j)`"""
     pix2ind(i, j) = i + (j-1)*n1
 
-    n = n1 * n2
-    m = 0
     dirs = compute_dirs(dn)
-    for d in dirs
-        m += (n1-d.x)*(n2-d.y) + (n1-d.y)*(n2-d.x)
-    end
+    n = n1 * n2
+    m = num_edges(n1, n2, dirs)
 
     I = Vector{Int}(undef, 2m)
     J = Vector{Int}(undef, 2m)
     W = zeros(Float64, 2m)
 
-    k = Int(1)   # number of edge
+    k = Int(1)   # edge index
     iter_edges(n1, n2, dirs) do i, j, i2, j2, len
         I[2k-1] = k
         J[2k-1] = pix2ind(i, j)
@@ -191,10 +207,6 @@ function img_graph(n1::Int, n2::Int,
         end
         m += (n1-e.y)*(n2-e.x)
     end
-    @debug @val I
-    @debug @val J
-    D = sparse(I, J, W, m, n)
-    G = simple_edgelist(n1*n2, E; is_directed=false)
     lmax = maximum(lam)
     Lip = lmax * 2 * 4 * sum([l for (d,l) in dir])
     ImgGraph(n1, n2, Lip, lam, G, D, dir)
