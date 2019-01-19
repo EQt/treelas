@@ -145,71 +145,20 @@ function line_D(n)
 end
 
 
-# """
-# `ds` species the directions explicitly (vector d is scaled by 1/norm(d))
-# """
-# img_graph(n1::Int, n2::Int, ds::Vector{Pixel}) =
-#     img_graph(n1, n2, [(d, 1/norm(d)) for d in ds])
+"""
+    lipschitz(n1, n2, [dn | dirs])
 
-
-#=
-function img_graph(n1::Int, n2::Int,
-                   dir::Vector{Tuple{Pixel,Float64}}=[(Pixel(1,0), 1.0)])
-    n = n1 * n2
-    m = 0
-    for d in dir
-        e = d[1]
-        m += (n1-e.x)*(n2-e.y) + (n1-e.y)*(n2-e.x)
-    end
-    @assert m > 0
-    I = zeros(Int, 2m)
-    J = zeros(Int, 2m)
-    W = zeros(Float64, 2m)
-    E = [IEdge(0,0,0) for e=1:m]
-    lam = zeros(Float64, m)
-    m = 0
-    for d in dir
-        e = d[1]
-        @inbounds for j = 1:n2-e.y
-            for i = 1:n1-e.x
-                l = m + i + (j-1)*(n1-e.x)
-                k = 2l - 1
-                v1 = pix2ind(i,j, n1)
-                v2 = pix2ind(i+e.x, j+e.y, n1)
-                E[l] = IEdge(l, v1, v2)
-                lam[l] = d[2]
-                I[k] = l
-                J[k] = v1
-                W[k] = +d[2]
-                k += 1
-                I[k] = l # same edge
-                J[k] = v2
-                W[k] = -d[2]
-            end
-        end
-        m += (n1-e.x)*(n2-e.y)
-        @inbounds for j = 1:n2-e.x
-            for i = 1+e.y:n1
-                l = m + i - e.y + (j-1)*(n1-e.y)
-                k = 2l -1
-                v1 = pix2ind(i,j, n1)
-                v2 = pix2ind(i-e.y, j+e.x, n1)
-                E[l] = IEdge(l, v1, v2)
-                lam[l] = d[2]
-                I[k] = l
-                J[k] = v1
-                W[k] = +d[2]
-                k += 1
-                I[k] = l # same edge
-                J[k] = v2
-                W[k] = -d[2]
-            end
-        end
-        m += (n1-e.y)*(n2-e.x)
-    end
+Compute an upper bound for the Lipschitz-constant for ...
+TODO: Be more precise
+"""
+function lipschitz(n1, n2, dirs)
     lmax = maximum(lam)
-    Lip = lmax * 2 * 4 * sum([l for (d,l) in dir])
-    ImgGraph(n1, n2, Lip, lam, G, D, dir)
+    Lip = lmax * 2 * 4 * sum([l for (d,l) in dirs])
+    error("not implemented, yet")
 end
-=#
+
+lipschitz(n1::Int, n2::Int, dn::Int)::Float64 =
+    lipschitz(n1, n2, compute_dirs(dn))
+
+
 end
