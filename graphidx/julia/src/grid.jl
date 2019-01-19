@@ -67,8 +67,20 @@ end
 Call `proc(i1, j1, i2, j2, len)` for every grid edge
 `(i1, j1) -- (i2, j2)` having `len`gth.
 """
-function iter_edges(proc, n1::Int, n2::Int, dirs::Vector{Pixel})
-    
+function iter_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
+    for d in dirs
+        len = 1/norm(d)
+        for j = 1:(n2-d.y)
+            for i = 1:(n1-d.x)
+                proc(i, j, i+d.x, j+d.y, len)
+            end
+        end
+        for j = 1:(n2-d.x)
+            for i = 1+d.y:n1
+                proc(i, j, i-d.y, j+d.x, len)
+            end
+        end
+    end
 end
 
 
@@ -98,19 +110,7 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
         k +=1
     end
 
-    for d in dirs
-        len = 1/norm(d)
-        for j = 1:(n2-d.y)
-            for i = 1:(n1-d.x)
-                proc(i, j, i+d.x, j+d.y, len)
-            end
-        end
-        for j = 1:(n2-d.x)
-            for i = 1+d.y:n1
-                proc(i, j, i-d.y, j+d.x, len)
-            end
-        end
-    end
+    iter_edges(proc, n1, n2, dirs)
 
     D = sparse(I, J, W, m, n)
 end
