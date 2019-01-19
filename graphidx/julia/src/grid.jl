@@ -129,6 +129,28 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     D = sparse(I, J, W, m, n)
 end
 
+
+function adjlist(n1::Int, n2::Int, dn::Int = 1)
+    """Fortran index of the matrix entry `(i,j)`"""
+    pix2ind(i, j) = i + (j-1)*n1
+
+    dirs = compute_dirs(dn)
+    m = num_edges(n1, n2, dirs)
+    head = Vector{Int}(undef, m)
+    tail = Vector{Int}(undef, m)
+    lam =  Vector{Float64}(undef, m)
+
+    k = Int(1)
+    iter_edges(n1, n2, dirs) do i1, j1, i2, j2, len
+        head[k] = pix2ind(i1, j1)
+        tail[k] = pix2ind(i2, j2)
+        lam[k] = len
+        k += 1
+    end
+    head, tail, lam
+end
+
+
 """
     line_D(n)
 
