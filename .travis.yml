@@ -7,21 +7,23 @@ branches:
   only:
     - master
 
+# https://docs.travis-ci.com/user/installing-dependencies/#installing-packages-on-macos
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - g++-7
+  homebrew:
+    packages:
+      - gcc    ## https://formulae.brew.sh/formula/gcc
+
 matrix:
   include:
     - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
       os: linux
-      addons:
-        apt:
-          sources:
-          - ubuntu-toolchain-r-test
-          packages:
-          - g++-7
     - env: CXX_COMPILER=clang++ C_COMPILER=clang
       os: osx
-      addons:
-        homebrew:
-          - gcc    ## https://formulae.brew.sh/formula/gcc
 
 cache:
   directories:
