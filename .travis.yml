@@ -17,13 +17,11 @@ matrix:
           - ubuntu-toolchain-r-test
           packages:
           - g++-7
-    ## https://formulae.brew.sh/formula/gcc@7
-    - env:
-      - CXX_COMPILER=clang++
-      - C_COMPILER=clang
-      - BREW=llvm@5
-      - BREW_OPTS="--with-tools"
+    - env: CXX_COMPILER=clang++ C_COMPILER=clang
       os: osx
+      addons:
+        homebrew:
+          - gcc    ## https://formulae.brew.sh/formula/gcc
 
 cache:
   directories:
@@ -36,13 +34,6 @@ before_cache:
 
 before_install:
   - git describe --tags
-  - |
-    if [[ "$TRAVIS_OS_NAME" == "osx" ]] && [[ ! -z "$BREW" ]]; then
-      brew install $BREW_OPTS $BREW &&
-      export PATH=/usr/local/opt/$BREW/bin:$PATH &&
-      export LDFLAGS="-L/usr/local/opt/llvm@5/lib -Wl,-rpath,/usr/local/opt/llvm@5/lib" && 
-      which $CXX_COMPILER && $CXX_COMPILER --version
-    fi
 
 install:
   - uname -a && echo $TRAVIS_OS_NAME && pwd
