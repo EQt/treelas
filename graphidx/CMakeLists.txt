@@ -10,4 +10,5 @@ set(TESTS
   test_kruskal_mst.cpp
   test_postorder.cpp
   test_prufer.cpp
+  test_hex.cpp
 )
