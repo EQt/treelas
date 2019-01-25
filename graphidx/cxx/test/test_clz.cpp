@@ -108,7 +108,7 @@ TEST(clz, hyperfloor_shiftneg_u64)
 TEST(clz, hyperfloor_u64)
 {
     const auto n = 8;
-    uint64_t nums[n] = {
+    const uint64_t nums[n] = {
         0xc6d9987dc7329e40, // 0
         0x71af2ce190c639d6,
         0x03d2bfb96a9c418e, // 2
@@ -119,7 +119,7 @@ TEST(clz, hyperfloor_u64)
         0xffffffffffffffff
     };
 
-    uint64_t expect[n] = {
+    const uint64_t expect[n] = {
         0x8000000000000000,
         0x4000000000000000,
         0x0200000000000000,
@@ -142,4 +142,8 @@ TEST(clz, hyperfloor_u64)
 TEST(clz, hyperfloor_u64_0)
 {
     ASSERT_EQ(hyperfloor(uint64_t(0)), uint64_t(0));
+    const uint64_t nums[] = {1, 0};
+    ASSERT_EQ(nums[0], uint64_t(1));
+    ASSERT_EQ(nums[1], uint64_t(0));
+    ASSERT_EQ(hyperfloor(nums[1]), uint64_t(0));
 }
