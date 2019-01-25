@@ -11,8 +11,9 @@ function generate(T = UInt64, n = 9, seed = 0)
     for i in 1:n
         nums[i] >>= 2i^2 - 5i + 3
     end
-    nums[7] = +one(T)
-    nums[8] = -one(T)
+    nums[end-2] = zero(T)
+    nums[end-1] = +one(T)
+    nums[end-0] = -one(T)
     nums
 end
 
@@ -20,3 +21,4 @@ nums = generate(UInt64, 9)
 expect = leading_zeros.(nums)
 
 nums32 = generate(UInt32, 8)
+# show(reinterpret.(Int32, (generate(UInt32, 8, 0)))

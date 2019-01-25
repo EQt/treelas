@@ -25,6 +25,13 @@ TEST(clz, clz_u32)
 
 TEST(clz, clz_i32)
 {
+    const int n = 8;
+    int32_t nums[n] = {-930234816, 1173689281, 38134286, 127284, 13, 0, 1, -1};
+    size_t expect[n] = {0, 1, 6, 15, 28, 32, 31, 0};
+    for (int i = 0; i < n; i++)
+        ASSERT_EQ(leading_zeros(nums[i]), expect[i])
+            << "nums[" << i << "] = " << nums[i]
+            << " expect[" << i << "]" << expect[i];
 }
 
 

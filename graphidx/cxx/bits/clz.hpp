@@ -36,6 +36,13 @@ leading_zeros(uint32_t x)
 }
 
 
+inline uint32_t
+leading_zeros(int32_t x)
+{
+    return _lzcnt_u32((uint32_t) x);
+}
+
+
 inline uint64_t
 hyperfloor(uint64_t x)
 {
