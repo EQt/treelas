@@ -4,11 +4,44 @@
 #include <cinttypes>    // for PRIx64
 
 
+/** hex(number).
+ * Return the hexadecimal representation of a number.
+ */
 inline std::string
-hex(uint64_t x)
+hex(uint64_t x, const char *prefix = nullptr)
 {
     char h [2*sizeof(x) + 3 + 3 + 2];
-    snprintf(h, sizeof(h), "d64(0x%0" PRIx64 ")", x);
+    if (prefix)
+        snprintf(h, sizeof(h), "%s(0x%0" PRIx64 ")", prefix, x);
+    else
+        snprintf(h, sizeof(h), "0x%0" PRIx64, x);
+    return std::string(h);
+}
+
+
+inline std::string
+hex(int64_t x)
+{
+    char h [2*sizeof(x) + 3 + 3 + 2];
+    snprintf(h, sizeof(h), "0x%0" PRIx64, x);
+    return std::string(h);
+}
+
+
+inline std::string
+hex(uint32_t x)
+{
+    char h [2*sizeof(x) + 3 + 3 + 2];
+    snprintf(h, sizeof(h), "0x%0" PRIx32, x);
+    return std::string(h);
+}
+
+
+inline std::string
+hex(int32_t x)
+{
+    char h [2*sizeof(x) + 3 + 3 + 2];
+    snprintf(h, sizeof(h), "0x%0" PRIx32, x);
     return std::string(h);
 }
 
@@ -19,5 +52,5 @@ hex(double x)
     static_assert(sizeof(uint64_t) == sizeof(double), "Wrong architecture");
     uint64_t i;
     memcpy(&i, &x, sizeof(uint64_t));
-    return hex(i);
+    return hex(i, "d64");
 }
