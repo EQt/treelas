@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <immintrin.h>
+#include <algorithm>        // for std::max
 
 /**
    Count number of leading zeros (in binary representation).
@@ -46,5 +47,5 @@ leading_zeros(int32_t x)
 inline uint64_t
 hyperfloor(uint64_t x)
 {
-    return uint64_t(1) << (63 - (int64_t) leading_zeros(x));
+    return uint64_t(1) << int(63 - (int)leading_zeros(x));
 }
