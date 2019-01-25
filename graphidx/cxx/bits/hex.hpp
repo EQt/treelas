@@ -52,5 +52,5 @@ hex(double x)
     static_assert(sizeof(uint64_t) == sizeof(double), "Wrong architecture");
     uint64_t i;
     memcpy(&i, &x, sizeof(uint64_t));
-    return hex(i, "d64");
+    return hex(i, "f64");
 }
