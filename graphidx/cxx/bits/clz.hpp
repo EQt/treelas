@@ -44,7 +44,14 @@ leading_zeros(int32_t x)
 
 
 inline uint64_t
+shift1u64(int n)
+{
+    return uint64_t(1) << n;
+}
+
+
+inline uint64_t
 hyperfloor(uint64_t x)
 {
-    return uint64_t(1) << int(63 - (int)leading_zeros(x));
+    return shift1u64(63 - (int)leading_zeros(x));
 }
