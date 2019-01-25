@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.12)
 project(treelas)
 
 option(BUILD_TESTS "Build unit tests using googletest" ON)
@@ -40,9 +40,9 @@ add_object(line_para  cxx/line/line_para.cpp)
 add_object(line_c     cxx/line/line_c.cpp)
 add_object(line_c2    cxx/line/line_c2.cpp)
 add_object(line_c3    cxx/line/line_c3.cpp)
-add_object(postorder  graphidx/cxx/tree/postorder.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
+add_object(postorder  graphidx/cxx/tree/postorder.cpp)
 
 # PYTHON
 set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/pybind11"
@@ -135,8 +135,8 @@ if (BUILD_TESTS)
   include_directories(deps/googletest/googletest/include)
   add_subdirectory(graphidx)
   get_directory_property(GRAPHIDX_TESTS DIRECTORY graphidx DEFINITION TESTS)
+  list(TRANSFORM GRAPHIDX_TESTS PREPEND "graphidx/cxx/test/")
   set(TESTS
-    ${GRAPHIDX_TESTS}
     cxx/test/test_vecalloc.cpp
     cxx/test/test_ref.cpp
     cxx/test/test_strtok.cpp
@@ -149,6 +149,7 @@ if (BUILD_TESTS)
   endif()
   add_executable(tests
     cxx/test/tests.cpp
+    ${GRAPHIDX_TESTS}
     ${TESTS}
     $<TARGET_OBJECTS:line>
     $<TARGET_OBJECTS:postorder>

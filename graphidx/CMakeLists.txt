@@ -1,13 +1,13 @@
 set(TESTS
-    graphidx/cxx/test/test_children.cpp
-    graphidx/cxx/test/test_partition.cpp
-    graphidx/cxx/test/test_biadjacent.cpp
-    graphidx/cxx/test/test_grid.cpp
-    graphidx/cxx/test/test_timer.cpp
-    graphidx/cxx/test/test_stack.cpp
-    graphidx/cxx/test/test_queue.cpp
-    graphidx/cxx/test/test_unionfind.cpp
-    graphidx/cxx/test/test_kruskal_mst.cpp
-    graphidx/cxx/test/test_postorder.cpp
-    graphidx/cxx/test/test_prufer.cpp
+  test_children.cpp
+  test_partition.cpp
+  test_biadjacent.cpp
+  test_grid.cpp
+  test_timer.cpp
+  test_stack.cpp
+  test_queue.cpp
+  test_unionfind.cpp
+  test_kruskal_mst.cpp
+  test_postorder.cpp
+  test_prufer.cpp
 )
