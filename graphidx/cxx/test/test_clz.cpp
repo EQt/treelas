@@ -4,6 +4,22 @@
 
 TEST(clz, clz_u32)
 {
+    const auto n = 8;
+    uint32_t nums[n] = {
+        0xc88dbe40,
+        0x45f513c1,
+        0x0245e20e,
+        0x0001f134,
+        0x0000000d,
+        0x00000000,
+        0x00000001,
+        0xffffffff
+    };
+    size_t expect[n] = {0, 1, 6, 15, 28, 32, 31, 0};
+    for (int i = 0; i < n; i++)
+        ASSERT_EQ(leading_zeros(nums[i]), expect[i])
+            << "nums[" << i << "] = " << nums[i]
+            << " expect[" << i << "]" << expect[i];
 }
 
 
