@@ -22,6 +22,13 @@ leading_zeros(uint64_t x)
 }
 
 
+inline uint64_t
+leading_zeros(int64_t x)
+{
+    return leading_zeros((uint64_t) x);
+}
+
+
 inline uint32_t
 leading_zeros(uint32_t x)
 {
