@@ -29,7 +29,7 @@
 
 #include "event.hpp"
 #include "range.hpp"
-#include "utils/hex.hpp"
+#include "bits/hex.hpp"
 
 
 #ifdef DEBUG
