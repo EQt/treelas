@@ -37,4 +37,6 @@ TEST(hex, hex_i64)
 TEST(hex, hex_f64)
 {
     ASSERT_EQ(hex(1.0), "f64(0x3ff0000000000000)");
+    ASSERT_EQ(hex(0.1), "f64(0x3fb999999999999a)");
+    ASSERT_EQ(hex(2.0), "f64(0x4000000000000000)");
 }
