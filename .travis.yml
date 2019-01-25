@@ -49,9 +49,9 @@ install:
         wget $url-MacOSX-x86_64.sh -O miniconda.sh;
     fi; rm -fr miniconda3; bash miniconda.sh -b -p $PWD/miniconda3; fi
   - export PATH=$PWD/miniconda3/bin:$PATH;
-  - which conda
-  - conda install -y pytest networkx h5py numba
+  - conda install -y pytest networkx h5py numba cmake
   - which python
+  - which conda
   - pip install pybind11
   -  python -m pybind11 --include
 
