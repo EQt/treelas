@@ -29,10 +29,13 @@ hex(int64_t x)
 
 
 inline std::string
-hex(uint32_t x)
+hex(uint32_t x, const char *prefix = nullptr)
 {
     char h [2*sizeof(x) + 3 + 3 + 2];
-    snprintf(h, sizeof(h), "0x%0" PRIx32, x);
+    if (prefix)
+        snprintf(h, sizeof(h), "%s(0x%0" PRIx32 ")", prefix, x);
+    else
+        snprintf(h, sizeof(h), "0x%0" PRIx32, x);
     return std::string(h);
 }
 
@@ -53,4 +56,14 @@ hex(double x)
     uint64_t i;
     memcpy(&i, &x, sizeof(uint64_t));
     return hex(i, "f64");
+}
+
+
+inline std::string
+hex(float x)
+{
+    static_assert(sizeof(uint32_t) == sizeof(float), "Wrong architecture");
+    uint32_t i;
+    memcpy(&i, &x, sizeof(uint32_t));
+    return hex(i, "f32");
 }
