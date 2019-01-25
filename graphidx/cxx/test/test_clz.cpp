@@ -146,5 +146,6 @@ TEST(clz, hyperfloor_u64_0)
     const uint64_t nums[] = {1, 0};
     ASSERT_EQ(nums[0], uint64_t(1));
     ASSERT_EQ(nums[1], uint64_t(0));
-    ASSERT_EQ(hyperfloor(nums[1]), uint64_t(0));
+    ASSERT_EQ(hyperfloor(nums[1]), uint64_t(0))
+        << hex(hyperfloor(nums[1]));
 }
