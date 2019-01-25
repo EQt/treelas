@@ -99,9 +99,12 @@ TEST(clz, hyperfloor_shiftneg_int)
 TEST(clz, hyperfloor_shiftneg_u64)
 {
     int n = -1;
-    ASSERT_EQ(uint64_t(1) << n, uint64_t(0));
+    ASSERT_EQ(uint64_t(1) << n, uint64_t(0))
+        << hex(uint64_t(1) << n);
+
     n = 64;
-    ASSERT_EQ(uint64_t(1) << (63 - n), uint64_t(0));
+    ASSERT_EQ(uint64_t(1) << (63 - n), uint64_t(0))
+        << hex(uint64_t(1) << (63 - n));
 }
 
 
