@@ -133,18 +133,10 @@ if (BUILD_TESTS)
   set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
   add_subdirectory(deps/googletest)
   include_directories(deps/googletest/googletest/include)
+  add_subdirectory(graphidx)
+  get_directory_property(GRAPHIDX_TESTS DIRECTORY graphidx DEFINITION TESTS)
   set(TESTS
-    graphidx/cxx/test/test_children.cpp
-    graphidx/cxx/test/test_partition.cpp
-    graphidx/cxx/test/test_biadjacent.cpp
-    graphidx/cxx/test/test_grid.cpp
-    graphidx/cxx/test/test_timer.cpp
-    graphidx/cxx/test/test_stack.cpp
-    graphidx/cxx/test/test_queue.cpp
-    graphidx/cxx/test/test_unionfind.cpp
-    graphidx/cxx/test/test_kruskal_mst.cpp
-    graphidx/cxx/test/test_postorder.cpp
-    graphidx/cxx/test/test_prufer.cpp
+    ${GRAPHIDX_TESTS}
     cxx/test/test_vecalloc.cpp
     cxx/test/test_ref.cpp
     cxx/test/test_strtok.cpp
