@@ -50,6 +50,13 @@ shift1u64(int n)
 }
 
 
+inline int
+shift1int(int n)
+{
+    return int(1) << n;
+}
+
+
 inline uint64_t
 hyperfloor(uint64_t x)
 {
