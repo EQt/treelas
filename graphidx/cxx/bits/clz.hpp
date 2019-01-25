@@ -1,7 +1,6 @@
 #pragma once
 #include <stdint.h>
 #include <immintrin.h>
-#include <algorithm>        // for std::max
 
 /**
    Count number of leading zeros (in binary representation).

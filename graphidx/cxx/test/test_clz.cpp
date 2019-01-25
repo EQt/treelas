@@ -137,3 +137,9 @@ TEST(clz, hyperfloor_u64)
             << " hyperfloor = " << hex(hyperfloor(nums[i]))
             << " clz = " << leading_zeros(nums[i]);
 }
+
+
+TEST(clz, hyperfloor_u64_0)
+{
+    ASSERT_EQ(hyperfloor(uint64_t(0)), uint64_t(0));
+}
