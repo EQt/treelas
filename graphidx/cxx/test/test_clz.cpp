@@ -144,6 +144,19 @@ TEST(clz, hyperfloor_u64)
 }
 
 
+TEST(clz, shift_u64_0)
+{
+    auto n = 64;
+    const uint64_t nums[] = {1, 0};
+
+    ASSERT_EQ(shift1u64(63 - (int)64), uint64_t(0));
+    ASSERT_EQ(shift1u64(63), 0x8000000000000000);
+    EXPECT_EQ(0x8000000000000000 >> n, 0);
+    EXPECT_EQ(shift1u64(63) >> leading_zeros(nums[1]), uint64_t(0))
+        << hex(shift1u64(63) >> leading_zeros(nums[1]));
+}    
+
+
 TEST(clz, hyperfloor_u64_0)
 {
     ASSERT_EQ(hyperfloor(uint64_t(0)), uint64_t(0));
@@ -151,8 +164,6 @@ TEST(clz, hyperfloor_u64_0)
     ASSERT_EQ(nums[0], uint64_t(1));
     ASSERT_EQ(nums[1], uint64_t(0));
     ASSERT_EQ(leading_zeros(nums[1]), 64);
-    ASSERT_EQ(shift1u64(63 - (int)64), uint64_t(0));
-    ASSERT_EQ(shift1u64(63 - (int)leading_zeros(nums[1])), uint64_t(0));
     ASSERT_EQ(hyperfloor(nums[1]), uint64_t(0))
         << hex(hyperfloor(nums[1]))
         << " leading_zeros = " << leading_zeros(nums[1]);

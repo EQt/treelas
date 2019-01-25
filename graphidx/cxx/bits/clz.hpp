@@ -60,5 +60,7 @@ shift1int(int n)
 inline uint64_t
 hyperfloor(uint64_t x)
 {
-    return shift1u64(63 - (int)leading_zeros(x));
+    constexpr uint64_t b100 = uint64_t(1) << 63;
+    static_assert(b100 == uint64_t(0x8000000000000000), "internal error");
+    return b100 >> (int) leading_zeros(x);
 }
