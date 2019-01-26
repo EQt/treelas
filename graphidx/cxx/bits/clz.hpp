@@ -62,5 +62,6 @@ hyperfloor(uint64_t x)
 {
     constexpr uint64_t b100 = uint64_t(1) << 63;
     static_assert(b100 == uint64_t(0x8000000000000000), "internal error");
-    return b100 >> (int) leading_zeros(x);
+    const uint64_t lz = leading_zeros(x);
+    return lz < 64 ? b100 >> lz : 0;
 }
