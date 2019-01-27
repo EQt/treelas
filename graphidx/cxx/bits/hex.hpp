@@ -9,8 +9,8 @@
  */
 #pragma once
 #include <string>
-#include <cstring>      // for memcpy
 #include <cinttypes>    // for PRIx64
+#include "reinterpret.hpp"
 
 
 inline std::string
@@ -59,9 +59,7 @@ inline std::string
 hex(double x)
 {
     static_assert(sizeof(uint64_t) == sizeof(double), "Wrong architecture");
-    uint64_t i;
-    memcpy(&i, &x, sizeof(uint64_t));
-    return hex(i, "f64");
+    return hex(reinterpret_uint(x), "f64");
 }
 
 
@@ -69,7 +67,5 @@ inline std::string
 hex(float x)
 {
     static_assert(sizeof(uint32_t) == sizeof(float), "Wrong architecture");
-    uint32_t i;
-    memcpy(&i, &x, sizeof(uint32_t));
-    return hex(i, "f32");
+    return hex(reinterpret_uint(x), "f32");
 }
