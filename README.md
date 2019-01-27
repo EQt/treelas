@@ -58,6 +58,11 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.11.3
+Released 2019-01-27
+- Several bug fixes, restructures, documentation
+- CXX: `hyperfloor`
+
 ### v0.11.2
 Released 2019-01-11
 - Julia: Reimplement and test `kruskal_mst`
@@ -70,10 +75,10 @@ Released 2019-01-07
 ### v0.11.0
 - CXX: moved most general graph code to `graphidx`
 
+
 ### v0.10.4
 Released 2019-01-07
 - Python: started on "lowest common ancestor" (`lca.py`)
-
 
 ### v0.10.3
 Released 2018-12-29
