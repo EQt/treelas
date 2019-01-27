@@ -1,10 +1,13 @@
+/**
+  Ensure that all elements in a floating point array have finite value.
+*/
 #pragma once
 #include <cmath>
-#include <stdexcept>
+#include <stdexcept>    // std::runtime_error
+#include <string>       // std::to_string
 #include <vector>
-#include <string>
 
-
+/** Find the index of the first non-finite (+/-Inf or NaN) element or return n */
 inline size_t
 find_non_finite(const double *a, const size_t n)
 {
@@ -17,6 +20,7 @@ find_non_finite(const double *a, const size_t n)
 }
 
 
+/** Throw std::runtime_error if `a` contains non-finite elements. */
 inline void
 check_all_finite(const double *a, const size_t n, const std::string &s = "?")
 {
@@ -31,6 +35,7 @@ check_all_finite(const double *a, const size_t n, const std::string &s = "?")
 }
 
 
+/* for convinience ... */
 inline void
 check_all_finite(const std::vector<double> &a, const std::string &s = "?")
 {

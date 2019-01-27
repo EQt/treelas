@@ -8,10 +8,10 @@
 #include <cmath>        // for std::abs
 #include <vector>
 #include <algorithm>    // for std::min_element
+#include <minih5.hpp>
 
 #include "utils/viostream.hpp"
 
-#include "../utils/hdf5.hpp"
 #include "../utils/argparser.hpp"
 #include "../utils/thousand.hpp"
 

@@ -11,4 +11,5 @@ set(TESTS
   test_postorder.cpp
   test_prufer.cpp
   test_hex.cpp
+  test_clz.cpp
 )

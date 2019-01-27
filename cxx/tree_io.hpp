@@ -1,7 +1,7 @@
 #pragma once
-#include "utils/hdf5.hpp"
-#include "tree/root.hpp"
+#include <minih5.hpp>
 
+#include "tree/root.hpp"
 #include "tree.hpp"
 
 
