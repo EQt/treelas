@@ -55,6 +55,7 @@ install:
   - pip install pybind11
   - python -m pybind11 --include
   - python -c 'from sys import byteorder as b; print("byte-order:", b)'
+  - :| ${CXX_COMPILER} -dM -E -x c -
 
 script:
   - mkdir -p build && cd build
