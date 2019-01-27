@@ -5,6 +5,7 @@
 #include <string>
 #include <cstdint>
 #include <bitset>
+#include "reinterpret.hpp"
 
 
 template <typename T>
@@ -20,9 +21,7 @@ template<>
 inline std::string
 bitstring(float x)
 {
-    union { float x; uint32_t u; } b;
-    b.x = x;
-    return bitstring(b.u);
+    return bitstring(reinterpret_uint(x));
 }
 
 
