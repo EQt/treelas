@@ -1,4 +1,8 @@
-# generate examples with known number of leading zeros
+"""
+Generate examples with known number of leading zeros, for test
+purposes only (no production code).
+"""
+module CLZ
 import Random: MersenneTwister
 
 function generate(T = UInt64, n = 9, seed = 0)
@@ -22,3 +26,4 @@ expect = leading_zeros.(nums)
 
 nums32 = generate(UInt32, 8)
 # show(reinterpret.(Int32, (generate(UInt32, 8, 0)))
+end
