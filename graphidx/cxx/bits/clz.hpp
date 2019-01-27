@@ -14,6 +14,7 @@
    [4]: https://docs.microsoft.com/en-us/cpp/intrinsics/lzcnt16-lzcnt-lzcnt64?view=vs-2017
    [5]: https://clang.llvm.org/doxygen/lzcntintrin_8h_source.html
    [6]: https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_lzcnt_u64
+   [7]: https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_tzcnt_u64
  */
 inline uint64_t
 leading_zeros(uint64_t x)
