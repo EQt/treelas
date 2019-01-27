@@ -18,7 +18,11 @@
 inline uint64_t
 leading_zeros(uint64_t x)
 {
+#ifdef __APPLE__
+    return _tzcnt_u64(x);
+#else
     return _lzcnt_u64(x);
+#endif
 }
 
 
@@ -32,14 +36,18 @@ leading_zeros(int64_t x)
 inline uint32_t
 leading_zeros(uint32_t x)
 {
+#ifdef __APPLE__
+    return _tzcnt_u32(x);
+#else
     return _lzcnt_u32(x);
+#endif
 }
 
 
 inline uint32_t
 leading_zeros(int32_t x)
 {
-    return _lzcnt_u32((uint32_t) x);
+    return leading_zeros((uint32_t) x);
 }
 
 
