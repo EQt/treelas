@@ -58,7 +58,6 @@ hex(int32_t x)
 inline std::string
 hex(double x)
 {
-    static_assert(sizeof(uint64_t) == sizeof(double), "Wrong architecture");
     return hex(reinterpret_uint(x), "f64");
 }
 
@@ -66,6 +65,5 @@ hex(double x)
 inline std::string
 hex(float x)
 {
-    static_assert(sizeof(uint32_t) == sizeof(float), "Wrong architecture");
     return hex(reinterpret_uint(x), "f32");
 }
