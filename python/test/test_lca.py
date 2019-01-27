@@ -9,7 +9,10 @@ def test_networkx1():
       /|   |\
      3 4   5 6
     """
-    import networkx as nx
+    try:
+        import networkx as nx
+    except ImportError:
+        return
 
     edges = [(0, 1), (0, 2), (1, 3), (1, 4), (2, 5), (2, 6)]
     root = 0
