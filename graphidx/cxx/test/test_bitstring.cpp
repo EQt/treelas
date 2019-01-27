@@ -38,3 +38,29 @@ TEST(bitstring, bitset_i32_long)
 {
     ASSERT_EQ(bitstring(int32_t(0x11223344)), "00010001001000100011001101000100");
 }
+
+
+TEST(bitstring, bitset_f32_1)
+{
+    ASSERT_EQ(bitstring(1.0f), "00111111100000000000000000000000");
+}
+
+
+TEST(bitstring, bitset_f32_2)
+{
+    ASSERT_EQ(bitstring(2.0f), "01000000000000000000000000000000");
+}
+
+
+TEST(bitstring, bitset_f64_1)
+{
+    ASSERT_EQ(bitstring(1.0),
+              "0011111111110000000000000000000000000000000000000000000000000000");
+}
+
+
+TEST(bitstring, bitset_f64_2)
+{
+    ASSERT_EQ(bitstring(2.0),
+              "0100000000000000000000000000000000000000000000000000000000000000");
+}
