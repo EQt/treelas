@@ -16,9 +16,12 @@ TEST(clz, clz_u32)
         0x00000001,
         0xffffffff
     };
+
     size_t expect[n] = {0, 1, 6, 15, 28, 32, 31, 0};
+
+    ASSERT_EQ(nums[0], 3364732480u) << "nums[0]" << nums[0];
     for (int i = 0; i < n; i++)
-        ASSERT_EQ(leading_zeros(nums[i]), expect[i])
+        EXPECT_EQ(leading_zeros(nums[i]), expect[i])
             << "nums[" << i << "] = " << nums[i]
             << " expect[" << i << "]" << expect[i];
 }
@@ -30,7 +33,7 @@ TEST(clz, clz_i32)
     int32_t nums[n] = {-930234816, 1173689281, 38134286, 127284, 13, 0, 1, -1};
     size_t expect[n] = {0, 1, 6, 15, 28, 32, 31, 0};
     for (int i = 0; i < n; i++)
-        ASSERT_EQ(leading_zeros(nums[i]), expect[i])
+        EXPECT_EQ(leading_zeros(nums[i]), expect[i])
             << "nums[" << i << "] = " << nums[i]
             << " expect[" << i << "]" << expect[i];
 }
@@ -61,7 +64,7 @@ TEST(clz, clz_u64)
                         0,
                         64};
     for (int i = 0; i < n; i++)
-        ASSERT_EQ(leading_zeros(nums[i]), expect[i])
+        EXPECT_EQ(leading_zeros(nums[i]), expect[i])
             << "nums[" << i << "] = " << nums[i]
             << " expect[" << i << "]" << expect[i];
 }
@@ -82,22 +85,22 @@ TEST(clz, clz_i64)
 
     size_t expect[n] = {1, 6, 15, 28, 45, 63, 0, 64};
     for (int i = 0; i < n; i++)
-        ASSERT_EQ(leading_zeros(nums[i]), expect[i])
+        EXPECT_EQ(leading_zeros(nums[i]), expect[i])
             << "nums[" << i << "] = " << nums[i];
 }
 
 
 TEST(clz, hyperfloor_shiftneg_int)
 {
-    ASSERT_EQ(shift1int(-1), 0) << hex(shift1int(-1));
+    EXPECT_EQ(shift1int(-1), 0) << hex(shift1int(-1));
     int n = 64;
-    ASSERT_EQ(shift1int(63 - n), 0) << hex(shift1int(63 - n));
+    EXPECT_EQ(shift1int(63 - n), 0) << hex(shift1int(63 - n));
 }
 
 
 TEST(clz, hyperfloor_shiftneg_u64)
 {
-    ASSERT_EQ(shift1u64(-1), uint64_t(0))
+    EXPECT_EQ(shift1u64(-1), uint64_t(0))
         << hex(shift1u64(-1));
 
     {
@@ -105,8 +108,8 @@ TEST(clz, hyperfloor_shiftneg_u64)
         EXPECT_EQ(shift1u64(63 - n), uint64_t(0))
             << hex(shift1u64(63 - n));
     }
-    ASSERT_EQ(leading_zeros(uint64_t(0)), 64);
-    ASSERT_EQ(shift1u64(63 - (int)leading_zeros(uint64_t(0))), uint64_t(0));
+    EXPECT_EQ(leading_zeros(uint64_t(0)), 64);
+    EXPECT_EQ(shift1u64(63 - (int)leading_zeros(uint64_t(0))), uint64_t(0));
 }
 
 
@@ -136,7 +139,7 @@ TEST(clz, hyperfloor_u64)
     };
 
     for (int i = 0; i < n; i++)
-        ASSERT_EQ(hyperfloor(nums[i]), expect[i])
+        EXPECT_EQ(hyperfloor(nums[i]), expect[i])
             << "nums[" << i << "] = " << hex(nums[i])
             << " expect[" << i << "] = " << hex(expect[i])
             << " hyperfloor = " << hex(hyperfloor(nums[i]))
@@ -161,8 +164,8 @@ TEST(clz, shift_u64)
 
     const uint64_t nums[] = {0};
 
-    ASSERT_EQ(shift1u64(63 - (int)64), uint64_t(0));
-    ASSERT_EQ(shift1u64(63), 0x8000000000000000);
+    EXPECT_EQ(shift1u64(63 - (int)64), uint64_t(0));
+    EXPECT_EQ(shift1u64(63), 0x8000000000000000);
     EXPECT_EQ(shift1u64(63) >> leading_zeros(nums[0]), uint64_t(0))
         << hex(shift1u64(63) >> leading_zeros(nums[0]));
 }    
@@ -170,12 +173,12 @@ TEST(clz, shift_u64)
 
 TEST(clz, hyperfloor_u64_0)
 {
-    ASSERT_EQ(hyperfloor(uint64_t(0)), uint64_t(0));
+    EXPECT_EQ(hyperfloor(uint64_t(0)), uint64_t(0));
     const uint64_t nums[] = {1, 0};
-    ASSERT_EQ(nums[0], uint64_t(1));
-    ASSERT_EQ(nums[1], uint64_t(0));
-    ASSERT_EQ(leading_zeros(nums[1]), 64);
-    ASSERT_EQ(hyperfloor(nums[1]), uint64_t(0))
+    EXPECT_EQ(nums[0], uint64_t(1));
+    EXPECT_EQ(nums[1], uint64_t(0));
+    EXPECT_EQ(leading_zeros(nums[1]), 64);
+    EXPECT_EQ(hyperfloor(nums[1]), uint64_t(0))
         << hex(hyperfloor(nums[1]))
         << " leading_zeros = " << leading_zeros(nums[1]);
 }
