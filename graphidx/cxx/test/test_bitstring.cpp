@@ -4,6 +4,13 @@
 
 TEST(bitstring, std_bitset1)
 {
-    std::bitset<8> bits (0x81);
+    std::bitset<8> bits {0x81};
     ASSERT_EQ(bits.to_string(), "10000001") << bits.to_string();
+}
+
+
+TEST(bitstring, std_bitset2)
+{
+    std::bitset<8> bits {std::string("10101111")};
+    ASSERT_EQ(bits.to_string(), "10101111") << bits.to_string();
 }
