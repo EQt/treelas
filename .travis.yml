@@ -53,7 +53,8 @@ install:
   - which python
   - which conda
   - pip install pybind11
-  -  python -m pybind11 --include
+  - python -m pybind11 --include
+  - python -c 'from sys import byteorder as b; print("byte-order:", b)'
 
 script:
   - mkdir -p build && cd build
