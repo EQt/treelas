@@ -1,12 +1,18 @@
+/** hex(number).
+ *
+ * Return the hexadecimal representation of a number.
+ * For floating point numbers, the string will be prefixed by the Rust
+ * type name, i.e.
+ * ```c++
+ * hex(1.0f) == "f32(0x3f800000);
+ * ```
+ */
 #pragma once
 #include <string>
 #include <cstring>      // for memcpy
 #include <cinttypes>    // for PRIx64
 
 
-/** hex(number).
- * Return the hexadecimal representation of a number.
- */
 inline std::string
 hex(uint64_t x, const char *prefix = nullptr)
 {
