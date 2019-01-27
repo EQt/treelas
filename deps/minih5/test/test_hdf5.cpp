@@ -2,8 +2,8 @@
 #include <cerrno>
 #include <regex>
 
+#include "../include/minih5.hpp"
 #include "path.hpp"
-#include "../utils/hdf5.hpp"
 
 
 // https://github.com/google/googletest/blob/master/googletest/docs/Primer.md

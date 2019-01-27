@@ -27,6 +27,7 @@ if (APPLE)
 endif()
 
 include_directories(graphidx/cxx)
+include_directories(deps/minih5/include)
 
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
@@ -145,7 +146,7 @@ if (BUILD_TESTS)
     cxx/test/test_tree_dp.cpp
   )
   if (HDF5_FOUND)
-    list(APPEND TESTS cxx/test/test_hdf5.cpp)
+    list(APPEND TESTS deps/minih5/test/test_hdf5.cpp)
   endif()
   add_executable(tests
     cxx/test/tests.cpp

@@ -4,14 +4,13 @@
  */
 #include <vector>
 #include <iostream>
+#include <minih5.hpp>
+#include "../utils/argparser.hpp"
+
 
 #include "tree/root.hpp"
 #include "utils/timer.hpp"
 #include "utils/viostream.hpp"      // std::cout << std::vector<..>
-
-
-#include "../utils/hdf5.hpp"
-#include "../utils/argparser.hpp"
 
 #include "../tree_dp.hpp"
 
