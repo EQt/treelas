@@ -62,10 +62,10 @@ if (BUILD_PYEXT)
   pybind11_add_module(_treelas
     python/_treelas.cpp
     python/line.cpp
-    python/order.cpp
     python/tree.cpp
-    python/idx.cpp
-    python/spanning.cpp
+    graphidx/python/idx.cpp
+    graphidx/python/order.cpp
+    graphidx/python/spanning.cpp
     cxx/tree_12x.cpp
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>

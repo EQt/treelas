@@ -39,10 +39,10 @@ class GetPyBindInc():
 sources = [
     "_treelas.cpp",
     "line.cpp",
-    "order.cpp",
     "tree.cpp",
-    "idx.cpp",
-    "spanning.cpp",
+    "../graphidx/python/idx.cpp",
+    "../graphidx/python/order.cpp",
+    "../graphidx/python/spanning.cpp",
     "../cxx/tree_12x.cpp",
     "../deps/condat/condat_tv_v2.cpp",
     "../deps/glmgen/tf_dp.cpp",
