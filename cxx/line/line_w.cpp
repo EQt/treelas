@@ -9,8 +9,8 @@
 #include <cstdlib>              // for malloc
 
 #include "utils/timer.hpp"
+#include "utils/malloc.hpp"
 
-#include "../utils/malloc.hpp"
 #include "../utils/vecalloc.hpp"
 #include "../utils/minmax.hpp"
 #include "../clip.hpp"
