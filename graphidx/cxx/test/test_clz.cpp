@@ -1,28 +1,30 @@
 #include <gtest/gtest.h>
 #include "../bits/clz.hpp"
 #include "../bits/hex.hpp"
+#include "../bits/bitstring.hpp"
 
 
 TEST(clz, clz_u32)
 {
     const auto n = 8;
     uint32_t nums[n] = {
-        0xc88dbe40, //  0b11001000100011011011111001000000
-        0x45f513c1, //  0b01000101111101010001001111000001
-        0x0245e20e, //  0b00000010010001011110001000001110
-        0x0001f134, //  0b00000000000000011111000100110100
-        0x0000000d, //  0b00000000000000000000000000001101
-        0x00000000, //  0b00000000000000000000000000000000
-        0x00000001, //  0b00000000000000000000000000000001
-        0xffffffff  //  0b11111111111111111111111111111111
-    };                  
-    ASSERT_EQ(nums[0], 0b11001000100011011011111001000000)
+                    //     0        8       16       24
+        0xc88dbe40, // 0 0b11001000'10001101'10111110'01000000
+        0x45f513c1, //   0b01000101'11110101'00010011'11000001
+        0x0245e20e, // 2 0b00000010'01000101'11100010'00001110
+        0x0001f134, //   0b00000000'00000001'11110001'00110100
+        0x0000000d, // 4 0b00000000'00000000'00000000'00001101
+        0x00000000, //   0b00000000'00000000'00000000'00000000
+        0x00000001, // 6 0b00000000'00000000'00000000'00000001
+        0xffffffff  //   0b11111111'11111111'11111111'11111111
+    };
+    ASSERT_EQ(nums[0],  0b110010001'00011011'01111100'1000000)
         << "nums[0]" << nums[0];
 
     size_t expect[n] = {0, 1, 6, 15, 28, 32, 31, 0};
     for (int i = 0; i < n; i++)
         EXPECT_EQ(leading_zeros(nums[i]), expect[i])
-            << "nums[" << i << "] = " << nums[i];
+            << "nums[" << i << "] = " << bitstring(nums[i]);
 }
 
 
@@ -33,7 +35,7 @@ TEST(clz, clz_i32)
     size_t expect[n] = {0, 1, 6, 15, 28, 32, 31, 0};
     for (int i = 0; i < n; i++)
         EXPECT_EQ(leading_zeros(nums[i]), expect[i])
-            << "nums[" << i << "] = " << nums[i];
+            << "nums[" << i << "] = " << bitstring(nums[i]);
 }
 
 
@@ -63,7 +65,7 @@ TEST(clz, clz_u64)
                         64};
     for (int i = 0; i < n; i++)
         EXPECT_EQ(leading_zeros(nums[i]), expect[i])
-            << "nums[" << i << "] = " << nums[i];
+            << "nums[" << i << "] = " << bitstring(nums[i]);
 }
 
 
@@ -83,15 +85,15 @@ TEST(clz, clz_i64)
     size_t expect[n] = {1, 6, 15, 28, 45, 63, 0, 64};
     for (int i = 0; i < n; i++)
         EXPECT_EQ(leading_zeros(nums[i]), expect[i])
-            << "nums[" << i << "] = " << nums[i];
+            << "nums[" << i << "] = " << bitstring(nums[i]);
 }
 
 
 TEST(clz, hyperfloor_shiftneg_int)
 {
-    EXPECT_EQ(shift1int(-1), 0) << hex(shift1int(-1));
+    EXPECT_EQ(shift1int(-1), 0) << bitstring(shift1int(-1));
     int n = 64;
-    EXPECT_EQ(shift1int(63 - n), 0) << hex(shift1int(63 - n));
+    EXPECT_EQ(shift1int(63 - n), 0) << bitstring(shift1int(63 - n));
 }
 
 
@@ -137,10 +139,10 @@ TEST(clz, hyperfloor_u64)
 
     for (int i = 0; i < n; i++)
         EXPECT_EQ(hyperfloor(nums[i]), expect[i])
-            << "nums[" << i << "] = " << hex(nums[i])
-            << " expect[" << i << "] = " << hex(expect[i])
-            << " hyperfloor = " << hex(hyperfloor(nums[i]))
-            << " clz = " << leading_zeros(nums[i]);
+            << "nums[" << i << "] = " << bitstring(nums[i])
+            << "\nexpect[" << i << "] = " << bitstring(expect[i])
+            << "\nhyperfloor = " << bitstring(hyperfloor(nums[i]))
+            << "\nclz = " << leading_zeros(nums[i]);
 }
 
 
@@ -165,7 +167,7 @@ TEST(clz, shift_u64)
     EXPECT_EQ(shift1u64(63), 0x8000000000000000);
     EXPECT_EQ(shift1u64(63) >> leading_zeros(nums[0]), uint64_t(0))
         << hex(shift1u64(63) >> leading_zeros(nums[0]));
-}    
+}
 
 
 TEST(clz, hyperfloor_u64_0)
