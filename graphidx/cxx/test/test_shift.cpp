@@ -3,7 +3,7 @@
 
 
 /** Shift 0b1 to the left. */
-inline uint64_t
+extern uint64_t
 shift1u64(int n)
 {
     return uint64_t(1) << n;
@@ -11,7 +11,7 @@ shift1u64(int n)
 
 
 /** Like shift1u64 but with signed ints (to see whether it makes a difference). */
-inline int
+extern int
 shift1int(int n)
 {
     return int(1) << n;
