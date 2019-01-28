@@ -20,7 +20,7 @@ inline uint64_t
 leading_zeros(uint64_t x)
 {
 #if defined __APPLE__ && defined __clang__
-    return 63 - _lzcnt_u32(x);
+    return 63 - _lzcnt_u64(x);
 #else
     return _lzcnt_u64(x);
 #endif
