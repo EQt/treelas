@@ -53,20 +53,6 @@ leading_zeros(int32_t x)
 
 
 inline uint64_t
-shift1u64(int n)
-{
-    return uint64_t(1) << n;
-}
-
-
-inline int
-shift1int(int n)
-{
-    return int(1) << n;
-}
-
-
-inline uint64_t
 hyperfloor(uint64_t x)
 {
     constexpr uint64_t b100 = uint64_t(1) << 63;

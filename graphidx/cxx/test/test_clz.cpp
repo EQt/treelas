@@ -89,29 +89,6 @@ TEST(clz, clz_i64)
 }
 
 
-TEST(clz, hyperfloor_shiftneg_int)
-{
-    EXPECT_EQ(shift1int(-1), 0) << bitstring(shift1int(-1));
-    int n = 64;
-    EXPECT_EQ(shift1int(63 - n), 0) << bitstring(shift1int(63 - n));
-}
-
-
-TEST(clz, hyperfloor_shiftneg_u64)
-{
-    EXPECT_EQ(shift1u64(-1), uint64_t(0))
-        << hex(shift1u64(-1));
-
-    {
-        const int n = 64;
-        EXPECT_EQ(shift1u64(63 - n), uint64_t(0))
-            << hex(shift1u64(63 - n));
-    }
-    EXPECT_EQ(leading_zeros(uint64_t(0)), 64);
-    EXPECT_EQ(shift1u64(63 - (int)leading_zeros(uint64_t(0))), uint64_t(0));
-}
-
-
 TEST(clz, hyperfloor_u64)
 {
     const auto n = 8;
@@ -143,30 +120,6 @@ TEST(clz, hyperfloor_u64)
             << "\nexpect[" << i << "] = " << bitstring(expect[i])
             << "\nhyperfloor = " << bitstring(hyperfloor(nums[i]))
             << "\nclz = " << leading_zeros(nums[i]);
-}
-
-
-TEST(clz, shift_u64)
-{
-    // https://stackoverflow.com/a/7637
-    // https://en.wikibooks.org/wiki/X86_Assembly/Shift_and_Rotate
-    //   SAR (shift arithmetic right, or signed shift) vs
-    //   SHR (shift [logical], or unsigned shift)
-    //
-    {
-        uint64_t n = 64;
-        EXPECT_EQ((0x8000000000000000ULL >> (n-1)) >> 1, 0);
-        EXPECT_EQ((0x8000000000000000ULL >> 63) >> 1, 0);
-        // undefined behavior: depends on the compiler
-        // EXPECT_EQ((0x8000000000000000ULL >> (64)) >> 1, 0ULL);
-    }
-
-    const uint64_t nums[] = {0};
-
-    EXPECT_EQ(shift1u64(63 - (int)64), uint64_t(0));
-    EXPECT_EQ(shift1u64(63), 0x8000000000000000);
-    EXPECT_EQ(shift1u64(63) >> leading_zeros(nums[0]), uint64_t(0))
-        << hex(shift1u64(63) >> leading_zeros(nums[0]));
 }
 
 

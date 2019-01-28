@@ -12,5 +12,6 @@ set(TESTS
   test_prufer.cpp
   test_hex.cpp
   test_bitstring.cpp
+  test_shift.cpp
   test_clz.cpp
 )
