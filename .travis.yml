@@ -15,16 +15,16 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-7
-  homebrew:
-    packages:
-      - gcc    ## https://formulae.brew.sh/formula/gcc
+  # homebrew:
+  #   packages:
+  #     - gcc    ## https://formulae.brew.sh/formula/gcc
 
 matrix:
   include:
     - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
       os: linux
-    - env: CXX_COMPILER=clang++ C_COMPILER=clang
-      os: osx
+    - os: osx
+      # env: CXX_COMPILER=clang++ C_COMPILER=clang
 
 cache:
   directories:
