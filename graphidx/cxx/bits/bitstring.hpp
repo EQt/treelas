@@ -29,7 +29,5 @@ template<>
 inline std::string
 bitstring(double x)
 {
-    union { double x; uint64_t u; } b;
-    b.x = x;
-    return bitstring(b.u);
+    return bitstring(reinterpret_uint(x));
 }
