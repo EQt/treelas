@@ -5,6 +5,7 @@
 */
 #include <cstdint>
 #include <iostream>
+#include <argparser.hpp>
 #include <minih5.hpp>
 
 #include "utils/timer.hpp"
@@ -13,7 +14,6 @@
 #include "spanning/prim_mst.hpp"
 
 #include "thousand.hpp"
-#include "../utils/argparser.hpp"
 
 
 void

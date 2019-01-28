@@ -8,11 +8,11 @@
 #include <cmath>        // for std::abs
 #include <vector>
 #include <algorithm>    // for std::min_element
+#include <argparser.hpp>
 #include <minih5.hpp>
 
 #include "utils/viostream.hpp"
 
-#include "../utils/argparser.hpp"
 #include "thousand.hpp"
 
 #include "../tree_12x.hpp"

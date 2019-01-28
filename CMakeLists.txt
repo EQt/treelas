@@ -29,12 +29,13 @@ endif()
 
 include_directories(graphidx/cxx)
 include_directories(deps/minih5/include)
+include_directories(deps/argparser)
 
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
 add_subdirectory(ci)
 
-add_library(argparser OBJECT cxx/utils/argparser.cpp)
+add_library(argparser OBJECT deps/argparser/argparser.cpp)
 
 add_object(line       cxx/line/line.cpp)
 add_object(line_w     cxx/line/line_w.cpp)

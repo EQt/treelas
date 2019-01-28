@@ -8,12 +8,12 @@
 #include <cmath>        // for std::abs
 #include <vector>
 #include <algorithm>    // for std::min_element
+#include <argparser.hpp>
 #include <minih5.hpp>
 
 #include "utils/timer.hpp"
 
 #include "thousand.hpp"
-#include "../utils/argparser.hpp"
 
 #include "../tree_io.hpp"
 #include "../tree_12.hpp"
