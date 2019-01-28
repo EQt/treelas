@@ -19,8 +19,8 @@
 inline uint64_t
 leading_zeros(uint64_t x)
 {
-#ifdef __APPLE__
-    return _tzcnt_u64(x);
+#if defined __APPLE__ && defined __clang__
+    return __builtin_clzl(x);
 #else
     return _lzcnt_u64(x);
 #endif
@@ -37,8 +37,8 @@ leading_zeros(int64_t x)
 inline uint32_t
 leading_zeros(uint32_t x)
 {
-#ifdef __APPLE__
-    return _tzcnt_u32(x);
+#if defined __APPLE__ && defined __clang__
+    return __builtin_clz(x);
 #else
     return _lzcnt_u32(x);
 #endif
