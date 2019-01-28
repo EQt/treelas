@@ -44,7 +44,6 @@ add_object(line_c2    cxx/line/line_c2.cpp)
 add_object(line_c3    cxx/line/line_c3.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
-add_object(postorder  graphidx/cxx/tree/postorder.cpp)
 
 # PYTHON
 set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/pybind11"
@@ -78,7 +77,6 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:line_c3>
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:tree_dual>
-    $<TARGET_OBJECTS:postorder>
   )
   # target_link_libraries(_treelas PUBLIC -pthread)
   add_custom_target(pysetup  DEPENDS _treelas
@@ -100,7 +98,6 @@ if (HDF5_FOUND)
   add_executable_h5(traverse
     cxx/app/traverse.cpp
     $<TARGET_OBJECTS:argparser>
-    $<TARGET_OBJECTS:postorder>
   )
 
   add_executable_h5(tree_apx
@@ -112,13 +109,11 @@ if (HDF5_FOUND)
     cxx/app/tree_12x.cpp
     cxx/tree_12x.cpp
     $<TARGET_OBJECTS:argparser>
-    $<TARGET_OBJECTS:postorder>
   )
 
   add_executable_h5(tree_solve
     cxx/app/tree_solve.cpp
     $<TARGET_OBJECTS:tree_dp>
-    $<TARGET_OBJECTS:postorder>
     $<TARGET_OBJECTS:argparser>
   )
 endif()
@@ -154,7 +149,6 @@ if (BUILD_TESTS)
     ${GRAPHIDX_TESTS}
     ${TESTS}
     $<TARGET_OBJECTS:line>
-    $<TARGET_OBJECTS:postorder>
   )
   target_compile_definitions(tests PUBLIC _STACK_DEBUG=1)
   target_link_libraries(tests gtest_main "${CMAKE_THREAD_LIBS_INIT}")
