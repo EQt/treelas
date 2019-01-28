@@ -3,8 +3,8 @@
 #include <iomanip>          // std::setw
 #include <cmath>            // std::abs
 
-#include "../event.hpp"
-#include "../range.hpp"
+#include "event.hpp"
+#include "range.hpp"
 
 
 /** end is exclusive! */
