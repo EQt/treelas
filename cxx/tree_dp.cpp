@@ -5,10 +5,10 @@
 #include <stdexcept>
 #include <sstream>          // std::ostringstream
 
+#include "bits/finite.hpp"
+#include "std/stack.hpp"
 #include "utils/timer.hpp"
 #include "utils/minmax.hpp"
-#include "utils/finite.hpp"
-#include "std/stack.hpp"
 
 #include "tree_debug.hpp"
 #include "clip.hpp"
