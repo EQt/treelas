@@ -14,4 +14,5 @@ set(TESTS
   test_bitstring.cpp
   test_shift.cpp
   test_clz.cpp
+  test_vecalloc.cpp
 )

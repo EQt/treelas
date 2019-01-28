@@ -134,7 +134,6 @@ if (BUILD_TESTS)
   get_directory_property(GRAPHIDX_TESTS DIRECTORY graphidx DEFINITION TESTS)
   list(TRANSFORM GRAPHIDX_TESTS PREPEND "graphidx/cxx/test/")
   set(TESTS
-    cxx/test/test_vecalloc.cpp
     cxx/test/test_ref.cpp
     cxx/test/test_strtok.cpp
     cxx/test/test_line.cpp
