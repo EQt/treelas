@@ -2,8 +2,7 @@
 #include <algorithm>                // for std::sort
 #include <pybind11/pybind11.h>
 
-#include "../cxx/utils/compiler.hpp"
-
+#include "utils/compiler.hpp"
 #include "py_np.hpp"
 
 namespace py = pybind11;

@@ -4,8 +4,7 @@
 #include "std/stack.hpp"
 #include "utils/timer.hpp"          // TimerQuiet
 
-#include "../utils/plotpwl.hpp"
-
+#include "../plotpwl.hpp"
 #include "../tree_dp.hpp"
 #include "../range.hpp"
 #include "../event.hpp"
