@@ -6,7 +6,7 @@
 extern uint64_t
 shift1u64(int n)
 {
-    return uint64_t(1) << n;
+    return n < 0 ? 0 : uint64_t(1) << n;
 }
 
 
@@ -14,7 +14,7 @@ shift1u64(int n)
 extern int
 shift1int(int n)
 {
-    return int(1) << n;
+    return n < 0 ? 0 : int(1) << n;
 }
 
 
