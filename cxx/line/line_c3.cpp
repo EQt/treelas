@@ -26,7 +26,6 @@ struct pair2a
 };
 
 
-
 template <typename float_ = double>
 void
 _dp_line_c3(const int n,
@@ -76,7 +75,7 @@ _dp_line_c3(const int n,
                 r -= 1;
             }
             r += 1;
-            bounds[i].u = deriv[r].x = - (lam + b_) / a_;        // a_ and b_ negated!
+            bounds[i].u = deriv[r].x = - (lam + b_) / a_;   // a_ and b_ negated!
             deriv[r].a = a_;
         }
     }
