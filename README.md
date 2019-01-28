@@ -58,6 +58,10 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.11.4
+Released 2019-01-28
+- CXX: graphidx is header only library
+
 ### v0.11.3
 Released 2019-01-27
 - Several bug fixes, restructures, documentation
