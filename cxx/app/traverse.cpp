@@ -12,8 +12,8 @@
 // #include "spanning/kruskal_mst.hpp"
 #include "spanning/prim_mst.hpp"
 
+#include "thousand.hpp"
 #include "../utils/argparser.hpp"
-#include "../utils/thousand.hpp"
 
 
 void

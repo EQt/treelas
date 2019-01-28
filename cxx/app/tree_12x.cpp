@@ -13,7 +13,7 @@
 #include "utils/viostream.hpp"
 
 #include "../utils/argparser.hpp"
-#include "../utils/thousand.hpp"
+#include "thousand.hpp"
 
 #include "../tree_12x.hpp"
 

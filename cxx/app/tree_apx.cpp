@@ -12,8 +12,8 @@
 
 #include "utils/timer.hpp"
 
+#include "thousand.hpp"
 #include "../utils/argparser.hpp"
-#include "../utils/thousand.hpp"
 
 #include "../tree_io.hpp"
 #include "../tree_12.hpp"
