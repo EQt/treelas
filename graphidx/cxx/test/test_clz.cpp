@@ -22,8 +22,7 @@ TEST(clz, clz_u32)
     ASSERT_EQ(nums[0], 3364732480u) << "nums[0]" << nums[0];
     for (int i = 0; i < n; i++)
         EXPECT_EQ(leading_zeros(nums[i]), expect[i])
-            << "nums[" << i << "] = " << nums[i]
-            << " expect[" << i << "]" << expect[i];
+            << "nums[" << i << "] = " << nums[i];
 }
 
 
