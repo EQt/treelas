@@ -50,6 +50,7 @@ Directory Structure
 ├── cxx         C++ source/header files
 ├── data        Some test data (needed for `py.test`)
 ├── deps        External dependencies/libraries
+├── graphidx    (Almost) independent graph library
 ├── julia       Julia Bindings/Implementation
 └── python      Python bindings
 ```
