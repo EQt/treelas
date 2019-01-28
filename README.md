@@ -59,6 +59,10 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.11.5
+Released 2019-01-28
+- CXX: dissolve `treelas/utils`
+
 ### v0.11.4
 Released 2019-01-28
 - CXX: graphidx is header only library
