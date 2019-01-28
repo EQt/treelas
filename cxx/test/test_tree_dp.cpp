@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
+#include "bits/minmax.hpp"      // find_minmax
 #include "std/stack.hpp"
 #include "utils/timer.hpp"          // TimerQuiet
 
 #include "../utils/plotpwl.hpp"
-#include "../utils/minmax.hpp"      // find_minmax
 
 #include "../tree_dp.hpp"
 #include "../range.hpp"

@@ -6,9 +6,9 @@
 #include <sstream>          // std::ostringstream
 
 #include "bits/finite.hpp"
+#include "bits/minmax.hpp"
 #include "std/stack.hpp"
 #include "utils/timer.hpp"
-#include "utils/minmax.hpp"
 
 #include "tree_debug.hpp"
 #include "clip.hpp"

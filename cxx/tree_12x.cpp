@@ -1,11 +1,10 @@
 #include "tree_12x.hpp"
 
+#include "bits/minmax.hpp"
 #include "utils/perm.hpp"
 #include "utils/timer.hpp"
 #include "tree/postorder.hpp"
 #include "tree/root.hpp"
-
-#include "utils/minmax.hpp"
 
 
 template<typename float_ = float, typename int_ = int>

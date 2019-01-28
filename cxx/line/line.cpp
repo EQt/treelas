@@ -11,8 +11,8 @@
 #include "utils/timer.hpp"
 #include "utils/malloc.hpp"
 #include "utils/vecalloc.hpp"
+#include "bits/minmax.hpp"     // for clip(x, lb, ub)
 
-#include "../utils/minmax.hpp"     // for clip(x, lb, ub)
 #include "../clip.hpp"
 
 

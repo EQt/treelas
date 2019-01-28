@@ -6,9 +6,8 @@
 #include <vector>
 #include <stdexcept>
 
+#include "bits/minmax.hpp"
 #include "utils/timer.hpp"
-
-#include "../utils/minmax.hpp"
 
 
 template <typename float_ = double>

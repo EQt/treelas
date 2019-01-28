@@ -10,7 +10,7 @@
 #ifdef MALLOC
 #  include "utils/malloc.hpp"
 #endif
-#include "../utils/minmax.hpp"
+#include "bits/minmax.hpp"
 
 
 template <typename float_ = double>
