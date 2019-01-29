@@ -14,7 +14,7 @@ struct CSCMat {
 };
 
 
-/** Transpose(matrix) times vector: Compute x := A' * v */
+o/** Transpose(matrix) times vector: Compute x := A' * v */
 void
 T_mul_b(double *x,
         const CSCMat *A,
@@ -36,8 +36,12 @@ sparse(std::vector<int64_t> I,
        std::vector<double>  W,
        int64_t m, int64_t n);
 
+
+/** Number of non-zero entry in a matrix */
 int64_t
 num_nonzeros(const CSCMat *mat);
 
+
+/** Print matrix to `out` similar to `show(::SparseMatrixCSC)` in Julia. */
 void
 print_CSCMat(const CSCMat *mat, FILE *out = stdout);
