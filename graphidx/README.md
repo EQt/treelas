@@ -25,9 +25,10 @@ Here, we use it to store
 - Neighbors in a bidirectional graph
 
 The advantage of storing the values and indices separately are
-- only one allocation 
+- only one allocation
 - avoid the additional space for vector implementation (e.g. an empty vector consumes only one integer)
 - contiguous memory, hence we may benefit from prefetched cache lines
+- prefer pointers to array indexes
 
 This library will never be as extensive as e.g. 
 [C++'s Boost Graph Library](https://www.boost.org/doc/libs/1_69_0/libs/graph/doc/index.htlm) or
