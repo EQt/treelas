@@ -14,7 +14,7 @@ struct CSCMat {
 };
 
 
-o/** Transpose(matrix) times vector: Compute x := A' * v */
+/** Transpose(matrix) times vector: Compute x := A' * v */
 void
 T_mul_b(double *x,
         const CSCMat *A,
