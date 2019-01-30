@@ -15,4 +15,5 @@ set(TESTS
   test_shift.cpp
   test_clz.cpp
   test_vecalloc.cpp
+  test_van_emde_boas.cpp
 )
