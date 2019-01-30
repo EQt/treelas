@@ -3,8 +3,11 @@
 
 /**
    Frederik Rønn: "Cache-Oblivious Searching and Sorting", Master's Thesis,
-   Department of Computer Science University of Copenhagen, 2003.
-   Page 76:
+   Department of Computer Science University of Copenhagen, 2003. (Page 76)
+
+   See also:
+     https://github.com/sriravic/FAST-Van-Emde-Boas/blob/master/van-emde-boas.cpp
+
 */   
 template<typename Iter>
 void build_hp_tree(const Iter begin_in,
