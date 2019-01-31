@@ -7,9 +7,11 @@ end
     view(c.pi, c.idx[j]:c.idx[j+1]-1)
 
 
-Base.length(c::NeighborIndex) = length(c.idx) -1
-
 num_edges(c::NeighborIndex) = length(c.pi) ÷ 2
+
+num_nodes(c::NeighborIndex) = length(c.idx) - 1
+
+Base.length(c::NeighborIndex) = num_nodes(c)
 
 
 """
