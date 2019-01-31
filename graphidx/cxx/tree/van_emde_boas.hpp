@@ -33,13 +33,13 @@ void binveb_from_inord(T *a_out,
         a_out[0] = a_in[bottom_size*step];
     } else {
         binveb_from_inord(a_out,
-                          a_in+bottom_size*step,
+                          a_in + bottom_size*step,
                           top_height,
-                          bottom_size*step+step);
+                          bottom_size*step + step);
     }
     for (int i = 0; i <= top_size; i++) {
-        binveb_from_inord(a_out+top_size+i*bottom_size,
-                          a_in+(i*bottom_size+i)*step,
+        binveb_from_inord(a_out + top_size + i*bottom_size,
+                          a_in + step * (i + i*bottom_size),
                           bottom_height,
                           step);
     }
