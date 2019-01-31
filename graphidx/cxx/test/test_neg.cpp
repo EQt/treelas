@@ -12,6 +12,14 @@ TEST(neg, negneg)
 }
 
 
+TEST(neg, not_same)
+{
+    ASSERT_NE(neg(int64_t(123)), int64_t(123));
+    ASSERT_NE(neg(int8_t(123)), int8_t(123));
+    ASSERT_NE(neg(int32_t(123)), int32_t(123));
+}
+
+
 TEST(neg, digits)
 {
     ASSERT_EQ(std::numeric_limits<uint8_t>::digits, 8);
