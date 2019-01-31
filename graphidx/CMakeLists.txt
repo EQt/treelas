@@ -18,4 +18,5 @@ set(TESTS
   test_inorder.cpp
   test_van_emde_boas.cpp
   test_csc.cpp
+  test_neg.cpp
 )
