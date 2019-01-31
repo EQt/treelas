@@ -5,6 +5,7 @@
 
 extern "C" {
 
+/** Compressed Sparse Column Matrix */
 struct CSCMat {
     int64_t  m;         // number of rows
     int64_t  n;         // number of cols
