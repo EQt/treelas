@@ -4,16 +4,17 @@
 /**
    Binary van Emde Boas Layout from an Inorder traverse (sorted nodes).
 
+   Copied and adapted from
    Frederik Rønn: "Cache-Oblivious Searching and Sorting", Master's Thesis,
    Department of Computer Science University of Copenhagen, 2003. (Page 76)
 
    See also:
      https://github.com/sriravic/FAST-Van-Emde-Boas/blob/master/van-emde-boas.cpp
 
-*/   
-template<typename Iter>
-void binveb_from_inord(const Iter begin_in,
-                       Iter begin_out,
+*/
+template<typename T>
+void binveb_from_inord(const T *begin_in,
+                       T *begin_out,
                        int height,
                        int step = 1)
 {
