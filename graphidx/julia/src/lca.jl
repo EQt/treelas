@@ -52,8 +52,8 @@ function lowest_common_ancestors(tree::ChildrenIndex,
 end
 
 
-lowest_common_ancestors(tree, pairs::Vector{Tuple{Int, Int}}) =
-    lowest_common_ancestors(tree, NeighborIndex(length(tree), pairs))
+lowest_common_ancestors(tree, parent, pairs::Vector{Tuple{Int, Int}}) =
+    lowest_common_ancestors(tree, parent, NeighborIndex(length(tree), pairs))
 
 
 end

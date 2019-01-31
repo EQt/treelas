@@ -12,6 +12,6 @@ import .Tree: lowest_common_ancestors, ChildrenIndex
     pairs = [(5, 7), (5, 2), (5, 3), (2, 3)]
     ans = [4, 2, 1, 1]
     @test length(pairs) == length(ans)
-    @test lowest_common_ancestors(idx, pairs) == ans
+    @test lowest_common_ancestors(idx, pi, pairs) == ans
 end
 
