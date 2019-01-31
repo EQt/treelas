@@ -3,8 +3,6 @@
 #include <cstdint>
 #include <cstdio>
 
-extern "C" {
-
 /** Compressed Sparse Column Matrix */
 struct CSCMat {
     int64_t  m;         // number of rows
@@ -12,22 +10,22 @@ struct CSCMat {
     const int64_t *colptr;
     const int64_t *rowval;
     const double  *nzval;
+    // const bool own_data = false;
+    // ~CSCMat();
 };
 
 
 /** Transpose(matrix) times vector: Compute x := A' * v */
-void
+extern "C" void
 T_mul_b(double *x,
         const CSCMat *A,
         const double *v);
 
 /** Matrix times vector: Compute x := A * v */
-void
+extern "C" void
 A_mul_b(double *x,
         const CSCMat *A,
         const double *v);
-
-}   //  extern "C"
 
 
 /** Create a new sparse matrix (I, J, and W don't need to be sorted). */
