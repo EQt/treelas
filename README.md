@@ -59,6 +59,11 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.11.6
+Released 2019-01-31
+- CXX: started to implement van Emde Boas layout
+- CXX: copied sparse CSC matrix
+
 ### v0.11.5
 Released 2019-01-28
 - CXX: dissolve `treelas/utils`
