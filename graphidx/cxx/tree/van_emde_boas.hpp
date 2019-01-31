@@ -2,6 +2,8 @@
 
 
 /**
+   Binary van Emde Boas Layout from an Inorder traverse (sorted nodes).
+
    Frederik Rønn: "Cache-Oblivious Searching and Sorting", Master's Thesis,
    Department of Computer Science University of Copenhagen, 2003. (Page 76)
 
@@ -10,10 +12,10 @@
 
 */   
 template<typename Iter>
-void build_hp_tree(const Iter begin_in,
-                   Iter begin_out,
-                   int height,
-                   int step)
+void binveb_from_inord(const Iter begin_in,
+                       Iter begin_out,
+                       int height,
+                       int step = 1)
 {
     int bottom_height = height == 2 ? 1 : int(hyperfloor(height-1));
     int top_height    = height - bottom_height;
@@ -29,15 +31,15 @@ void build_hp_tree(const Iter begin_in,
     if (top_height == 1) {
         begin_out[0] = begin_in[bottom_size*step];
     } else {
-        build_hp_tree(begin_in+bottom_size*step,
-                      begin_out,
-                      top_height,
-                      bottom_size*step+step);
+        binveb_from_inord(begin_in+bottom_size*step,
+                          begin_out,
+                          top_height,
+                          bottom_size*step+step);
     }
     for(int i = 0; i <= top_size; i++) {
-        build_hp_tree(begin_in+(i*bottom_size+i)*step,
-                      begin_out+top_size+i*bottom_size,
-                      bottom_height,
-                      step);
+        binveb_from_inord(begin_in+(i*bottom_size+i)*step,
+                          begin_out+top_size+i*bottom_size,
+                          bottom_height,
+                          step);
     }
 }
