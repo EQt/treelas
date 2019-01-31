@@ -35,7 +35,7 @@ function lowest_common_ancestors(tree::ChildrenIndex,
     while !isempty(stack)
         v = pop!(stack)
         colors[v] = true
-        for u in pairs[v]:
+        for u in pairs[v]
             if colors[u]
                 # set ancestors([u, v])
             end
