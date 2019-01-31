@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <vector>
+#include "../tree/inorder.hpp"
 #include "../tree/van_emde_boas.hpp"
 
 
@@ -7,7 +8,7 @@ TEST(veb, tree_h2)
 {
     const int height = 2;
     const int n = (1 << height) - 1;
-    const std::vector<int> in ({1, 0, 2});
+    const std::vector<int> in = binary_inorder(height);
     std::vector<int> out (n, -1);
 
     binveb_from_inord(out.data(), in.data(), height);
@@ -19,7 +20,7 @@ TEST(veb, tree_h3)
 {
     const int height = 3;
     const int n = (1 << height) - 1;
-    const std::vector<int> in ({3, 1, 4, 0, 5, 2, 6});
+    const std::vector<int> in = binary_inorder(height);
     std::vector<int> out (n, -1);
     ASSERT_EQ(in.size(), n);
     binveb_from_inord(out.data(), in.data(), height, 1);
@@ -31,8 +32,7 @@ TEST(veb, tree_h4)
 {
     const int height = 4;
     const int n = (1 << height) - 1;
-    const std::vector<int>
-        in ({7, 3, 8, 1, 9, 4, 10, 0, 11, 5, 12, 2, 13, 6, 14});
+    const std::vector<int> in = binary_inorder(height);
     std::vector<int> out (n, -1);
 
     ASSERT_EQ(in.size(), n);
