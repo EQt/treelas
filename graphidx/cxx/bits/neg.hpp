@@ -25,5 +25,6 @@ is_pos(const Int x)
 {
     static_assert(std::is_integral<Int>::value, "Works only for integers");
     static_assert(std::is_signed<Int>::value, "Negation needs sign");
-    return !((Int(1) << std::numeric_limits<Int>::digits) & x);
+    // return !((Int(1) << std::numeric_limits<Int>::digits) & x);
+    return x >= 0;
 }
