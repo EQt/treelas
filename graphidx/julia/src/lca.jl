@@ -54,6 +54,7 @@ function lowest_common_ancestors(tree::ChildrenIndex,
             end
 
             for (u, ei) in pairs[v]
+                @show u
                 if colors[u]
                     @show (u, ei)
                     @show find(uf, u)
