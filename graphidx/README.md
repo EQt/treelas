@@ -35,6 +35,13 @@ This library will never be as extensive as e.g.
 [Julia's LightGraphs](https://github.com/JuliaGraphs/LightGraphs.jl).
 
 
+Integers
+-------
+
+All nodes have to be integer numbers.
+Because often we store extra information in the first bit, we require signed integers (typically `int32_t` or `int64_t`).
+
+
 Programming Languages
 ---------------------
 
