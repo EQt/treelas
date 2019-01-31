@@ -19,9 +19,36 @@ Compare to
 
 [1]: https://en.wikipedia.org/wiki/Lowest_common_ancestor
 """
-function lowest_common_ancestors(tree, pairs::NeighborIndex)::Vector{Int}
-    k = length(pairs)
-    return fill(-1, k)
+function lowest_common_ancestors(tree::ChildrenIndex,
+                                 parent::Vector{Int},
+                                 pairs::NeighborIndex)::Vector{Int}
+    k = num_edges(pairs)
+    n = num_nodes(tree)
+    uf = UnionFind(n)
+
+    colors = fill(false, n)
+    ancestors = fill(-1, k)
+
+    stack = Vector{Int}()
+    sizehint!(stack, n)
+    push!(stack, root_node(tree))
+    while !isempty(stack)
+        v = pop!(stack)
+        colors[v] = true
+        for u in pairs[v]:
+            if colors[u]
+                # set ancestors([u, v])
+            end
+        end
+        for u in tree[v]
+            push!(stack, u)
+        end
+        if v != parent[v]
+            unite!(uf, find(v), find(parent[v]))
+        end
+    end
+
+    return ancestors
 end
 
 

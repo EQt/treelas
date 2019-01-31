@@ -10,6 +10,8 @@ end
 
 num_nodes(c::ChildrenIndex) = length(c.pi)
 
+root_node(c::ChildrenIndex) = c.idx[1]
+
 Base.length(c::ChildrenIndex) = num_nodes(c)
 
 
