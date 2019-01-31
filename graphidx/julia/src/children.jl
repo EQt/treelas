@@ -8,7 +8,9 @@ end
     view(c.pi, c.idx[j]:c.idx[j+1]-1)
 
 
-Base.length(c::ChildrenIndex) = length(c.pi)
+num_nodes(c::ChildrenIndex) = length(c.pi)
+
+Base.length(c::ChildrenIndex) = num_nodes(c)
 
 
 """
