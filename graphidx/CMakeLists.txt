@@ -17,4 +17,5 @@ set(TESTS
   test_vecalloc.cpp
   test_inorder.cpp
   test_van_emde_boas.cpp
+  test_csc.cpp
 )
