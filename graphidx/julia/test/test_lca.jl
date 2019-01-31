@@ -11,10 +11,25 @@ end
 @testset "LCA Wikipedia                  " begin
     #     1  2  3  4  5  6  7
     pi = [1, 1, 1, 2, 4, 4, 6]
+    #=
+         1
+        / \
+       /   \
+      2     3
+      |
+      4
+     / \
+    5   6
+    |
+    7
+    =#
     idx = ChildrenIndex(pi)
+    @test Set(idx[1]) == Set([2, 3])
+    @test Set(idx[2]) == Set([4])
+    @test Set(idx[4]) == Set([5, 6])
     @test length(idx) == 7
-    pairs = [(5, 7), (5, 2), (5, 3), (2, 3)]
-    ans = [4, 2, 1, 1]
+    pairs = [(5, 7), (5, 3), (2, 3), (5, 2)]
+    ans = [4, 1, 1, 2]
     @test length(pairs) == length(ans)
     @test lowest_common_ancestors(idx, pi, pairs) == ans
 end
