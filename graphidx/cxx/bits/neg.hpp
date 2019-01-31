@@ -1,5 +1,6 @@
 #pragma once
 #include <type_traits>      // std::is_integral
+#include <limits>
 
 /**
    Negate numbers in a way that `neg(x) != x`.
@@ -14,5 +15,15 @@ neg(const Int x)
     static_assert(std::is_integral<Int>::value, "Works only for integers");
     static_assert(std::is_signed<Int>::value, "Negation needs sign");
     // return -(x + Int(1));    // mathematical interpretation
-    return ~x;                  // fewer overflow errors
+    return Int(~x);             // fewer overflow errors
+}
+
+
+template <typename Int>
+bool
+is_pos(const Int x)
+{
+    static_assert(std::is_integral<Int>::value, "Works only for integers");
+    static_assert(std::is_signed<Int>::value, "Negation needs sign");
+    return !((Int(1) << std::numeric_limits<Int>::digits) & x);
 }
