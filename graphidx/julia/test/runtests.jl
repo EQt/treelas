@@ -3,6 +3,7 @@ using Test
 
 include("test_children.jl")
 include("test_inorder.jl")
+include("test_unionfind.jl")
 include("test_order.jl")
 include("test_cluster.jl")
 include("test_incmat.jl")
