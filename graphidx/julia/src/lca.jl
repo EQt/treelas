@@ -27,28 +27,32 @@ function lowest_common_ancestors(tree::ChildrenIndex,
     uf = UnionFind(n)
 
     colors = fill(false, n)
-    ancestors = fill(-1, k)
+    lcas = fill(-1, k)
+    ancestors = collect(Int, 1:n)
 
     stack = Vector{Int}()
     sizehint!(stack, n)
     push!(stack, root_node(tree))
     while !isempty(stack)
         v = pop!(stack)
-        colors[v] = true
-        for u in pairs[v]
-            if colors[u]
-                # set ancestors([u, v])
-            end
-        end
         for u in tree[v]
             push!(stack, u)
         end
-        if v != parent[v]
-            unite!(uf, find(v), find(parent[v]))
+
+        colors[v] = true
+        for (u, ei) in pairs[v]
+            @show (u, ei)
+            if colors[u]
+                lcas[ei] = ancestors[find(uf, u)]
+            end
         end
+            if v != parent[v]
+                unite!(uf, find(uf, v), find(uf, parent[v]))
+                ancestors[find(uf, parent[v])] = parent[v]
+            end
     end
 
-    return ancestors
+    return lcas
 end
 
 
