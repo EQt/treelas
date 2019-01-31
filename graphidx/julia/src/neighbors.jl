@@ -9,6 +9,8 @@ end
 
 Base.length(c::NeighborIndex) = length(c.idx) -1
 
+num_edges(c::NeighborIndex) = length(c.pi) ÷ 2
+
 
 """
     NeighborIndex(n, head, tail)
