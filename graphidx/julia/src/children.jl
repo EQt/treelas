@@ -1,3 +1,6 @@
+include("root.jl")
+
+
 struct ChildrenIndex
     pi::Vector{Int}
     idx::Vector{Int}
@@ -29,7 +32,7 @@ ChildrenIndex(n::Int) =
 
 Initialize enough space for a tree with `n` nodes.
 """
-ChildrenIndex(pi::Vector{Int}, root::Int = 1) =
+ChildrenIndex(pi::Vector{Int}, root::Int = 0) =
     ChildrenIndex(_compute_children(pi, root)...)
 
 
@@ -39,7 +42,7 @@ ChildrenIndex(pi::Vector{Int}, root::Int = 1) =
 Actually compute the index structure (implementation).
 If not provided, the output vectors `pi` and `idx` will be allocated.
 """
-_compute_children(parent::Vector{Int}, root::Int = 1) =
+_compute_children(parent::Vector{Int}, root::Int = 0) =
     let n = length(parent)
         _compute_children(Vector{Int}(undef, n),
                           Vector{Int}(undef, n+1),
@@ -53,8 +56,11 @@ function _compute_children(pi::Vector{Int},
                            parent::Vector{Int},
                            root::Int)
     n = length(parent)
+    if root <= 0
+        root = find_root(parent)
+    end
 
-    @assert pi[root] == root "pi[$root] == $(pi[root])"
+    @assert parent[root] == root "pi[$root] == $(pi[root])"
     @assert length(pi) == n
     @assert length(idx) == n+1
 
