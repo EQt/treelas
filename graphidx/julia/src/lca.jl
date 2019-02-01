@@ -49,17 +49,17 @@ function lowest_common_ancestors(tree::ChildrenIndex,
             colors[v] = true
 
             if v != parent[v]
-                unite!(uf, find(uf, v), find(uf, parent[v]))
-                ancestors[find(uf, parent[v])] = parent[v]
+                unite!(uf, uf[v], uf[parent[v]])
+                ancestors[uf[parent[v]]] = parent[v]
             end
 
             for (u, ei) in pairs[v]
                 @show u
                 if colors[u]
                     @show (u, ei)
-                    @show find(uf, u)
-                    @show ancestors[find(uf, u)]
-                    lcas[ei] = ancestors[find(uf, u)]
+                    @show uf[u]
+                    @show ancestors[uf[u]]
+                    lcas[ei] = ancestors[uf[u]]
                 end
             end
         end

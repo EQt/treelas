@@ -27,6 +27,10 @@ function init(u::UnionFind)
 end
 
 
+Base.getindex(u::UnionFind, x::Int) =
+    find(u, x)
+
+
 function find(u::UnionFind, x::Int)
     if u.p[x] != x
         u.p[x] = find(u, u.p[x])
