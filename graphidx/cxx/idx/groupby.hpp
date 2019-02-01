@@ -7,9 +7,10 @@
 #include "utils/viostream.hpp"
 
 
-/** Group the elements in `parent` (stored in `value`, group index `index`)
+/** Group the elements in `parent`, stored in `value`, group index `index`.
 
     If `root >= 0` treat it as the root of the tree given by `parent`.
+    The root node will be stored at index[0].
 
     Algorithm: Counting Sort
     https://en.wikipedia.org/wiki/Counting_sort

@@ -5,8 +5,10 @@
 #include "groupby.hpp"
 #include "index.hpp"
 /**
-   Children vectors for all nodes
- **/
+   Access the children of each node of the tree.
+
+   By convention, the root node is stored at ChildrenIndex::value[0].
+*/
 struct ChildrenIndex : public AdjacencyIndex<int>
 {
     ChildrenIndex() {}
@@ -41,4 +43,7 @@ struct ChildrenIndex : public AdjacencyIndex<int>
                                         std::to_string(n));
         groupby(value, index, n, parent, root);
     }
+
+
+    int root_node() const { return this->value[0]; }
 };

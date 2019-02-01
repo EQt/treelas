@@ -1,6 +1,9 @@
 include("root.jl")
 
-
+"""
+Provide constant time access to children of a node by index operator.
+By convention, the root node is stored at ChildrenIndex.idx[1].
+"""
 struct ChildrenIndex
     pi::Vector{Int}
     idx::Vector{Int}
