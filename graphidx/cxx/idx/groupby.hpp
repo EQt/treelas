@@ -32,8 +32,10 @@ groupby(std::vector<int_> &value,
     for (int i = 0; i < int(n); i++)
         index[parent[i]]++;
 
-    if (root >= 0)
+    if (root >= 0) {
         index[root]--;              // root isn't child of itself
+        value[0] = root;
+    }
 
     {                               // accumulate prefix sums
         int_ acc = root >= 0 ? 1 : 0,
