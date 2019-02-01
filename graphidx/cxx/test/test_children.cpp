@@ -66,6 +66,8 @@ TEST(children, generate5)
     cidx_expect[7] = {6};
 
     ChildrenIndex cidx(parent);
+    ASSERT_EQ(cidx.size(), parent.size());
+    EXPECT_EQ(cidx.root_node(), 0);
     if (false) {
         printf("children[3]:\n");
         for (const auto c : cidx[3]) {
@@ -83,6 +85,8 @@ TEST(children, binary)
 {
     const std::vector<int> parent = {0, 0, 0, 1, 1, 2, 2};
     const ChildrenIndex cidx (parent);
+    ASSERT_EQ(cidx.size(), parent.size());
+    EXPECT_EQ(cidx.root_node(), 0);
     for (int i : {0, 1, 2}) {
         EXPECT_EQ(cidx[i].size(), 2) << i;
     }
@@ -100,13 +104,15 @@ TEST(children, root1)
     ASSERT_EQ(parent.size(), 9);
     ASSERT_EQ(root, parent[root]);
     ChildrenIndex cidx (parent, root);
+    ASSERT_EQ(cidx.size(), parent.size());
+    ASSERT_EQ(cidx.root_node(), root);
 
     const std::vector<int>
-        idx_x ({0, 0, 0, 0, 0, 0, 0, 3, 6, 8}),
-        value_x  ({0, 1, 2, 3, 4, 5, 6, 7, 8});
+        idx_x ({1, 1, 1, 1, 1, 1, 1, 4, 7, 9}),
+        value_x  ({8, 0, 1, 2, 3, 4, 5, 6, 7});
 
-    ASSERT_EQ(cidx.index, idx_x);
-    ASSERT_EQ(cidx.value, value_x);
+    EXPECT_EQ(cidx.index, idx_x);
+    EXPECT_EQ(cidx.value, value_x);
 }
 
 
@@ -119,7 +125,8 @@ TEST(children, root2)
     ASSERT_EQ(parent.size(), 18);
     ASSERT_EQ(root, parent[root]);
     ChildrenIndex cidx (parent, root);
-
+    ASSERT_EQ(cidx.size(), parent.size());
+    ASSERT_EQ(cidx.root_node(), root);
     ASSERT_TRUE(is_perm(cidx.value));
 
     const int c = 9;
