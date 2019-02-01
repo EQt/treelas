@@ -20,10 +20,11 @@ end
 
 # Event ------------------------------------------------------------------
 struct Event
-    x::Float64      # position: redundant, but makes queue easier
+    x::Float64      # position (to sort the queues)
     slope::Float64  # delta slope
-    offset::Float64 # delta offset
 end
+
+intercept(e::Event)::Float64 = -e.x * e.slope
 
 Base.isless(e1::Event, e2::Event) = isless(e1.x, e2.x)
 
@@ -36,7 +37,7 @@ Base.show(io::IO, e::Event) =
           if isnan(e) "Event(NaN)"
           else
               @sprintf("% .2f -> % .2ft + % .3f",
-                       e.x, e.slope, e.offset)
+                       e.x, e.slope, intercept(e))
           end)
 
 # Queues ----------------------------------------------------------------
@@ -166,14 +167,14 @@ end
         stop = pq.stop
         e = elements[start]::Event
         while start <= stop && slope * e.x + offset < t
-            offset += e.offset
+            offset += intercept(e)
             slope  += e.slope
             start += 1
             e = elements[start]::Event
         end
         x = (t - offset)/slope
         start -= 1
-        elements[start] = Event(x, slope, offset - t)
+        elements[start] = Event(x, slope)
         pqs[i] = Range(start, stop)
         return x
     end
@@ -188,14 +189,14 @@ end
         stop = pq.stop
         e = elements[stop]::Event
         while start <= stop && slope * e.x + offset > t
-            offset -= e.offset
+            offset -= intercept(e)
             slope  -= e.slope
             stop -= 1
             e = elements[stop]::Event
         end
         x = (t - offset)/slope
         stop += 1
-        elements[stop] = Event(x, -slope, -offset + t)
+        elements[stop] = Event(x, -slope)
         pqs[i] = Range(start, stop)
         return x
     end
@@ -285,7 +286,7 @@ end
 #=
 function _print_elments(elements)
     println("[", join([@sprintf("Event(% 4.2f, % 4.2f % 4.2f)\n",
-                                e.x, e.slope, e.offset)
+                                e.x, e.slope, intercept(e))
                        for e in elements], ", "), "]")
 
 end
