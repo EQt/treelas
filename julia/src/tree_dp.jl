@@ -8,7 +8,7 @@ module DPTree
 # include("graphidx.jl")
 
 import Printf: @sprintf
-import GraphIdx: ChildrenIndex, _compute_children
+import GraphIdx: ChildrenIndex, reset!
 
 
 # Tree -------------------------------------------------------------------
@@ -76,7 +76,7 @@ end
 
 
 function _init_queues(parent, root, pq, proc_order, stack, childs)
-    _compute_children(childs.pi, childs.idx, parent, root)
+    reset!(childs, parent, root)
     n = length(parent)
     @assert length(childs.pi) == n
     @assert length(childs.idx) == n+1

@@ -32,33 +32,25 @@ ChildrenIndex(n::Int) =
 
 Construct a new index within the tree given by `parent`.
 """
-ChildrenIndex(parent::Vector{Int}, root::Int = 0) =
-    ChildrenIndex(_compute_children(parent, root)...)
+function ChildrenIndex(parent::Vector{Int}, root::Int = 0)
+    idx = ChildrenIndex(length(parent))
+    reset!(idx, parent, root)
+    return idx
+end
 
 
 """
-    _compute_children([pi, idx,], parent, [root])
+    reset!(cidx, parent [,root])
 
-Actually compute the index structure (implementation).
-If not provided, the output vectors `pi` and `idx` will be allocated.
+Actually compute the index according to `parent`.
 """
-_compute_children(parent::Vector{Int}, root::Int = 0) =
-    let n = length(parent)
-        _compute_children(Vector{Int}(undef, n),
-                          Vector{Int}(undef, n+1),
-                          parent,
-                          root)
-    end
-
-
-function _compute_children(pi::Vector{Int},
-                           idx::Vector{Int},
-                           parent::Vector{Int},
-                           root::Int)
-    n = length(parent)
+function reset!(cidx::ChildrenIndex, parent::Vector{Int}, root::Int = 0)
     if root <= 0
         root = find_root(parent)
     end
+    n = length(parent)
+    pi = cidx.pi
+    idx = cidx.idx
 
     @assert parent[root] == root "pi[$root] == $(pi[root])"
     @assert length(pi) == n
