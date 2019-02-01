@@ -9,6 +9,16 @@ include("children.jl")
 include("neighbors.jl")
 
 
+"""
+    signed_dfs(f, tree [,stack])
+
+Call `f` on each node of `tree` in depth-first search (DFS) order.
+Hereby the node `v` is negative `v < 0` if the node is discovered
+the first time and non-negative (`v >= 0`) if the node has been
+finished.
+
+To avoid allocation, you can pass a `stack` Vector.
+"""
 function signed_dfs(f::Function, tree::ChildrenIndex,
                     stack::Vector{Int} = Vector{Int}())
     sizehint!(stack, length(tree))
