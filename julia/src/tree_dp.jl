@@ -34,8 +34,7 @@ Base.isnan(e::Event) = isnan(e.x)
 
 Base.show(io::IO, e::Event) =
     print(io,
-          if isnan(e) "Event(NaN)"
-          else
+          if isnan(e) "Event(NaN)" else
               @sprintf("% .2f -> % .2ft + % .3f",
                        e.x, e.slope, intercept(e))
           end)

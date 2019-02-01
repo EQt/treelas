@@ -74,12 +74,12 @@ end
 
 Optimize in each iteration along a tree.
 """
-max_gap_tree(y::Matrix{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
-    reshape(max_gap_tree(vec(y), edges, lambda; args...), size(y)...)
+max_gap_tree(y::Matrix{Float64}, edges::Edges, λ::Vector{Float64}; args...) =
+    reshape(max_gap_tree(vec(y), edges, λ; args...), size(y)...)
 
 
-max_gap_tree(y::Vector{Float64}, edges::Edges, lambda::Vector{Float64}; args...) =
-    max_gap_tree(y, IncMat(edges, lambda, length(y)), edges, lambda; args...)
+max_gap_tree(y::Vector{Float64}, edges::Edges, λ::Vector{Float64}; args...) =
+    max_gap_tree(y, IncMat(edges, λ, length(y)), edges, λ; args...)
 
 
 function max_gap_tree(y::Vector{Float64},
