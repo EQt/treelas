@@ -30,10 +30,10 @@ ChildrenIndex(n::Int) =
 """
     ChildrenIndex(parent, [root])
 
-Initialize enough space for a tree with `n` nodes.
+Construct a new index within the tree given by `parent`.
 """
-ChildrenIndex(pi::Vector{Int}, root::Int = 0) =
-    ChildrenIndex(_compute_children(pi, root)...)
+ChildrenIndex(parent::Vector{Int}, root::Int = 0) =
+    ChildrenIndex(_compute_children(parent, root)...)
 
 
 """
