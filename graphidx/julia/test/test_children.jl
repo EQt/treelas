@@ -4,6 +4,7 @@ using Test
 include("../src/children.jl")
 include("../src/degrees.jl")        # for node_degrees
 
+
 @testset "generate(width=5): low level   " begin
     # root, parent = TreeInstance.generate(5)[3:4]
     root = 1
@@ -12,6 +13,8 @@ include("../src/degrees.jl")        # for node_degrees
     pi_, idx_ = cidx.pi, cidx.idx
     @test pi_ == [1, 2, 6, 3, 4, 5, 9, 7, 8, 10]
     @test idx_ == [2, 4, 5, 6, 8, 8, 8, 8, 9, 11, 11]
+    @test root_node(cidx) == root
+    @test length(cidx) == length(parent)
 end
 
 
@@ -26,6 +29,8 @@ end
     @test cidx[4] == [5, 9]
     @test cidx[10] == []
     @test cidx[7] == []
+    @test root_node(cidx) == root
+    @test length(cidx) == length(parent)
 end
 
 
@@ -49,6 +54,8 @@ end
     @test Set(cidx[137]) == Set([138, 136, 158])
     @test Set(cidx[1]) == Set([2, 22])
     @test cidx[89] == [110]
+    @test root_node(cidx) == 1
+    @test length(cidx) == length(pi)
 end
 
 @testset "generate(width=50)             " begin
@@ -137,6 +144,8 @@ end
     deg = node_degrees(pi)
     @test maximum(deg) == 3
     cidx = ChildrenIndex(pi)
+    @test root_node(cidx) == 1
+    @test length(cidx) == length(pi)
 end
 
 end
