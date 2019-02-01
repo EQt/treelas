@@ -77,31 +77,24 @@ end
 
 function _init_queues(parent, root, pq, proc_order, stack, childs)
     reset!(childs, parent, root)
+
     n = length(parent)
     @assert length(childs) == n
     @assert length(childs.idx) == n+1
 
     empty!(proc_order)
     sizehint!(proc_order, n)
-
-    @assert isempty(stack)
     @assert isempty(proc_order)
-    push!(stack, root)
+
     t = 1
-    while !isempty(stack)
-        v = pop!(stack)
+    dfs_walk(childs, stack) do v::Int
         t += 1
         if v >= 0
-            push!(stack, -v)
-            for u in childs[v]
-                push!(stack, u)
-            end
-        else
-            v = -v
             push!(proc_order, v)
             pq[v] = Range(t, t-1)
         end
     end
+
     pop!(proc_order)    # remove root
     return pq, proc_order
 end
