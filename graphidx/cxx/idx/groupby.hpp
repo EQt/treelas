@@ -12,10 +12,9 @@
     If `root >= 0` treat it as the root of the tree given by `parent`.
     The root node will be stored at index[0].
 
-    Algorithm: Counting Sort
-    https://en.wikipedia.org/wiki/Counting_sort
+    Algorithm: [Counting Sort][c] (linear runtime)
 
-    Linear Runtime.
+    [c]: https://en.wikipedia.org/wiki/Counting_sort
 */
 template <typename int_ = int>
 void
@@ -37,7 +36,7 @@ groupby(std::vector<int_> &value,
         index[root]--;              // root isn't child of itself
 
     {                               // accumulate prefix sums
-        int_ acc = 0,
+        int_ acc = root >= 0 ? 1 : 0,
              deg_i = 0,
              deg_ii = index[0];
         for (int i = 0; i < int(k); i++) {
@@ -55,26 +54,14 @@ groupby(std::vector<int_> &value,
         value[index[p+1]++] = v;
     }
 
-    if (root >= 0) {
-        if (index[n] != int_(n-1))
-            throw std::runtime_error(std::string("\n" __FILE__) + ":" +
-                                     std::to_string(__LINE__) +
-                                     ": Severe Bug:\n  index[n] = " +
-                                     std::to_string(index[n]) + " != " +
-                                     std::to_string(n-1) + " = n-1   " +
-                                     "; root = " + std::to_string(root));
-        value[n-1] = root;          // value should be a permutation:
-                                    //   i.e. root at the end
-    } else {
-        if (index[k] != int_(n)) {
-            std::ostringstream msg;
-            msg << "\n" << __FILE__ << ":" <<__LINE__
-                << ": Severe Bug:\n  index[k] = " << index[k]
-                << " != " << n << " = n   ";
-            if (k <= 10)
-                msg << std::endl
-                    << "  index = " << index << std::endl;
-            throw std::runtime_error(msg.str());
-        }
+    if (index[k] != int_(n)) {
+        std::ostringstream msg;
+        msg << "\n" << __FILE__ << ":" <<__LINE__
+            << ": Severe Bug:\n  index[k] = " << index[k]
+            << " != " << n << " = n   ";
+        if (k <= 10)
+            msg << std::endl
+                << "  index = " << index << std::endl;
+        throw std::runtime_error(msg.str());
     }
 }
