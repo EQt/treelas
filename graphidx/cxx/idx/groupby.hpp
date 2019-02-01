@@ -34,7 +34,8 @@ groupby(std::vector<int_> &value,
 
     if (root >= 0)
         index[root]--;              // root isn't child of itself
-    {
+
+    {                               // accumulate prefix sums
         int_ acc = 0,
              deg_i = 0,
              deg_ii = index[0];
@@ -46,11 +47,13 @@ groupby(std::vector<int_> &value,
         }
         index[k] = acc;
     }
-    for (int v = 0; v < int(n); v++) {
+
+    for (int_ v = 0; v < int_(n); v++) {  // sort the values
         const auto p = parent[v];
-        if (v == root) continue;   // skip root
+        if (v == root) continue;          // skip root
         value[index[p+1]++] = v;
     }
+
     if (root >= 0) {
         if (index[n] != int_(n-1))
             throw std::runtime_error(std::string("\n" __FILE__) + ":" +
