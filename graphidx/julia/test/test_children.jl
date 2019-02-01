@@ -34,6 +34,39 @@ end
 end
 
 
+@testset "generate(width=5): index access" begin
+    parent0 = Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9]
+    root0 = 1
+    @test find_root(parent0) == root0
+    n = length(parent0)
+
+    # import Random
+    # perm = Random.randperm(Random.MersenneTwister(42), 10)
+    perm = [9, 3, 1, 5, 10, 7, 2, 6, 4, 8]
+    iperm = invperm(perm)
+    @test perm[iperm] == 1:n
+    @test iperm[perm] == 1:n
+    # perm: old  -> new
+    # iperm: new -> old
+    # parent0: old i -> old parent
+    # parent1: new i -> old i -> old parent -> new parent
+    parent1 = perm[parent0[iperm]]
+    root1 = find_root(parent1)
+    @test root1 == perm[root0]
+
+    cidx = ChildrenIndex(parent1)
+    @test root_node(cidx) == root1
+    @test length(cidx) == length(parent1)
+
+    @test Set(cidx[perm[1]]) == Set(perm[[2,6]])
+    @test Set(cidx[perm[2]]) == Set(perm[[3]])
+    @test Set(cidx[perm[9]]) == Set(perm[[8, 10]])
+    @test Set(cidx[perm[4]]) == Set(perm[[5, 9]])
+    @test Set(cidx[perm[10]]) == Set(perm[[]])
+    @test Set(cidx[perm[7]]) == Set(perm[[]])
+end
+
+
 @testset "generate(width=21): some tests " begin
     # pi = TreeInstance.generate(21)[4]
     pi = [1, 1, 2, 3, 4, 7, 8, 29, 8, 9, 32, 33, 34, 35, 36, 37, 16,
