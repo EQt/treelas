@@ -6,7 +6,7 @@ function find_root(pi::Vector{Int})::Int
 end
 
 
-function dfs_finish(parent::Vector{Int}, root=0)::Vector{Int}
+function dfs_finish(parent::Vector{Int}, root::Int = Int(0))::Vector{Int}
     if root <= 0                            # find root node
         root = find_root(pi)
     end
