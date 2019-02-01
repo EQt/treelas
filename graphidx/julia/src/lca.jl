@@ -53,6 +53,10 @@ function lowest_common_ancestors(tree::ChildrenIndex,
                 ancestors[uf[parent[v]]] = parent[v]
             end
 
+            if v == 2
+                @show "now!"
+                @show Set(pairs[v])
+            end
             for (u, ei) in pairs[v]
                 @show u
                 if colors[u]
