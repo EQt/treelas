@@ -3,7 +3,7 @@
 
 
 Classical Union-Find data structure with path compression as described
-eg in CLRS page XY
+e.g. in CLRS in Chapter 21 "Disjooint Sets" (3rd edition).
 """
 struct UnionFind
     p::Vector{Int}
