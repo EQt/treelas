@@ -3,6 +3,7 @@ include("../src/lca.jl")
 using Test
 import .Tree: lowest_common_ancestors, ChildrenIndex, NeighborIndex
 
+
 @testset "LCA NeighborIndex              " begin
     pairs = [(5, 7), (5, 2), (5, 3), (2, 3)]
     idx = NeighborIndex(7, pairs)

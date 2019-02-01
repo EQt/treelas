@@ -33,34 +33,23 @@ function lowest_common_ancestors(tree::ChildrenIndex,
     stack = Vector{Int}()
     sizehint!(stack, n)
     @assert parent[root_node(tree)] == root_node(tree)
-    @show root_node(tree)
     push!(stack, ~root_node(tree))
     while !isempty(stack)
         v = pop!(stack)
         if v < 0
-            @show ~v
             v = ~v
             push!(stack, v)
             for u in tree[v]
                 push!(stack, ~u)
             end
         else
-            @show v
-            if v == 2
-                @show "now!"
-                @show Set(pairs[v])
-            end
             for (u, ei) in pairs[v]
-                @show u
                 if colors[u]
-                    @show (u, ei)
-                    @show uf[u]
-                    @show ancestors[uf[u]]
                     lcas[ei] = ancestors[uf[u]]
                 end
             end
-            colors[v] = true
 
+            colors[v] = true
             if v != parent[v]
                 unite!(uf, uf[v], uf[parent[v]])
                 ancestors[uf[parent[v]]] = parent[v]
