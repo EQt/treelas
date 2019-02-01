@@ -8,7 +8,7 @@ module DPTree
 # include("graphidx.jl")
 
 import Printf: @sprintf
-import GraphIdx: ChildrenIndex, reset!
+import GraphIdx: ChildrenIndex, reset!, dfs_walk
 
 
 # Tree -------------------------------------------------------------------
@@ -78,12 +78,11 @@ end
 function _init_queues(parent, root, pq, proc_order, stack, childs)
     reset!(childs, parent, root)
     n = length(parent)
-    @assert length(childs.pi) == n
+    @assert length(childs) == n
     @assert length(childs.idx) == n+1
 
     empty!(proc_order)
     sizehint!(proc_order, n)
-    sizehint!(stack, n)
 
     @assert isempty(stack)
     @assert isempty(proc_order)
@@ -94,8 +93,8 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
         t += 1
         if v >= 0
             push!(stack, -v)
-            for i in childs.idx[v]:childs.idx[v+1]-1
-                push!(stack, childs.pi[i])
+            for u in childs[v]
+                push!(stack, u)
             end
         else
             v = -v
