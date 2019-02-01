@@ -59,6 +59,12 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.12.0.alpha
+Plan:
+- Refactor mgt.jl to reduce the input needed
+- Make MGT callable on grid graphs
+
+
 ### v0.11.7
 Released 2019-01-31
 - ChildrenIndex provides access to root node and has same layout in C++ and Julia
@@ -90,7 +96,6 @@ Released 2019-01-11
 Released 2019-01-07
 - Julia: Maximum Gap Tree seems to work
 
-
 ### v0.11.0
 - CXX: moved most general graph code to `graphidx`
 
@@ -104,16 +109,13 @@ Released 2018-12-29
 - Julia: `dp_tree`
 - CXX: Test `kruskal_mst`
 
-
 ### v0.10.2
 Released 2018-12-20
 - Iterator over `PartitionIndex`
 
-
 ### v0.10.1
 Released 2018-12-20
 - `cluster`
-
 
 ### v0.10.0 
 Released 2018-12-19
