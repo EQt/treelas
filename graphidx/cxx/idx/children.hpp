@@ -4,6 +4,9 @@
 
 #include "groupby.hpp"
 #include "index.hpp"
+#include "../tree/root.hpp"
+
+
 /**
    Access the children of each node of the tree.
 
@@ -20,21 +23,20 @@ struct ChildrenIndex : public AdjacencyIndex<int>
     }
 
 
-    ChildrenIndex(const size_t n, const int *parent, const int root = 0) {
+    ChildrenIndex(const size_t n, const int *parent, const int root = -1) {
         reset(n, parent, root);
     }
 
 
-    ChildrenIndex(const std::vector<int> &parent, const int root = 0) :
+    ChildrenIndex(const std::vector<int> &parent, const int root = -1) :
         ChildrenIndex(parent.size(), parent.data(), root) {}
 
     
-    void reset(const size_t n, const int *parent, const int root = 0) {
+    void reset(const size_t n, const int *parent, int root = -1) {
         if (root < 0)
-            throw std::invalid_argument(std::string("\n" __FILE__) + ":" +
-                                        std::to_string(__LINE__) +
-                                        ":\n root = " + std::to_string(root));
-        if (parent[root] != root)
+            root = find_root(n, parent);
+
+        if (root < 0 || parent[root] != root)
             throw std::invalid_argument(std::string("\n" __FILE__) + ":" +
                                         std::to_string(__LINE__) +
                                         ":\n  root = " + std::to_string(root) +
