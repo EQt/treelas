@@ -46,13 +46,6 @@ function lowest_common_ancestors(tree::ChildrenIndex,
             end
         else
             @show v
-            colors[v] = true
-
-            if v != parent[v]
-                unite!(uf, uf[v], uf[parent[v]])
-                ancestors[uf[parent[v]]] = parent[v]
-            end
-
             if v == 2
                 @show "now!"
                 @show Set(pairs[v])
@@ -65,6 +58,12 @@ function lowest_common_ancestors(tree::ChildrenIndex,
                     @show ancestors[uf[u]]
                     lcas[ei] = ancestors[uf[u]]
                 end
+            end
+            colors[v] = true
+
+            if v != parent[v]
+                unite!(uf, uf[v], uf[parent[v]])
+                ancestors[uf[parent[v]]] = parent[v]
             end
         end
     end
