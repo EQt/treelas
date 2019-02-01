@@ -85,5 +85,5 @@ function reset!(cidx::ChildrenIndex, parent::Vector{Int}, root::Int = 0)
     end
     @assert(idx[end] == n+1,
             "idx[$(length(idx))] + $deg_i = $(idx[end]) != $(n+1)")
-    return pi, idx
+    return cidx
 end
