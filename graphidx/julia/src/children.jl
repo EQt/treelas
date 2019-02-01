@@ -54,7 +54,7 @@ function _compute_children(pi::Vector{Int},
                            root::Int)
     n = length(parent)
 
-    @assert root == 1
+    @assert pi[root] == root "pi[$root] == $(pi[root])"
     @assert length(pi) == n
     @assert length(idx) == n+1
 
