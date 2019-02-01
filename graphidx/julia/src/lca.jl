@@ -9,6 +9,24 @@ include("children.jl")
 include("neighbors.jl")
 
 
+function signed_dfs(f::Function, tree::ChildrenIndex,
+                    stack::Vector{Int} = Vector{Int}())
+    sizehint!(stack, length(tree))
+    push!(stack, ~root_node(tree))
+    while !isempty(stack)
+        v = pop!(stack)
+        f(v)
+        if v < 0
+            v = ~v
+            push!(stack, v)
+            for u in tree[v]
+                push!(stack, ~u)
+            end
+        end
+    end
+end
+
+
 """
     lowest_common_ancestors(tree, lcas)
 
@@ -30,19 +48,9 @@ function lowest_common_ancestors(tree::ChildrenIndex,
     lcas = fill(-1, k)
     ancestors = collect(Int, 1:n)
 
-    stack = Vector{Int}()
-    sizehint!(stack, n)
     @assert parent[root_node(tree)] == root_node(tree)
-    push!(stack, ~root_node(tree))
-    while !isempty(stack)
-        v = pop!(stack)
-        if v < 0
-            v = ~v
-            push!(stack, v)
-            for u in tree[v]
-                push!(stack, ~u)
-            end
-        else
+    signed_dfs(tree) do v
+        if v >= 0
             for (u, ei) in pairs[v]
                 if colors[u]
                     lcas[ei] = ancestors[uf[u]]
