@@ -6,10 +6,14 @@ Hereby the node `v` is negative `v < 0` if the node is discovered
 the first time and non-negative (`v >= 0`) if the node has been
 finished.
 
+The `tree` can be given as `ChildrenIndex` or parent `Vector{Int}`;
+in the latter case `ChildrenIndex` will be constructed.
 To avoid allocation, you can pass a `stack` Vector.
+
 """
 function dfs_walk(f::Function, tree::ChildrenIndex,
                   stack::Vector{Int} = Vector{Int}())
+    @assert isempty(stack)
     sizehint!(stack, length(tree))
     push!(stack, ~root_node(tree))
     while !isempty(stack)
@@ -24,6 +28,10 @@ function dfs_walk(f::Function, tree::ChildrenIndex,
         end
     end
 end
+
+
+dfs_walk(f::Function, parent::Vector{Int}, stack::Vector{Int} = Vector{Int}()) =
+    dfs_walk(f, ChildrenIndex(parent), stack)
 
 
 function dfs_finish(parent::Vector{Int}, root::Int = Int(0))::Vector{Int}
