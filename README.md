@@ -59,6 +59,11 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.11.7
+Released 2019-01-31
+- ChildrenIndex provides access to root node and has same layout in C++ and Julia
+- Julia: `lowest_common_ancestors`
+
 ### v0.11.6
 Released 2019-01-31
 - CXX: started to implement van Emde Boas layout
