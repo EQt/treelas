@@ -49,7 +49,7 @@ function lowest_common_ancestors(tree::ChildrenIndex,
     ancestors = collect(Int, 1:n)
 
     @assert parent[root_node(tree)] == root_node(tree)
-    signed_dfs(tree) do v
+    signed_dfs(tree) do v::Int
         if v >= 0
             for (u, ei) in pairs[v]
                 if colors[u]
