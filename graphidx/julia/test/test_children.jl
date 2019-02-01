@@ -171,7 +171,7 @@ end
     933, 983, 935, 987, 988, 938, 988, 940, 941, 993, 994, 944, 994,
     997, 947, 948, 998, 999]
 
-    n = length(value)
+    n = length(pi)
     @test all(pi .>= 1)
     @test all(pi .<= n)
     deg = node_degrees(pi)

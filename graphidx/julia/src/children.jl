@@ -65,6 +65,7 @@ function reset!(cidx::ChildrenIndex, parent::Vector{Int}, root::Int = 0)
     end
     idx[root] -= 1      # root does not have itself as children
 
+    value[1] = root     # root ==> isperm(value) holds (root is not any child)
     acc = 2
     deg_i = 0
     deg_ii = idx[1]
@@ -78,7 +79,6 @@ function reset!(cidx::ChildrenIndex, parent::Vector{Int}, root::Int = 0)
     @assert(idx[end] + deg_i == n+1,
             "idx[$(length(idx))] + $deg_i = $(idx[end]) != $(n+1)")
 
-    value[root] = root       # root ==> isperm(value) holds (root is not any child)
     for (v, p) in enumerate(parent)     # collect children values
         if v == p
             continue
