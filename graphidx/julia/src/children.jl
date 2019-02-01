@@ -5,18 +5,18 @@ Provide constant time access to children of a node by index operator.
 By convention, the root node is stored at ChildrenIndex.idx[1].
 """
 struct ChildrenIndex
-    pi::Vector{Int}
     idx::Vector{Int}
+    value::Vector{Int}
 end
 
 
 @inline Base.getindex(c::ChildrenIndex, j::Int) =
-    view(c.pi, c.idx[j]:c.idx[j+1]-1)
+    view(c.value, c.idx[j]:c.idx[j+1]-1)
 
 
-num_nodes(c::ChildrenIndex) = length(c.pi)
+num_nodes(c::ChildrenIndex) = length(c.value)
 
-root_node(c::ChildrenIndex) = c.pi[1]
+root_node(c::ChildrenIndex) = c.value[1]
 
 Base.length(c::ChildrenIndex) = num_nodes(c)
 
@@ -27,7 +27,7 @@ Base.length(c::ChildrenIndex) = num_nodes(c)
 Allocate enough space for a tree with `n` nodes.
 """
 ChildrenIndex(n::Int) =
-    ChildrenIndex(Vector{Int}(undef, n), Vector{Int}(undef, n+1))
+    ChildrenIndex(Vector{Int}(undef, n+1), Vector{Int}(undef, n))
 
 
 """
@@ -52,11 +52,11 @@ function reset!(cidx::ChildrenIndex, parent::Vector{Int}, root::Int = 0)
         root = find_root(parent)
     end
     n = length(parent)
-    pi = cidx.pi
+    value = cidx.value
     idx = cidx.idx
 
-    @assert parent[root] == root "pi[$root] == $(pi[root])"
-    @assert length(pi) == n
+    @assert parent[root] == root "value[$root] == $(value[root])"
+    @assert length(value) == n
     @assert length(idx) == n+1
 
     idx .= 0
@@ -78,12 +78,12 @@ function reset!(cidx::ChildrenIndex, parent::Vector{Int}, root::Int = 0)
     @assert(idx[end] + deg_i == n+1,
             "idx[$(length(idx))] + $deg_i = $(idx[end]) != $(n+1)")
 
-    pi[root] = root       # root ==> isperm(pi) holds (root is not any child)
+    value[root] = root       # root ==> isperm(value) holds (root is not any child)
     for (v, p) in enumerate(parent)     # collect children values
         if v == p
             continue
         end
-        pi[idx[p+1]] = v
+        value[idx[p+1]] = v
         idx[p+1] += 1
     end
     @assert(idx[end] == n+1,

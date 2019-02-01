@@ -10,8 +10,8 @@ include("../src/degrees.jl")        # for node_degrees
     root = 1
     parent = Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9]
     cidx = ChildrenIndex(parent, root)
-    pi_, idx_ = cidx.pi, cidx.idx
-    @test pi_ == [1, 2, 6, 3, 4, 5, 9, 7, 8, 10]
+    value_, idx_ = cidx.value, cidx.idx
+    @test value_ == [1, 2, 6, 3, 4, 5, 9, 7, 8, 10]
     @test idx_ == [2, 4, 5, 6, 8, 8, 8, 8, 9, 11, 11]
     @test root_node(cidx) == root
     @test length(cidx) == length(parent)
@@ -171,7 +171,7 @@ end
     933, 983, 935, 987, 988, 938, 988, 940, 941, 993, 994, 944, 994,
     997, 947, 948, 998, 999]
 
-    n = length(pi)
+    n = length(value)
     @test all(pi .>= 1)
     @test all(pi .<= n)
     deg = node_degrees(pi)
