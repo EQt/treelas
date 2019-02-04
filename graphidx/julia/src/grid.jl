@@ -63,6 +63,23 @@ end
 
 
 """
+Capture all we need to know about a grid graph.
+"""
+struct GridGraph
+    n1::Int
+    n2::Int
+    dirs::Vector{Pixel}
+end
+
+
+num_edges(g::GridGraph) =
+    num_edges(g.n1, g.n2, g.dirs)
+
+
+num_nodes(g::GridGraph) = g.n1 * g.n2
+
+
+"""
     iter_edges_pixel(proc, n1, n2, dirs)
 
 Call `proc(i1, j1, i2, j2, len)` for every grid edge
