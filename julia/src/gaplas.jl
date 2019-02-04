@@ -6,6 +6,9 @@ Re-implement the MGT module for general Graphs having only a method to access al
 module GapLas
 include("tree_dp.jl")
 
+import GraphIdx.Grid: iter_edges
+
+
 """
     gaplas(...)
 TODO
