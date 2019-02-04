@@ -184,7 +184,7 @@ end
 Compute an upper bound for the Lipschitz-constant for ...
 TODO: Be more precise
 """
-function lipschitz(n1, n2, dirs)
+function lipschitz(n1, n2, dirs::Vector{Pixel})
     lmax = maximum(lam)
     Lip = lmax * 2 * 4 * sum([l for (d,l) in dirs])
     error("not implemented, yet")
