@@ -10,7 +10,7 @@ function neighbors_lambda(g::GridGraph)
     n = num_nodes(g)
     idx = zeros(Int, n+1)
     local m = 0
-    iter_edges(g) do h, t, _
+    iter_edges(g) do h::Int, t::Int, _
         m += 1
         idx[h] += 1
         idx[t] += 1
@@ -29,7 +29,7 @@ function neighbors_lambda(g::GridGraph)
     pi = Vector{Tuple{Int,Int}}(undef, 2m)
     lam = Vector{Float64}(undef, m)
     local i = 0
-    iter_edges(g) do u, v, lam_i
+    iter_edges(g) do u::Int, v::Int, lam_i::Float64
         i += 1
         lam[i] = lam_i
         pi[idx[u+1]] = (v, i)
