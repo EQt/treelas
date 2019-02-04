@@ -119,6 +119,10 @@ function iter_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
 end
 
 
+iter_edges(f::Function, g::GridGraph) =
+    iter_edges(f, g.n1, g.n2, g.dirs)
+
+
 """
     num_edges(n1, n2, dirs)
     num_edges(n1, n2, dn::Int)
