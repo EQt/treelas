@@ -59,11 +59,18 @@ end
 
 Same but for edges like `[(1, 2), (2, 3)]`
 """
-function NeighborIndex(n::Int, edges::Vector{Tuple{Int, Int}})
-    m = count(i -> i[1] > 0, edges)
+NeighborIndex(n::Int, edges::Vector{Tuple{Int, Int}}) =
+    NeighborIndex(n, count(i -> i[1] > 0, edges), () -> edges)
+
+"""
+    NeighborIndex(n, m, iter::Function)
+
+Provide an iterator over the edges
+"""
+function NeighborIndex(n::Int, m::Int, iter::Function)
     pi = Vector{Tuple{Int,Int}}(undef, 2m)
     idx = zeros(Int, n+1)
-    for (h, t) in edges
+    for (h, t) in iter()
         h <= 0 && continue
         idx[h] += 1
         idx[t] += 1
@@ -79,7 +86,7 @@ function NeighborIndex(n::Int, edges::Vector{Tuple{Int, Int}})
     idx[n+1] = acc
     @assert(idx[end] + deg_i == 2m + 1,
             "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
-    for (i, (u, v)) in enumerate(edges)
+    for (i, (u, v)) in enumerate(iter())
         u <= 0 && continue
         pi[idx[u+1]] = (v, i)
         idx[u+1] += 1
