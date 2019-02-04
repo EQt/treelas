@@ -93,7 +93,10 @@ edge `u -- v` having `len`gth.
 Hereby `u` and `v` are the index of the corresponding grid-nodes.
 """
 function iter_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
-    iter_edges_pixel(n1, n2, dirs) do i1, j1, i2, j2, len
+    """Fortran index of the matrix entry `(i,j)`"""
+    pix2ind(i, j) = i + (j-1)*n1
+
+    iter_edges_pixel(n1, n2, dirs) do i1, j1, i2, j2, len::Float64
         proc(pix2ind(i1, j1), pix2ind(i2, j2), len)
     end
 end
@@ -119,9 +122,6 @@ num_edges(n1::Int, n2::Int, dn::Int = 1)::Int =
 
 
 function incmat(n1::Int, n2::Int, dn::Int = 1)
-    """Fortran index of the matrix entry `(i,j)`"""
-    pix2ind(i, j) = i + (j-1)*n1
-
     dirs = compute_dirs(dn)
     n = n1 * n2
     m = num_edges(n1, n2, dirs)
@@ -131,7 +131,7 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     W = zeros(Float64, 2m)
 
     k = Int(1)   # edge index
-    iter_edges_pixel(n1, n2, dirs) do u::Int, v::Int, len::Float64
+    iter_edges(n1, n2, dirs) do u::Int, v::Int, len::Float64
         I[2k-1] = k
         J[2k-1] = u
         W[2k-1] = +len
@@ -145,9 +145,6 @@ end
 
 
 function adjlist(n1::Int, n2::Int, dn::Int = 1)
-    """Fortran index of the matrix entry `(i,j)`"""
-    pix2ind(i, j) = i + (j-1)*n1
-
     dirs = compute_dirs(dn)
     m = num_edges(n1, n2, dirs)
     head = Vector{Int}(undef, m)
