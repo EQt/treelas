@@ -12,27 +12,6 @@ import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
     @test num_nodes(g) == n
     @test num_edges(g) == m
 
-    begin
-        local k = 0
-        iter_edges(g) do u, v, lam
-            k += 1
-            if k == 1
-                @test u == 1
-                @test v == 2
-            elseif k == 4
-                @test u == 1
-                @test v == 4
-            elseif k == 5
-                @test u == 2
-                @test v == 5
-            else
-                @test u < v
-            end
-            @test lam ≈ 1
-        end
-        @test k == m
-    end
-
     x = zeros(Float64, 2, 3)
     gam = zeros(Float64, m)
     alpha = zeros(Float64, m)
