@@ -5,7 +5,7 @@ import .GapLas
 import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
 
 
-@testset "GridGraph: 2x3                 " begin
+@testset "GapLas   : 2x3                 " begin
     g = GridGraph(2, 3)
     m = 2*2 + 3
     n = 6
@@ -43,6 +43,6 @@ import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
     @test gam[3] ≈ 0
     @test gam[4] ≈ 0
     @test gam[5] ≈ 13
-    # @test gam[6] ≈ 0
-    # @test gam[7] ≈ 0
+    @test gam[6] ≈ 0
+    @test gam[7] ≈ 0
 end
