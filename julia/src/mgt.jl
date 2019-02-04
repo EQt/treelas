@@ -39,7 +39,6 @@ order need to be specified, i.e. we should provide an edge iterator.
 
 """
 module MGT
-# include("graphidx.jl")
 include("tree_dp.jl")
 
 import SparseArrays: mul!
