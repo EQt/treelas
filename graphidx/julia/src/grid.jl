@@ -63,12 +63,12 @@ end
 
 
 """
-    iter_edges(proc, n1, n2, dirs)
+    iter_edges_pixel(proc, n1, n2, dirs)
 
 Call `proc(i1, j1, i2, j2, len)` for every grid edge
 `(i1, j1) -- (i2, j2)` having `len`gth.
 """
-function iter_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
+function iter_edges_pixel(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
     for d in dirs
         len = 1/norm(d)
         for j = 1:(n2-d.y)
@@ -117,7 +117,7 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     W = zeros(Float64, 2m)
 
     k = Int(1)   # edge index
-    iter_edges(n1, n2, dirs) do i, j, i2, j2, len
+    iter_edges_pixel(n1, n2, dirs) do i, j, i2, j2, len
         I[2k-1] = k
         J[2k-1] = pix2ind(i, j)
         W[2k-1] = +len
@@ -141,7 +141,7 @@ function adjlist(n1::Int, n2::Int, dn::Int = 1)
     lam =  Vector{Float64}(undef, m)
 
     k = Int(1)
-    iter_edges(n1, n2, dirs) do i1, j1, i2, j2, len
+    iter_edges_pixel(n1, n2, dirs) do i1, j1, i2, j2, len
         head[k] = pix2ind(i1, j1)
         tail[k] = pix2ind(i2, j2)
         lam[k] = len
