@@ -23,34 +23,7 @@ If `head[i] <= 0` then edge `i` is excluded.
 """ 
 function NeighborIndex(n::Int, head::Vector{Int}, tail::Vector{Int})
     @assert length(head) == length(tail)
-    m = count(i -> i > 0, head)
-    pi = Vector{Tuple{Int,Int}}(undef, 2m)
-    idx = zeros(Int, n+1)
-    for (h, t) in zip(head, tail)  # compute degrees
-        h <= 0 && continue
-        idx[h] += 1
-        idx[t] += 1
-    end
-    acc = 1                        # accumulate degrees ==> positions
-    deg_i = 0
-    deg_ii = idx[1]
-    for i = 1:n
-        idx[i] = acc
-        acc += deg_i
-        deg_i, deg_ii = deg_ii, idx[i+1]
-    end
-    idx[n+1] = acc
-    @assert(idx[end] + deg_i == 2m + 1,
-            "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
-    for (i, (u, v)) in enumerate(zip(head, tail))
-        u <= 0 && continue
-        pi[idx[u+1]] = (v, i)
-        idx[u+1] += 1
-        pi[idx[v+1]] = (u, i)
-        idx[v+1] += 1
-    end
-    @assert(idx[end] == 2m + 1, "$(idx[end]) vs $(2m + 1)")
-    return NeighborIndex(idx, pi)
+    NeighborIndex(n, count(i -> i > 0, head), () -> zip(head, tail))
 end
 
 
@@ -70,7 +43,7 @@ Provide an iterator over the edges
 function NeighborIndex(n::Int, m::Int, iter::Function)
     pi = Vector{Tuple{Int,Int}}(undef, 2m)
     idx = zeros(Int, n+1)
-    for (h, t) in iter()
+    for (h::Int, t::Int) in iter()
         h <= 0 && continue
         idx[h] += 1
         idx[t] += 1
