@@ -106,6 +106,10 @@ function iter_edges_pixel(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
 end
 
 
+iter_edges_pixel(f::Function, g::GridGraph) = 
+    iter_edges_pixel(f, g.n1, g.n2, g.dirs)
+
+
 """
     iter_edges(proc, n1, n2, dirs)
 
