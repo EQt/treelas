@@ -92,13 +92,13 @@ Call `proc(i1, j1, i2, j2, len)` for every grid edge
 function iter_edges_pixel(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
     for d in dirs
         len = 1/norm(d)
-        for j = 1:(n2-d.y)
-            for i = 1:(n1-d.x)
+        for i = 1:(n1-d.x)
+            for j = 1:(n2-d.y)
                 proc(i, j, i+d.x, j+d.y, len)
             end
         end
-        for j = 1:(n2-d.x)
-            for i = 1+d.y:n1
+        for i = 1+d.y:n1
+            for j = 1:(n2-d.x)
                 proc(i, j, i-d.y, j+d.x, len)
             end
         end
