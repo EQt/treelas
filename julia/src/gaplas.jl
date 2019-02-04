@@ -1,7 +1,9 @@
 """
 # Gap Tree Lasso
 
-Re-implement the MGT module for general Graphs having only a method to access all edges.
+Re-implement the MGT module for general Graphs having only a method to
+access all edges.  One crucial part question is how to provide access
+to a `NeighborIndex` or alike.
 """
 module GapLas
 include("tree_dp.jl")
@@ -11,7 +13,10 @@ import GraphIdx.Grid: iter_edges
 
 """
     gaplas(...)
-TODO
+
+Graph has to implement several methods:
+- `iter_edges(::Function, ::Graph)`
+- `NeighborIndex(::Graph)`
 """
 function gaplas(y::Array{Float64}, g::Graph) where {Graph}
     x = copy(y)
