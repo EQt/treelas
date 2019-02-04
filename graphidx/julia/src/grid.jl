@@ -72,6 +72,10 @@ struct GridGraph
 end
 
 
+GridGraph(n1, n2, dn::Int = Int(1)) =
+    GridGraph(n1, n2, compute_dirs(dn))
+
+
 num_edges(g::GridGraph) =
     num_edges(g.n1, g.n2, g.dirs)
 

@@ -30,7 +30,9 @@ end
 """
     gaplas!(...)
 
-Perform one iteration. Premis: `x = y + D'*α`
+Perform one iteration. Premises:
+1. `x = y + D'*α`
+2. `α` dually feasible, `abs(α[e]) ≤ λ[e]` for all edges `e`.
 """
 function gaplas!(x::Array{Float64}, α::Vector{Float64}, γ::Vector{Float64},
                  y::Array{Float64}, g::Graph) where {Graph}
