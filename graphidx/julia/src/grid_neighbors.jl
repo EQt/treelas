@@ -35,3 +35,29 @@ function neighbors_lambda(g::Grid.GridGraph)
     @assert(idx[end] == 2m + 1, "$(idx[end]) vs $(2m + 1)")
     return NeighborIndex(idx, pi), lam
 end
+
+
+function Base.getindex(g::Grid.GridGraph, v::Int)
+    i, j = divrem(v-1, g.n1)
+    i += 1
+    j += 1
+    if (i, j) == (1, 1)
+        :nw
+    elseif (i, j) == (1, g.n2)
+        :ne
+    elseif (i, j) == (g.n1, 1)
+        :sw
+    elseif (i, j) == (g.n1, g.n2)
+        :se
+    elseif i == 1
+        :n
+    elseif i == g.n1
+        :s
+    elseif j == 1
+        :w
+    elseif j == g.n2
+        :e
+    else
+        :m
+    end
+end
