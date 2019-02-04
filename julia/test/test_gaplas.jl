@@ -3,6 +3,17 @@ include("../src/gaplas.jl")
 using Test
 import .GapLas
 import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
+import GraphIdx: NeighborIndex
+import GraphIdx
+
+
+function GraphIdx.NeighborIndex(g::GridGraph)
+    lambda = zeros(num_edges(g))
+    # drop3rd = (a, b, c) -> (a, b)
+    # for (u, v) in it()
+    #     println(u, " -- ", v)
+    # end
+end
 
 
 @testset "GapLas   : 2x3                 " begin
@@ -45,4 +56,10 @@ import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
     @test gam[5] ≈ 13
     @test gam[6] ≈ 0
     @test gam[7] ≈ 0
+end
+
+
+@testset "NeighborIndex(GridGraph(2, 3)  " begin
+    g = GridGraph(2, 3)
+    idx = NeighborIndex(g)
 end
