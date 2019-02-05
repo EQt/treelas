@@ -4,13 +4,13 @@ import .Grid
 function neighbors_lambda(g::Grid.GridGraph)
     n = Grid.num_nodes(g)
     idx = zeros(Int, n+1)
-    local m = 0
+    local m::Int = 0
     Grid.iter_edges(g) do h::Int, t::Int, _::Float64
         m += 1
         idx[h] += 1
         idx[t] += 1
     end
-    acc = 1                        # accumulate degrees ==> positions
+    acc = 1                        # accumulate degrgees ==> positions
     deg_i = 0
     deg_ii = idx[1]
     for i = 1:n
@@ -23,7 +23,7 @@ function neighbors_lambda(g::Grid.GridGraph)
             "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
     pi = Vector{Tuple{Int,Int}}(undef, 2m)
     lam = Vector{Float64}(undef, m)
-    local i = 0
+    local i::Int = 0
     Grid.iter_edges(g) do u::Int, v::Int, lam_i::Float64
         i += 1
         lam[i] = lam_i
