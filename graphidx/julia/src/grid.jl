@@ -199,10 +199,10 @@ end
 
 
 function adjlist(n1::Int, n2::Int, dirs::Vector{Pixel})
-    m = num_edges(n1, n2, dirs)
-    head = Vector{Int}(undef, m)
-    tail = Vector{Int}(undef, m)
-    lam =  Vector{Float64}(undef, m)
+    local m::Int = num_edges(n1, n2, dirs)
+    local head::Vector{Int} = Vector{Int}(undef, m)
+    local tail::Vector{Int} = Vector{Int}(undef, m)
+    local lam::Vector{Float64} =  Vector{Float64}(undef, m)
 
     enumerate_edges(n1, n2, dirs) do k::Int, u::Int, v::Int, len::Float64
         head[k] = u
