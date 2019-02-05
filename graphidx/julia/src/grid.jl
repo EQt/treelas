@@ -122,7 +122,7 @@ function iter_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
     """Fortran index of the matrix entry `(i,j)`"""
     pix2ind(i, j) = i + (j-1)*n1
 
-    iter_edges_pixel(n1, n2, dirs) do i1, j1, i2, j2, len::Float64
+    iter_edges_pixel(n1, n2, dirs) do i1::Int, j1::Int, i2::Int, j2::Int, len::Float64
         proc(pix2ind(i1, j1), pix2ind(i2, j2), len)
     end
 end
