@@ -107,6 +107,32 @@ function iter_edges_pixel(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
 end
 
 
+function enumerate_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
+    pix2ind(i, j) = i + (j-1)*n1
+
+    local no::Int = 0
+    for d::Pixel in dirs
+        len = 1/norm(d)
+        for i = 1:(n1-d.x)
+            for j = 1:(n2-d.y)
+                no += 1
+                proc(no, pix2ind(i, j), pix2ind(i+d.x, j+d.y), len)
+            end
+        end
+        for i = 1+d.y:n1
+            for j = 1:(n2-d.x)
+                no += 1
+                proc(no, pix2ind(i, j), pix2ind(i-d.y, j+d.x), len)
+            end
+        end
+    end
+end
+
+
+enumerate_edges(f::Function, g::GridGraph) =
+    enumerate_edges(f, g.n1, g.n2, g.dirs)
+
+
 iter_edges_pixel(f::Function, g::GridGraph) = 
     iter_edges_pixel(f, g.n1, g.n2, g.dirs)
 
@@ -160,15 +186,13 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
     local J::Vector{Int} = Vector{Int}(undef, 2m)
     local W::Vector{Float64} = zeros(Float64, 2m)
 
-    local k::Int = Int(1)   # edge index
-    iter_edges(n1, n2, dirs) do u::Int, v::Int, len::Float64
+    enumerate_edges(n1, n2, dirs) do k::Int, u::Int, v::Int, len::Float64
         I[2k-1] = k
         J[2k-1] = u
         W[2k-1] = +len
         I[2k-0] = k
         J[2k-0] = v
         W[2k-0] = -len
-        k +=1
     end
     D = sparse(I, J, W, m, n)
 end
