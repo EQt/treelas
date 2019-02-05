@@ -216,6 +216,11 @@ end
 adjlist(n1::Int, n2::Int, dn::Int = 1) =
     adjlist(n1, n2, compute_dirs(dn))
 
+
+adjlist(g::GridGraph) =
+    ajdlist(g.n1, g.n2, g.dirs)
+
+
 """
     line_D(n)
 
