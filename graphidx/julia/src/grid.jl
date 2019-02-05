@@ -205,12 +205,10 @@ function adjlist(n1::Int, n2::Int, dn::Int = 1)
     tail = Vector{Int}(undef, m)
     lam =  Vector{Float64}(undef, m)
 
-    k = Int(1)
-    iter_edges(n1, n2, dirs) do u::Int, v::Int, len::Float64
+    enumerate_edges(n1, n2, dirs) do k::Int, u::Int, v::Int, len::Float64
         head[k] = u
         tail[k] = v
         lam[k] = len
-        k += 1
     end
     head, tail, lam
 end
