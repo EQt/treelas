@@ -152,15 +152,15 @@ num_edges(n1::Int, n2::Int, dn::Int = 1)::Int =
 
 
 function incmat(n1::Int, n2::Int, dn::Int = 1)
-    dirs = compute_dirs(dn)
-    n = n1 * n2
-    m = num_edges(n1, n2, dirs)
+    local dirs::Vector{Pixel} = compute_dirs(dn)
+    local n::Int = n1 * n2
+    local m::Int = num_edges(n1, n2, dirs)
 
-    I = Vector{Int}(undef, 2m)
-    J = Vector{Int}(undef, 2m)
-    W = zeros(Float64, 2m)
+    local I::Vector{Int} = Vector{Int}(undef, 2m)
+    local J::Vector{Int} = Vector{Int}(undef, 2m)
+    local W::Vector{Float64} = zeros(Float64, 2m)
 
-    k = Int(1)   # edge index
+    local k::Int = Int(1)   # edge index
     iter_edges(n1, n2, dirs) do u::Int, v::Int, len::Float64
         I[2k-1] = k
         J[2k-1] = u
