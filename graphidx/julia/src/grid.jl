@@ -91,7 +91,7 @@ Call `proc(i1, j1, i2, j2, len)` for every grid edge
 `(i1, j1) -- (i2, j2)` having `len`gth.
 """
 function iter_edges_pixel(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
-    for d in dirs
+    for d::Pixel in dirs
         len = 1/norm(d)
         for i = 1:(n1-d.x)
             for j = 1:(n2-d.y)
@@ -140,8 +140,8 @@ Number of edges in a grid graph `n1×n2` along directions `dirs`.
 If called with last argument a number, first generate `dirs`.
 """
 function num_edges(n1::Int, n2::Int, dirs::Vector{Pixel})::Int
-    m = 0
-    for d in dirs
+    local m::Int = 0
+    for d::Pixel in dirs
         m += (n1-d.x)*(n2-d.y) + (n1-d.y)*(n2-d.x)
     end
     return m
