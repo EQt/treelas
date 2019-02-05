@@ -198,8 +198,7 @@ function incmat(n1::Int, n2::Int, dn::Int = 1)
 end
 
 
-function adjlist(n1::Int, n2::Int, dn::Int = 1)
-    dirs = compute_dirs(dn)
+function adjlist(n1::Int, n2::Int, dirs::Vector{Pixel})
     m = num_edges(n1, n2, dirs)
     head = Vector{Int}(undef, m)
     tail = Vector{Int}(undef, m)
@@ -213,6 +212,9 @@ function adjlist(n1::Int, n2::Int, dn::Int = 1)
     head, tail, lam
 end
 
+
+adjlist(n1::Int, n2::Int, dn::Int = 1) =
+    adjlist(n1, n2, compute_dirs(dn))
 
 """
     line_D(n)
