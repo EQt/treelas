@@ -312,4 +312,16 @@ function Base.getindex(g::Grid.GridGraph, v::Int)
 end
 
 
+"""
+Idea: Do not store the graph explicitly but compute the neighbors as needed.
+For avoiding too many allocations, return just a view to the buffer
+"""
+struct ImplicitGridGraph
+    n1::Int
+    n2::Int
+    dirs::Vector{Pixel}
+    buffer::Vector{Tuple{Int,Int}}
+end
+
+
 end
