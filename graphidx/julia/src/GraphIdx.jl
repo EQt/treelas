@@ -8,6 +8,6 @@ include("prim_mst.jl")
 include("kruskal_mst.jl")
 include("lina.jl")
 include("grid.jl")
-include("grid_neighbors.jl")
+include("grididx.jl")
 
 end
