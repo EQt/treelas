@@ -92,7 +92,7 @@ Call `proc(i1, j1, i2, j2, len)` for every grid edge
 """
 function iter_edges_pixel(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
     for d::Pixel in dirs
-        len = 1/norm(d)
+        local len::Float64 = 1/norm(d)
         for i = 1:(n1-d.x)
             for j = 1:(n2-d.y)
                 proc(i, j, i+d.x, j+d.y, len)
@@ -248,16 +248,16 @@ lipschitz(n1::Int, n2::Int, dn::Int)::Float64 =
     lipschitz(n1, n2, compute_dirs(dn))
 
 
-function neighbors_lambda(g::GridGraph)
-    n = num_nodes(g)
-    idx = zeros(Int, n+1)
-    local m = 0
+function neighboridx_lambda(g::Grid.GridGraph)
+    local n::Int = num_nodes(g)
+    local idx::Vector{Int} = zeros(Int, n+1)
+    local m::Int = 0
     iter_edges(g) do h::Int, t::Int, _::Float64
         m += 1
         idx[h] += 1
         idx[t] += 1
     end
-    acc = 1                        # accumulate degrees ==> positions
+    acc = 1                        # accumulate degrgees ==> positions
     deg_i = 0
     deg_ii = idx[1]
     for i = 1:n
@@ -268,11 +268,9 @@ function neighbors_lambda(g::GridGraph)
     idx[n+1] = acc
     @assert(idx[end] + deg_i == 2m + 1,
             "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
-    pi = Vector{Tuple{Int,Int}}(undef, 2m)
-    lam = Vector{Float64}(undef, m)
-    local i = 0
-    iter_edges(g) do u::Int, v::Int, lam_i::Float64
-        i += 1
+    local pi::Vector{Tuple{Int,Int}} = Vector{Tuple{Int,Int}}(undef, 2m)
+    local lam::Vector{Float64} = Vector{Float64}(undef, m)
+    enumerate_edges(g) do i::Int, u::Int, v::Int, lam_i::Float64
         lam[i] = lam_i
         pi[idx[u+1]] = (v, i)
         idx[u+1] += 1
@@ -280,7 +278,34 @@ function neighbors_lambda(g::GridGraph)
         idx[v+1] += 1
     end
     @assert(idx[end] == 2m + 1, "$(idx[end]) vs $(2m + 1)")
-    return NeighborIndex(idx, pi), lam
+    return idx, pi, lam
 end
+
+
+function Base.getindex(g::Grid.GridGraph, v::Int)
+    i, j = divrem(v-1, g.n1)
+    i += 1
+    j += 1
+    if (i, j) == (1, 1)
+        :nw
+    elseif (i, j) == (1, g.n2)
+        :ne
+    elseif (i, j) == (g.n1, 1)
+        :sw
+    elseif (i, j) == (g.n1, g.n2)
+        :se
+    elseif i == 1
+        :n
+    elseif i == g.n1
+        :s
+    elseif j == 1
+        :w
+    elseif j == g.n2
+        :e
+    else
+        :m
+    end
+end
+
 
 end
