@@ -250,12 +250,11 @@ lipschitz(n1::Int, n2::Int, dn::Int)::Float64 =
 
 function neighboridx_lambda(g::Grid.GridGraph)
     local n::Int = num_nodes(g)
+    local m::Int = num_edges(g)
     local idx::Vector{Int} = zeros(Int, n+1)
-    local m::Int = 0
-    iter_edges(g) do h::Int, t::Int, _::Float64
-        m += 1
-        idx[h] += 1
-        idx[t] += 1
+    iter_edges(g) do u::Int, v::Int, lam_i::Float64
+        idx[u] += 1
+        idx[v] += 1
     end
     acc = 1                        # accumulate degrgees ==> positions
     deg_i = 0
