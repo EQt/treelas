@@ -112,7 +112,7 @@ function enumerate_edges(proc::Function, n1::Int, n2::Int, dirs::Vector{Pixel})
 
     local no::Int = 0
     for d::Pixel in dirs
-        len = 1/norm(d)
+        local len::Float64 = 1/norm(d)
         for i = 1:(n1-d.x)
             for j = 1:(n2-d.y)
                 no += 1
