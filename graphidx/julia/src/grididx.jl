@@ -3,7 +3,7 @@ import .Grid
 
 function neighbors_lambda(g::Grid.GridGraph)
     n = Grid.num_nodes(g)
-    idx = zeros(Int, n+1)
+    local idx::Vector{Int} = zeros(Int, n+1)
     local m::Int = 0
     Grid.iter_edges(g) do h::Int, t::Int, _::Float64
         m += 1
@@ -21,9 +21,9 @@ function neighbors_lambda(g::Grid.GridGraph)
     idx[n+1] = acc
     @assert(idx[end] + deg_i == 2m + 1,
             "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
-    pi = Vector{Tuple{Int,Int}}(undef, 2m)
-    lam = Vector{Float64}(undef, m)
-    local i::Int = 0
+    local pi::Vector{Tuple{Int,Int}} = Vector{Tuple{Int,Int}}(undef, 2m)
+    local lam::Vector{Float64} = Vector{Float64}(undef, m)
+    local i::Int = Int(0)
     Grid.iter_edges(g) do u::Int, v::Int, lam_i::Float64
         i += 1
         lam[i] = lam_i
