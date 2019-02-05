@@ -23,9 +23,7 @@ function neighbors_lambda(g::Grid.GridGraph)
             "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
     local pi::Vector{Tuple{Int,Int}} = Vector{Tuple{Int,Int}}(undef, 2m)
     local lam::Vector{Float64} = Vector{Float64}(undef, m)
-    local i::Int = Int(0)
-    Grid.iter_edges(g) do u::Int, v::Int, lam_i::Float64
-        i += 1
+    Grid.enumerate_edges(g) do i::Int, u::Int, v::Int, lam_i::Float64
         lam[i] = lam_i
         pi[idx[u+1]] = (v, i)
         idx[u+1] += 1
