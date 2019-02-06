@@ -29,5 +29,10 @@ end
 
 
 
-function tree_dp(y::Vector{F}, λ::Lam, µ::Mu, t::Tree) where {F, Lam, Mu}
+tree_dp(y::Array{F}, λ::Lam, µ::Mu, t::Tree) where {F, Lam, Mu} =
+    tree_dp!(similar(y), y, λ, µ, t) 
+
+
+
+function tree_dp!(x::Vector{F}, y::Vector{F}, λ::Lam, µ::Mu, t::Tree) where {F, Lam, Mu}
 end
