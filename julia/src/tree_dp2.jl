@@ -18,7 +18,7 @@ struct ConstantWeights{F}
 end
 
 
-@inline (c::ConstantWeights{F})(_::Int)::F where {F} =
+(c::ConstantWeights{F})(_::Int)::F where {F} =
     c.w
 
 
@@ -27,7 +27,7 @@ struct ArrayWeights{F}
 end
 
 
-@inline (c::ConstantWeights{F})(i::Int)::F where {F} =
+(c::ConstantWeights{F})(i::Int)::F where {F} =
     c.a[i]
 
 
