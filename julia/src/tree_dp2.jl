@@ -6,7 +6,11 @@ GOAL: avoid reallocation of memory as much as possible.
 """
 module DPTree
 
+include("common.jl")
+
 import GraphIdx: ChildrenIndex, reset!, dfs_walk
+
+
 
 
 struct ConstantWeights{F}
@@ -31,6 +35,10 @@ end
 
 tree_dp(y::Array{F}, λ::Lam, µ::Mu, t::Tree) where {F, Lam, Mu} =
     tree_dp!(similar(y), y, λ, µ, t) 
+
+
+struct Queues
+end
 
 
 
