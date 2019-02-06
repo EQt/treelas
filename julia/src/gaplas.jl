@@ -6,9 +6,11 @@ access all edges.  One crucial part question is how to provide access
 to a `NeighborIndex` or alike.
 """
 module GapLas
-include("tree_dp.jl")
+include("tree_dp2.jl")
 
 import GraphIdx.Grid: enumerate_edges
+import GraphIdx: NeighborIndex
+import .TreeDP: TreeDPMem, tree_dp!, reset!
 
 
 """
