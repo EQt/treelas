@@ -73,11 +73,11 @@ end
 @testset "MST: Prim    Wikipedia         " begin
     n, edges, weights = from_networkx(graph_x)
 
-    _, selected = minimum_spantree_edges(n, edges, +weights)
+    _, selected = prim_mst_edges(n, edges, +weights)
     expected = Set(i for (i, e) in enumerate(graph_x) if e in expected_min_x)
     @test Set(selected) == expected
 
-    _, selected = minimum_spantree_edges(n, edges, -weights)
+    _, selected = prim_mst_edges(n, edges, -weights)
     expected = Set(i for (i, e) in enumerate(graph_x) if e in expected_max_x)
     @test Set(selected) == expected
 end

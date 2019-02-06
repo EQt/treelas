@@ -9,7 +9,8 @@ module GapLas
 include("tree_dp2.jl")
 
 import GraphIdx.Grid: enumerate_edges
-import GraphIdx: NeighborIndex
+import GraphIdx: NeighborIndex, neighbors_lambda
+import GraphIdx: PrimMstMem, prim_mst_edges
 import .TreeDP: TreeDPMem, tree_dp!, reset!
 
 

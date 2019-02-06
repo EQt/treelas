@@ -5,7 +5,7 @@ import .Heap: PriorityQueue, dequeue!
 
 
 """
-    minimum_spantree_edges(g, weights, [root = 1])
+    prim_mst_edges(g, weights, [root = 1])
 
 [Prim's algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
 for minimum spanning tree.
@@ -13,9 +13,9 @@ Start from node `root` (will become the root node of the spanning
 tree).  Return the parent vector and a Boolean vector indicating for
 each edge whether the edge is part of the spanning tree.
 """
-function minimum_spantree_edges(n, edges, weights, root = 1)
+function prim_mst_edges(n::Integer, edges, weights::Array{Float64}, root = 1)
     mem = PrimMstMem(edges, n)
-    _minimum_spantree_edges(weights, mem, root)
+    prim_mst_edges(weights, root, mem)
     # swap root element to front
     mem.selected[1], mem.selected[root] = mem.selected[root], mem.selected[1]
     return parent, view(mem.selected, 2:length(mem.selected))
@@ -41,24 +41,23 @@ struct PrimMstMem
 end
 
 
+prim_mst_edges(weights, root, mem::PrimMstMem) = 
+    prim_mst_edges(weights,
+                   mem.finished,
+                   mem.dist,
+                   mem.parent,
+                   mem.neighbors,
+                   mem.selected,
+                   mem.pq,
+                   root)
 
-_minimum_spantree_edges(weights, mem, root) =
-    _minimum_spantree_edges(weights,
-                            mem.finished,
-                            mem.dist,
-                            mem.parent,
-                            mem.neighbors,
-                            mem.selected,
-                            mem.pq,
-                            root)
 
-
-function _minimum_spantree_edges(edge_weight, finished, dist,
-                                 parent::Vector{Int},
-                                 neighbors::NeighborIndex,
-                                 selected::Vector{Int},
-                                 pq::PriorityQueue{Int, Float64},
-                                 root::Int = 1)::Vector{Int}
+function prim_mst_edges(edge_weight, finished, dist,
+                        parent::Vector{Int},
+                        neighbors::NeighborIndex,
+                        selected::Vector{Int},
+                        pq::PriorityQueue{Int, Float64},
+                        root::Int = 1)::Vector{Int}
     n = length(parent)
     @assert length(selected) == n
     @assert isempty(pq)
