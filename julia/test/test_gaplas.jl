@@ -28,7 +28,7 @@ import GraphIdx: neighbors_lambda
     @test gam[1] ≈ 13
     @test gam[4] ≈ 13
     for e = 1:m
-        if !(e in [1, 4])
+        if e ∉ [1, 4]
             @test gam[e] ≈ 0
         end
     end
