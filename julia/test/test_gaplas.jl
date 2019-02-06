@@ -3,7 +3,7 @@ include("../src/gaplas.jl")
 using Test
 import .GapLas
 import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
-import GraphIdx: NeighborIndex, neighbors_lambda
+import GraphIdx: neighbors_lambda
 
 
 @testset "GapLas   : 2x3                 " begin
