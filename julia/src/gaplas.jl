@@ -8,7 +8,7 @@ to a `NeighborIndex` or alike.
 module GapLas
 include("tree_dp.jl")
 
-import GraphIdx.Grid: iter_edges
+import GraphIdx.Grid: enumerate_edges
 
 
 """
@@ -26,11 +26,12 @@ function gaplas(y::Array{Float64}, g::Graph) where {Graph}
 end
 
 
-function gap_vec!(γ, x, α, g)
-    ei = Int(1)
-    iter_edges(g) do u::Int, v::Int, lam::Float64
+function gap_vec!(γ::Vector{Float64},
+                  x::Array{Float64},
+                  α::Vector{Float64},
+                  g::Graph) where {Graph}
+    enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
         γ[ei] = (lam - abs(α[ei])) * (x[u] - x[v])
-        ei += 1
     end
 end
 
