@@ -38,7 +38,15 @@ tree_dp(y::Array{F}, λ::Lam, µ::Mu, t::Tree) where {F, Lam, Mu} =
 
 
 struct Queues
+    events::Vector{Event}
+    pq::Vector{Range}
 end
+
+Queues(n) =
+    new(Vector{Event}(undef, 2n)
+        Vector{Range}(undef,  n))
+
+Base.getindex(q::Queues, i) = q.pq[i]
 
 
 

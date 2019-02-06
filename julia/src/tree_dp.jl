@@ -41,12 +41,12 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
     sizehint!(proc_order, n)
     @assert isempty(proc_order)
 
-    t = 1
+    local t::Ref{Int} = Ref{Int}(1)
     dfs_walk(childs, stack) do v::Int
-        t += 1
+        t[] += 1
         if v >= 0
             push!(proc_order, v)
-            pq[v] = Range(t, t-1)
+            pq[v] = Range(t[], t[]-1)
         end
     end
 
