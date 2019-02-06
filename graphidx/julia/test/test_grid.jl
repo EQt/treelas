@@ -22,6 +22,7 @@ import .Grid: GridGraph, iter_edges, iter_edges_pixel, num_edges, num_nodes
     @test norm(p3)  ≈ √10
 end
 
+
 @testset "line_D                         " begin
     D = line_D(3)
     @test D ≈ [1  -1   0
