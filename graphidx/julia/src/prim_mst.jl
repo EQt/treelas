@@ -15,24 +15,42 @@ each edge whether the edge is part of the spanning tree.
 """
 function minimum_spantree_edges(n, edges, weights, root = 1)
     selected = Vector{Int}(undef, n)
-    finished, dist, parent, neighbors, pq = _init_spantree(edges, n)
-    _minimum_spantree_edges(weights, finished,dist, parent,
-                            neighbors, selected, pq, root)
+    mem = PrimMstMem(edges, n)
+    _minimum_spantree_edges(weights, selected, mem, root)
     # swap root element to front
     selected[1], selected[root] = selected[root], selected[1]
     return parent, view(selected, 2:length(selected))
 end
 
 
-function _init_spantree(edges, n)
-    m = length(edges)
+struct PrimMstMem
+    finished::Vector{Bool}
+    dist::Vector{Float64}
+    parent::Vector{Int}
+    neighbors::NeighborIndex
+    pq::PriorityQueue{Int, Float64}
+end
+
+
+function PrimMstMem(edges, n)
     finished = Vector{Bool}(undef, n)
     dist = Vector{Float64}(undef, n)
     parent = Vector{Int}(undef, n)
     neighbors = NeighborIndex(n, edges)
     pq = PriorityQueue{Int, Float64}(n)
-    return finished, dist, parent, neighbors, pq
+    return PrimMstMem(finished, dist, parent, neighbors, pq)
 end
+
+
+_minimum_spantree_edges(weights, selected, mem, root) = 
+    _minimum_spantree_edges(weights,
+                            mem.finished,
+                            mem.dist,
+                            mem.parent,
+                            mem.neighbors,
+                            selected,
+                            mem.pq,
+                            root)
 
 
 function _minimum_spantree_edges(edge_weight, finished, dist,
