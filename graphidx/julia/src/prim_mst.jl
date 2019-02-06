@@ -29,18 +29,17 @@ struct PrimMstMem
     neighbors::NeighborIndex
     selected::Vector{Int}
     pq::PriorityQueue{Int, Float64}
+    function  PrimMstMem(edges, n)
+        finished = Vector{Bool}(undef, n)
+        dist = Vector{Float64}(undef, n)
+        parent = Vector{Int}(undef, n)
+        neighbors = NeighborIndex(n, edges)
+        selected = Vector{Int}(undef, n)
+        pq = PriorityQueue{Int, Float64}(n)
+        return new(finished, dist, parent, neighbors, selected, pq)
+    end
 end
 
-
-function PrimMstMem(edges, n)
-    finished = Vector{Bool}(undef, n)
-    dist = Vector{Float64}(undef, n)
-    parent = Vector{Int}(undef, n)
-    neighbors = NeighborIndex(n, edges)
-    selected = Vector{Int}(undef, n)
-    pq = PriorityQueue{Int, Float64}(n)
-    return PrimMstMem(finished, dist, parent, neighbors, selected, pq)
-end
 
 
 _minimum_spantree_edges(weights, mem, root) =
