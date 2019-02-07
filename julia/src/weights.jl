@@ -1,4 +1,4 @@
-struct ConstantWeights{F}
+struct ConstantWeights{F<:Real}
     w::F
 end
 

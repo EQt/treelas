@@ -38,6 +38,10 @@ function TreeDPMem(n::Integer)
 end
 
 
+tree_dp(y::Array{F,N}, λ::F, µ::F = F(1.0), t::Tree)::Array{F,N} where {F,N} =
+    tree_dp!(similar(y), y, ConstantWeights(F(λ)), ConstantWeights(F(µ)), t)
+
+
 tree_dp(y::Array{F,N}, λ::Lam, µ::Mu, t::Tree)::Array{F,N} where {F,N,Lam,Mu} =
     tree_dp!(similar(y), y, λ, µ, t)
 
