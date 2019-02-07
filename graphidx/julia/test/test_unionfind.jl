@@ -1,4 +1,5 @@
-include("../src/unionfind.jl")
+include("../src/utils/unionfind.jl")
+
 using Test
 
 

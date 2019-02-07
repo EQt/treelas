@@ -11,8 +11,8 @@ module GraphIdx
 
 module Utils
 
-include("unionfind.jl")
-include("heap.jl")
+include("utils/unionfind.jl")
+include("utils/heap.jl")
 
 end
 
