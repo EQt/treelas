@@ -2,6 +2,10 @@ Index-Based Graphs
 =================
 
 This is the Julia part of the GraphIdx bundle.
+The main module is
+```@docs
+GraphIdx
+```
 
 Example
 ------
@@ -15,8 +19,8 @@ import GraphIdx.NeighborIndex
 TODO: Extend
 ```
 
+
 API
 ---
-```@docs
-GraphIdx
+```@index
 ```

@@ -2,9 +2,10 @@
 
 using Documenter
 
-const JULIA_DIR = joinpath(@__DIR__, "..", "julia")
+# const JULIA_DIR = joinpath(@__DIR__, "..", "julia")
+# include(joinpath(JULIA_DIR, "src", "GraphIdx.jl"))
 
-include(joinpath(JULIA_DIR, "src", "GraphIdx.jl"))
+import GraphIdx
 
 
 makedocs(
@@ -13,8 +14,13 @@ makedocs(
     authors="Elias Kuthe",
     build="html",
     # clean=true,
-    # pages=[
-    #     "Home" => "index.html",
-    # ],
+    pages=[
+        "Home" => "index.md",
+        "Grid Graphs" => "grid.md",
+        "Linear Algebra" => "lina.md",
+    ],
+    format = Documenter.HTML(
+        prettyurls = get(ENV, "CI", nothing) == "true"
+    )
 )
 
