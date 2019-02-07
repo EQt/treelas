@@ -1,8 +1,9 @@
 module TestMST
-using Test
 
-include("../src/kruskal_mst.jl")
-include("../src/prim_mst.jl")
+include("../src/GraphIdx.jl")
+
+using Test
+import .GraphIdx: kruskal_mst, prim_mst_edges
 
 
 function from_networkx(graph; print_it = false)

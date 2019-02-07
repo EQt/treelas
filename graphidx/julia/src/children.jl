@@ -1,4 +1,7 @@
-include("root.jl")
+import ..Utils: UnionFind, unite!
+import ..NeighborIndex
+import ..num_edges
+
 
 """
 Provide constant time access to children of a node by index operator.

@@ -1,7 +1,4 @@
-include("heap.jl")
-include("neighbors.jl")
-
-import .Heap: PriorityQueue, dequeue!
+import .Utils.Heap: PriorityQueue, dequeue!
 
 
 """

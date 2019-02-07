@@ -1,4 +1,4 @@
-include("unionfind.jl")
+import .Utils: UnionFind, unite!, init, find
 
 
 """

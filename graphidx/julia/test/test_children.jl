@@ -1,8 +1,9 @@
 module TestChildren
-using Test
 
-include("../src/children.jl")
-include("../src/degrees.jl")        # for node_degrees
+include("../src/GraphIdx.jl")
+
+using Test
+import .GraphIdx.Tree: ChildrenIndex, node_degrees, root_node, find_root
 
 
 @testset "generate(width=5): low level   " begin

@@ -21,9 +21,9 @@ Tree Graphs
 ----------
 
 ```@docs
-GraphIdx.ChildrenIndex
+GraphIdx.Tree.ChildrenIndex
 ```
 Once, memory has been allocated we can re-use it to store different tree (of same size!) in it
 ```@docs
-GraphIdx.reset!(::GraphIdx.ChildrenIndex, ::Vector{Int})
+GraphIdx.Tree.reset!(::GraphIdx.ChildrenIndex, ::Vector{Int})
 ```

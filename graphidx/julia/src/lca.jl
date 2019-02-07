@@ -1,16 +1,4 @@
 """
-Bundle functions regarding tree graphs.
-
-TODO: Refactor in the future.
-"""
-module Tree
-include("unionfind.jl")
-include("children.jl")
-include("neighbors.jl")
-include("dfs.jl")
-
-
-"""
     lowest_common_ancestors(tree, parent, pairs)
 
 For a list of pairs `[(u1, v1), ..., (uk, vk)]` compute the lowest common
@@ -61,5 +49,3 @@ end
 lowest_common_ancestors(tree, parent, pairs::Vector{Tuple{Int, Int}}) =
     lowest_common_ancestors(tree, parent, NeighborIndex(length(tree), pairs))
 
-
-end

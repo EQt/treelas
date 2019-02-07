@@ -1,7 +1,7 @@
-include("../src/lca.jl")
+include("../src/GraphIdx.jl")
 
 using Test
-import .Tree: lowest_common_ancestors, ChildrenIndex, NeighborIndex
+import .GraphIdx.Tree: lowest_common_ancestors, ChildrenIndex, NeighborIndex
 
 
 @testset "LCA NeighborIndex              " begin

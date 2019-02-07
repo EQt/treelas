@@ -10,7 +10,7 @@ GraphIdx.prim_mst_edges
 The runtime is ``\mathcal{O}(|E| \log |V|)`` whereby ``|E|`` are the number of edges and ``|V|`` the number of nodes.
 We use an ordinary binary heap as priority queue:
 ```@autodocs
-Modules = [GraphIdx.Heap]
+Modules = [GraphIdx.Utils.Heap]
 ```
 
 
@@ -24,5 +24,5 @@ GraphIdx.kruskal_mst
 As you know, Kruskal's algorithm is best implemented using the [`UnionFind`](@ref GraphIdx.UnionFind) data structure which is useful on its own:
 
 ```@docs
-GraphIdx.UnionFind
+GraphIdx.Utils.UnionFind
 ```
