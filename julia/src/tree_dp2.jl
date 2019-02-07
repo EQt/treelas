@@ -3,6 +3,11 @@ Dynamic Programming Tree Solver
 ===============================
 
 Merge the event queues within the tree by sorting arrays.
+
+Compared to previous versions, all weighting (λ and μ) is templated;
+thus we only need one implementation and the compiler will do the
+rest.
+
 """
 module TreeDP
 
