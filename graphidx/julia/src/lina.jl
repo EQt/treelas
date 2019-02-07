@@ -1,6 +1,6 @@
 """
 Linear Algebra related graph functions.
-Especially, methods for handling incidence matrixes (`IncMat`).
+Especially, methods for handling incidence matrixes [`IncMat`](@ref).
 """
 module LinA
 import SparseArrays: SparseMatrixCSC, sparse
@@ -9,6 +9,11 @@ const IncMat = SparseMatrixCSC{Float64,Int64}
 const Edges = Vector{Tuple{Int, Int}}
 
 
+"""
+    is_incmat(::IncMat)
+
+Check whether a matrix is a graph (oriented) edge-vertex incidence matrix.
+"""
 function is_incmat(d::IncMat)::Bool
     dt = IncMat(d')
     any(diff(diff(dt.colptr)) .!= 0) && return false
@@ -39,6 +44,12 @@ function edges_from_incmat(d::IncMat)
 end
 
 
+"""
+    IncMat(edges, λ, n [, T = Int])
+
+Create an incidence matrix from a list of edges, weights `λ` having `n` nodes.
+The resulting matrix index will have type `T`.
+"""
 function IncMat(E::Edges,
                 lam::Vector{Float64},
                 n::Int,
