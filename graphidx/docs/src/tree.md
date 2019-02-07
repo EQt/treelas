@@ -1,6 +1,10 @@
 Tree Graphs
 ==========
 
+```@docs
+GraphIdx.Tree
+```
+
 For computing a spanning tree from within a general graph, see [here](mst.md).
 
 
