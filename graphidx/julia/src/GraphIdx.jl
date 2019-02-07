@@ -20,6 +20,7 @@ end
 
 include("degrees.jl")
 include("children.jl")
+include("cluster.jl")
 include("dfs.jl")
 # include("neighbors.jl")   # will be included by mst.jl
 include("prim_mst.jl")
