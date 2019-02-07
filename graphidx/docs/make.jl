@@ -18,6 +18,7 @@ makedocs(
         "Home" => "index.md",
         "Grid Graphs" => "grid.md",
         "Linear Algebra" => "lina.md",
+        "Minimum Spanning Trees" => "mst.md",
     ],
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
