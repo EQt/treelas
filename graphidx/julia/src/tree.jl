@@ -13,10 +13,10 @@ struct RootedTree
 end
 
 
-include("root.jl")
-include("degrees.jl")
-include("children.jl")
-include("dfs.jl")
-include("lca.jl")
+include("tree/root.jl")
+include("tree/degrees.jl")
+include("tree/children.jl")
+include("tree/dfs.jl")
+include("tree/lca.jl")
 
 end
