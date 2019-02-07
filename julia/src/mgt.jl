@@ -44,7 +44,9 @@ include("tree_dp.jl")
 import SparseArrays: mul!
 import Printf: @sprintf
 import .DPTree: _alloc_queues, _dp_tree, DPMem
-import GraphIdx: ChildrenIndex, _init_spantree, _minimum_spantree_edges
+import GraphIdx.Tree: ChildrenIndex
+# , _init_spantree, _minimum_spantree_edgse
+import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx.LinA: IncMat, Edges
 
 
@@ -102,11 +104,11 @@ function max_gap_tree(y::Vector{Float64},
     z = similar(y)
     tlam = Vector{Float64}(undef, n)
     xbuf = Vector{Float64}(undef, n)
-    selected = Vector{Int}(undef, n)
-    selected[root_node] = 0
     mem = DPMem(n)
     pq, proc_order, stack, childs = _alloc_queues(n)
-    finished, dist, parent, neighbors, mst_pq = _init_spantree(edges, n)
+    mst_mem = PrimMstMem(edges, n)
+    selected = mst_mem.selected
+    parent = mst_mem.parent
 
     for it in 0:max_iter
         dprocess(alpha)
@@ -114,9 +116,7 @@ function max_gap_tree(y::Vector{Float64},
         gap_vec!(γ, dif, x, y, D, Dt, alpha)
         verbose && println(@sprintf("%4d %f", it, sum(γ)))
         γ .*= -1.0
-        _minimum_spantree_edges(γ, finished, dist, parent,
-                                neighbors, selected, mst_pq,
-                                root_node)
+        prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         z .= y
         for (i, e) in enumerate(edges)
