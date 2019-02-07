@@ -1,5 +1,15 @@
 module GraphIdx
 
+"""
+A rooted tree.
+Often you might want to have a `ChildrenIndex`.
+"""
+struct Tree
+    root::Int
+    parent::Vector{Int}
+end
+
+
 include("degrees.jl")
 include("children.jl")
 include("dfs.jl")

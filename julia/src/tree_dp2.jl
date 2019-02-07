@@ -14,6 +14,7 @@ module TreeDP
 include("common.jl")
 include("weights.jl")
 
+import GraphIdx: Tree
 import GraphIdx: ChildrenIndex, reset!, dfs_walk
 
 

@@ -1,12 +1,5 @@
 import Printf: @sprintf
 
-# Tree -------------------------------------------------------------------
-struct Tree
-    root::Int
-    parent::Vector{Int}
-end
-
-
 # Event ------------------------------------------------------------------
 struct Event
     x::Float64      # position (to sort the queues)
