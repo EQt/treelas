@@ -4,7 +4,7 @@
 Most important submodules are
 - [`LinA`](@ref): Linear algebra (e.g. incidence matrix)
 - [`Grid`](@ref): Specialized code for grid graphs.
-- `Heap`: Priority queues (e.g. binary heap)
+- [`Heap`](@ref): Priority queues (e.g. binary heap)
 """
 module GraphIdx
 

@@ -16,6 +16,7 @@ makedocs(
     # clean=true,
     pages=[
         "Home" => "index.md",
+        "Tree Graphs" => "tree.md",
         "Graph Indexes" => "idx.md",
         "Minimum Spanning Trees" => "mst.md",
         "Grid Graphs" => "grid.md",

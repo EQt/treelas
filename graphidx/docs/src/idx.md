@@ -23,3 +23,7 @@ Tree Graphs
 ```@docs
 GraphIdx.ChildrenIndex
 ```
+Once, memory has been allocated we can re-use it to store different tree (of same size!) in it
+```@docs
+GraphIdx.reset!(::GraphIdx.ChildrenIndex, ::Vector{Int})
+```
