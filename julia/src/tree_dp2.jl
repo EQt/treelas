@@ -38,11 +38,15 @@ Base.getindex(q::Queues, i) = q.pq[i]
 """
 Contains all memory needed for `tree_dp!`.
 """
-struct TreeDPMem
+struct TreeDPMem{F}
+    ub::Vector{F}
+    lb::Vector{F}
+    q::Queues
 end
 
 
 function TreeDPMem(n::Integer)
+    new([], [], Queues(n))
 end
 
 
