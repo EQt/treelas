@@ -8,8 +8,8 @@ module DPTree
 # include("graphidx.jl")
 include("common.jl")
 
+import GraphIdx: Tree
 import GraphIdx: ChildrenIndex, reset!, dfs_walk
-
 
 
 function _alloc_queues(n::Int)
