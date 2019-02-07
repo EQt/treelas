@@ -14,8 +14,10 @@ module TreeDP
 include("common.jl")
 include("weights.jl")
 
-import GraphIdx: Tree
-import GraphIdx: ChildrenIndex, reset!, dfs_walk
+import GraphIdx
+import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
+
+const Tree = GraphIdx.Tree.RootedTree
 
 
 """
@@ -59,11 +61,11 @@ The edge weighting λ should be either a constant (e.g. `Float64`) or a
 callable such that `λ(i)` returns the weight of the edge `(i, t.parent[i])`;
 for `λ(t.root)` it might return anything but not causean error.
 """
-tree_dp(y::Array{F,N}, t::Tree, λ::F, µ::F = F(1.0))::Array{F,N} where {F,N} =
-    tree_dp!(similar(y), y, t, ConstantWeights(F(λ)), ConstantWeights(F(µ)))
+tree_dp(y::Array{F,N}, t::Tree, λ::F, µ::F = F(1.0))  where {F,N} =
+    tree_dp!(similar(y), y, t, ConstantWeights{F}(λ), ConstantWeights{F}(µ))
 
 
-tree_dp(y::Array{F,N}, t::Tree, λ::Lam, µ::Mu)::Array{F,N} where {F,N,Lam,Mu} =
+tree_dp(y::Array{F,N}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
     tree_dp!(similar(y), y, t, λ, µ)
 
 
@@ -75,8 +77,7 @@ Like `tree_dp` but do not allocate an output buffer for `x`.
 If `mem::TreeDPMem` is provided, no additional allocations will be
 needed.
 """
-tree_dp!(x::Array{F,N}, y::Vector{F}, t::Tree, λ::Lam,
-         µ::Mu)::Array{F,N} where {F,N,Lam,Mu} =
+tree_dp!(x::Array{F,N}, y::Vector{F}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
     tree_dp!(x, t, y, λ, µ, TreeDPMem(length(y)))
 
 
