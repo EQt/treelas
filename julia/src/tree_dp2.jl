@@ -2,7 +2,7 @@
 Dynamic Programming Tree Solver
 ===============================
 
-GOAL: avoid reallocation of memory as much as possible.
+Merge the event queues within the tree by sorting arrays.
 """
 module TreeDP
 
@@ -12,14 +12,11 @@ include("weights.jl")
 import GraphIdx: ChildrenIndex, reset!, dfs_walk
 
 
-tree_dp(y::Array{F}, λ::Lam, µ::Mu, t::Tree) where {F, Lam, Mu} =
-    tree_dp!(similar(y), y, λ, µ, t) 
-
-
 struct Queues
     events::Vector{Event}
     pq::Vector{Range}
 end
+
 
 Queues(n) =
     new(Vector{Event}(undef, 2n),
@@ -36,8 +33,19 @@ function TreeDPMem(n::Integer)
 end
 
 
-function tree_dp!(x::Vector{F}, y::Vector{F}, λ::Lam, µ::Mu, t::Tree) where {F, Lam, Mu}
-end
+tree_dp(y::Array{F,N}, λ::Lam, µ::Mu, t::Tree)::Array{F,N} where {F,N,Lam,Mu} =
+    tree_dp!(similar(y), y, λ, µ, t)
 
+
+
+tree_dp!(x::Array{F,N}, y::Vector{F}, λ::Lam,
+         µ::Mu, t::Tree)::Array{F,N} where {F,N,Lam,Mu} =
+    tree_dp!(x, y, λ, µ, t, TreeDPMem(length(y)))
+
+
+function tree_dp!(x::Array{F,N}, y::Vector{F}, λ::Lam,
+                  µ::Mu, t::Tree, mem::TreeDPMem)::Array{F,N} where {F,N,Lam,Mu}
+    return x
+end
 
 end
