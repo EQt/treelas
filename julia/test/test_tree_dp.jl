@@ -4,7 +4,7 @@ include("../src/tree_dp.jl")
 using Test
 import .DPTree
 
-@testset "dp_tree: 10                    " begin
+@testset "tree_dp: 10                    " begin
     root = 1
     pi = Int[0, 0, 1, 2, 3, 0, 7, 8, 3, 8] .+ 1
     n = length(pi)
