@@ -18,5 +18,6 @@ include("tree/degrees.jl")
 include("tree/children.jl")
 include("tree/dfs.jl")
 include("tree/lca.jl")
+include("tree/inorder.jl")
 
 end

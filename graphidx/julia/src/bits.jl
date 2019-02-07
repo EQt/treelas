@@ -1,3 +1,5 @@
+module Bits
+
 import Base: BitInteger
 
 """
@@ -15,3 +17,6 @@ julia> bitstring(UInt8(hyperfloor(123)))
 """
 hyperfloor(x::Integer) =
     Base._prevpow2(x)
+
+
+end

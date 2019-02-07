@@ -1,7 +1,7 @@
 module TestInOrder
 using Test
 
-include("../src/inorder.jl")
+include("../src/tree/inorder.jl")
 
 
 @testset "Inorder                        " begin
