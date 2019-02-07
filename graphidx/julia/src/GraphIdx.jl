@@ -1,5 +1,6 @@
 """
-    GraphIdx
+`GraphIdx`
+==========
 
 Most important submodules are
 - [`LinA`](@ref): Linear algebra (e.g. incidence matrix)

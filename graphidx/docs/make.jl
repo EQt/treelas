@@ -1,10 +1,8 @@
 #!/usr/bin/env julia
 
+push!(LOAD_PATH, "../src/")
+
 using Documenter
-
-# const JULIA_DIR = joinpath(@__DIR__, "..", "julia")
-# include(joinpath(JULIA_DIR, "src", "GraphIdx.jl"))
-
 import GraphIdx
 
 
@@ -13,7 +11,7 @@ makedocs(
     sitename="GraphIdx",
     authors="Elias Kuthe",
     build="html",
-    # clean=true,
+    clean=true,
     pages=[
         "Home" => "index.md",
         "Tree Graphs" => "tree.md",
