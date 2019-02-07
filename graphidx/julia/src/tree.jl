@@ -1,13 +1,11 @@
 """
 Bundle functions regarding tree graphs.
-
-TODO: Refactor in the future.
 """
 module Tree
 
 """
 A rooted tree.
-Often you might want to have a `ChildrenIndex`.
+Often you might want to have a [`ChildrenIndex`](@ref).
 """
 struct RootedTree
     root::Int
