@@ -4,10 +4,9 @@
 
 /** See `prufer2edges` for details.
 
-    Parameters:
-      parent    Output, len(parent) == n
+    @param[out] parent Make sure that :code:`len(parent) == n`
 
-    Returns: a root node
+    @returns a root node
  */
 template<typename int_ = int>
 inline int_
@@ -75,16 +74,22 @@ prufer2parent(const int_ n,
 
 /** Calculate the tree edges from a Prüfer sequence.
 
-  Parameters:
-    n       number of nodes in the tree
-    prufer  Prüfer sequence (len(prufer) == n - 2)
-    head    Output edges' head (len(head) >= n-1)
-    tail    Output edges' tail (len(tail) >= n  )
+    @param[in]  n       number of nodes in the tree
+    @param[in]  prufer  Prüfer sequence; 
+    @param[out] head    Output edges' head
+    @param[out] tail    Output edges' tail
 
-  Runtime: O(n).
+    @warning
+    Need the following pre-conditions
+    - `len(prufer) == n-2`
+    - `len(head) >= n-1` 
+    - `len(tail) >= n-1`
 
-  References
-  ----------
+
+    Runtime: O(n).
+
+    References
+    ----------
     Wang, Xiaodong, Lei Wang, and Yingjie Wu.
     "An optimal algorithm for Prufer codes."
     *Journal of Software Engineering and Applications* 2.02 (2009): 111.
