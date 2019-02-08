@@ -8,4 +8,6 @@ Mostly the used integer types ared templated with default to `int`.
 
 .. toctree::
 
+   tree
    utils
+   
