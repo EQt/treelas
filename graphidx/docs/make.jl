@@ -10,8 +10,9 @@ makedocs(
     modules=[GraphIdx],
     sitename="GraphIdx",
     authors="Elias Kuthe",
-    build=get(ENV, "HTML_DIR", "html"),
+    build=get(ENV, "HTML_DIR", "html/julia"),
     clean=true,
+    source="src/julia",
     pages=[
         "GraphIdx" => "index.md",
         "Graph Indexes" => "idx.md",
