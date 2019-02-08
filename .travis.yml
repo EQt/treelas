@@ -14,6 +14,8 @@ branches:
 
 
 matrix:
+  exclude:
+    - language: julia
   include:
     - language: julia
       os: linux  # don't need it specifically for osx
@@ -32,9 +34,9 @@ matrix:
           - CONDA_BASE="$TRAVIS_BUILD_DIR/miniconda3"
       os:
         - linux:
-            url="$curl-Linux-x86_64.sh"
+          env: url="$curl-Linux-x86_64.sh"
         - osx:
-            url="$curl-MacOSX-x86_64.sh"
+          env: url="$curl-MacOSX-x86_64.sh"
       cache:
         directories:
           - "$CONDA_BASE"
