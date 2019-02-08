@@ -38,18 +38,22 @@ before_cache:
 
 before_install:
   - git describe --tags
+  - uname -a && echo $TRAVIS_OS_NAME && pwd
 
 install:
-  - uname -a && echo $TRAVIS_OS_NAME && pwd
   - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
   - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
+  - echo | ${CC} -dM -E -x c -
   - if [[ ! -d $PWD/miniconda3/bin ]]; then
       url="https://repo.continuum.io/miniconda/Miniconda3-latest";
       if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
         wget $url-Linux-x86_64.sh -O miniconda.sh;
       elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         wget $url-MacOSX-x86_64.sh -O miniconda.sh;
-    fi; rm -fr miniconda3; bash miniconda.sh -b -p $PWD/miniconda3; fi
+      fi;
+      rm -fr miniconda3;
+      bash miniconda.sh -b -p $PWD/miniconda3;
+    fi
   - export PATH=$PWD/miniconda3/bin:$PATH;
   - conda install -y pytest networkx h5py numba cmake
   - which python
@@ -57,7 +61,6 @@ install:
   - pip install pybind11
   - python -m pybind11 --include
   - python -c 'from sys import byteorder as b; print("byte-order:", b)'
-  - echo | ${CC} -dM -E -x c -
 
 script:
   - mkdir -p build && cd build
