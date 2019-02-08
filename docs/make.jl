@@ -10,10 +10,11 @@ makedocs(
     modules=[TreeLas],
     sitename="TreeLas",
     authors="Elias Kuthe",
-    build="html",
+    build=get(ENV, "HTML_DIR", "html"),
     clean=true,
     pages=[
         "TreeLas" => "index.md",
+        "GraphIdx" => "graphidx.index.md",
     ],
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
