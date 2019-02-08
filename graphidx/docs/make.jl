@@ -10,7 +10,7 @@ makedocs(
     modules=[GraphIdx],
     sitename="GraphIdx",
     authors="Elias Kuthe",
-    build="html",
+    build=get(ENV, "HTML_DIR", "html"),
     clean=true,
     pages=[
         "GraphIdx" => "index.md",
