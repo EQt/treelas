@@ -1,9 +1,9 @@
-include("../src/gaplas.jl")
+include("../src/TreeLas.jl")
 
 using Test
-import .GapLas
 import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
 import GraphIdx: neighbors_lambda
+import .TreeLas.GapLas
 
 
 @testset "GapLas   : 2x3                 " begin
