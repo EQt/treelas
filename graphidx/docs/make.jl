@@ -20,6 +20,7 @@ makedocs(
         "Tree Graphs" => "tree.md",
         "Minimum Spanning Trees" => "mst.md",
         "Linear Algebra" => "lina.md",
+        "Bits and Bytes" => "bits.md",
     ],
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
