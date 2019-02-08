@@ -22,6 +22,7 @@ branches:
 
 env:
   - miniconda_base_url="https://repo.continuum.io/miniconda/Miniconda3-latest"
+  - CONDA_BASE="$TRAVIS_BUILD_DIR/miniconda3"
 
 matrix:
   include:
@@ -34,12 +35,12 @@ matrix:
 
 cache:
   directories:
-    - "$TRAVIS_BUILD_DIR/miniconda3"
+    - "$CONDA_BASE"
 
 before_cache:
   - pip uninstall -y treelas
-  - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
-  - rm -fr $TRAVIS_BUILD_DIR/miniconda3/lib/python*/site-packages/treelas*
+  - rm -fr $CONDA_BASE/envs
+  - rm -fr $CONDA_BASE/lib/python*/site-packages/treelas*
 
 
 install:
@@ -48,12 +49,11 @@ install:
   - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
   - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
   - echo | ${CC} -dM -E -x c -
-  - if [[ ! -d $PWD/miniconda3/bin ]]; then
+  - if [[ ! -d $CONDA_BASE/bin ]]; then
       wget $miniconda_url -O miniconda.sh;
-      rm -fr miniconda3;
-      bash miniconda.sh -b -p $PWD/miniconda3;
+      bash miniconda.sh -b -p $CONDA_BASE
     fi
-  - export PATH=$PWD/miniconda3/bin:$PATH;
+  - export PATH=$CONDA_BASE/bin:$PATH;
   - conda install -y pytest networkx h5py numba cmake
   - pip install pybind11
   - python -m pybind11 --include
