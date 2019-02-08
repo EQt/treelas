@@ -9,12 +9,12 @@ branches:
     - master
 
 # https://docs.travis-ci.com/user/installing-dependencies/#installing-packages-on-macos
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-7
+#addons:
+  # apt:
+  #   sources:
+  #     - ubuntu-toolchain-r-test
+  #   packages:
+  #     - g++-7
   ## don't need a specific compiler for macos
   # homebrew:
   #   packages:
@@ -22,8 +22,8 @@ addons:
 
 matrix:
   include:
-    - env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
-      os: linux
+    - os: linux
+      # env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
     - os: osx
       # env: CXX_COMPILER=clang++ C_COMPILER=clang
 
