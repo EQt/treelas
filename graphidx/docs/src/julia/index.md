@@ -2,6 +2,8 @@ Index-Based Graphs
 =================
 
 This is the Julia part of the GraphIdx bundle.
+For the C++ documentation see [here](../cxx/index.html).
+
 The main module is
 ```@docs
 GraphIdx
