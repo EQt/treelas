@@ -64,6 +64,12 @@ Plan:
 - Refactor mgt.jl to reduce the input needed
 - Make MGT callable on grid graphs
 
+### v0.11.9
+Released 2019-02-08
+- Julia: Started documentation
+- Julia: Refactored Code into submodules
+- Julia: Unit-Tests on Travis-CI
+
 ### v0.11.8
 Released 2019-02-06
 - Julia: Grid graph features such as `enumerate_edges(::GridGraph)`
