@@ -1,6 +1,11 @@
 #pragma once
 
-/** Similar to std::queue but with pre-allocated memory, i.e. size is limited */
+/** LIFO (last in first out) data structure.
+
+    Similar to
+    [std::queue](http://www.cplusplus.com/reference/queue/queue)
+    but with pre-allocated memory.
+*/
 template<typename T = int>
 class queue
 {

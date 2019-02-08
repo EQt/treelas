@@ -11,7 +11,12 @@
 #  include <string>
 #  include <stdexcept>
 
-/** Similar to std::stack but with pre-allocated memory, i.e. size is limited */
+/** FIFO: first in first out.
+
+    In some experiments, this implementation was faster than
+    [std::stack](http://www.cplusplus.com/reference/stack/stack/)
+    due to pre-allocated memory.
+*/
 template<typename T = int>
 class stack
 {
