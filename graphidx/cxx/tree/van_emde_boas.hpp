@@ -2,15 +2,18 @@
 #include "../bits/clz.hpp"
 
 
-/**
-   Binary van Emde Boas Layout from an Inorder traverse (sorted nodes).
+/** Binary van Emde Boas Layout from an Inorder traverse (sorted nodes).
+
+   @param[out]  a_out   Array to store the output.
+   @param[in]   a_in    Binary inorder (as produced by `binary_inorder`)
+   @param[in]   height  Height of the **complete binary** tree.
 
    Copied and adapted from
    Frederik Rønn: "Cache-Oblivious Searching and Sorting", Master's Thesis,
    Department of Computer Science University of Copenhagen, 2003. (Page 76)
 
    See also:
-     https://github.com/sriravic/FAST-Van-Emde-Boas/blob/master/van-emde-boas.cpp
+     [github.com:sriravic/FAST-Van-Emde-Boas](https://github.com/sriravic/FAST-Van-Emde-Boas/blob/master/van-emde-boas.cpp)
 
 */
 template<typename T>
