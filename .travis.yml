@@ -35,10 +35,12 @@ matrix:
       language: julia
       julia: 1.1
       before_install:
-        - julia -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="graphidx/julia"))'
-        - julia -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
+        - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="graphidx/julia"))'
+        - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
       install:
-        - julia -e 'import Pkg; Pkg.build("TreeLas")'
+        - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
+      script:
+        - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
     - os: linux
       language: cpp
       env:
@@ -52,8 +54,6 @@ cache:
   directories:
     - "$CONDA_BASE"
 
-
-
 language: cpp
 before_cache:
   - pip uninstall -y treelas
@@ -61,7 +61,7 @@ before_cache:
   - rm -fr $CONDA_BASE/lib/python*/site-packages/treelas*
 
 install:
-  - git describe --tags
+# - git describe --tags
   - uname -a && echo $TRAVIS_OS_NAME && pwd
   - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
   - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
