@@ -53,8 +53,8 @@ install:
   - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
   - echo | ${CC} -dM -E -x c -
   - if [[ ! -d $CONDA_BASE/bin ]]; then
-      echo wget $url -O miniconda.sh;
       wget $url -O miniconda.sh;
+      rm -fr $CONDA_BASE;
       bash miniconda.sh -b -p $CONDA_BASE;
     fi
   - export PATH=$CONDA_BASE/bin:$PATH;
