@@ -16,7 +16,9 @@ struct ChildrenIndex : public AdjacencyIndex<int>
 {
     ChildrenIndex() {}
 
-
+    /** Allocate enough space for a tree with `n` nodes.
+     * Before it is usable you need to call `ChildrenIndex::reset`!
+     */
     ChildrenIndex(const size_t n) {
         index.reserve(n+1);
         value.reserve(n);
@@ -31,7 +33,8 @@ struct ChildrenIndex : public AdjacencyIndex<int>
     ChildrenIndex(const std::vector<int> &parent, const int root = -1) :
         ChildrenIndex(parent.size(), parent.data(), root) {}
 
-    
+
+    /** Update the index values to the tree given by `parent`. */
     void reset(const size_t n, const int *parent, int root = -1) {
         if (root < 0)
             root = find_root(n, parent);
