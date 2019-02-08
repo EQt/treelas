@@ -14,8 +14,6 @@ branches:
 
 
 matrix:
-  exclude:
-    - language: julia
   include:
     - language: julia
       os: linux  # don't need it specifically for osx
@@ -28,15 +26,15 @@ matrix:
       script:
         - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
     - language: cpp
-      env:
-        global:
-          - curl="https://repo.continuum.io/miniconda/Miniconda3-latest"
-          - CONDA_BASE="$TRAVIS_BUILD_DIR/miniconda3"
       os:
         - linux:
           env: url="$curl-Linux-x86_64.sh"
         - osx:
           env: url="$curl-MacOSX-x86_64.sh"
+      env:
+        global:
+          - curl="https://repo.continuum.io/miniconda/Miniconda3-latest"
+          - CONDA_BASE="$TRAVIS_BUILD_DIR/miniconda3"
       cache:
         directories:
           - "$CONDA_BASE"
