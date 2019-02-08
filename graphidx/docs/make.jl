@@ -13,11 +13,11 @@ makedocs(
     build="html",
     clean=true,
     pages=[
-        "Home" => "index.md",
-        "Tree Graphs" => "tree.md",
+        "GraphIdx" => "index.md",
         "Graph Indexes" => "idx.md",
-        "Minimum Spanning Trees" => "mst.md",
         "Grid Graphs" => "grid.md",
+        "Tree Graphs" => "tree.md",
+        "Minimum Spanning Trees" => "mst.md",
         "Linear Algebra" => "lina.md",
     ],
     format = Documenter.HTML(
