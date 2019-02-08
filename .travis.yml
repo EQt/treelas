@@ -61,7 +61,7 @@ install:
 
 script:
   - mkdir -p build && cd build
-  - cmake .. -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_C_COMPILER=$CC -DCMAKE_BUILD_TYPE=Debug
+  - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug
   - make && ./tests
   - cd ../python && pwd && rm -fr build
   - CC=$CXX python setup.py install
