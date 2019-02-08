@@ -2,7 +2,7 @@
 #include <vector>
 #include <stdexcept>
 
-/** See `pruefer2edges` for details.
+/** See `prufer2edges` for details.
 
     Parameters:
       parent    Output, len(parent) == n
