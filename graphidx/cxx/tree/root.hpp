@@ -1,7 +1,9 @@
 #pragma once
 #include <vector>
 
-
+/** Find the root node of a tree given its parent vector
+ * @returns a root node or `-1` if none is found.
+ */
 template <typename int_ = int>
 inline int_
 find_root(const size_t n, const int_ *parent)
@@ -14,7 +16,6 @@ find_root(const size_t n, const int_ *parent)
 }
 
 
-/** Find the root node of a tree given its parent vector */
 template <typename int_ = int>
 inline int_
 find_root(const std::vector<int_> &parent)
