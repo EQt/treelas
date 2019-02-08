@@ -10,7 +10,7 @@
 /** Group the elements in `parent`, stored in `value`, group index `index`.
 
     If `root >= 0` treat it as the root of the tree given by `parent`.
-    The root node will be stored at index[0].
+    The `root` node if `>= 0` will be stored at `index[0]`.
 
     Algorithm: [Counting Sort][c] (linear runtime)
 

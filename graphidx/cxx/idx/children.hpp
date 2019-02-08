@@ -10,7 +10,8 @@
 /**
    Access the children of each node of the tree.
 
-   By convention, the root node is stored at ChildrenIndex::value[0].
+   By convention, the root node is stored at `ChildrenIndex::value[0]`;
+   it can be accessed via `ChildrenIndex::root_node()`.
 */
 struct ChildrenIndex : public AdjacencyIndex<int>
 {
@@ -50,5 +51,6 @@ struct ChildrenIndex : public AdjacencyIndex<int>
     }
 
 
+    /** @return the index of the root node */
     int root_node() const { return this->value[0]; }
 };
