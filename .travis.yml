@@ -12,17 +12,11 @@ branches:
   only:
     - master
 
-env:
-  global:
-    - miniconda_base_url="https://repo.continuum.io/miniconda/Miniconda3-latest"
-    - CONDA_BASE="$TRAVIS_BUILD_DIR/miniconda3"
 
 matrix:
   include:
-    - os:
-        - linux
-        - osx
-      language: julia
+    - language: julia
+      os: linux  # don't need it specifically for osx
       julia: 1.1
       before_install:
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="graphidx/julia"))'
@@ -31,45 +25,43 @@ matrix:
         - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
       script:
         - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
-    # - os: linux
-    #   language: cpp
-    #   env:
-    #    - miniconda_url="$miniconda_base_url-Linux-x86_64.sh"
-    # - os: osx
-    #   language: cpp
-    #   env:
-    #     - miniconda_url="$miniconda_base_url-MacOSX-x86_64.sh"
-
-cache:
-  directories:
-    - "$CONDA_BASE"
-
-language: cpp
-before_cache:
-  - pip uninstall -y treelas
-  - rm -fr $CONDA_BASE/envs
-  - rm -fr $CONDA_BASE/lib/python*/site-packages/treelas*
-
-install:
-# - git describe --tags
-  - uname -a && echo $TRAVIS_OS_NAME && pwd
-  - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
-  - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
-  - echo | ${CC} -dM -E -x c -
-  - if [[ ! -d $CONDA_BASE/bin ]]; then
-      wget $miniconda_url -O miniconda.sh;
-      bash miniconda.sh -b -p $CONDA_BASE;
-    fi
-  - export PATH=$CONDA_BASE/bin:$PATH;
-  - conda install -y pytest networkx h5py numba cmake
-  - pip install pybind11
-  - python -m pybind11 --include
-  - python -c 'from sys import byteorder as b; print("byte-order:", b)'
-
-script:
-  - mkdir -p build && cd build
-  - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug
-  - make -j$(nprocs) && ./tests
-  - cd ../python && pwd && rm -fr build
-  - CC=$CXX python setup.py install
-  - py.test --color=yes test
+    - language: cpp
+      env:
+        global:
+          - curl="https://repo.continuum.io/miniconda/Miniconda3-latest"
+          - CONDA_BASE="$TRAVIS_BUILD_DIR/miniconda3"
+      os:
+        - linux:
+            url="$curl-Linux-x86_64.sh"
+        - osx:
+            url="$curl-MacOSX-x86_64.sh"
+      cache:
+        directories:
+          - "$CONDA_BASE"
+      before_cache:
+        - pip uninstall -y treelas
+        - rm -fr $CONDA_BASE/envs
+        - rm -fr $CONDA_BASE/lib/python*/site-packages/treelas*
+      install:
+      # - git describe --tags
+        - uname -a && echo $TRAVIS_OS_NAME && pwd
+        - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
+        - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
+        - echo | ${CC} -dM -E -x c -
+        - if [[ ! -d $CONDA_BASE/bin ]]; then
+            echo wget $url -O miniconda.sh;
+            wget $url -O miniconda.sh;
+            bash miniconda.sh -b -p $CONDA_BASE;
+          fi
+        - export PATH=$CONDA_BASE/bin:$PATH;
+        - conda install -y pytest networkx h5py numba cmake
+        - pip install pybind11
+        - python -m pybind11 --include
+        - python -c 'from sys import byteorder as b; print("byte-order:", b)'
+      script:
+        - mkdir -p build && cd build
+        - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug
+        - make -j$(nprocs) && ./tests
+        - cd ../python && pwd && rm -fr build
+        - CC=$CXX python setup.py install
+        - py.test --color=yes test
