@@ -3,7 +3,7 @@ import os
 import subprocess
 import sphinx_rtd_theme
 
-project = 'graphidx'
+project = 'GraphIdx'
 html_theme = "sphinx_rtd_theme"
 html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
 extensions = ['breathe']
