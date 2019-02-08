@@ -25,8 +25,14 @@ Often, we will need to access the children of arbitrary nodes; for this the [`Gr
 Traversal
 --------
 
+Classical *depth first search*
 ```@docs
 GraphIdx.Tree.dfs_walk
+```
+
+For binary trees, there is also the *inorder*:
+```@docs
+GraphIdx.Tree.binary_inorder
 ```
 
 
