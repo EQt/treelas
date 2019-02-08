@@ -20,12 +20,17 @@ branches:
   #   packages:
   #     - gcc    ## https://formulae.brew.sh/formula/gcc
 
+env:
+  - miniconda_base_url="https://repo.continuum.io/miniconda/Miniconda3-latest"
+
 matrix:
   include:
     - os: linux
-      # env: CXX_COMPILER=g++-7 C_COMPILER=gcc-7
+      env:
+        - miniconda_url="$miniconda_base_url-Linux-x86_64.sh"
     - os: osx
-      # env: CXX_COMPILER=clang++ C_COMPILER=clang
+      env:
+        - miniconda_url="$miniconda_base_url-MacOSX-x86_64.sh"
 
 cache:
   directories:
@@ -36,28 +41,20 @@ before_cache:
   - rm -fr $TRAVIS_BUILD_DIR/miniconda3/envs
   - rm -fr $TRAVIS_BUILD_DIR/miniconda3/lib/python*/site-packages/treelas*
 
-before_install:
-  - git describe --tags
-  - uname -a && echo $TRAVIS_OS_NAME && pwd
 
 install:
+  - git describe --tags
+  - uname -a && echo $TRAVIS_OS_NAME && pwd
   - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
   - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
   - echo | ${CC} -dM -E -x c -
   - if [[ ! -d $PWD/miniconda3/bin ]]; then
-      url="https://repo.continuum.io/miniconda/Miniconda3-latest";
-      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-        wget $url-Linux-x86_64.sh -O miniconda.sh;
-      elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-        wget $url-MacOSX-x86_64.sh -O miniconda.sh;
-      fi;
+      wget $miniconda_url -O miniconda.sh;
       rm -fr miniconda3;
       bash miniconda.sh -b -p $PWD/miniconda3;
     fi
   - export PATH=$PWD/miniconda3/bin:$PATH;
   - conda install -y pytest networkx h5py numba cmake
-  - which python
-  - which conda
   - pip install pybind11
   - python -m pybind11 --include
   - python -c 'from sys import byteorder as b; print("byte-order:", b)'
