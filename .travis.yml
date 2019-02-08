@@ -31,16 +31,22 @@ env:
 
 matrix:
   include:
-    # - os: linux
-    #   language: julia
+    - os: linux
+      language: julia
+      julia: 1.1
+      before_install:
+        - julia -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="graphidx/julia"))'
+        - julia -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
+      install:
+        - julia -e 'import Pkg; Pkg.build("TreeLas")'
     - os: linux
       language: cpp
       env:
         - miniconda_url="$miniconda_base_url-Linux-x86_64.sh"
-    - os: osx
-      language: cpp
-      env:
-        - miniconda_url="$miniconda_base_url-MacOSX-x86_64.sh"
+    # - os: osx
+    #   language: cpp
+    #   env:
+    #     - miniconda_url="$miniconda_base_url-MacOSX-x86_64.sh"
 
 language: cpp
   cache:
