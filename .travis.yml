@@ -12,18 +12,6 @@ branches:
   only:
     - master
 
-# https://docs.travis-ci.com/user/installing-dependencies/#installing-packages-on-macos
-#addons:
-  # apt:
-  #   sources:
-  #     - ubuntu-toolchain-r-test
-  #   packages:
-  #     - g++-7
-  ## don't need a specific compiler for macos
-  # homebrew:
-  #   packages:
-  #     - gcc    ## https://formulae.brew.sh/formula/gcc
-
 env:
   global:
     - miniconda_base_url="https://repo.continuum.io/miniconda/Miniconda3-latest"
@@ -31,7 +19,9 @@ env:
 
 matrix:
   include:
-    - os: linux
+    - os:
+        - linux
+        - osx
       language: julia
       julia: 1.1
       before_install:
@@ -41,10 +31,10 @@ matrix:
         - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
       script:
         - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
-    - os: linux
-      language: cpp
-      env:
-        - miniconda_url="$miniconda_base_url-Linux-x86_64.sh"
+    # - os: linux
+    #   language: cpp
+    #   env:
+    #    - miniconda_url="$miniconda_base_url-Linux-x86_64.sh"
     # - os: osx
     #   language: cpp
     #   env:
