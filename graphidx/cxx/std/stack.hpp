@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef _STACK_DEBUG
 #  define _STACK_DEBUG 0
 #else
@@ -12,7 +11,7 @@
 #  include <string>
 #  include <stdexcept>
 
-
+/** Similar to std::stack but with pre-allocated memory, i.e. size is limited */
 template<typename T = int>
 class stack
 {
