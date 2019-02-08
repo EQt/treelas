@@ -58,9 +58,9 @@ language: cpp
     - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
     - echo | ${CC} -dM -E -x c -
     - if [[ ! -d $CONDA_BASE/bin ]]; then
-    wget $miniconda_url -O miniconda.sh;
-    bash miniconda.sh -b -p $CONDA_BASE
-    fi
+        wget $miniconda_url -O miniconda.sh;
+        bash miniconda.sh -b -p $CONDA_BASE;
+      fi
     - export PATH=$CONDA_BASE/bin:$PATH;
     - conda install -y pytest networkx h5py numba cmake
     - pip install pybind11
