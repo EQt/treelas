@@ -30,9 +30,19 @@ matrix:
         - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
       script:
         - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
+
+    - language: rust
+      os: linux
+      rust: stable
+      install:
+        - cargo --version
+      script:
+        - cd graphidx && cargo test
+
     - language: cpp
       os: linux
       env: url="$curl-Linux-x86_64.sh"
+
     - language: cpp
       os: osx
       env: url="$curl-MacOSX-x86_64.sh"
