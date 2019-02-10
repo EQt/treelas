@@ -36,9 +36,8 @@ matrix:
     - language: rust
       os: linux
       rust: stable
-      install:
-        - cargo --version
       script:
+        - cargo --version
         - cd graphidx && cargo test
 
     - language: cpp
