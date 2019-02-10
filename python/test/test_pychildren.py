@@ -66,3 +66,9 @@ def test_children_root2():
 
     for i in list(range(6)) + list(range(9, 15)):
         assert list(cidx[i]) == []
+
+
+def test_children_3():
+    cidx = ChildrenIndex.compute([0, 0, 1])
+    assert all(cidx.idx == [0, 1, 2, 2])
+    assert all(cidx.pi == [1, 2, 0])
