@@ -1,5 +1,5 @@
 /// Find the root node of a tree given its `parent` vector
-pub fn find_root(parent: &Vec<usize>) -> Option<usize> {
+pub fn find_root(parent: &[usize]) -> Option<usize> {
     let n = parent.len();
     for i in 0..(n - 1) {
         if parent[i] == i {
@@ -16,7 +16,7 @@ pub struct ChildrenIndex {
 }
 
 impl ChildrenIndex {
-    pub fn from_tree(parent: &Vec<usize>, root: usize) -> Self {
+    pub fn from_tree(parent: &[usize], root: usize) -> Self {
         let n = parent.len();
         let mut idx: Vec<usize> = Vec::new();
         idx.resize(n + 1, 0);
@@ -33,7 +33,7 @@ impl ChildrenIndex {
         }
     }
 
-    pub fn from_parent(parent: &Vec<usize>) -> Option<Self> {
+    pub fn from_parent(parent: &[usize]) -> Option<Self> {
         return Some(Self::from_tree(parent, 0));
     }
 }
