@@ -5,12 +5,13 @@ push!(LOAD_PATH, "../src/")
 using Documenter
 import GraphIdx
 
+const build = get(ENV, "HTML_DIR", "html/julia")
 
 makedocs(
     modules=[GraphIdx],
     sitename="GraphIdx",
     authors="Elias Kuthe",
-    build=get(ENV, "HTML_DIR", "html/julia"),
+    build=build,
     clean=true,
     source="src/julia",
     pages=[
@@ -27,3 +28,9 @@ makedocs(
     )
 )
 
+
+deploydocs(
+    repo = "github.com/EQt/treelas",
+    target = build,
+    forcepush = true,
+)
