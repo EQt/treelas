@@ -51,7 +51,14 @@ mod tests {
     }
 
     #[test]
-    fn base_3() {
+    fn test_root_8_not_exist() {
+        let pi: Vec<usize> = vec![1, 0, 1, 2, 3, 0, 7, 8, 3, 8];
+        let maybe_root = find_root(&pi);
+        assert!(maybe_root.is_none());
+    }
+
+    #[test]
+    fn children_idx_3() {
         let pi: Vec<usize> = vec![0, 0, 1];
         let n = pi.len();
         let r: usize = 0;
