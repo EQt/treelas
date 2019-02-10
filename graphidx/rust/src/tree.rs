@@ -1,6 +1,13 @@
 use std::ops::Index;
 
-/// Find the root node of a tree given its `parent` vector
+/// Find the root node of a tree given its `parent` vector.
+///
+/// This is the first `i` such that `parent[i] == i`.
+/// ```
+/// use graphidx::tree::find_root;
+/// assert_eq!(find_root(&[1, 1, 0]), Some(1));
+/// assert_eq!(find_root(&[1, 0, 0]), None);
+/// ```
 pub fn find_root(parent: &[usize]) -> Option<usize> {
     let n = parent.len();
     for i in 0..n {
