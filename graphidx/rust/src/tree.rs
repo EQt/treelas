@@ -1,3 +1,5 @@
+use std::ops::Index;
+
 /// Find the root node of a tree given its `parent` vector
 pub fn find_root(parent: &[usize]) -> Option<usize> {
     let n = parent.len();
@@ -9,7 +11,7 @@ pub fn find_root(parent: &[usize]) -> Option<usize> {
     None
 }
 
-#[derive(PartialEq,Debug)]
+#[derive(PartialEq, Debug)]
 pub struct ChildrenIndex {
     idx: Vec<usize>,
     child: Vec<usize>,
@@ -34,7 +36,7 @@ impl ChildrenIndex {
                 idx[i] = acc;
                 acc += deg_i;
                 deg_i = deg_ii;
-                deg_ii = idx[i+1];
+                deg_ii = idx[i + 1];
             }
             assert_eq!(acc, n);
             idx[n] = acc;
@@ -49,8 +51,8 @@ impl ChildrenIndex {
             if v == root {
                 continue;
             }
-            child[idx[p+1]] = v;
-            idx[p+1] += 1;
+            child[idx[p + 1]] = v;
+            idx[p + 1] += 1;
         }
         assert!(idx[n] == n);
         Self {
@@ -72,15 +74,14 @@ impl ChildrenIndex {
     }
 }
 
-impl<'a> ChildrenIndex {
-    // type Output = &'a [usize];
+impl Index<usize> for ChildrenIndex {
+    type Output = [usize];
 
-    pub fn index(self: &'a Self, i: usize) -> &'a [usize] {
+    fn index(&self, i: usize) -> &[usize] {
         assert!(i < self.len());
-        &self.child[self.idx[i]..self.idx[i+1]]
+        &self.child[self.idx[i]..self.idx[i + 1]]
     }
 }
-
 
 #[cfg(test)]
 mod tests {
@@ -127,9 +128,11 @@ mod tests {
         assert_eq!(cidx.index(0), vec![1].as_slice());
         assert_eq!(cidx.index(1), vec![2].as_slice());
         assert_eq!(cidx.index(2), vec![].as_slice());
+        assert_eq!(&cidx[0], vec![1].as_slice());
+        assert_eq!(&cidx[1], vec![2].as_slice());
+        assert_eq!(&cidx[2], vec![].as_slice());
 
         let cidx2 = ChildrenIndex::from_parent(&pi).unwrap();
         assert_eq!(cidx, cidx2);
-
     }
 }
