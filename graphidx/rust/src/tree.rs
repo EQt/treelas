@@ -24,26 +24,29 @@ impl ChildrenIndex {
         for p in parent {
             idx[*p] += 1_usize;
         }
+        idx[root] -= 1;
 
-        let mut child: Vec<usize> = Vec::new();
-        child.resize(n, std::usize::MAX);
-        child[0] = root;
         {
             let mut acc: usize = 1;
             let mut deg_i: usize = 0;
             let mut deg_ii = idx[0];
-            for i in 0..(n-1) {
+            for i in 0..n {
                 idx[i] = acc;
                 acc += deg_i;
                 deg_i = deg_ii;
                 deg_ii = idx[i+1];
             }
-            assert!(acc == n);
+            assert_eq!(acc, n);
             idx[n] = acc;
         }
-        for v in 0..(n-1) {
+
+        let mut child: Vec<usize> = Vec::new();
+        child.resize(n, std::usize::MAX);
+        child[0] = root;
+
+        for v in 0..n {
             let p = parent[v];
-            if v == p {
+            if v == root {
                 continue;
             }
             child[idx[p+1]] = v;
@@ -63,6 +66,10 @@ impl ChildrenIndex {
     pub fn root_node(self: &Self) -> usize {
         return self.child[0];
     }
+
+    pub fn len(self: &Self) -> usize {
+        return self.child.len();
+    }
 }
 
 #[cfg(test)]
@@ -70,7 +77,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_root_8() {
+    fn test_root_gen5() {
         let pi: Vec<usize> = vec![0, 0, 1, 2, 3, 0, 7, 8, 3, 8];
         let maybe_root = find_root(&pi);
         assert!(maybe_root.is_some());
@@ -87,16 +94,18 @@ mod tests {
     #[test]
     fn children_idx_3() {
         let pi: Vec<usize> = vec![0, 0, 1];
-        let n = pi.len();
         let r: usize = 0;
+        let n = pi.len();
         assert_eq!(n, 3);
         assert_eq!(find_root(&pi).unwrap(), r);
 
         let cidx = ChildrenIndex::from_tree(&pi, r);
+        assert_eq!(cidx.len(), 3);
         assert_eq!(cidx.idx.len(), n + 1);
         assert_eq!(cidx.child.len(), n);
         assert_eq!(cidx.root_node(), r);
-        
+        assert_eq!(cidx.idx, vec![1, 2, 3, 3]);
+        assert_eq!(cidx.child, vec![0, 1, 2]);
 
         let cidx2 = ChildrenIndex::from_parent(&pi).unwrap();
         assert_eq!(cidx, cidx2);
