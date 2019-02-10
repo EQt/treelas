@@ -43,6 +43,14 @@ mod tests {
     use super::*;
 
     #[test]
+    fn test_root_8() {
+        let pi: Vec<usize> = vec![0, 0, 1, 2, 3, 0, 7, 8, 3, 8];
+        let maybe_root = find_root(&pi);
+        assert!(maybe_root.is_some());
+        assert_eq!(maybe_root.unwrap(), 0);
+    }
+
+    #[test]
     fn base_3() {
         let pi: Vec<usize> = vec![0, 0, 1];
         let n = pi.len();
