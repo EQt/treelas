@@ -1,3 +1,5 @@
+![](docs/src/julia/assets/logo.png)
+
 Index-Based Graphs
 ==================
 
