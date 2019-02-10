@@ -72,6 +72,16 @@ impl ChildrenIndex {
     }
 }
 
+impl<'a> ChildrenIndex {
+    // type Output = &'a [usize];
+
+    pub fn index(self: &'a Self, i: usize) -> &'a [usize] {
+        assert!(i < self.len());
+        &self.child[self.idx[i]..self.idx[i+1]]
+    }
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -114,6 +124,9 @@ mod tests {
         assert_eq!(cidx.root_node(), r);
         assert_eq!(cidx.idx, vec![1, 2, 3, 3]);
         assert_eq!(cidx.child, vec![0, 1, 2]);
+        assert_eq!(cidx.index(0), vec![1].as_slice());
+        assert_eq!(cidx.index(1), vec![2].as_slice());
+        assert_eq!(cidx.index(2), vec![].as_slice());
 
         let cidx2 = ChildrenIndex::from_parent(&pi).unwrap();
         assert_eq!(cidx, cidx2);
