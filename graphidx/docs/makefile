@@ -7,3 +7,6 @@ cxx:
 rust:
 	cd .. && cargo doc
 	cp -R ../rust/target/doc/ html/rust
+
+julia:
+	julia --color=yes make.jl
