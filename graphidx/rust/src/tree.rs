@@ -59,6 +59,10 @@ impl ChildrenIndex {
     pub fn from_parent(parent: &[usize]) -> Option<Self> {
         return Some(Self::from_tree(parent, 0));
     }
+
+    pub fn root_node(self: &Self) -> usize {
+        return self.child[0];
+    }
 }
 
 #[cfg(test)]
@@ -85,12 +89,17 @@ mod tests {
         let pi: Vec<usize> = vec![0, 0, 1];
         let n = pi.len();
         let r: usize = 0;
-        assert_eq!(find_root(&pi).unwrap(), r);
         assert_eq!(n, 3);
+        assert_eq!(find_root(&pi).unwrap(), r);
+
         let cidx = ChildrenIndex::from_tree(&pi, r);
         assert_eq!(cidx.idx.len(), n + 1);
         assert_eq!(cidx.child.len(), n);
+        assert_eq!(cidx.root_node(), r);
+        
+
         let cidx2 = ChildrenIndex::from_parent(&pi).unwrap();
         assert_eq!(cidx, cidx2);
+
     }
 }
