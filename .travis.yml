@@ -26,12 +26,13 @@ matrix:
       before_install:
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="graphidx/julia"))'
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
+        - julia --color=yes -e 'import Pkg; Pkg.instantiate()'
       install:
         - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
         - julia --color=yes -e 'import Pkg; Pkg.add("Documenter")'
       script:
         - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
-        - julia --color=yes --project docs/ docs/make.jl
+        - julia --color=yes --project=docs/ docs/make.jl
 
     - language: rust
       os: linux
