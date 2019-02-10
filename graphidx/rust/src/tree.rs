@@ -18,6 +18,7 @@ pub struct ChildrenIndex {
 impl ChildrenIndex {
     pub fn from_tree(parent: &[usize], root: usize) -> Self {
         let n = parent.len();
+        assert!(n > 0);
         let mut idx: Vec<usize> = Vec::new();
         idx.resize(n + 1, 0);
         for p in parent {
@@ -27,6 +28,28 @@ impl ChildrenIndex {
         let mut child: Vec<usize> = Vec::new();
         child.resize(n, std::usize::MAX);
         child[0] = root;
+        {
+            let mut acc: usize = 1;
+            let mut deg_i: usize = 0;
+            let mut deg_ii = idx[0];
+            for i in 0..(n-1) {
+                idx[i] = acc;
+                acc += deg_i;
+                deg_i = deg_ii;
+                deg_ii = idx[i+1];
+            }
+            assert!(acc == n);
+            idx[n] = acc;
+        }
+        for v in 0..(n-1) {
+            let p = parent[v];
+            if v == p {
+                continue;
+            }
+            child[idx[p+1]] = v;
+            idx[p+1] += 1;
+        }
+        assert!(idx[n] == n);
         Self {
             idx: idx,
             child: child,
