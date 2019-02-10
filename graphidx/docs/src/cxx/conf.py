@@ -16,7 +16,6 @@ source_suffix = {
 master_doc = 'index'
 copyright = '2019, Elias Kuthe'
 author = 'Elias Kuthe'
-# html_logo = 'path...'
 exclude_patterns = []
 highlight_language = 'c++'
 pygments_style = 'sphinx'
