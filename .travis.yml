@@ -29,7 +29,7 @@ matrix:
         - julia --color=yes -e 'import Pkg; Pkg.instantiate()'
       install:
         - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
-        - julia --color=yes -e 'import Pkg; Pkg.add("Documenter")'
+        - julia --color=yes --project=docs/ -e 'import Pkg; Pkg.add("Documenter")'
       script:
         - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
         - julia --color=yes --project=docs/ docs/make.jl
