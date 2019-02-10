@@ -135,4 +135,22 @@ mod tests {
         let cidx2 = ChildrenIndex::from_parent(&pi).unwrap();
         assert_eq!(cidx, cidx2);
     }
+
+    #[test]
+    fn children_gen5() {
+        let n = 10;
+        let r = 0;
+        let cidx = ChildrenIndex::from_tree(&[0, 0, 1, 2, 3, 0, 7, 8, 3, 8], r);
+        assert_eq!(cidx.len(), n);
+        assert_eq!(cidx.root_node(), r);
+        assert_eq!(cidx[0], [1, 5]);
+        assert_eq!(cidx[1], [2]);
+        assert_eq!(cidx[2], [3]);
+        assert_eq!(cidx[3], [4, 8]);
+        assert_eq!(cidx[7], [6]);
+        assert_eq!(cidx[8], [7, 9]);
+        for i in &[4, 5, 6, 9] {
+            assert_eq!(cidx[*i], []);
+        }
+    }
 }
