@@ -53,7 +53,7 @@ impl ChildrenIndex {
     }
 
     pub fn from_parent(parent: &[usize]) -> Option<Self> {
-        return Some(Self::from_tree(parent, 0));
+        return Some(Self::from_tree(parent, find_root(parent)?));
     }
 
     pub fn root_node(self: &Self) -> usize {
@@ -124,9 +124,10 @@ mod tests {
 
     #[test]
     fn children_gen5_perm() {
-        let cidx = ChildrenIndex::from_parent(&[6, 6, 6, 7, 7, 7, 8, 8, 8])
-            .unwrap();
+        let parent = [6, 6, 6, 7, 7, 7, 8, 8, 8];
         let r = 8;
+        assert_eq!(find_root(&parent), Some(r));
+        let cidx = ChildrenIndex::from_parent(&parent).unwrap();
         assert_eq!(cidx.root_node(), r);
         assert_eq!(cidx.idx, [1, 1, 1, 1, 1, 1, 1, 4, 7, 9]);
         assert_eq!(cidx.child, [8, 0, 1, 2, 3, 4, 5, 6, 7]);
