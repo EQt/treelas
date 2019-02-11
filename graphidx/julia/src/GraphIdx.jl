@@ -1,6 +1,14 @@
 """
-`GraphIdx`
-==========
+`GraphIdx.jl`
+=============
+
+Nodes
+-----
+
+A node (sometimes also *vertex* called) in a graph is always represented as an integer.
+To be able to use a node as an index, the nodes should be within `1:n` whereby `n` is the number of nodes.
+Furtheron, we always use **signed** integers because we might include extra information within the first (sign) bit.
+
 
 Most important submodules are
 - [`LinA`](@ref): Linear algebra (e.g. incidence matrix)
