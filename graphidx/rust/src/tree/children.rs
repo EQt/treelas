@@ -29,8 +29,9 @@ impl ChildrenIndex {
                 deg_i = deg_ii;
                 deg_ii = idx[i + 1];
             }
-            assert_eq!(acc, n);
             idx[n] = acc;
+            assert_eq!(acc + deg_i, n, "n={}, deg_i={}, deg_ii={}, idx={:?}",
+                       n, deg_i, deg_ii, idx);
         }
 
         let mut child: Vec<usize> = Vec::new();
