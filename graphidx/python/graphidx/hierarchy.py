@@ -19,11 +19,10 @@ def _hierarchy(cidx: ChildrenIndex, v: int, indent: str, last: bool, out: io.IOB
         _hierarchy(cidx, c, indent, i+1 == len(kidz), out=out)
 
 
-def hierarchy(cidx: ChildrenIndex, out=sys.stdout):
-    print(cidx.root, file=out)
+def hierarchy(cidx: ChildrenIndex, out=sys.stdout, indent=""):
+    print(indent, cidx.root, file=out, sep="")
     kidz = cidx[cidx.root]
 
-    indent = ""
     for (i, c) in enumerate(kidz):
         _hierarchy(cidx, c, indent, i+1 == len(kidz), out=out)
     
