@@ -7,6 +7,22 @@ pub struct ChildrenIndex {
     child: Vec<usize>,
 }
 
+/// Find all children of a node in constant time.
+///
+/// # Example
+///
+/// Have a rooted tree (root is 0) whereby nodes 1 and 2 have parent
+/// 0, node 3 has parent 2:
+/// 
+/// ```rust
+/// use graphidx::tree::ChildrenIndex;
+/// let cidx = ChildrenIndex::from_parent(&[0, 0, 0, 2]).unwrap();
+/// assert_eq!(cidx.len(), 4, "we have four nodes in the tree");
+/// assert_eq!(cidx.root_node(), 0);
+/// assert_eq!(cidx[0], [1, 2]);
+/// assert_eq!(cidx[1], []);
+/// assert_eq!(cidx[2], [3]);
+/// ```
 impl ChildrenIndex {
     pub fn from_tree(parent: &[usize], root: usize) -> Self {
         let n = parent.len();
