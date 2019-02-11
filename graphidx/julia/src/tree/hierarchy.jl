@@ -22,6 +22,7 @@ end
 Print a tree given by a `ChildrenIndex` hierarchically onto `io` (default `stdout`).
 
 # Example
+
 ```jldoctest
 julia> hierarchy(ChildrenIndex([1, 1, 1, 3]))
 1
@@ -45,6 +46,12 @@ hierarchy(cidx::ChildrenIndex) =
     hierarchy(stdout, cidx)
 
 
+"""
+    hierarchy_string(cidx)
+
+Same as `hierarchy` but output as String.
+More precisely, print to a buffer and return as String.
+"""
 function hierarchy_string(cidx::ChildrenIndex)::String
     buf = IOBuffer()
     hierarchy(buf, cidx)
