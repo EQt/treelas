@@ -7,6 +7,7 @@ import GraphIdx
 
 const build = get(ENV, "HTML_DIR", "html/julia")
 
+
 makedocs(
     modules=[GraphIdx],
     sitename="GraphIdx",
@@ -30,7 +31,7 @@ makedocs(
 
 
 deploydocs(
-    repo = "github.com/EQt/treelas",
-    target = build,
-    forcepush = true,
+    repo="github.com/EQt/treelas",
+    target=build,
+    # forcepush = true,
 )
