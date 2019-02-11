@@ -14,16 +14,15 @@ def _hierarchy(cidx: ChildrenIndex, v: int, indent: str, last: bool, out: io.IOB
 
     # Space or U+2502 followed by space
     indent = indent + ('  ' if last else '│ ')
-    kidz = cidx[v]
-    for (i, c) in enumerate(kidz):
-        _hierarchy(cidx, c, indent, i+1 == len(kidz), out=out)
+    last_i = len(cidx[v]) -1
+    for (i, c) in enumerate(cidx[v]):
+        _hierarchy(cidx, c, indent, i == last_i, out=out)
 
 
 def hierarchy(cidx: ChildrenIndex, out=sys.stdout, indent=""):
     print(indent, cidx.root, file=out, sep="")
-    kidz = cidx[cidx.root]
-
-    for (i, c) in enumerate(kidz):
-        _hierarchy(cidx, c, indent, i+1 == len(kidz), out=out)
+    last_i = len(cidx[cidx.root]) -1
+    for (i, c) in enumerate(cidx[cidx.root]):
+        _hierarchy(cidx, c, indent, i == last_i, out=out)
     
     
