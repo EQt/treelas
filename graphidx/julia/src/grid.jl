@@ -47,6 +47,17 @@ less or equal `i` in the following diagram as neighbors of `[*]`.
 […] […] [4] [3] [4] […] […]
 […] […] […] […] […] […] […]
 ```
+
+# Example
+
+```jldoctest
+julia> import GraphIdx.Grid: Pixel, compute_dirs
+
+julia> compute_dirs(2)
+2-element Array{Pixel,1}:
+ Pixel(1, 0)
+ Pixel(1, 1)
+```
 """
 function compute_dirs(dn::Int)::Vector{Pixel}
     if dn == 1
@@ -67,8 +78,13 @@ end
 Capture all we need to know about a grid graph.
 """
 struct GridGraph
+    """Number of rows"""
     n1::Int
+
+    """Number of columns"""
     n2::Int
+
+    """Neighbors (in positive direction) of an inner node"""
     dirs::Vector{Pixel}
 end
 
