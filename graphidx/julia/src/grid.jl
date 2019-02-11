@@ -265,7 +265,19 @@ adjlist(g::GridGraph) =
     line_D(n)
 
 Return the incidence matrix for a line graph of length `n`.
-Is equivalent to `incmat(1, n, 1)`
+Is equivalent to `incmat(1, n, 1)`.
+
+# Example
+
+```jldoctest
+julia> GraphIdx.Grid.line_D(3)
+2×3 SparseArrays.SparseMatrixCSC{Float64,Int64} with 4 stored entries:
+  [1, 1]  =  1.0
+  [1, 2]  =  -1.0
+  [2, 2]  =  1.0
+  [2, 3]  =  -1.0
+
+```
 """
 function line_D(n)
     D = spzeros(n-1, n)
