@@ -4,12 +4,13 @@ GraphIdx.jl
 This is the Julia part of GraphIdx, a framework for index-based graphs.
 Some parts are also implemented in
 - [C++ headers](../cxx/index.html), or
-- [a Rust Crate](../rust/graphidx/index.html).
+- a [Rust crate](../rust/graphidx/index.html).
 
 The main module is
 ```@docs
 GraphIdx
 ```
+
 
 Example
 ------
