@@ -123,6 +123,19 @@ mod tests {
     }
 
     #[test]
+    fn binary_3() {
+        let pi = [0, 0, 0, 1, 1, 2, 2];
+        assert_eq!(find_root(&pi), Some(0));
+        let cidx = ChildrenIndex::from_parent(&pi).unwrap();
+        for i in 0..3 {
+            assert_eq!(cidx[i].len(), 2);
+        }
+        for i in 3..cidx.len() {
+            assert_eq!(cidx[i].len(), 0);
+        }
+    }
+
+    #[test]
     fn children_gen5_perm() {
         let parent = [6, 6, 6, 7, 7, 7, 8, 8, 8];
         let r = 8;
