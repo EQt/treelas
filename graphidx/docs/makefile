@@ -5,8 +5,8 @@ cxx:
 	sphinx-build -b html src/cxx html/cxx
 
 rust:
-	cd .. && cargo doc
-	cp -R ../rust/target/doc/ html/rust
+	cd $(realpath .)/.. && cargo doc
+	cp -R $(realpath .)/../rust/target/doc/ html/rust
 
 julia:
 	julia --color=yes make.jl
