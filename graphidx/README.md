@@ -1,4 +1,4 @@
-![](/logo.png)
+![](./logo.png)
 
 GraphIdx: Graphs by Indexes
 ===========================
@@ -48,8 +48,8 @@ Programming Languages
 ---------------------
 
 This is a multilanguage project:
-Because it can be used interactively, most of the code started with [Julia](/julia).
-Then, parts have been ported into header-only [C++](/cxx/) templates.
+Because it can be used interactively, most of the code started with [Julia](./julia).
+Then, parts have been ported into header-only [C++](./cxx/) templates.
 We support bindings to Python.
-Parts are rewritten in [Rust](/rust/).
+Parts are rewritten in [Rust](./rust/).
 

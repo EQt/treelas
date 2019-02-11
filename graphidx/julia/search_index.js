@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "GraphIdx",
     "title": "GraphIdx.jl",
     "category": "section",
-    "text": "This is the Julia part of GraphIdx, a framework for index-based graphs. Some parts are also implemented inC++ headers, or\n[a Rust Crate]here.The main module isGraphIdx"
+    "text": "This is the Julia part of GraphIdx, a framework for index-based graphs. Some parts are also implemented inC++ headers, or\na Rust Crate.The main module isGraphIdx"
 },
 
 {
