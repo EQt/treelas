@@ -1,4 +1,4 @@
-![](docs/src/julia/assets/logo.png)
+![](/logo.png)
 
 Index-Based Graphs
 ==================
