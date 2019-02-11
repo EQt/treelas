@@ -82,4 +82,5 @@ script:
   - make -j$(nprocs) && ./tests
   - cd ../python && pwd && rm -fr build
   - CC=$CXX python setup.py install
-  - py.test --color=yes test
+  - py.test --color=yes ../graphidx/python/
+  - py.test --color=yes test/
