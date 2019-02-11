@@ -12,12 +12,12 @@ struct RootedTree
     parent::Vector{Int}
 end
 
-
 include("tree/root.jl")
 include("tree/degrees.jl")
 include("tree/children.jl")
 include("tree/dfs.jl")
 include("tree/lca.jl")
 include("tree/inorder.jl")
+include("tree/hierarchy.jl")
 
 end

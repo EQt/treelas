@@ -6,7 +6,15 @@ GraphIdx.Tree
 ```
 
 For computing a spanning tree from within a general graph, see [here](mst.md).
-
+For debugging, outputting the tree as a hierarchy was usefule:
+```@meta
+DocTestSetup  = quote
+    import GraphIdx.Tree: ChildrenIndex, hierarchy
+end
+```
+```@docs
+GraphIdx.Tree.hierarchy
+```
 
 Data Structures
 --------------
@@ -19,7 +27,6 @@ GraphIdx.Tree.node_degrees
 ```
 
 Often, we will need to access the children of arbitrary nodes; for this the [`GraphIdx.Tree.ChildrenIndex`](@ref) was developed.
-
 
 
 Traversal
