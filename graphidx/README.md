@@ -1,7 +1,7 @@
 ![](/logo.png)
 
-Index-Based Graphs
-==================
+GraphIdx: Graphs by Indexes
+===========================
 
 In most graph algorithms, it is convinient to have access to the neighboring nodes for a node.
 The corresponding data structure, adajency lists, however is very inpractical to efficiently store in memory.
@@ -47,7 +47,9 @@ Because often we store extra information in the first bit, we require signed int
 Programming Languages
 ---------------------
 
-This is a multilanguage project.
+This is a multilanguage project:
+Because it can be used interactively, most of the code started with [Julia](/julia).
+Then, parts have been ported into header-only [C++](/cxx/) templates.
 We support bindings to Python.
-Parts are rewritten in Rust.
+Parts are rewritten in [Rust](/rust/).
 
