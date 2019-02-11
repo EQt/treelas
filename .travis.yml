@@ -71,7 +71,7 @@ install:
       bash miniconda.sh -b -p $CONDA_BASE;
     fi
   - export PATH=$CONDA_BASE/bin:$PATH;
-  - conda install -y pytest networkx h5py numba cmake
+  - conda install -y pytest networkx h5py numba
   - pip install pybind11
   - python -m pybind11 --include
   - python -c 'from sys import byteorder as b; print("byte-order:", b)'
