@@ -162,4 +162,12 @@ mod tests {
         assert_eq!(cidx.idx, [1, 1, 1, 1, 1, 1, 1, 4, 7, 9]);
         assert_eq!(cidx.child, [8, 0, 1, 2, 3, 4, 5, 6, 7]);
     }
+
+    #[test]
+    fn children_panic() {
+        let pi = [0, 2];
+        let res = std::panic::catch_unwind(move ||
+                                           ChildrenIndex::from_parent(&pi));
+        assert!(res.is_err());
+    }
 }
