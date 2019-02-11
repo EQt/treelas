@@ -104,6 +104,7 @@ reg_idx(py::module &m)
                  return std::string("ChildrenIndex[ n = ") +
                      std::to_string(cidx.size()) + " ]";
              })
+        .def_property_readonly("root", &ChildrenIndex::root_node)
         ;
 
     py::class_<PartitionIndex_int> (m, "PartitionIndex", PyAdjacencyIndex_int)
