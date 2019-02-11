@@ -30,8 +30,10 @@ makedocs(
 )
 
 
+#=
 deploydocs(
     repo="github.com/EQt/treelas",
     target=build,
     # forcepush = true,
 )
+=#
