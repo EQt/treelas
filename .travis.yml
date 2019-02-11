@@ -79,7 +79,7 @@ install:
 script:
   - mkdir -p build && cd build
   - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug
-  - make -j$(nprocs) && ./tests
+  - make -j$(nproc) && ./tests
   - cd ../python && pwd && rm -fr build
   - CC=$CXX python setup.py install
   - py.test --color=yes ../graphidx/python/
