@@ -72,6 +72,7 @@ install:
     fi
   - export PATH=$CONDA_BASE/bin:$PATH;
   - conda install -y pytest networkx h5py numba
+  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then conda install -y cmake; fi
   - pip install pybind11
   - python -m pybind11 --include
   - python -c 'from sys import byteorder as b; print("byte-order:", b)'
