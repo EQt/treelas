@@ -11,6 +11,7 @@ impl ChildrenIndex {
     pub fn from_tree(parent: &[usize], root: usize) -> Self {
         let n = parent.len();
         assert!(n > 0);
+        assert!(parent[root] == root);
         let mut idx: Vec<usize> = Vec::new();
         idx.resize(n + 1, 0);
         for p in parent {
