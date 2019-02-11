@@ -148,7 +148,31 @@ end
 enumerate_edges(f::Function, g::GridGraph) =
     enumerate_edges(f, g.n1, g.n2, g.dirs)
 
+"""
+    iter_edges_pixel(proc, g::GridGraph)
 
+Iterate over the edges on a grid graph.
+Same as `iter_edges_pixel(::Function, ::Int, ::Int, ::Vector{Pixel}).
+
+# Example
+
+```jldoctest
+julia> import GraphIdx.Grid: iter_edges_pixel, GridGraph
+
+julia> iter_edges_pixel(GridGraph(2, 3)) do i1, j1, i2, j2, len
+           println("(\$i1,\$j1) -- (\$i2,\$j2): \$len")
+       end
+(1,1) -- (2,1): 1.0
+(1,2) -- (2,2): 1.0
+(1,3) -- (2,3): 1.0
+(1,1) -- (1,2): 1.0
+(1,2) -- (1,3): 1.0
+(2,1) -- (2,2): 1.0
+(2,2) -- (2,3): 1.0
+
+
+```
+"""
 iter_edges_pixel(f::Function, g::GridGraph) = 
     iter_edges_pixel(f, g.n1, g.n2, g.dirs)
 
