@@ -6,6 +6,13 @@ For the Julia documentation see `here <../julia/index.html>`_.
 
 The library is header only, so setting the include path apropriately suffices.
 
+Edges
+-----
+
+If not stated otherwise, the graphs considered here are **undirected**.
+Consequently, an index containing the neighbors for each node uses :math:`2|E| + |V|` many integers.
+
+
 Node Type
 ---------
 
