@@ -32,6 +32,7 @@ include("kruskal_mst.jl")
 include("lina.jl")
 include("grid.jl")
 include("grididx.jl")
+include("weightedgraph.jl")
 include("bits.jl")
 
 end
