@@ -23,6 +23,7 @@ import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
     pq = Vector{Range}(undef, n)
     proc_order = reset!(pq, cidx, Int[])
     @test proc_order == [6, 10, 7, 8, 9, 5, 4, 3, 2, 1]
+    #=
     @test pq == Range[21:20,
                       18:17,
                       17:16,
@@ -33,4 +34,17 @@ import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
                       12:11,
                       15:14,
                       14:13]
+    =#
+    layout = """
+      1
+      ├─2
+      │ └─3
+      │   └─4
+      │     ├─5
+      │     └─9
+      │       ├─8
+      │       │ └─7
+      │       └─10
+      └─6
+    """
 end
