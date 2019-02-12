@@ -35,22 +35,23 @@ Queues(n::Integer) =
            Vector{Range}(undef,  n))
 
 
-
 Base.getindex(q::Queues, i) = q.pq[i]
 
 
 """
 Contains all memory needed for `tree_dp!`.
 """
-struct TreeDPMem{F}
+struct TreeDPMem{F,I}
     ub::Vector{F}
     lb::Vector{F}
     q::Queues
+    proc_order::Vector{I}
 end
 
 
-function TreeDPMem(n::Integer)
-    TreeDPMem([], [], Queues(n))
+function TreeDPMem(n::Integer, F::Type = Float64, I::Type = Int)
+    proc_order = Vector{I}(undef, n)
+    TreeDPMem{F,I}([], [], Queues(n), proc_order)
 end
 
 
