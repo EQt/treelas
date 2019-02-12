@@ -25,31 +25,30 @@ Set of double ended queues (DeQue) in a tree.
 Initially all leaf nodes have its own queue.
 Children's queues will be merged into the parent node.
 """
-struct Queues
-    events::Vector{Event}
+struct Queues{E}
+    events::Vector{E}
     pq::Vector{Range}
 end
 
-Queues(n::Integer) =
-    Queues(Vector{Event}(undef, 2n),
-           Vector{Range}(undef,  n))
+Queues(n::Integer, E::Type = Event) =
+    Queues{E}(Vector{E}(undef, 2n),
+              Vector{Range}(undef,  n))
 
 
 Base.getindex(q::Queues, i) = q.pq[i]
 
 
-clip_front(qs::Queues, i::I, slope::F, offset::F, t::F) where {F,I} =
+clip_front(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
     clip_front(qs.events, qs.pq, i, slope, offset, t)
 
 
-clip_back(qs::Queues, i::I, slope::F, offset::F, t::F) where {F,I} =
+clip_back(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
     clip_back(qs.events, qs.pq, i, slope, offset, t)
 
 
-function merge!(qs::Queues, i::I, j::I) where {I}
+function merge!(qs::Queues{E}, i::I, j::I) where {I,E}
     qs.pq[i] = merge(qs.events, qs.pq[i], qs.pq[j])
 end
-
 
 
 """
