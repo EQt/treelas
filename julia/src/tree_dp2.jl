@@ -19,38 +19,6 @@ import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
 
 const Tree = GraphIdx.Tree.RootedTree
 
-
-"""
-Set of double ended queues (DeQue) in a tree.
-Initially all leaf nodes have its own queue.
-Children's queues will be merged into the parent node.
-"""
-struct Queues{E}
-    events::Vector{E}
-    pq::Vector{Range}
-end
-
-Queues(n::Integer, E::Type = Event) =
-    Queues{E}(Vector{E}(undef, 2n),
-              Vector{Range}(undef,  n))
-
-
-Base.getindex(q::Queues, i) = q.pq[i]
-
-
-clip_front(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
-    clip_front(qs.events, qs.pq, i, slope, offset, t)
-
-
-clip_back(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
-    clip_back(qs.events, qs.pq, i, slope, offset, t)
-
-
-function merge!(qs::Queues{E}, i::I, j::I) where {I,E}
-    qs.pq[i] = merge(qs.events, qs.pq[i], qs.pq[j])
-end
-
-
 """
 Contains all memory needed for `tree_dp!`.
 """
