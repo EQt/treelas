@@ -5,10 +5,7 @@ using Test
 import .TreeDP
 
 @testset "tree_dp: 10                    " begin
-    root = 1
-    pi = Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9]
-    n = length(pi)
-    t = TreeDP.Tree(root, pi)
+    t = TreeDP.Tree(Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9])
     y = Float64[8.2, 7.0, 9.5, 6.8, 5.8, 6.3, 4.3, 2.2, 1.2, 2.8]
     lam = 1.0
 
