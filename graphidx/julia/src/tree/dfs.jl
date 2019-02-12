@@ -23,15 +23,15 @@ julia> tree = ChildrenIndex([1, 1, 1, 3, 1]); hierarchy(tree)
 julia> dfs_walk(tree) do v
           println(v >= 0 ? "finished   " : "discovered ", abs(v))
        end
+discovered 1
 discovered 2
-discovered 6
-finished   5
+finished   2
+discovered 3
 discovered 4
-discovered 5
 finished   4
 finished   3
-discovered 3
-finished   2
+discovered 5
+finished   5
 finished   1
     
 
@@ -42,15 +42,15 @@ function dfs_walk(f::Function, tree::ChildrenIndex,
                   stack::Vector{Int} = Vector{Int}())
     @assert isempty(stack)
     sizehint!(stack, length(tree))
-    push!(stack, ~root_node(tree))
+    push!(stack, -root_node(tree))
     while !isempty(stack)
         v = pop!(stack)
         f(v)
         if v < 0
-            v = ~v
+            v = -v
             push!(stack, v)
-            for u in tree[v]
-                push!(stack, ~u)
+            for u in @view tree[v][end:-1:1]
+                push!(stack, -u)
             end
         end
     end
