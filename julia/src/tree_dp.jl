@@ -58,8 +58,7 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
 end
 
 
-@inline function merge(elements::Vector{Event},
-                       parent::Range, child::Range)::Range
+function merge(elements::Vector{Event}, parent::Range, child::Range)::Range
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
