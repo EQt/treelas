@@ -1,3 +1,5 @@
+module QueueUnion
+
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
 
 
@@ -84,4 +86,6 @@ function reset!(
     end
 
     pop!(proc_order)    # remove root
+end
+
 end

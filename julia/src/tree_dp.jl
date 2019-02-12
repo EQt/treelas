@@ -6,12 +6,13 @@ GOAL: avoid reallocation of memory as much as possible.
 """
 module DPTree
 include("queues.jl")
-include("event.jl")
-include("clip.jl")
-
 
 import GraphIdx.Tree: RootedTree
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
+import .QueueUnion: Queues, merge!, reset!, Range
+
+include("event.jl")
+include("clip.jl")
 
 
 const Tree = RootedTree
