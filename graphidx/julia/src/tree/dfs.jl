@@ -10,6 +10,33 @@ The `tree` can be given as `ChildrenIndex` or parent `Vector{Int}`;
 in the latter case `ChildrenIndex` will be constructed.
 To avoid allocation, you can pass a `stack` Vector.
 
+# Example
+
+```jldoctest
+julia> tree = ChildrenIndex([1, 1, 1, 3, 1]); hierarchy(tree)
+1
+├╴2
+├╴3
+│ └╴4
+└╴5
+
+julia> dfs_walk(tree) do v
+          println(v >= 0 ? "finished   " : "discovered ", abs(v))
+       end
+discovered 2
+discovered 6
+finished   5
+discovered 4
+discovered 5
+finished   4
+finished   3
+discovered 3
+finished   2
+finished   1
+    
+
+```
+
 """
 function dfs_walk(f::Function, tree::ChildrenIndex,
                   stack::Vector{Int} = Vector{Int}())
