@@ -50,7 +50,7 @@ end
 
 
 function TreeDPMem(n::Integer)
-    new([], [], Queues(n))
+    TreeDPMem([], [], Queues(n))
 end
 
 
