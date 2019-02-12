@@ -22,7 +22,7 @@ import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
     n = length(cidx)
     pq = Vector{Range}(undef, n)
     proc_order = reset!(pq, cidx, Int[])
-    @test proc_order == [5, 7, 8, 10, 9, 4, 3, 2, 6]
+    @test proc_order == [6, 10, 7, 8, 9, 5, 4, 3, 2, 1]
     @test pq == Range[21:20,
                       18:17,
                       17:16,

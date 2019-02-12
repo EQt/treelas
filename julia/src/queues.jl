@@ -1,6 +1,6 @@
 module QueueUnion
 
-import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
+import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk_rev
 
 
 """
@@ -83,7 +83,7 @@ function reset!(
     empty!(stack)
 
     local t::Ref{Int} = Ref{Int}(1)
-    dfs_walk(childs, stack) do v::Int
+    dfs_walk_rev(childs, stack) do v::Int
         t[] += 1
         if v >= 0
             push!(proc_order, v)
@@ -91,7 +91,6 @@ function reset!(
         end
     end
 
-    pop!(proc_order)    # remove root
     return proc_order
 end
 
