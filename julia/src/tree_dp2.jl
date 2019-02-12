@@ -101,7 +101,7 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
         local sig_i::F = sig[i]
         lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
         ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
-        merge!(mem.queues, i, t.parent[i])
+        merge!(mem.queues, t.parent[i], i)
     end
 
     x = ub
@@ -110,7 +110,7 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
     end
     for i in length(mem.proc_order):-1:1
         v = mem.proc_order[i]
-        x[v] = clamp(x[parent[v]], lb[v], ub[v])
+        x[v] = clamp(x[t.parent[v]], lb[v], ub[v])
     end
     return x
 
