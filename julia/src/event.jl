@@ -1,13 +1,13 @@
 import Printf: @sprintf
 
 """
-Change of the derivative
+Change of the derivative.
 """
 struct Event
-    """position (to sort the queues)"""
+    """Position (to sort the queues)"""
     x::Float64
 
-    """delta slope"""
+    """Delta slope"""
     slope::Float64
 end
 
