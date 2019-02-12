@@ -51,18 +51,25 @@ Re-initialize the memory given the new tree, i.e.
 2. Initialize queues to fit `t`.
 """
 function reset!(mem::TreeDPMem{F,I}, tree::Tree) where {F,I}
-    local proc_order::Vector{I} = mem.proc_order
-    local childs::ChildrenIndex = mem.kidz
-    local pq::Vector{Range} = mem.queues.pq
+    reset!(mem.kidz, tree.parent, tree.root)
+    sizehint!(mem.proc_order, length(tree))
+    reset!(mem.proc_order, mem.queues.pq, mem.kidz, mem.stack)
+    mem
+end
 
-    reset!(childs, tree.parent, tree.root)
-    sizehint!(proc_order, length(tree))
+
+function reset!(
+    proc_order::Vector{I},
+    pq::Vector{Range},
+    childs::ChildrenIndex,
+    stack::Vector{I},
+) where {I}
     empty!(proc_order)
     @assert isempty(proc_order)
-    empty!(mem.stack)
+    empty!(stack)
 
     local t::Ref{Int} = Ref{Int}(1)
-    dfs_walk(childs, mem.stack) do v::Int
+    dfs_walk(childs, stack) do v::Int
         t[] += 1
         if v >= 0
             push!(proc_order, v)
@@ -71,7 +78,6 @@ function reset!(mem::TreeDPMem{F,I}, tree::Tree) where {F,I}
     end
 
     pop!(proc_order)    # remove root
-    return mem
 end
 
 
