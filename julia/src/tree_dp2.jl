@@ -28,9 +28,9 @@ Children's queues will be merged into the parent node.
 struct Queues
     events::Vector{Event}
     pq::Vector{Range}
-    Queues(n) =
-    new(Vector{Event}(undef, 2n),
-        Vector{Range}(undef,  n))
+    Queues(n::Integer) =
+        Queues(Vector{Event}(undef, 2n),
+               Vector{Range}(undef,  n))
 end
 
 
