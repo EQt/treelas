@@ -15,6 +15,8 @@ end
 ```@docs
 GraphIdx.Tree.hierarchy
 GraphIdx.Tree.hierarchy_string
+GraphIdx.Tree.parenthesis
+GraphIdx.Tree.parenthesis_string
 ```
 
 Data Structures
@@ -37,6 +39,7 @@ Classical *depth first search*
 ```@docs
 GraphIdx.Tree.dfs_walk
 GraphIdx.Tree.dfs_walk_rev
+GraphIdx.Tree.dfs_finish
 ```
 
 For binary trees, there is also the *inorder*:
