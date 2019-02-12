@@ -61,6 +61,37 @@ dfs_walk(f::Function, parent::Vector{Int}, stack::Vector{Int} = Vector{Int}()) =
     dfs_walk(f, ChildrenIndex(parent), stack)
 
 
+"""
+    dfs_walk_rev(f, tree::ChildrenIndex [, stack])
+
+Like [`dfs_walk`](@ref) but process the children in reversed order!
+"""
+function dfs_walk_rev(f::Function, tree::ChildrenIndex,
+                      stack::Vector{Int} = Int[])
+    @assert isempty(stack)
+    sizehint!(stack, length(tree))
+    push!(stack, -root_node(tree))
+    while !isempty(stack)
+        v = pop!(stack)
+        f(v)
+        if v < 0
+            v = -v
+            push!(stack, v)
+            for u in tree[v]
+                push!(stack, -u)
+            end
+        end
+    end
+end
+
+
+"""
+    dfs_finish(parent)
+
+For each node, compute the DFS finish time (without computing a ChildrenIndex).
+!!! error
+    Migrate to use ChildrenIndex!
+"""
 function dfs_finish(parent::Vector{Int}, root::Int = Int(0))::Vector{Int}
     if root <= 0                            # find root node
         root = find_root(pi)
