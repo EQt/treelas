@@ -116,8 +116,8 @@ end
 end
 
 
-@inline function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                            slope::Float64, offset::Float64, t::Float64)::Float64
+function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
+                    slope::Float64, offset::Float64, t::Float64)::Float64
     begin
         pq = pqs[i]::Range
         start = pq.start
@@ -138,8 +138,8 @@ end
 end
 
 
-@inline function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                           slope::Float64, offset::Float64, t::Float64)::Float64
+function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
+                   slope::Float64, offset::Float64, t::Float64)::Float64
     begin
         pq = pqs[i]::Range
         start = pq.start
@@ -220,7 +220,7 @@ function _dp_tree(y::Vector{Float64},
     sig = lb
     _init_queues(parent, root, pq, proc_order, stack, childs)
     sig .= 0.0
-    for i in proc_order
+    for i in proc_ordereallocation
         sig[parent[i]] += λ(i)
         sig_i = sig[i]
         lb[i] = clip_front(elements, pq, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
