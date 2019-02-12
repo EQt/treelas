@@ -62,7 +62,8 @@ end
 """
     parenthesis([io,] cidx [, stack])
 
-Print the tree in parenthesis notation: recursively print `<node id>(subtree)`
+Print the tree in parenthesis notation: recursively print `<node id>(subtree)`.
+Per default output on `stdout`.
 
 # Example
 
@@ -87,6 +88,11 @@ parenthesis(cidx::ChildrenIndex, stack::Vector{Int} = Int[]) =
     parenthesis(stdout, cidx, stack)
 
 
+"""
+    parenthesis_string(cidx [, stack])
+
+Like [`parenthesis`](@ref) but return output as `String`.
+"""
 function parenthesis_string(cidx::ChildrenIndex, stack::Vector{Int} = Int[])::String
     buf = IOBuffer()
     parenthesis(buf, cidx, stack)
