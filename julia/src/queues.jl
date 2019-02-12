@@ -23,6 +23,10 @@ Base.length(q::Range) = q.stop - q.start + 1
 Base.show(io::IO, q::Range) = print(io, q.start, ":", q.stop)
 
 
+Base.convert(::Type{Range}, r::UnitRange{Int}) =
+    Range(r.start, r.stop)
+
+
 function merge(elements::Vector{E}, parent::Range, child::Range)::Range where {E}
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
@@ -67,11 +71,13 @@ end
 
 
 function reset!(
-    proc_order::Vector{I},
     pq::Vector{Range},
     childs::ChildrenIndex,
-    stack::Vector{I},
+    stack::Vector{I} = I[],
+    proc_order::Vector{I} = I[],
 ) where {I}
+    @assert length(pq) == length(childs)
+    resize!(proc_order, length(childs))
     empty!(proc_order)
     @assert isempty(proc_order)
     empty!(stack)
@@ -86,6 +92,7 @@ function reset!(
     end
 
     pop!(proc_order)    # remove root
+    return proc_order
 end
 
 end
