@@ -20,6 +20,9 @@ RootedTree(parent::Vector{Int}) =
     RootedTree(find_root(parent), parent)
 
 
+Base.length(t::RootedTree) =  length(t.parent)
+
+
 include("tree/degrees.jl")
 include("tree/children.jl")
 include("tree/dfs.jl")
