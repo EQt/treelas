@@ -38,8 +38,7 @@ finished   1
 ```
 
 """
-function dfs_walk(f::Function, tree::ChildrenIndex,
-                  stack::Vector{Int} = Int[])
+function dfs_walk(f::Function, tree::ChildrenIndex, stack::Vector{Int} = Int[])
     @assert isempty(stack)
     sizehint!(stack, length(tree))
     push!(stack, -root_node(tree))
@@ -57,7 +56,7 @@ function dfs_walk(f::Function, tree::ChildrenIndex,
 end
 
 
-dfs_walk(f::Function, parent::Vector{Int}, stack::Vector{Int} = Vector{Int}()) =
+dfs_walk(f::Function, parent::Vector{Int}, stack::Vector{Int} = Int[]) =
     dfs_walk(f, ChildrenIndex(parent), stack)
 
 
@@ -65,9 +64,31 @@ dfs_walk(f::Function, parent::Vector{Int}, stack::Vector{Int} = Vector{Int}()) =
     dfs_walk_rev(f, tree::ChildrenIndex [, stack])
 
 Like [`dfs_walk`](@ref) but process the children in reversed order!
+
+```jldoctest
+julia> tree = ChildrenIndex([1, 1, 1, 3, 1]); hierarchy(tree)
+1
+├─2
+├─3
+│ └─4
+└─5
+
+julia> dfs_walk_rev(tree) do v
+          println(v >= 0 ? "finished   " : "discovered ", abs(v))
+       end
+discovered 1
+discovered 5
+finished   5
+discovered 3
+discovered 4
+finished   4
+finished   3
+discovered 2
+finished   2
+finished   1
+
 """
-function dfs_walk_rev(f::Function, tree::ChildrenIndex,
-                      stack::Vector{Int} = Int[])
+function dfs_walk_rev(f::Function, tree::ChildrenIndex, stack::Vector{Int} = Int[])
     @assert isempty(stack)
     sizehint!(stack, length(tree))
     push!(stack, -root_node(tree))

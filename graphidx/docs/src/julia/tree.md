@@ -36,6 +36,7 @@ Traversal
 Classical *depth first search*
 ```@docs
 GraphIdx.Tree.dfs_walk
+GraphIdx.Tree.dfs_walk_rev
 ```
 
 For binary trees, there is also the *inorder*:
