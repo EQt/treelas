@@ -14,6 +14,7 @@ end
 ```
 ```@docs
 GraphIdx.Tree.hierarchy
+GraphIdx.Tree.hierarchy_string
 ```
 
 Data Structures
