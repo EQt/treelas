@@ -7,7 +7,7 @@ function _hierarchy(
     indent::String,
     last::Bool
 )
-    println(io, indent, last ? "└╴" : "├╴", v)
+    println(io, indent, last ? "└─" : "├─", v)
     indent = indent * (last ? "  " : "│ ")
     last_i = length(cidx[v])
     for (i, c) in enumerate(cidx[v])
@@ -26,9 +26,9 @@ Print a tree given by a `ChildrenIndex` hierarchically onto `io` (default `stdou
 ```jldoctest
 julia> hierarchy(ChildrenIndex([1, 1, 1, 3]))
 1
-├╴2
-└╴3
-  └╴4
+├─2
+└─3
+  └─4
 
 ```
 """

@@ -15,10 +15,10 @@ To avoid allocation, you can pass a `stack` Vector.
 ```jldoctest
 julia> tree = ChildrenIndex([1, 1, 1, 3, 1]); hierarchy(tree)
 1
-├╴2
-├╴3
-│ └╴4
-└╴5
+├─2
+├─3
+│ └─4
+└─5
 
 julia> dfs_walk(tree) do v
           println(v >= 0 ? "finished   " : "discovered ", abs(v))

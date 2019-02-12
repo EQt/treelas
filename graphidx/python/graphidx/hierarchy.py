@@ -10,7 +10,7 @@ def _hierarchy(cidx: ChildrenIndex, v: int, indent: str, last: bool, out: io.IOB
     Copied and adpated from https://stackoverflow.com/a/27141402
     """
     labl = str(v)
-    print(indent + ('└╴' if last else '├╴') + labl, file=out)
+    print(indent + ('└─' if last else '├─') + labl, file=out)
 
     # Space or U+2502 followed by space
     indent = indent + ('  ' if last else '│ ')

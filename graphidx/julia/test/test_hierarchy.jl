@@ -9,15 +9,15 @@ import GraphIdx.Tree: ChildrenIndex, hierarchy_string
     expect = 
     @test strip(hierarchy_string(cidx)) == strip("""
 1
-├╴2
-│ └╴3
-│   └╴4
-│     ├╴5
-│     └╴9
-│       ├╴8
-│       │ └╴7
-│       └╴10
-└╴6""")
+├─2
+│ └─3
+│   └─4
+│     ├─5
+│     └─9
+│       ├─8
+│       │ └─7
+│       └─10
+└─6""")
 end
 
 end
