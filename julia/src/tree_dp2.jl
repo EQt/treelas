@@ -145,8 +145,9 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
     end
 
     x = ub
-    x[t.root] = clip_front(elements, pq, t.root,
-                           µ(t.root), -µ(t.root)*y[t.root] -sig[t.root], 0.0)
+    let r = t.root
+        x[r] = clip_front(mem.queues, r,  µ(r), -µ(r)*y[r] -sig[r], 0.0)
+    end
     for i in length(mem.proc_order):-1:1
         v = mem.proc_order[i]
         x[v] = clamp(x[parent[v]], lb[v], ub[v])
