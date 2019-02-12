@@ -116,50 +116,6 @@ end
 end
 
 
-function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                    slope::Float64, offset::Float64, t::Float64)::Float64
-    begin
-        pq = pqs[i]::Range
-        start = pq.start
-        stop = pq.stop
-        e = elements[start]::Event
-        while start <= stop && slope * e.x + offset < t
-            offset += intercept(e)
-            slope  += e.slope
-            start += 1
-            e = elements[start]::Event
-        end
-        x = (t - offset)/slope
-        start -= 1
-        elements[start] = Event(x, slope)
-        pqs[i] = Range(start, stop)
-        return x
-    end
-end
-
-
-function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                   slope::Float64, offset::Float64, t::Float64)::Float64
-    begin
-        pq = pqs[i]::Range
-        start = pq.start
-        stop = pq.stop
-        e = elements[stop]::Event
-        while start <= stop && slope * e.x + offset > t
-            offset -= intercept(e)
-            slope  -= e.slope
-            stop -= 1
-            e = elements[stop]::Event
-        end
-        x = (t - offset)/slope
-        stop += 1
-        elements[stop] = Event(x, -slope)
-        pqs[i] = Range(start, stop)
-        return x
-    end
-end
-
-
 # Actual Implementation -----------------------------------------------
 dp_tree(y::Vector{Float64}, λ::Float64, t::Tree) =
     dp_tree(y, i->λ, i->1.0, t)
@@ -220,7 +176,7 @@ function _dp_tree(y::Vector{Float64},
     sig = lb
     _init_queues(parent, root, pq, proc_order, stack, childs)
     sig .= 0.0
-    for i in proc_ordereallocation
+    for i in proc_order
         sig[parent[i]] += λ(i)
         sig_i = sig[i]
         lb[i] = clip_front(elements, pq, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
