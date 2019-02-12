@@ -38,11 +38,19 @@ Queues(n::Integer) =
 Base.getindex(q::Queues, i) = q.pq[i]
 
 
+clip_front(qs::Queues, i::I, slope::F, offset::F, t::F) where {F,I} =
+    clip_front(qs.events, qs.pq, i, slope, offset, t)
+
+
+clip_back(qs::Queues, i::I, slope::F, offset::F, t::F) where {F,I} =
+    clip_back(qs.events, qs.pq, i, slope, offset, t)
+
+
+
 """
 Contains all memory needed for `tree_dp!`.
 """
 struct TreeDPMem{F,I}
-    ub::Vector{F}
     lb::Vector{F}
     queues::Queues
     proc_order::Vector{I}
@@ -56,7 +64,7 @@ function TreeDPMem(n::Integer, F::Type = Float64, I::Type = Int)
     proc_order = Vector{I}(undef, n)
     kidz = ChildrenIndex(n)
     stack = Vector{Int}(undef, n)
-    TreeDPMem{F,I}(lb, [], Queues(n), proc_order, kidz, stack)
+    TreeDPMem{F,I}(lb, Queues(n), proc_order, kidz, stack)
 end
 
 
@@ -125,12 +133,26 @@ tree_dp!(x::Array{F,N}, y::Vector{F}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,M
 function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
                   µ::Mu, mem::TreeDPMem{F,I})::Array{F,N} where {F,I,N,Lam,Mu}
     reset!(mem, t)
+    local lb::Vector{F} = mem.lb
+    local ub::Vector{F} = x
     local sig::Vector{F} = mem.lb
+
+    sig .= 0
     for i in mem.proc_order
         local sig_i::F = sig[i]
-        mem.lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
-        mem.ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
+        lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
+        ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
     end
+
+    x = ub
+    x[t.root] = clip_front(elements, pq, t.root,
+                           µ(t.root), -µ(t.root)*y[t.root] -sig[t.root], 0.0)
+    for i in length(mem.proc_order):-1:1
+        v = mem.proc_order[i]
+        x[v] = clamp(x[parent[v]], lb[v], ub[v])
+    end
+    return x
+
     return x
 end
 
