@@ -65,6 +65,8 @@ dfs_walk(f::Function, parent::Vector{Int}, stack::Vector{Int} = Int[]) =
 
 Like [`dfs_walk`](@ref) but process the children in reversed order!
 
+# Example
+
 ```jldoctest
 julia> tree = ChildrenIndex([1, 1, 1, 3, 1]); hierarchy(tree)
 1
@@ -87,6 +89,8 @@ discovered 2
 finished   2
 finished   1
 
+
+```
 """
 function dfs_walk_rev(f::Function, tree::ChildrenIndex, stack::Vector{Int} = Int[])
     @assert isempty(stack)
