@@ -6,7 +6,7 @@ GOAL: avoid reallocation of memory as much as possible.
 """
 module DPTree
 # include("graphidx.jl")
-include("common.jl")
+include("queues.jl")
 
 import GraphIdx.Tree: RootedTree
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk

@@ -1,13 +1,14 @@
 include("event.jl")
 
 
-# Queues ----------------------------------------------------------------
 """
     Range(start, stop)
 
 A range in a `Vector` containing the `Event`s of a nodes "queue".
 
-ATTENTION: unlike in Python, `start` and `stop` are inclusive!
+!!! warning
+
+    unlike in Python, `start` and `stop` are inclusive!
 """
 struct Range
     start::Int

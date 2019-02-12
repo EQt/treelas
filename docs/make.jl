@@ -14,10 +14,11 @@ makedocs(
     clean=true,
     pages=[
         "TreeLas" => "index.md",
+        "Piecewise-Linear" => "pwl.md",
+        "Queues" => "queues.md",
         "GraphIdx" => "graphidx.index.md",
     ],
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true"
     )
 )
-

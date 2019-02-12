@@ -11,7 +11,7 @@ rest.
 """
 module TreeDP
 
-include("common.jl")
+include("queues.jl")
 include("weights.jl")
 
 import GraphIdx
