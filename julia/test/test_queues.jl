@@ -1,7 +1,7 @@
 using Test
 import TreeLas.QueueUnion: Queues, Range, reset!
 import TreeLas.TreeDP: Tree
-import GraphIdx.Tree: hierarchy_string, ChildrenIndex
+import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
 
 
 @testset "Queus: init 9 nodes            " begin
@@ -18,5 +18,6 @@ import GraphIdx.Tree: hierarchy_string, ChildrenIndex
 │       │ └─7
 │       └─10
 └─6""")
-end
 
+    @test parenthesis_string(cidx) == "1(2(3(4(5()9(8(7())10()))))6())"
+end

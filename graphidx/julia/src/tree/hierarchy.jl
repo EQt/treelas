@@ -58,4 +58,37 @@ function hierarchy_string(cidx::ChildrenIndex)::String
     return String(take!(buf))
 end
 
-    
+
+"""
+    parenthesis([io,] cidx [, stack])
+
+Print the tree in parenthesis notation: recursively print `<node id>(subtree)`
+
+# Example
+
+```jldoctest
+julia> parenthesis(ChildrenIndex([1, 1, 1, 3]))
+1(2()3(4()))
+
+```
+"""
+function parenthesis(io::IO, cidx::ChildrenIndex, stack::Vector{Int} = Int[])
+    dfs_walk(cidx, stack) do v::Int
+        if v < 0    # just discovered
+            print(io, -v, "(")
+        else
+            print(io, ")")
+        end
+    end
+end
+
+
+parenthesis(cidx::ChildrenIndex, stack::Vector{Int} = Int[]) =
+    parenthesis(stdout, cidx, stack)
+
+
+function parenthesis_string(cidx::ChildrenIndex, stack::Vector{Int} = Int[])::String
+    buf = IOBuffer()
+    parenthesis(buf, cidx, stack)
+    return String(take!(buf))
+end
