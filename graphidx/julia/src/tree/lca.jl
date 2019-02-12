@@ -1,18 +1,17 @@
 """
     lowest_common_ancestors(tree, parent, pairs)
 
-For a list of pairs `[(u1, v1), ..., (uk, vk)]` compute the lowest common
-ancestors `[a1, ..., ak]`, i.e. `ai` is the lowest node in the tree that is
+For a list of pairs `[(u1, v1), ..., (uk, vk)]` compute the
+[lowest common ancestors](https://en.wikipedia.org/wiki/Lowest_common_ancestor)
+`[a1, ..., ak]`, i.e. `ai` is the lowest node in the tree that is
 ancestor (parent, grand-parent, grand-grand-parent, etc.) of both, `ui` and `vi`.
 
-Runtime is `O(length(tree) + length(pairs))`.  More precisely, the
-inverse Ackermann function is at most 4 for all practical instances.
+Runtime is `O(length(tree) + length(pairs))`.
+More precisely, the inverse Ackermann function is at most 4 for all
+practical instances.
 
-See CLRS (3rd edition) page 584 or `networkx` [n].
-
-Compare to
-[n]: networkx/algorithms/lowest_common_ancestors.py
-[1]: https://en.wikipedia.org/wiki/Lowest_common_ancestor
+See CLRS (3rd edition) page 584 or
+[`networkx`](https://github.com/networkx/networkx/blob/master/networkx/algorithms/lowest_common_ancestors.py).
 """
 function lowest_common_ancestors(tree::ChildrenIndex,
                                  parent::Vector{Int},
