@@ -1,3 +1,6 @@
+import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
+
+
 """
     Range(start, stop)
 
@@ -47,6 +50,7 @@ struct Queues{E}
     pq::Vector{Range}
 end
 
+
 Queues{E}(n::Integer) where {E} =
     Queues{E}(Vector{E}(undef, 2n),
               Vector{Range}(undef,  n))
@@ -57,4 +61,27 @@ Base.getindex(q::Queues, i) = q.pq[i]
 
 function merge!(qs::Queues{E}, i::I, j::I) where {I,E}
     qs.pq[i] = merge(qs.events, qs.pq[i], qs.pq[j])
+end
+
+
+function reset!(
+    proc_order::Vector{I},
+    pq::Vector{Range},
+    childs::ChildrenIndex,
+    stack::Vector{I},
+) where {I}
+    empty!(proc_order)
+    @assert isempty(proc_order)
+    empty!(stack)
+
+    local t::Ref{Int} = Ref{Int}(1)
+    dfs_walk(childs, stack) do v::Int
+        t[] += 1
+        if v >= 0
+            push!(proc_order, v)
+            pq[v] = Range(t[], t[]-1)
+        end
+    end
+
+    pop!(proc_order)    # remove root
 end

@@ -58,29 +58,6 @@ function reset!(mem::TreeDPMem{F,I}, tree::Tree) where {F,I}
 end
 
 
-function reset!(
-    proc_order::Vector{I},
-    pq::Vector{Range},
-    childs::ChildrenIndex,
-    stack::Vector{I},
-) where {I}
-    empty!(proc_order)
-    @assert isempty(proc_order)
-    empty!(stack)
-
-    local t::Ref{Int} = Ref{Int}(1)
-    dfs_walk(childs, stack) do v::Int
-        t[] += 1
-        if v >= 0
-            push!(proc_order, v)
-            pq[v] = Range(t[], t[]-1)
-        end
-    end
-
-    pop!(proc_order)    # remove root
-end
-
-
 """
     tree_dp(y, t::Tree, λ [, μ = 1.0])
 
