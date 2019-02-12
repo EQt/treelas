@@ -39,7 +39,7 @@ finished   1
 
 """
 function dfs_walk(f::Function, tree::ChildrenIndex,
-                  stack::Vector{Int} = Vector{Int}())
+                  stack::Vector{Int} = Int[])
     @assert isempty(stack)
     sizehint!(stack, length(tree))
     push!(stack, -root_node(tree))
