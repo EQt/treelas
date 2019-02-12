@@ -52,10 +52,11 @@ end
 
 
 function TreeDPMem(n::Integer, F::Type = Float64, I::Type = Int)
+    lb = Vector{F}(undef, n)
     proc_order = Vector{I}(undef, n)
     kidz = ChildrenIndex(n)
     stack = Vector{Int}(undef, n)
-    TreeDPMem{F,I}([], [], Queues(n), proc_order, kidz, stack)
+    TreeDPMem{F,I}(lb, [], Queues(n), proc_order, kidz, stack)
 end
 
 
@@ -68,9 +69,9 @@ Re-initialize the memory given the new tree, i.e.
 2. Initialize queues to fit `t`.
 """
 function reset!(mem::TreeDPMem{F,I}, tree::Tree) where {F,I}
-    local proc_order = mem.proc_order
-    local childs = mem.kidz
-    local pq = mem.queues.pq
+    local proc_order::Vector{I} = mem.proc_order
+    local childs::ChildrenIndex = mem.kidz
+    local pq::Vector{Range} = mem.queues.pq
 
     reset!(childs, tree.parent, tree.root)
     sizehint!(proc_order, length(tree))
@@ -124,7 +125,9 @@ tree_dp!(x::Array{F,N}, y::Vector{F}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,M
 function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
                   µ::Mu, mem::TreeDPMem{F,I})::Array{F,N} where {F,I,N,Lam,Mu}
     reset!(mem, t)
+    local sig::Vector{F} = mem.lb
     for i in mem.proc_order
+        local sig_i::F = sig[i]
         mem.lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
         mem.ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
     end
