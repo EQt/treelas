@@ -13,9 +13,12 @@ For debugging, the [`hierarchy`](@ref) function might be useful.
 struct RootedTree
     root::Int
     parent::Vector{Int}
-    RootedTree(parent::Vector{Int}) =
-        RootedTree(find_root(parent), parent)
 end
+
+
+RootedTree(parent::Vector{Int}) =
+    RootedTree(find_root(parent), parent)
+
 
 include("tree/degrees.jl")
 include("tree/children.jl")
