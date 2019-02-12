@@ -46,12 +46,16 @@ struct TreeDPMem{F,I}
     lb::Vector{F}
     queues::Queues
     proc_order::Vector{I}
+    kidz::ChildrenIndex
+    stack::Vector{Int}
 end
 
 
 function TreeDPMem(n::Integer, F::Type = Float64, I::Type = Int)
     proc_order = Vector{I}(undef, n)
-    TreeDPMem{F,I}([], [], Queues(n), proc_order)
+    kidz = ChildrenIndex(n)
+    stack = Vector{Int}(undef, n)
+    TreeDPMem{F,I}([], [], Queues(n), proc_order, kidz, stack)
 end
 
 
@@ -63,8 +67,28 @@ Re-initialize the memory given the new tree, i.e.
 1. Compute processing order.
 2. Initialize queues to fit `t`.
 """
-function reset!(mem::TreeDPMem{F,I}, t::Tree) where {F,I}
-    
+function reset!(mem::TreeDPMem{F,I}, tree::Tree) where {F,I}
+    local proc_order = mem.proc_order
+    local childs = mem.kidz
+    local pq = mem.queues.pq
+
+    reset!(childs, tree.parent, tree.root)
+    sizehint!(proc_order, length(tree))
+    empty!(proc_order)
+    @assert isempty(proc_order)
+    empty!(mem.stack)
+
+    local t::Ref{Int} = Ref{Int}(1)
+    dfs_walk(childs, mem.stack) do v::Int
+        t[] += 1
+        if v >= 0
+            push!(proc_order, v)
+            pq[v] = Range(t[], t[]-1)
+        end
+    end
+
+    pop!(proc_order)    # remove root
+    return mem
 end
 
 
