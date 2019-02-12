@@ -80,7 +80,7 @@ If `mem::TreeDPMem` is provided, no additional allocations will be
 needed.
 """
 tree_dp!(x::Array{F,N}, y::Vector{F}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
-    tree_dp!(x, t, y, λ, µ, TreeDPMem(length(y)))
+    tree_dp!(x, y, t, λ, µ, TreeDPMem(length(y)))
 
 
 function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
