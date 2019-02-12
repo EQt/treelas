@@ -12,6 +12,8 @@ rest.
 module TreeDP
 
 include("queues.jl")
+include("event.jl")
+include("clip.jl")
 include("weights.jl")
 
 import GraphIdx
@@ -36,7 +38,7 @@ function TreeDPMem(n::Integer, F::Type = Float64, I::Type = Int)
     proc_order = Vector{I}(undef, n)
     kidz = ChildrenIndex(n)
     stack = Vector{Int}(undef, n)
-    TreeDPMem{F,I}(lb, Queues(n), proc_order, kidz, stack)
+    TreeDPMem{F,I}(lb, Queues{Event}(n), proc_order, kidz, stack)
 end
 
 

@@ -1,10 +1,8 @@
-include("event.jl")
-
-
 """
     Range(start, stop)
 
-A range in a `Vector` containing the `Event`s of a nodes "queue".
+A range in a `Vector`.
+In our algorithm is is used for the nodes of [`Queues`](@ref) of [`Event`](@ref)s.
 
 !!! warning
 
@@ -20,51 +18,7 @@ Base.length(q::Range) = q.stop - q.start + 1
 Base.show(io::IO, q::Range) = print(io, q.start, ":", q.stop)
 
 
-function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                    slope::Float64, offset::Float64, t::Float64)::Float64
-    begin
-        pq = pqs[i]::Range
-        start = pq.start
-        stop = pq.stop
-        e = elements[start]::Event
-        while start <= stop && slope * e.x + offset < t
-            offset += intercept(e)
-            slope  += e.slope
-            start += 1
-            e = elements[start]::Event
-        end
-        x = (t - offset)/slope
-        start -= 1
-        elements[start] = Event(x, slope)
-        pqs[i] = Range(start, stop)
-        return x
-    end
-end
-
-
-function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                   slope::Float64, offset::Float64, t::Float64)::Float64
-    begin
-        pq = pqs[i]::Range
-        start = pq.start
-        stop = pq.stop
-        e = elements[stop]::Event
-        while start <= stop && slope * e.x + offset > t
-            offset -= intercept(e)
-            slope  -= e.slope
-            stop -= 1
-            e = elements[stop]::Event
-        end
-        x = (t - offset)/slope
-        stop += 1
-        elements[stop] = Event(x, -slope)
-        pqs[i] = Range(start, stop)
-        return x
-    end
-end
-
-
-function merge(elements::Vector{Event}, parent::Range, child::Range)::Range
+function merge(elements::Vector{E}, parent::Range, child::Range)::Range where {E}
     if parent.start <= parent.stop
         gap = child.start - parent.stop - 1
         old_stop = parent.stop
@@ -93,20 +47,12 @@ struct Queues{E}
     pq::Vector{Range}
 end
 
-Queues(n::Integer, E::Type = Event) =
+Queues{E}(n::Integer) where {E} =
     Queues{E}(Vector{E}(undef, 2n),
               Vector{Range}(undef,  n))
 
 
 Base.getindex(q::Queues, i) = q.pq[i]
-
-
-clip_front(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
-    clip_front(qs.events, qs.pq, i, slope, offset, t)
-
-
-clip_back(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
-    clip_back(qs.events, qs.pq, i, slope, offset, t)
 
 
 function merge!(qs::Queues{E}, i::I, j::I) where {I,E}

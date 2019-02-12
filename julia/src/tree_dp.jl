@@ -5,8 +5,10 @@ Dynamic Programming Tree Solver
 GOAL: avoid reallocation of memory as much as possible.
 """
 module DPTree
-# include("graphidx.jl")
 include("queues.jl")
+include("event.jl")
+include("clip.jl")
+
 
 import GraphIdx.Tree: RootedTree
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
