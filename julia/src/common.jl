@@ -82,3 +82,22 @@ function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
         return x
     end
 end
+
+
+function merge(elements::Vector{Event}, parent::Range, child::Range)::Range
+    if parent.start <= parent.stop
+        gap = child.start - parent.stop - 1
+        old_stop = parent.stop
+        res = Range(parent.start, child.stop - gap)
+        if gap > 0
+            for i in old_stop+1:res.stop
+                elements[i] = elements[i+gap]
+            end
+        end
+        sort!(elements, Int(res.start), Int(res.stop),
+              PartialQuickSort(Int(res.start):Int(res.stop)),
+              Base.Sort.Forward)
+        return res
+    end
+    return child
+end

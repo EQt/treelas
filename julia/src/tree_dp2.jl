@@ -46,6 +46,11 @@ clip_back(qs::Queues, i::I, slope::F, offset::F, t::F) where {F,I} =
     clip_back(qs.events, qs.pq, i, slope, offset, t)
 
 
+function merge!(qs::Queues, i::I, j::I) where {I}
+    qs.pq[i] = merge(qs.events, qs.pq[i], qs.pq[j])
+end
+
+
 
 """
 Contains all memory needed for `tree_dp!`.
@@ -142,6 +147,7 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
         local sig_i::F = sig[i]
         lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
         ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
+        merge!(mem.queues, i, t.parent[i])
     end
 
     x = ub
