@@ -44,7 +44,7 @@ Contains all memory needed for `tree_dp!`.
 struct TreeDPMem{F,I}
     ub::Vector{F}
     lb::Vector{F}
-    q::Queues
+    queues::Queues
     proc_order::Vector{I}
 end
 
@@ -52,6 +52,19 @@ end
 function TreeDPMem(n::Integer, F::Type = Float64, I::Type = Int)
     proc_order = Vector{I}(undef, n)
     TreeDPMem{F,I}([], [], Queues(n), proc_order)
+end
+
+
+"""
+    reset!(mem::TreeDPMem, t::Tree)
+
+Re-initialize the memory given the new tree, i.e.
+0. Assert that `mem` has the required size for `t`.
+1. Compute processing order.
+2. Initialize queues to fit `t`.
+"""
+function reset!(mem::TreeDPMem{F,I}, t::Tree) where {F,I}
+    
 end
 
 
@@ -85,7 +98,12 @@ tree_dp!(x::Array{F,N}, y::Vector{F}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,M
 
 
 function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
-                  µ::Mu, mem::TreeDPMem)::Array{F,N} where {F,N,Lam,Mu}
+                  µ::Mu, mem::TreeDPMem{F,I})::Array{F,N} where {F,I,N,Lam,Mu}
+    reset!(mem, t)
+    for i in mem.proc_order
+        mem.lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
+        mem.ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
+    end
     return x
 end
 
