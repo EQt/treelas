@@ -97,7 +97,7 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
     local sig::Vector{F} = mem.lb
 
     sig .= 0
-    for i in mem.proc_order
+    for i in @view mem.proc_order[1:end-1]
         local sig_i::F = sig[i]
         lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
         ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
