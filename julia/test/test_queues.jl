@@ -18,6 +18,19 @@ import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
 │       │ └─7
 │       └─10
 └─6""")
-
     @test parenthesis_string(cidx) == "1(2(3(4(5()9(8(7())10()))))6())"
+    n = length(cidx)
+    pq = Vector{Range}(undef, n)
+    proc_order = reset!(pq, cidx, Int[])
+    @test proc_order == [5, 7, 8, 10, 9, 4, 3, 2, 6]
+    @test pq == Range[21:20,
+                      18:17,
+                      17:16,
+                      16:15,
+                      7:6,
+                      20:19,
+                      11:10,
+                      12:11,
+                      15:14,
+                      14:13]
 end

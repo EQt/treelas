@@ -55,7 +55,7 @@ Re-initialize the memory given the new tree, i.e.
 function reset!(mem::TreeDPMem{F,I}, tree::Tree) where {F,I}
     reset!(mem.kidz, tree.parent, tree.root)
     sizehint!(mem.proc_order, length(tree))
-    reset!(mem.proc_order, mem.queues.pq, mem.kidz, mem.stack)
+    reset!(mem.queues.pq, mem.kidz, mem.stack, mem.proc_order)
     mem
 end
 
