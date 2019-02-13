@@ -40,6 +40,8 @@ order need to be specified, i.e. we should provide an edge iterator.
 """
 module MGT
 
+include("gap.jl")
+
 import SparseArrays: mul!
 import Printf: @sprintf
 import GraphIdx.Tree: ChildrenIndex, RootedTree
@@ -47,26 +49,6 @@ import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx.LinA: IncMat, Edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
-
-"""
-    gap_vec!(...)
-
-Compute the gap vector (modifies dif and x) and stores it in γ.
-"""
-function gap_vec!(γ::Vector{Float64},
-                  dif::Vector{Float64},
-                  x::Vector{Float64},
-                  y::Vector{Float64},
-                  D::IncMat,
-                  Dt::IncMat,
-                  α::Vector{Float64},
-                  c::Float64 = Float64(1.0))
-    mul!(x, Dt, α)
-    x .-= y
-    mul!(dif, D, x)
-    γ .= c .* ((α .* dif) .+ abs.(dif))
-    return γ
-end
 
 
 """

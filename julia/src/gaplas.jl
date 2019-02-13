@@ -7,6 +7,8 @@ to a `NeighborIndex` or alike.
 """
 module GapLas
 
+include("gap.jl")
+
 import GraphIdx.Grid: enumerate_edges
 import GraphIdx: NeighborIndex, neighbors_lambda
 import GraphIdx: PrimMstMem, prim_mst_edges
@@ -25,17 +27,6 @@ function gaplas(y::Array{Float64}, g::Graph) where {Graph}
     α = zeros(num_edges(g))
     γ = Vector{Float64}(undef, num_edges)
     gaplas!(x, α, γ, y, g)
-end
-
-
-function gap_vec!(γ::Vector{F},
-                  x::Array{F},
-                  α::Vector{F},
-                  g::Graph,
-                  c::F = F(1.0)) where {F,Graph}
-    enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
-        γ[ei] = c * (lam - abs(α[ei])) * (x[u] - x[v])
-    end
 end
 
 
