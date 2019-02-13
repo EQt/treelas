@@ -94,15 +94,15 @@ function max_gap_tree(y::Vector{Float64},
                       dprocess::Function=α->nothing,
                       tprocess::Function=(t,w)->nothing,
                       c0::Float64 = 0.0) where E
-    m, n = size(D)
+    local m, n = size(D)
     Dt = copy(D')
-    alpha = c0 * sign.(D*vec(y))
-    dif = zeros(m)
-    γ = zeros(m)
-    x = copy(y)
-    z = similar(y)
-    tlam = Vector{Float64}(undef, n)
-    xbuf = Vector{Float64}(undef, n)
+    local alpha = c0 * sign.(D*vec(y))
+    local dif = zeros(m)
+    local γ = zeros(m)
+    local x = copy(y)
+    local z = similar(y)
+    local tlam = Vector{Float64}(undef, n)
+    local xbuf = Vector{Float64}(undef, n)
     local dp_mem = TreeDPMem(n)
     local mst_mem = PrimMstMem(edges, n)
     local selected = mst_mem.selected
@@ -131,7 +131,6 @@ function max_gap_tree(y::Vector{Float64},
             end
         end
 
-        x_old = x
         tree_dp!(x, z,
                  tree,
                  ArrayWeights(tlam),
@@ -139,7 +138,6 @@ function max_gap_tree(y::Vector{Float64},
                  dp_mem)
 
         process(x)
-        ub = x_old
         begin # compute dual ==> update alpha
             local mu_i = mu
             xbuf .= x .- z
