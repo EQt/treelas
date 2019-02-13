@@ -46,7 +46,6 @@ function max_gap_tree(
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
-    local dif = zeros(m)
     local γ = zeros(m)
     local x = copy(y)
     local z = similar(y)
