@@ -59,11 +59,12 @@ function gap_vec!(γ::Vector{Float64},
                   y::Vector{Float64},
                   D::IncMat,
                   Dt::IncMat,
-                  α::Vector{Float64})
+                  α::Vector{Float64},
+                  c::Float64 = Float64(1.0))
     mul!(x, Dt, α)
     x .-= y
     mul!(dif, D, x)
-    γ .= (α .* dif) .+ abs.(dif)
+    γ .= c .* ((α .* dif) .+ abs.(dif))
     return γ
 end
 
@@ -102,18 +103,17 @@ function max_gap_tree(y::Vector{Float64},
     z = similar(y)
     tlam = Vector{Float64}(undef, n)
     xbuf = Vector{Float64}(undef, n)
-    dp_mem = TreeDPMem(n)
-    mst_mem = PrimMstMem(edges, n)
-    selected = mst_mem.selected
-    parent = mst_mem.parent
+    local dp_mem = TreeDPMem(n)
+    local mst_mem = PrimMstMem(edges, n)
+    local selected = mst_mem.selected
+    local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
 
     for it in 0:max_iter
         dprocess(alpha)
         it >= max_iter && break
-        gap_vec!(γ, dif, x, y, D, Dt, alpha)
-        verbose && println(@sprintf("%4d %f", it, sum(γ)))
-        γ .*= -1.0
+        gap_vec!(γ, dif, x, y, D, Dt, alpha, -1.0)
+        verbose && println(@sprintf("%4d %f", it, -sum(γ)))
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         z .= y
