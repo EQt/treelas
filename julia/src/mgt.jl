@@ -63,9 +63,8 @@ function max_gap_tree(
     local tree = RootedTree(root_node, parent)
     local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
 
-    for it in 0:max_iter
+    for it in 1:max_iter
         dprocess(alpha)
-        it >= max_iter && break
 
         gap_vec!(γ, x, alpha, graph, -1.0)
 
