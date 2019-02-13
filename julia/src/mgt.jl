@@ -113,7 +113,9 @@ function max_gap_tree(y::Vector{Float64},
         dprocess(alpha)
         it >= max_iter && break
         gap_vec!(γ, dif, x, y, D, Dt, alpha, -1.0)
-        verbose && println(@sprintf("%4d %f", it, -sum(γ)))
+        if verbose
+            println(@sprintf("%4d %f", it, -sum(γ)))
+        end
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         z .= y
