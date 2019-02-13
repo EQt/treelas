@@ -66,23 +66,29 @@ function max_gap_tree(
     for it in 0:max_iter
         dprocess(alpha)
         it >= max_iter && break
-        # gap_vec!(γ, dif, x, y, D, Dt, alpha, -1.0)
+
         gap_vec!(γ, x, alpha, graph, -1.0)
+
         if verbose
             println(@sprintf("%4d %f", it, -sum(γ)))
         end
+
         prim_mst_edges(γ, root_node, mst_mem)
+
         tprocess(γ, parent)
-        z .= y
-        for (i, e) in enumerate(edges)
-            v, u = e
-            if parent[v] == u
-                tlam[v] = lambda[i]
-            elseif parent[u] == v
-                tlam[u] = lambda[i]
-            else
-                z[v] -= lambda[i] * alpha[i]
-                z[u] += lambda[i] * alpha[i]
+
+        begin # non-tree edges ==> z
+            z .= y
+            for (i, e) in enumerate(edges)
+                v, u = e
+                if parent[v] == u
+                    tlam[v] = lambda[i]
+                elseif parent[u] == v
+                    tlam[u] = lambda[i]
+                else
+                    z[v] -= lambda[i] * alpha[i]
+                    z[u] += lambda[i] * alpha[i]
+                end
             end
         end
 
@@ -93,6 +99,7 @@ function max_gap_tree(
                  dp_mem)
 
         process(x)
+
         begin # compute dual ==> update alpha
             local mu_i = mu
             xbuf .= x .- z
