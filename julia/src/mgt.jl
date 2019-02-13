@@ -39,15 +39,13 @@ order need to be specified, i.e. we should provide an edge iterator.
 
 """
 module MGT
-include("tree_dp.old.jl")
 
 import SparseArrays: mul!
 import Printf: @sprintf
-import .DPTree: _alloc_queues, _dp_tree, DPMem
-import GraphIdx.Tree: ChildrenIndex
-# , _init_spantree, _minimum_spantree_edgse
+import GraphIdx.Tree: ChildrenIndex, RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx.LinA: IncMat, Edges
+import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 
 """
@@ -104,11 +102,11 @@ function max_gap_tree(y::Vector{Float64},
     z = similar(y)
     tlam = Vector{Float64}(undef, n)
     xbuf = Vector{Float64}(undef, n)
-    mem = DPMem(n)
-    pq, proc_order, stack, childs = _alloc_queues(n)
+    dp_mem = TreeDPMem(n)
     mst_mem = PrimMstMem(edges, n)
     selected = mst_mem.selected
     parent = mst_mem.parent
+    local tree = RootedTree(root_node, parent)
 
     for it in 0:max_iter
         dprocess(alpha)
@@ -132,22 +130,18 @@ function max_gap_tree(y::Vector{Float64},
         end
 
         x_old = x
-        x = _dp_tree(z,
-                     i -> tlam[i],
-                     i -> mu,
-                     root_node,
-                     parent,
-                     mem,
-                     pq,
-                     proc_order,
-                     stack,
-                     childs)
+        tree_dp!(x, z,
+                 tree,
+                 ArrayWeights(tlam),
+                 ConstantWeights(0.5),
+                 dp_mem)
+
         process(x)
         ub = x_old
         begin # compute dual ==> update alpha
             local mu_i = mu
             xbuf .= x .- z
-            for i in proc_order
+            for i in @view dp_mem.proc_order[1:end-1]
                 p = parent[i]
                 eidx = selected[i]
                 xbuf[p] += mu_i * xbuf[i]

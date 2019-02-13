@@ -1,8 +1,10 @@
 module TestMGT
 using Test
 
-include("../src/mgt.jl")
 include("square.jl")
+
+import TreeLas.MGT
+
 
 mean(x) =
     sum(x)/length(x)
