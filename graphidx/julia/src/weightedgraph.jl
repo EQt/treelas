@@ -18,3 +18,6 @@ function enumerate_edges(f::Function, g::WeightedGraph)
         end
     end
 end
+
+
+include("weights.jl")
