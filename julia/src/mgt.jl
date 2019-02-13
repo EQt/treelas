@@ -1,7 +1,7 @@
 """
 # Maximum Gap Tree
 
-In the central function `max_gap_tree`, a tree having the largest gap
+In the central function `gaplas`, a tree having the largest gap
 values (computed by `gap_vec!`) is selected.  The non-tree edge-flows
 are forwarded into the input `y`.  Then the tree solver is used and
 the tree-edges are updated.
@@ -27,11 +27,11 @@ import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 
 """
-    max_gap_tree(y, edges, λ)
+    gaplas(y, edges, λ)
 
 Optimize in each iteration along a tree.
 """
-function max_gap_tree(
+function gaplas(
     y::Array{Float64,N},
     edges::Vector{E},
     lambda::Vector{Float64};
@@ -98,14 +98,14 @@ function max_gap_tree(
             local mu_i = mu
             xbuf .= x .- z
             for i in @view dp_mem.proc_order[1:end-1]
-                p = parent[i]
-                eidx = selected[i]
-                xbuf[p] += mu_i * xbuf[i]
-                c = xbuf[i] * (i < p ? -mu_i : +mu_i)
-                alpha[eidx] = c / lambda[eidx]
+                let eidx = selected[i], p = parent[i]
+                    xbuf[p] += mu_i * xbuf[i]
+                    alpha[eidx] = xbuf[i] * (i < p ? -mu_i : +mu_i) / lambda[eidx]
+                end
             end
         end
     end
+
     return x
 end
 
