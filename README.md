@@ -64,6 +64,11 @@ Plan:
 - Refactor mgt.jl to reduce the input needed
 - Make MGT callable on grid graphs
 
+### v0.11.11
+Released 2019-02-13
+- Julia: Re-Factor/Re-Implement `tree_dp.jl`
+- Julia/Rust: Doctests
+
 ### v0.11.10
 Released 2019-02-08
 - GraphIdx: C++ documentation via Sphinx + Doxygen + Breathe.
