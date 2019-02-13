@@ -8,31 +8,6 @@ the tree-edges are updated.
 
 ## Refactoring
 
-At the moment (2019-01-13), the code is pretty unorganized und hard to
-understand.
-
-- What could we do to better organize the code?
-- What should be adaptable in the future?
-
-
-## Input
-
-At the moment, I need a lot of redundant information:
-```
-D::IncMat,
-edges::Vector{E},
-lambda::Vector{Float}
-```
-
-Which of those could be brought together?
-
-Obviously, D can be constructed from `edges` and `lambda` (which is
-already implemented).
-
-Looking into the future, we might not have an explicit list of edges:
-for a grid graph, e.g. it makes no sense to explicitly compute all
-edges.  So what do we need?
-
 Prim's MST algorithm needs an index telling for each node the
 neighbors.  The same is needed for DFS traversal.  Furtheron, an edge
 order need to be specified, i.e. we should provide an edge iterator.
