@@ -5,13 +5,14 @@ function _hierarchy(
     cidx::ChildrenIndex,
     v::Int,
     indent::String,
-    last::Bool
-)
-    println(io, indent, last ? "└─" : "├─", v)
+    last::Bool,
+    id::F,
+) where {F}
+    println(io, indent, last ? "└─" : "├─", id(v))
     indent = indent * (last ? "  " : "│ ")
     last_i = length(cidx[v])
     for (i, c) in enumerate(cidx[v])
-        _hierarchy(io, cidx, c, indent, i == last_i)
+        _hierarchy(io, cidx, c, indent, i == last_i, id)
     end
 end
 
@@ -32,18 +33,19 @@ julia> hierarchy(ChildrenIndex([1, 1, 1, 3]))
 
 ```
 """
-function hierarchy(io::IO, cidx::ChildrenIndex, indent::String = "")
+function hierarchy(io::IO, cidx::ChildrenIndex, indent::String = "",
+                   id::F = identity) where {F}
     local r = root_node(cidx)
-    println(io, indent, r)
+    println(io, indent, id(r))
     last_i = length(cidx[r])
     for (i, c) in enumerate(cidx[r])
-        _hierarchy(io, cidx, c, indent, i == last_i)
+        _hierarchy(io, cidx, c, indent, i == last_i, id)
     end
 end
 
 
-hierarchy(cidx::ChildrenIndex) =
-    hierarchy(stdout, cidx)
+hierarchy(cidx::ChildrenIndex, id::F = identity) where {F} =
+    hierarchy(stdout, cidx, "", id)
 
 
 """
@@ -52,9 +54,9 @@ hierarchy(cidx::ChildrenIndex) =
 Same as `hierarchy` but output as String.
 More precisely, print to a buffer and return as String.
 """
-function hierarchy_string(cidx::ChildrenIndex)::String
+function hierarchy_string(cidx::ChildrenIndex, id::F = identity)::String where {F}
     buf = IOBuffer()
-    hierarchy(buf, cidx)
+    hierarchy(buf, cidx, "", id)
     return String(take!(buf))
 end
 
