@@ -39,7 +39,7 @@ order need to be specified, i.e. we should provide an edge iterator.
 
 """
 module MGT
-include("tree_dp.jl")
+include("tree_dp.old.jl")
 
 import SparseArrays: mul!
 import Printf: @sprintf

@@ -1,5 +1,5 @@
 module TestDPTree
-include("../src/tree_dp.jl")
+include("../src/tree_dp.old.jl")
 
 using Test
 import .DPTree
