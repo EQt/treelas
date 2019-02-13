@@ -19,10 +19,10 @@ include("gap.jl")
 
 import SparseArrays: mul!
 import Printf: @sprintf
-import GraphIdx.Tree: ChildrenIndex, RootedTree
+import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx: WeightedGraph, enumerate_edges
-import GraphIdx.LinA: IncMat, Edges
+import GraphIdx.LinA: Edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 
