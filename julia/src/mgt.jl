@@ -64,18 +64,19 @@ max_gap_tree(y::Vector{Float64}, edges::Edges, λ::Vector{Float64}; args...) =
     max_gap_tree(y, IncMat(edges, λ, length(y)), edges, λ; args...)
 
 
-function max_gap_tree(y::Vector{Float64},
-                      _D::IncMat,
-                      edges::Vector{E},
-                      lambda::Vector{Float64};
-                      root_node::Int = 1,
-                      mu::Float64 = 1.0,
-                      max_iter::Int = 3,
-                      verbose::Bool = true,
-                      process::Function=x->nothing,
-                      dprocess::Function=α->nothing,
-                      tprocess::Function=(t,w)->nothing,
-                      ) where E
+function max_gap_tree(
+    y::Vector{Float64},
+    _D::IncMat,
+    edges::Vector{E},
+    lambda::Vector{Float64};
+    root_node::Int = 1,
+    mu::Float64 = 1.0,
+    max_iter::Int = 3,
+    verbose::Bool = true,
+    process::Function=x->nothing,
+    dprocess::Function=α->nothing,
+    tprocess::Function=(t,w)->nothing,
+) where {E}
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
