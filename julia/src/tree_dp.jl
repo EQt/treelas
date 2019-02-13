@@ -93,7 +93,7 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
                   µ::Mu, mem::TreeDPMem{F,I})::Array{F,N} where {F,I,N,Lam,Mu}
     reset!(mem, t)
     local lb::Vector{F} = mem.lb
-    local ub::Vector{F} = x
+    local ub::Vector{F} = vec(x)
     local sig::Vector{F} = mem.lb
 
     sig .= 0
@@ -105,7 +105,6 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
         merge!(mem.queues, t.parent[i], i)
     end
 
-    x = ub
     let r = t.root
         x[r] = clip_front(mem.queues, r,  µ(r), -µ(r)*y[r] -sig[r], 0.0)
     end

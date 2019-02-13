@@ -31,12 +31,8 @@ import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 Optimize in each iteration along a tree.
 """
-max_gap_tree(y::Matrix{Float64}, edges::Edges, λ::Vector{Float64}; args...) =
-    reshape(max_gap_tree(vec(y), edges, λ; args...), size(y)...)
-
-
 function max_gap_tree(
-    y::Vector{Float64},
+    y::Array{Float64,N},
     edges::Vector{E},
     lambda::Vector{Float64};
     root_node::Int = 1,
@@ -46,7 +42,7 @@ function max_gap_tree(
     process::Function=x->nothing,
     dprocess::Function=α->nothing,
     tprocess::Function=(t,w)->nothing,
-) where {E}
+) where {E,N}
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
@@ -55,7 +51,7 @@ function max_gap_tree(
     local x = copy(y)
     local z = similar(y)
     local tlam = Vector{Float64}(undef, n)
-    local xbuf = Vector{Float64}(undef, n)
+    local xbuf = Array{Float64,N}(undef, size(y)...)
     local dp_mem = TreeDPMem(n)
     local mst_mem = PrimMstMem(edges, n)
     local selected = mst_mem.selected
