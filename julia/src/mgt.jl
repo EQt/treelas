@@ -60,13 +60,8 @@ max_gap_tree(y::Matrix{Float64}, edges::Edges, λ::Vector{Float64}; args...) =
     reshape(max_gap_tree(vec(y), edges, λ; args...), size(y)...)
 
 
-max_gap_tree(y::Vector{Float64}, edges::Edges, λ::Vector{Float64}; args...) =
-    max_gap_tree(y, IncMat(edges, λ, length(y)), edges, λ; args...)
-
-
 function max_gap_tree(
     y::Vector{Float64},
-    _D::IncMat,
     edges::Vector{E},
     lambda::Vector{Float64};
     root_node::Int = 1,
