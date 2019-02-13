@@ -8,8 +8,8 @@ module DPTree
 include("queues.jl")
 
 import GraphIdx.Tree: RootedTree
-import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
-import .QueueUnion: Queues, merge!, reset!, Range
+import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk_rev
+import .QueueUnion: Queues, merge, reset!, Range
 
 include("event.jl")
 include("clip.jl")
@@ -48,7 +48,7 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
     @assert isempty(proc_order)
 
     local t::Ref{Int} = Ref{Int}(1)
-    dfs_walk(childs, stack) do v::Int
+    dfs_walk_rev(childs, stack) do v::Int
         t[] += 1
         if v >= 0
             push!(proc_order, v)
