@@ -51,8 +51,13 @@ clip_back(E *elements,
 
 
 inline double
-clip_fronw(Event2 *elements, Range &pq, double slope, double offset,
-           const double t, const double lower_bound)
+clip_fronw(
+    Event2 *elements,
+    Range &pq,
+    double slope,
+    double offset,
+    const double t,
+    const double lower_bound)
 {
 //    CLIP_START();
     const int start0 = pq.start;
@@ -90,8 +95,13 @@ clip_fronw(Event2 *elements, Range &pq, double slope, double offset,
 
 
 inline double
-clip_backw(Event2 *elements, Range &pq, double slope, double offset,
-           const double t, const double upper_bound)
+clip_backw(
+    Event2 *elements,
+    Range &pq,
+    double slope,
+    double offset,
+    const double t,
+    const double uppper_bound)
 {
     const auto stop0 = pq.stop;
 //    CLIP_START();
