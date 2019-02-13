@@ -6,7 +6,7 @@ end
 (c::ConstantWeights{F})(_::Integer) where {F} = c.w
 
 
-struct ArrayWeights{F}
+struct ArrayWeights{F<:Real}
     a::Vector{F}
 end
 
