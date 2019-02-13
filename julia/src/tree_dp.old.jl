@@ -158,7 +158,7 @@ function _dp_tree(y::Vector{Float64},
     sig = lb
     _init_queues(parent, root, pq, proc_order, stack, childs)
     sig .= 0.0
-    for i in proc_order
+    for i in @view proc_order[1:end-1]
         sig[parent[i]] += λ(i)
         sig_i = sig[i]
         lb[i] = clip_front(elements, pq, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
@@ -169,8 +169,7 @@ function _dp_tree(y::Vector{Float64},
     x = ub
     x[root] = clip_front(elements, pq, root,
                          µ(root), -µ(root)*y[root] -sig[root], 0.0)
-    for i in length(proc_order):-1:1
-        v = proc_order[i]
+    for v in @view proc_order[end-1:-1:1]
         x[v] = clamp(x[parent[v]], lb[v], ub[v])
     end
     return x
