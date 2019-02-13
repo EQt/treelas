@@ -15,7 +15,7 @@ function dual!(
     proc_order::Vector{I},
     parent::Vector{I},
 ) where {F,N,I}
-    alpha .= x .- y
+    alpha .= vec(x) .- vec(y)
     for v in @view proc_order[1:end-1]
         alpha[parent[v]] += alpha[v]
     end

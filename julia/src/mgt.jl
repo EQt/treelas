@@ -16,6 +16,7 @@ order need to be specified, i.e. we should provide an edge iterator.
 module MGT
 
 include("gap.jl")
+include("dual.jl")
 
 import SparseArrays: mul!
 import Printf: @sprintf
@@ -50,7 +51,6 @@ function gaplas(
     local x = copy(y)
     local z = similar(y)
     local tlam = Vector{Float64}(undef, n)
-    local xbuf = Array{Float64,N}(undef, size(y)...)
     local dp_mem = TreeDPMem(n)
     local mst_mem = PrimMstMem(edges, n)
     local selected = mst_mem.selected
@@ -95,12 +95,13 @@ function gaplas(
         process(x)
 
         begin # compute dual ==> update alpha
-            local mu_i = mu
-            xbuf .= x .- z
-            for i in @view dp_mem.proc_order[1:end-1]
-                let eidx = selected[i], p = parent[i]
-                    xbuf[p] += mu_i * xbuf[i]
-                    alpha[eidx] = xbuf[i] * (i < p ? -mu_i : +mu_i) / lambda[eidx]
+            let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
+                dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
+                @assert tree_alpha[dp_mem.proc_order[end]] ≈ 0.0
+                for i in @view dp_mem.proc_order[1:end-1]
+                    let eidx = selected[i], p = parent[i]
+                        alpha[eidx] = tree_alpha[i] * sign(i - p)
+                    end
                 end
             end
         end
