@@ -135,7 +135,7 @@ function max_gap_tree(y::Vector{Float64},
         tree_dp!(x, z,
                  tree,
                  ArrayWeights(tlam),
-                 ConstantWeights(0.5),
+                 ConstantWeights(0.5*mu),
                  dp_mem)
 
         process(x)
