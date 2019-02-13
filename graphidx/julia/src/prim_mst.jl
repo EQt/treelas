@@ -26,11 +26,18 @@ struct PrimMstMem
     neighbors::NeighborIndex
     selected::Vector{Int}
     pq::PriorityQueue{Int, Float64}
-    function  PrimMstMem(edges, n)
+
+    PrimMstMem(edges::Vector, n) =
+        PrimMstMem(NeighborIndex(n, edges))
+
+    PrimMstMem(head::Vector{I}, tail::Vector{I}, n::Integer) where {I} =
+        PrimMstMem(NeighborIndex(n, head, tail))
+
+    function PrimMstMem(neighbors::NeighborIndex)
+        local n = num_nodes(neighbors)
         finished = Vector{Bool}(undef, n)
         dist = Vector{Float64}(undef, n)
         parent = Vector{Int}(undef, n)
-        neighbors = NeighborIndex(n, edges)
         selected = Vector{Int}(undef, n)
         pq = PriorityQueue{Int, Float64}(n)
         return new(finished, dist, parent, neighbors, selected, pq)
