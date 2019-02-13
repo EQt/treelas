@@ -9,7 +9,7 @@ For computing a spanning tree from within a general graph, see [here](mst.md).
 For debugging, outputting the tree as a hierarchy was usefule:
 ```@meta
 DocTestSetup  = quote
-    import GraphIdx.Tree: ChildrenIndex, hierarchy, dfs_walk, dfs_walk_rev, parenthesis
+    import GraphIdx.Tree: ChildrenIndex, hierarchy, dfs_walk, dfs_walk_rev, parenthesis, find_root
 end
 ```
 ```@docs
