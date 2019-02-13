@@ -1,3 +1,6 @@
+import .QueueUnion: Range, Queues
+
+
 function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
                     slope::Float64, offset::Float64, t::Float64)::Float64
     begin

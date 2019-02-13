@@ -13,13 +13,12 @@ module TreeDP
 
 include("queues.jl")
 include("weights.jl")
+include("event.jl")
+include("clip.jl")
 
 import GraphIdx
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
 import .QueueUnion: Queues, merge!, reset!, Range
-
-include("event.jl")
-include("clip.jl")
 
 const Tree = GraphIdx.Tree.RootedTree
 
