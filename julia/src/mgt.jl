@@ -65,7 +65,7 @@ max_gap_tree(y::Vector{Float64}, edges::Edges, λ::Vector{Float64}; args...) =
 
 
 function max_gap_tree(y::Vector{Float64},
-                      D::IncMat,
+                      _D::IncMat,
                       edges::Vector{E},
                       lambda::Vector{Float64};
                       root_node::Int = 1,
@@ -75,10 +75,10 @@ function max_gap_tree(y::Vector{Float64},
                       process::Function=x->nothing,
                       dprocess::Function=α->nothing,
                       tprocess::Function=(t,w)->nothing,
-                      c0::Float64 = 0.0) where E
-    local m, n = size(D)
-    Dt = copy(D')
-    local alpha = c0 * sign.(D*vec(y))
+                      ) where E
+    local m = length(edges)
+    local n = length(y)
+    local alpha = zeros(m)
     local dif = zeros(m)
     local γ = zeros(m)
     local x = copy(y)
@@ -91,7 +91,6 @@ function max_gap_tree(y::Vector{Float64},
     local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
     local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
-
 
     for it in 0:max_iter
         dprocess(alpha)
