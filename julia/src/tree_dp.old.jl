@@ -56,7 +56,6 @@ function _init_queues(parent, root, pq, proc_order, stack, childs)
         end
     end
 
-    pop!(proc_order)    # remove root
     return pq, proc_order
 end
 
