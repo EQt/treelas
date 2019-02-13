@@ -1,5 +1,5 @@
 module TestDPTree
-include("../src/tree_dp2.jl")
+include("../src/tree_dp.jl")
 
 using Test
 import .TreeDP

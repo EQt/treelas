@@ -109,11 +109,9 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
     let r = t.root
         x[r] = clip_front(mem.queues, r,  µ(r), -µ(r)*y[r] -sig[r], 0.0)
     end
-    for i in length(mem.proc_order):-1:1
-        v = mem.proc_order[i]
+    for v in @view mem.proc_order[end-1:-1:1]
         x[v] = clamp(x[t.parent[v]], lb[v], ub[v])
     end
-    return x
 
     return x
 end
