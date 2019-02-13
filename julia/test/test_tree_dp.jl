@@ -1,8 +1,7 @@
-module TestDPTree
-include("../src/tree_dp.jl")
+module TestTreeDP
 
 using Test
-import .TreeDP
+import TreeLas.TreeDP
 
 @testset "tree_dp: 10                    " begin
     t = TreeDP.Tree(Int[1, 1, 2, 3, 4, 1, 8, 9, 4, 9])
