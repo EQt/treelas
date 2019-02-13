@@ -46,9 +46,9 @@ import SparseArrays: mul!
 import Printf: @sprintf
 import GraphIdx.Tree: ChildrenIndex, RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
+import GraphIdx: WeightedGraph, enumerate_edges
 import GraphIdx.LinA: IncMat, Edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
-
 
 
 """
@@ -90,11 +90,14 @@ function max_gap_tree(y::Vector{Float64},
     local selected = mst_mem.selected
     local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
+    local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
+
 
     for it in 0:max_iter
         dprocess(alpha)
         it >= max_iter && break
-        gap_vec!(γ, dif, x, y, D, Dt, alpha, -1.0)
+        # gap_vec!(γ, dif, x, y, D, Dt, alpha, -1.0)
+        gap_vec!(γ, x, alpha, graph, -1.0)
         if verbose
             println(@sprintf("%4d %f", it, -sum(γ)))
         end
