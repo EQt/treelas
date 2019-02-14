@@ -18,7 +18,7 @@ include("clip.jl")
 import GraphIdx
 import GraphIdx: ConstantWeights, ArrayWeights
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
-import .QueueUnion: Queues, merge!, reset!, Range
+import .QueueUnion: Queues, merge, reset!, Range
 
 const Tree = GraphIdx.Tree.RootedTree
 
@@ -102,7 +102,9 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
         local sig_i::F = sig[i]
         lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
         ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
-        merge!(mem.queues, t.parent[i], i)
+        let events = mem.queues.events, pq = mem.queues.pq, p = t.parent[i]
+            pq[p] = merge(events, pq[p], pq[i])
+        end
     end
 
     let r = t.root
