@@ -102,8 +102,23 @@ function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
         local sig_i::F = sig[i]
         lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
         ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
-        let events = mem.queues.events, pq = mem.queues.pq, p = t.parent[i]
-            merge(events, pq, p, i)
+        let events::Vector{Event} = mem.queues.events, pq::Vector{Range} = mem.queues.pq, p::Int = t.parent[i]
+            if pq[p].start <= pq[p].stop
+                gap = pq[i].start - pq[p].stop - 1
+                old_stop = pq[p].stop
+                res = Range(pq[p].start, pq[i].stop - gap)
+                if gap > 0
+                    for i in old_stop+1:res.stop
+                        events[i] = events[i+gap]
+                    end
+                end
+                sort!(events, Int(res.start), Int(res.stop),
+                      PartialQuickSort(Int(res.start):Int(res.stop)),
+                      Base.Sort.Forward)
+                pq[p] = res
+            else
+                pq[p] = pq[i]
+            end
         end
     end
 
