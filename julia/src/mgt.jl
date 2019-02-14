@@ -97,7 +97,9 @@ function gaplas(
         begin # compute dual ==> update alpha
             let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
                 dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
-                @assert tree_alpha[dp_mem.proc_order[end]] ≈ 0.0
+                let r = dp_mem.proc_order[end]
+                    @assert abs(tree_alpha[r]) <= eps() * m
+                end
                 for i in @view dp_mem.proc_order[1:end-1]
                     let eidx = selected[i], p = parent[i]
                         alpha[eidx] = tree_alpha[i] * sign(i - p)
