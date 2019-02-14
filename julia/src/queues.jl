@@ -46,6 +46,27 @@ function merge(elements::Vector{E}, parent::Range, child::Range)::Range where {E
 end
 
 
+function merge(elements::Vector{E}, pq::Vector{Range}, p::I, i::I) where {E,I}
+    if pq[p].start <= pq[p].stop
+        gap = pq[i].start - pq[p].stop - 1
+        old_stop = pq[p].stop
+        res = Range(pq[p].start, pq[i].stop - gap)
+        if gap > 0
+            for i in old_stop+1:res.stop
+                elements[i] = elements[i+gap]
+            end
+        end
+        sort!(elements, Int(res.start), Int(res.stop),
+              PartialQuickSort(Int(res.start):Int(res.stop)),
+              Base.Sort.Forward)
+        pq[p] = res
+    else
+        pq[p] = pq[i]
+    end
+end
+
+
+
 """
 Set of double ended queues (DeQue) in a tree.
 Initially all leaf nodes have its own queue.
