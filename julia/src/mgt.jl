@@ -102,6 +102,8 @@ function gaplas(
                 end
                 for i in @view dp_mem.proc_order[1:end-1]
                     let eidx = selected[i], p = parent[i]
+                        @assert(abs(tree_alpha[i]) < 1.0001*lambda[eidx],
+                                "$(tree_alpha[i]) < $(lambda[eidx])?")
                         alpha[eidx] = tree_alpha[i] * sign(i - p)
                     end
                 end
