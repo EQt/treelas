@@ -37,9 +37,11 @@ function dual!(
     for v in @view post_order[1:end-1]
         alpha[parent[v]] += alpha[v]
     end
-    let root = post_order[end], acc = eps() * length(parent)
-        @assert abs(alpha[root]) <= acc "$(abs(alpha[root])) < = $acc"
-        alpha[root] = alpha_root
+    if alpha_root != F(0.0)
+        let root = post_order[end], acc = eps() * length(parent)
+            @assert abs(alpha[root]) <= acc "$(abs(alpha[root])) < = $acc"
+            alpha[root] = alpha_root
+        end
     end
     return alpha
 end
