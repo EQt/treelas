@@ -97,9 +97,6 @@ function gaplas(
         begin # compute dual ==> update alpha
             let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
                 dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
-                let r = dp_mem.proc_order[end]
-                    @assert abs(tree_alpha[r]) <= eps() * m
-                end
                 for i in @view dp_mem.proc_order[1:end-1]
                     let eidx = selected[i], p = parent[i]
                         @assert(abs(tree_alpha[i]) < 1.0001*lambda[eidx],
