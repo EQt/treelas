@@ -9,7 +9,7 @@ import TreeLas: dual!
     proc_order = Int[2, 3, 1]
     @test sum(z) ≈ 0
     alpha = copy(z)
-    dual!(alpha, proc_order, parent)
+    dual!(alpha, proc_order, parent, NaN)
     @test isnan(alpha[root])
     @test alpha[2:end] == [1, 2]
 end

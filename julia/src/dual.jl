@@ -3,8 +3,10 @@ function dual(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
+    alpha_root::F = F(0.0),
 ) where {F,N,I}
-    dual!(Vector{F}(undef, length(post_order)), x, y, post_order, parent)
+    dual!(Vector{F}(undef, length(post_order)), x, y, post_order, parent,
+          alpha_root)
 end
 
 
@@ -19,9 +21,10 @@ function dual!(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
+    alpha_root::F = F(0.0),
 ) where {F,N,I}
     alpha .= vec(x) .- vec(y)
-    dual!(alpha, post_order, parent)
+    dual!(alpha, post_order, parent, alpha_root)
 end
 
 
@@ -29,10 +32,14 @@ function dual!(
     alpha::Vector{F},
     post_order::Vector{I},
     parent::Vector{I},
+    alpha_root::F = F(0.0),
 ) where {F<:Real,I<:Integer}
     for v in @view post_order[1:end-1]
         alpha[parent[v]] += alpha[v]
     end
-    alpha[post_order[end]] = NaN
+    let root = post_order[end], acc = eps() * length(parent)
+        @assert abs(alpha[root]) <= acc "$(abs(alpha[root])) < = $acc"
+        alpha[root] = alpha_root
+    end
     return alpha
 end
