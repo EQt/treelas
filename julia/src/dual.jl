@@ -20,5 +20,3 @@ function dual!(
         alpha[parent[v]] += alpha[v]
     end
 end
-
-
