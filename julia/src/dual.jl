@@ -16,7 +16,18 @@ function dual!(
     parent::Vector{I},
 ) where {F,N,I}
     alpha .= vec(x) .- vec(y)
+    dual!(alpha, proc_order, parent)
+end
+
+
+function dual!(
+    alpha::Vector{F},
+    proc_order::Vector{I},
+    parent::Vector{I},
+) where {F<:Real,I<:Integer}
     for v in @view proc_order[1:end-1]
         alpha[parent[v]] += alpha[v]
     end
+    alpha[proc_order[end]] = NaN
+    return alpha
 end
