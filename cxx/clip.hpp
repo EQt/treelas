@@ -23,7 +23,7 @@ clip_front(E *elements,
     /* -t because the next time this event will be triggered,
        it will have included t in the offset */
     elements[--pq.start] = E({x, slope, offset -t});
-    // e = elements[pq.start];
+    // e = elements[pq.start];0231fde7ea
     // assert (e->x * e->slope + e->offset() == t)
     return x;
 }
@@ -101,7 +101,7 @@ clip_backw(
     double slope,
     double offset,
     const double t,
-    const double uppper_bound)
+    const double upper_bound)
 {
     const auto stop0 = pq.stop;
 //    CLIP_START();
