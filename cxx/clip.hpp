@@ -72,7 +72,8 @@ clip_fronw(
         return pq.start == start0 ? lower_bound : elements[--pq.start].x;
     }
 
-    double x = (t - offset)/slope;
+    const double x = (t - offset)/slope;
+    /* // this should never happen
     if (std::abs(slope) < SLOPE_EPS) {
         if (pq.start <= pq.stop) {
             x = (e-1)->x;
@@ -80,6 +81,7 @@ clip_fronw(
             x = lower_bound;
         }
     }
+    */
     /* -t because the next time this event will be triggered,
        it will have included t in the offset */
     elements[--pq.start] = Event2({x, slope});
