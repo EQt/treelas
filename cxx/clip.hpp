@@ -118,7 +118,7 @@ clip_backw(
         return pq.stop == stop0 ? upper_bound : elements[++pq.stop].x;
     }
 
-    double x = (t - offset)/slope;
+    const double x = (t - offset)/slope;
     elements[++pq.stop] = Event2({x, -slope});
 // #ifdef DEBUG
 //     if (x > upper_bound + t)
