@@ -9,10 +9,10 @@ def load_mini_h5():
     mini_h5 = path.join(path.dirname(__file__), '..', '..', 'data', 'tree.mini.h5')
     assert path.exists(mini_h5)
     with h5py.File(mini_h5) as io:
-        y = io['y'].value
-        parent = io['parent'].value
-        xt = io['xt'].value
-        lam = io['lam'].value
+        y = io['y'][:]
+        parent = io['parent'][:]
+        xt = io['xt'][:]
+        lam = io['lam'][()]
         root = int(io.attrs['root'])
 
     y = y.reshape(-1)
