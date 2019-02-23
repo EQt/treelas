@@ -114,12 +114,16 @@ end
     dfs_finish(parent)
 
 For each node, compute the DFS finish time (without computing a ChildrenIndex).
+
+```jldoctest
+julia> dfs_finish([1, 1, 2, 1, 2, 3])
+
 !!! error
     Migrate to use ChildrenIndex!
 """
 function dfs_finish(parent::Vector{Int}, root::Int = Int(0))::Vector{Int}
     if root <= 0                            # find root node
-        root = find_root(pi)
+        root = find_root(parent)
     end
     @assert parent[root] == root
 
