@@ -1,3 +1,6 @@
+import GraphIdx.Tree: ChildrenIndex
+
+
 function dual(
     x::Array{F,N},
     y::Array{F,N},
@@ -45,3 +48,20 @@ function dual!(
     end
     return alpha
 end
+
+
+dual(z::Vector{F}, cidx::ChildrenIndex, alpha_root::F = F(0.0)) where {F} =
+    dual!(Vector{F}(undef, length(z)), cidx, alpha_root)
+
+
+function dual!(
+    alpha::Vector{F},
+    z::Vector{F},
+    cidx::ChildrenIndex,
+    alpha_root::F = F(0.0),
+) where {F}
+    error("not implemented, yet")
+    return alpha
+end
+
+    
