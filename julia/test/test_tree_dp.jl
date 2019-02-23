@@ -6,6 +6,8 @@ import TreeLas.TreeDP
 import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with
 
 
+@testset "TreeDP                         " begin
+
 @testset "tree_dp: tree.mini.h5          " begin
     t = TreeDP.Tree([1, 1, 2, 1, 2, 3])
     y = [0.53 0.45 0.02
@@ -35,10 +37,13 @@ end
     @test size(x) == size(y)
     expect3x = [22.7, 22.7, 22.7, 18.9, 18.9, 21.9,  9.9,  8.2,  8.2,  8.2]
     @test 3x ≈ expect3x
-    hierarchy(ChildrenIndex(t.parent),
-              i ->
-            # @sprintf("%.1f=%.1f-%.1f", 3y[i] - expect3x[i], 3y[i], expect3x[i]))
-              @sprintf("%.1f:%.1f", 3y[i], expect3x[i]))
+    if false
+        hierarchy(ChildrenIndex(t.parent),
+                  i ->
+       # @sprintf("%.1f=%.1f-%.1f", 3y[i] - expect3x[i], 3y[i], expect3x[i]))
+                  @sprintf("%.1f:%.1f", 3y[i], expect3x[i]))
+    end
 end
 
+end
 end
