@@ -1,4 +1,4 @@
-import GraphIdx.Tree: ChildrenIndex
+import GraphIdx.Tree: ChildrenIndex, dfs_walk
 
 
 function dual(
@@ -50,18 +50,32 @@ function dual!(
 end
 
 
-dual(z::Vector{F}, cidx::ChildrenIndex, alpha_root::F = F(0.0)) where {F} =
-    dual!(Vector{F}(undef, length(z)), cidx, alpha_root)
+dual(z::Vector{F}, parent::Vectort{I},
+     cidx::ChildrenIndex, alpha_root::F = F(0.0)) where {F,I} =
+    dual!(Vector{F}(undef, length(z)), parent, cidx, alpha_root)
 
 
 function dual!(
     alpha::Vector{F},
     z::Vector{F},
+    parent::Vector{I},
     cidx::ChildrenIndex,
     alpha_root::F = F(0.0),
-) where {F}
-    error("not implemented, yet")
+) where {F,I}
+    dfs_walk(cidx) do v::Int
+        if v >= 0
+            let p = parent[v]
+                if p != v
+                    alpha[p] += alpha[v]
+                end
+            end
+        end
+    end
+    if alpha_root != F(0.0)
+        let root = root_node(cidx)
+            @assert abs(alpha[root]) <= acc "$(abs(alpha[root])) < = $acc"
+            alpha[root] = alpha_root
+        end
+    end
     return alpha
 end
-
-    
