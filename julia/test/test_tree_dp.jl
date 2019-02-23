@@ -3,18 +3,26 @@ module TestTreeDP
 using Test
 import Printf: @sprintf
 import TreeLas.TreeDP
-import GraphIdx.Tree: ChildrenIndex, hierarchy
+import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with
 
 
 @testset "tree_dp: tree.mini.h5          " begin
     t = TreeDP.Tree([1, 1, 2, 1, 2, 3])
     y = [0.53 0.45 0.02
          0.17 0.96 0.97]
+    y = Array(y')
     lam = 0.2
     x = TreeDP.tree_dp(y, t, lam)
     @test size(x) == size(y)
-    @test x ≈ [0.4  0.4  0.4
-               0.37 0.76 0.77]
+    xt = [0.4  0.4  0.4
+          0.37 0.76 0.77]
+    xt = Array(xt')
+    if false
+        hierarchy_with(ChildrenIndex(t.parent)) do i
+            @sprintf("%.2f:%.2f", y[i], xt[i])
+        end
+    end
+    @test x ≈ xt
 end
 
 
