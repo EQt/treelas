@@ -116,35 +116,40 @@ end
 For each node, compute the DFS finish time (without computing a ChildrenIndex).
 
 ```jldoctest
-julia> dfs_finish([1, 1, 2, 1, 2, 3])
+julia> pi = [1, 1, 2, 1, 2, 3]; hierarchy(ChildrenIndex(pi))
+1
+├─2
+│ ├─3
+│ │ └─6
+│ └─5
+└─4
 
-!!! error
-    Migrate to use ChildrenIndex!
+julia> dfs_finish(pi)
+6-element Array{Int64,1}:
+ 6
+ 3
+ 5
+ 2
+ 4
+ 1
+
+```
 """
-function dfs_finish(parent::Vector{Int}, root::Int = Int(0))::Vector{Int}
-    if root <= 0                            # find root node
-        root = find_root(parent)
-    end
-    @assert parent[root] == root
+dfs_finish(parent::Vector{Int}, stack::Vector{Int} = Int[])::Vector{Int} =
+    dfs_finish(ChildrenIndex(parent), stack)
 
-    n = length(parent)
-    neigh = [Int[] for i=1:n]
-    for (u, v) in enumerate(parent)
-        push!(neigh[u], v)
-        push!(neigh[v], u)
-    end
-    dfs = zeros(Int, n)
-    stack = Int[root]
-    sizehint!(stack, n)
-    time = 0
-    while !isempty(stack)
-        time += 1
-        v = pop!(stack)
-        dfs[time] = v
-        for u in neigh[v]
-            parent[v] == u && continue      # skip root
-            push!(stack, u)
+
+function dfs_finish(cidx::ChildrenIndex, stack::Vector{Int} = Int[])::Vector{Int}
+    local n = num_nodes(cidx)
+    local dfs::Vector{Int} = zeros(Int, n)
+    local time::Ref{Int} = Ref{Int}(0)
+
+    dfs_walk(cidx, stack) do v::Int
+        if v >= 0
+            time[] += 1
+            dfs[time[]] = v
         end
     end
+
     return dfs
 end
