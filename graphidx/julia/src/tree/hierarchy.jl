@@ -61,6 +61,11 @@ function hierarchy_string(cidx::ChildrenIndex, id::F = identity)::String where {
 end
 
 
+hierarchy_with(f::F, cidx::ChildrenIndex) where {F<:Function} =
+    hierarchy(cidx, f)
+
+
+
 """
     parenthesis([io,] cidx [, stack])
 
