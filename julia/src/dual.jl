@@ -50,14 +50,13 @@ function dual!(
 end
 
 
-dual(z::Vector{F}, parent::Vectort{I},
+dual(z::Vector{F}, parent::Vector{I},
      cidx::ChildrenIndex, alpha_root::F = F(0.0)) where {F,I} =
-    dual!(Vector{F}(undef, length(z)), parent, cidx, alpha_root)
+    dual!(copy(z), parent, cidx, alpha_root)
 
 
 function dual!(
     alpha::Vector{F},
-    z::Vector{F},
     parent::Vector{I},
     cidx::ChildrenIndex,
     alpha_root::F = F(0.0),
