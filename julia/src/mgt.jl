@@ -66,6 +66,8 @@ function gaplas(
 
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
+        @show tree
+        @show selected
 
         begin # non-tree edges ==> z
             z .= y
@@ -92,7 +94,7 @@ function gaplas(
 
         # compute dual ==> update alpha
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
-            dual!(tree_alpha, z, x, dp_mem.proc_order, parent)
+            dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
             for i in @view dp_mem.proc_order[1:end-1]
                 let eidx = selected[i], p = parent[i]
                     @assert(abs(tree_alpha[i]) < 1.0001*lambda[eidx],
