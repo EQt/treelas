@@ -76,8 +76,8 @@ function gaplas(
                 elseif parent[u] == v
                     tlam[u] = lambda[i]
                 else
-                    z[v] -= lambda[i] * alpha[i]
-                    z[u] += lambda[i] * alpha[i]
+                    z[v] -= alpha[i]
+                    z[u] += alpha[i]
                 end
             end
         end
