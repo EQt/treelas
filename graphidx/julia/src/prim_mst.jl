@@ -15,7 +15,7 @@ function prim_mst_edges(n::Integer, edges, weights::Array{Float64}, root = 1)
     prim_mst_edges(weights, root, mem)
     # swap root element to front
     mem.selected[1], mem.selected[root] = mem.selected[root], mem.selected[1]
-    return parent, view(mem.selected, 2:length(mem.selected))
+    return mem.parent, view(mem.selected, 2:length(mem.selected))
 end
 
 
