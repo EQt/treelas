@@ -64,6 +64,7 @@ function gaplas(
             println(@sprintf("%4d %f", it, -sum(γ)))
         end
 
+        @show γ
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         @show tree
@@ -97,7 +98,7 @@ function gaplas(
             dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
             for i in @view dp_mem.proc_order[1:end-1]
                 let eidx = selected[i], p = parent[i]
-                    @assert(abs(tree_alpha[i]) < 1.0001*lambda[eidx],
+                    @assert(abs(tree_alpha[i]) <= (1 + 1e-8)*lambda[eidx],
                             "eidx=$eidx: $i->$p " *
                             "$(tree_alpha[i]) < $(lambda[eidx])?")
                     alpha[eidx] = tree_alpha[i] * sign(i - p)
