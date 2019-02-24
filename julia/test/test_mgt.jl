@@ -82,6 +82,7 @@ end
     sdiff_mask = [e ∈ sdiff for e in edges]
     sdiff_cost = Set(γ[sdiff_mask])
     @test length(sdiff_cost) == 1
+    @test sdiff_cost == Set([-0.51])
     # lam = ones(Float64, length(edges))
     # x = MGT.gaplas(y, edges, lam, max_iter=3)
 end
