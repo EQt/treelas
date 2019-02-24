@@ -38,9 +38,9 @@ function gaplas(
     mu::Float64 = 1.0,
     max_iter::Int = 3,
     verbose::Bool = true,
-    process::Function=x->nothing,
-    dprocess::Function=α->nothing,
-    tprocess::Function=(t,w)->nothing,
+    process::Function = x->nothing,
+    dprocess::Function = α->nothing,
+    tprocess::Function = (t,w)->nothing,
 )::Array{Float64,N} where {E,N}
     local m = length(edges)
     local n = length(y)
