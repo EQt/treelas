@@ -42,8 +42,9 @@ end
     if true
         let z = expect3x/3 - y
             local alpha = dual(z, t.parent, cidx)
-            @info "alpha=" *string(round.(alpha, digits=4))
-            hierarchy(cidx, i -> @sprintf("%.1f:%.1f", 3y[i], expect3x[i]))
+            # @info "alpha=" *string(round.(alpha, digits=4))
+            hierarchy(cidx, i -> @sprintf("%.1f≈%+.1f", -3y[i]+expect3x[i],
+                                          -3alpha[i]))
         end
     end
 end
