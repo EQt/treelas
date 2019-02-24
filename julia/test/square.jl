@@ -5,3 +5,6 @@ function square_edges()
     edges = collect(zip(head, tail))
     return edges, n
 end
+
+
+mean(x) = sum(x)/length(x)

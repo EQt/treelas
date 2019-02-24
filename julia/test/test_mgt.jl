@@ -1,13 +1,9 @@
 module TestMGT
-using Test
-
 include("square.jl")
 
+using Test
 import TreeLas.MGT
 
-
-mean(x) =
-    sum(x)/length(x)
 
 
 @testset "MGT     : Square               " begin
