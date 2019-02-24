@@ -24,6 +24,7 @@ end
     n1, n2 = 3, 7
     n = n1 * n2
     m = 32
+    root = 1
     s = collect(1:n) |> x -> reshape(x, n1, n2)
     """
     3×7 Array{Int64,2}:
@@ -58,15 +59,22 @@ end
     tree_mask = GraphIdx.kruskal_mst(n, edges, γ)
     tree_cost = γ[tree_mask]
     tree_edges = edges[tree_mask]
-    root = 1
     idx = GraphIdx.NeighborIndex(n, edges)
-    local par::Vector{Int}, selected = GraphIdx.prim_mst_edges(n, edges, γ, root)
+    local parent::Vector{Int}, selected = GraphIdx.prim_mst_edges(n, edges, γ, root)
 
-    # @test par::Vector{Int}
-    @test GraphIdx.Tree.find_root(par) == root
-    @test par[root] == root
-    # @test -sum(tree_cost) ≈ 15.79
-    # @test tree_edges == [] 
+    @test GraphIdx.Tree.find_root(parent) == root
+    @test parent[root] == root
+    @test -sum(tree_cost) ≈ 15.79
+
+    prim_edges = [if i < j; (i, j) else (j, i) end
+                  for (i, j) in enumerate(parent) if i != j]
+    @test length(prim_edges) == n-1
+    s_prim, s_kruskal = Set(prim_edges), Set(tree_edges)
+    prim_mask = [e ∈ s_prim for e in edges]
+    prim_cost = γ[prim_mask]
+    @test length(s_prim) == n-1
+    @test length(s_kruskal) == n-1
+    @test -sum(prim_cost) ≈ 15.79
 
     # lam = ones(Float64, length(edges))
     # x = MGT.gaplas(y, edges, lam, max_iter=3)
