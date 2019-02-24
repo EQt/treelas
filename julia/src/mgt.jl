@@ -18,12 +18,10 @@ module MGT
 include("gap.jl")
 include("dual.jl")
 
-import SparseArrays: mul!
 import Printf: @sprintf
 import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx: WeightedGraph, enumerate_edges
-import GraphIdx.LinA: Edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 
@@ -60,7 +58,6 @@ function gaplas(
 
     for it in 1:max_iter
         dprocess(alpha)
-
         gap_vec!(γ, x, alpha, graph, -1.0)
 
         if verbose
@@ -68,7 +65,6 @@ function gaplas(
         end
 
         prim_mst_edges(γ, root_node, mst_mem)
-
         tprocess(γ, parent)
 
         begin # non-tree edges ==> z
