@@ -41,7 +41,7 @@ function gaplas(
     process::Function=x->nothing,
     dprocess::Function=α->nothing,
     tprocess::Function=(t,w)->nothing,
-) where {E,N}
+)::Array{Float64,N} where {E,N}
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
