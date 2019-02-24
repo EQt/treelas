@@ -56,12 +56,14 @@ prim_mst_edges(weights, root, mem::PrimMstMem) =
                    root)
 
 
-function prim_mst_edges(edge_weight, finished, dist,
-                        parent::Vector{Int},
-                        neighbors::NeighborIndex,
-                        selected::Vector{Int},
-                        pq::PriorityQueue{Int, Float64},
-                        root::Int = 1)::Vector{Int}
+function prim_mst_edges(
+    edge_weight, finished, dist,
+    parent::Vector{Int},
+    neighbors::NeighborIndex,
+    selected::Vector{Int},
+    pq::PriorityQueue{Int, Float64},
+    root::Int = 1,
+)::Vector{Int}
     n = length(parent)
     @assert length(selected) == n
     @assert isempty(pq)
