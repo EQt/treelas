@@ -89,8 +89,14 @@ tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,
     tree_dp!(x, y, t, λ, µ, TreeDPMem(length(y)))
 
 
-function tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam,
-                  µ::Mu, mem::TreeDPMem{F,I})::Array{F,N} where {F,I,N,Lam,Mu}
+function tree_dp!(
+    x::Array{F,N},
+    y::Array{F,N},
+    t::Tree,
+    λ::Lam,
+    µ::Mu,
+    mem::TreeDPMem{F,I},
+)::Array{F,N} where {F,I,N,Lam,Mu}
     reset!(mem, t)
     local lb::Vector{F} = mem.lb
     local ub::Vector{F} = vec(x)

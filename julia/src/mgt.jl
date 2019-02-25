@@ -83,7 +83,8 @@ function gaplas(
             end
         end
 
-        tree_dp!(x, z,
+        tree_dp!(x,
+                 z,
                  tree,
                  ArrayWeights(tlam),
                  ConstantWeights(mu),
