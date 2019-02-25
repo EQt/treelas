@@ -38,10 +38,10 @@ function gaplas(
     mu::Float64 = 1.0,
     max_iter::Int = 3,
     verbose::Bool = true,
-    process::Function = x->nothing,
-    dprocess::Function = α->nothing,
-    tprocess::Function = (t,w)->nothing,
-)::Array{Float64,N} where {E,N}
+    process::Fu1 = x->nothing,
+    dprocess::Fu2 = α->nothing,
+    tprocess::Fu3 = (t,w)->nothing,
+)::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function}
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
@@ -77,6 +77,9 @@ function gaplas(
                 elseif parent[u] == v
                     tlam[u] = lambda[i]
                 else
+                    let alpha_i = round.(alpha[i], digits=1)
+                        @show i, alpha_i
+                    end
                     z[v] -= alpha[i]
                     z[u] += alpha[i]
                 end
