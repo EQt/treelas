@@ -7,7 +7,7 @@ import TreeLas.MGT
 import GraphIdx
 
 
-@testset "MGT     : Square               " begin if false
+@testset "MGT     : Square               " begin if true
     edges, n = square_edges()
     m = length(edges)
     lambda = fill(0.5, length(edges))
@@ -86,8 +86,9 @@ end
 
     @test length(selected) == n - 1
     @test Set(edges[selected]) == s_prim
-    # lam = ones(Float64, length(edges))
-    # x = MGT.gaplas(y, edges, lam, max_iter=3)
+    local lam = ones(Float64, length(edges))
+    x = MGT.gaplas(y, edges, lam, max_iter=5)
+    @test mean(x) ≈ mean(y)
 end
 
 end

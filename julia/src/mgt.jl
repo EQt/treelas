@@ -57,23 +57,21 @@ function gaplas(
     local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
 
     for it in 1:max_iter
-        dprocess(alpha)
         gap_vec!(γ, x, alpha, graph, -1.0)
 
         if verbose
             println(@sprintf("%4d %f", it, -sum(γ)))
         end
 
-        @show γ
+        # @show γ
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
-        @show tree
-        @show selected
+        # @show tree
+        # @show selected
 
         begin # non-tree edges ==> z
             z .= y
-            for (i, e) in enumerate(edges)
-                v, u = e
+            for (i, (u, v)) in enumerate(edges)
                 if parent[v] == u
                     tlam[v] = lambda[i]
                 elseif parent[u] == v
@@ -88,23 +86,30 @@ function gaplas(
         tree_dp!(x, z,
                  tree,
                  ArrayWeights(tlam),
-                 ConstantWeights(0.5*mu),
+                 ConstantWeights(mu),
                  dp_mem)
-
         process(x)
 
         # compute dual ==> update alpha
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
-            for i in @view dp_mem.proc_order[1:end-1]
-                let eidx = selected[i], p = parent[i]
-                    @assert(abs(tree_alpha[i]) <= (1 + 1e-8)*lambda[eidx],
-                            "eidx=$eidx: $i->$p " *
-                            "$(tree_alpha[i]) < $(lambda[eidx])?")
-                    alpha[eidx] = tree_alpha[i] * sign(i - p)
+            # @show tree_alpha
+            for i in selected
+                i <= 0 && continue
+                local u::Int, v::Int = edges[i]
+                if parent[v] == u
+                    # @show (i, u, v)
+                    alpha[i] = +tree_alpha[u]
+                elseif parent[u] == v
+                    alpha[i] = -tree_alpha[v]
                 end
+                @assert(abs(alpha[i]) <= (1 + 1e-8)*lambda[i],
+                        "$i: $u--$v " *
+                        "$(alpha[i]) < $(lambda[i])?")
             end
         end
+        dprocess(alpha)
+
     end
 
     return x
