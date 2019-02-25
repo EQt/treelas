@@ -78,7 +78,7 @@ function gaplas(
                     tlam[u] = lambda[i]
                 else
                     let alpha_i = round.(alpha[i], digits=1)
-                        @show i, alpha_i
+                        # @show i, alpha_i
                     end
                     z[v] -= alpha[i]
                     z[u] += alpha[i]
@@ -98,14 +98,16 @@ function gaplas(
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
             # @show tree_alpha
-            for i in selected
-                i <= 0 && continue
+            for i in @view selected[2:end]
                 local u::Int, v::Int = edges[i]
-                if parent[v] == u
+                @assert u < v
+                alpha[i] = if parent[v] == u
                     # @show (i, u, v)
-                    alpha[i] = +tree_alpha[u]
+                    +tree_alpha[u]
                 elseif parent[u] == v
-                    alpha[i] = -tree_alpha[v]
+                    -tree_alpha[v]
+                else
+                    error("Should not happen")
                 end
                 @assert(abs(alpha[i]) <= (1 + 1e-8)*lambda[i],
                         "$i: $u--$v " *
