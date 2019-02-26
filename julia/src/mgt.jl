@@ -73,8 +73,10 @@ function gaplas(
             z .= y
             for (i, (u, v)) in enumerate(edges)
                 if parent[v] == u
+                    @show i
                     tlam[v] = lambda[i]
                 elseif parent[u] == v
+                    @show i
                     tlam[u] = lambda[i]
                 else
                     let alpha_i = round.(alpha[i], digits=1)
@@ -98,7 +100,9 @@ function gaplas(
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
             # @show tree_alpha
+            @show "alpha update"
             for i in @view selected[2:end]
+                @show i
                 local u::Int, v::Int = edges[i]
                 @assert u < v
                 alpha[i] = if parent[v] == u
