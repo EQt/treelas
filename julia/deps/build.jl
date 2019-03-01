@@ -1,14 +1,12 @@
-
-build_dir = joinpath(dirname(@__FILE__), "build")
-root_dir = joinpath(dirname(@__FILE__), "..", "..")
+const build_dir = joinpath(dirname(@__FILE__), "build")
+const root_dir = joinpath(dirname(@__FILE__), "..", "..")
+const target = "_treelas"
+const cmake_opts = ["-DCMAKE_BUILD_TYPE=Release"]
 
 isdir(build_dir) && rm(build_dir, recursive=true)
 mkdir(build_dir)
 
-@show root_dir
-
 cd(build_dir) do
-    @show pwd()
-    run(`cmake $root_dir`)
+    run(`cmake $root_dir $cmake_opts`)
+    run(`cmake --build . --target $target`)
 end
-
