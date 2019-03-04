@@ -73,10 +73,8 @@ function gaplas(
             z .= y
             for (i, (u, v)) in enumerate(edges)
                 if parent[v] == u
-                    @show i
                     tlam[v] = lambda[i]
                 elseif parent[u] == v
-                    @show i
                     tlam[u] = lambda[i]
                 else
                     let alpha_i = round.(alpha[i], digits=1)
