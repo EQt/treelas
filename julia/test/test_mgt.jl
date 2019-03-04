@@ -91,6 +91,17 @@ end
 
     @test length(selected) == n - 1
     @test Set(edges[selected]) == s_prim
+
+    @testset "extract non-tree" begin
+        z = copy(y)
+        lambda = ones(Float64, length(edges))
+        tlam = fill(NaN, length(y))
+        alpha = zeros(length(edges))
+        MGT.extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
+        @test z ≈ y
+        @test all(tlam[1:end .!= root] .≈ 1.0)
+    end
+
     local lam = ones(Float64, length(edges))
     x = MGT.gaplas(y, edges, lam, max_iter=5)
     @test mean(x) ≈ mean(y)
