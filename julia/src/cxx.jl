@@ -127,15 +127,16 @@ function cxx_tree_dual!(
     alpha::Vector{Float64},
     parent::Vector{I},
     root::I,
-    lam::Float64,
-    mu::Float64 = 1.0,
 ) where {I}
+    @assert parent[root] == root
     n = length(parent)
     @assert length(alpha) == n
+    parent = Vector{Cint}(copy(parent))
+    parent .-= 1
+    root -= 1
     x = copy(alpha)
-    ccall((:timer_disable, lib), Cvoid)
-    ccall(
-        (:_Z9tree_dualmPdPKiS1_S_ib, lib),
+    ccall((:timer_disable, lib), Cvoid, ())
+    ccall((:_Z9tree_dualmPdPKiS1_S_ib, lib),
         Ref{Cdouble},
         (
             Csize_t,
@@ -148,7 +149,6 @@ function cxx_tree_dual!(
         ),
         n,
         x,
-        y,
         parent,
         0,  # post_order
         alpha,
