@@ -25,6 +25,13 @@ RootedTree(parent::Vector{Int}) =
 Base.length(t::RootedTree) =  length(t.parent)
 
 
+struct WeightedTree{W}
+    tree::RootedTree
+    lam::W
+end
+
+
+
 include("tree/degrees.jl")
 include("tree/children.jl")
 include("tree/dfs.jl")
