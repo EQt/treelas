@@ -25,6 +25,20 @@ import GraphIdx: WeightedGraph, enumerate_edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 
+@inline function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
+    for (i, (u, v)) in enumerate(edges)
+        if parent[v] == u
+            tlam[v] = lambda[i]
+        elseif parent[u] == v
+            tlam[u] = lambda[i]
+        else
+            z[v] -= alpha[i]
+            z[u] += alpha[i]
+        end
+    end
+end
+
+
 """
     gaplas(y, edges, λ)
 
@@ -69,22 +83,8 @@ function gaplas(
         # @show tree
         # @show selected
 
-        begin # non-tree edges ==> z
-            z .= y
-            for (i, (u, v)) in enumerate(edges)
-                if parent[v] == u
-                    tlam[v] = lambda[i]
-                elseif parent[u] == v
-                    tlam[u] = lambda[i]
-                else
-                    let alpha_i = round.(alpha[i], digits=1)
-                        # @show i, alpha_i
-                    end
-                    z[v] -= alpha[i]
-                    z[u] += alpha[i]
-                end
-            end
-        end
+        z .= y
+        extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
 
         tree_dp!(x,
                  z,
