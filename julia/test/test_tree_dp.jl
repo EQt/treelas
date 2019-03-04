@@ -8,6 +8,8 @@ import TreeLas: dual
 import GraphIdx
 import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with
 
+include(joinpath(dirname(pathof(TreeLas)), "cxx.jl"))
+
 
 @testset "TreeDP                         " begin
 
@@ -95,6 +97,11 @@ end
             alpha[parent[i]] += alpha[i]
         end
         @test alpha ≈ tree_alpha
+    end
+
+    @testset "compare to cxx tree_dp" begin
+        cxx_x = Cxx.cxx_tree_dp(y, parent, root, 1.0)
+        @test cxx_x ≈ x
     end
 
     local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
