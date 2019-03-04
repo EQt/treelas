@@ -129,7 +129,16 @@ end
 
     @testset "compare to tree_dual" begin
         cxx_alpha = Cxx.cxx_tree_dual!(x - copy(y), parent, root)
+        diff = vec(x - y)
+        for i = 1:n
+            println(@sprintf("x[%d] = %f", i-1, diff[i]))
+        end
         @test abs.(tree_alpha[2:end]) ≈ abs.(cxx_alpha[2:end])
+        sign01(x) = Int((sign(x) + 1) / 2)
+        if !(sign01.(tree_alpha[2:end]) == sign01.(cxx_alpha[2:end]))
+            hierarchy(ChildrenIndex(parent))
+            @test sign01.(tree_alpha[2:end]) == sign01.(cxx_alpha[2:end])
+        end
         @test tree_alpha[2:end] ≈ cxx_alpha[2:end]
     end
 
