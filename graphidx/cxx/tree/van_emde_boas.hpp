@@ -7,6 +7,9 @@
    @param[out]  a_out   Array to store the output.
    @param[in]   a_in    Binary inorder (as produced by `binary_inorder`)
    @param[in]   height  Height of the **complete binary** tree.
+   @param[in]   step    Distance between siblings on the lowest level.
+                        Start with `step == 1`.
+
 
    Copied and adapted from
    Frederik Rønn: "Cache-Oblivious Searching and Sorting", Master's Thesis,
