@@ -2,9 +2,10 @@ module TestTreeDP
 
 using Test
 import Printf: @sprintf
+import TreeLas
 import TreeLas.TreeDP
 import TreeLas: dual
-import GraphIdx;
+import GraphIdx
 import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with
 
 
@@ -71,9 +72,27 @@ end
     parent =
         [1, 5, 6, 1, 4, 5, 8, 9, 6, 7, 8, 9, 10, 15, 18, 13, 16, 17, 20, 17, 18]
 
-    # local dp_mem = TreeDPMem(n)
     local tree = GraphIdx.Tree.RootedTree(root, parent)
-    hierarchy(ChildrenIndex(parent))
+    # hierarchy(ChildrenIndex(parent))
+    local dp_mem = TreeDP.TreeDPMem(n)
+    local x = fill(NaN, size(y)...)
+    local tree_alpha = fill(NaN, n)
+    let mu = 1.0, tlam = ones(Float64, n), z = copy(y)
+        TreeDP.tree_dp!(x,
+                        z,
+                        tree,
+                        TreeDP.ArrayWeights(tlam),
+                        TreeDP.ConstantWeights(mu),
+                        dp_mem)
+        @test !any(isnan.(x))
+        TreeLas.dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
+    end
+
+    wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
+    let gam = fill(NaN, n)
+        TreeLas.MGT.gap_vec!(gam, x, tree_alpha, wtree)
+        @test gam[1:end .!= root] ≈ zeros(n-1)
+    end
 end
 
 end
