@@ -84,7 +84,13 @@ function _find_tree_dp(; verbose=false)
 end
 
 
-function cxx_tree_dp(y::Array{Float64}, parent::Vector{I}, root::I, lam::Float64, mu::Float64 = 1.0) where {I}
+function cxx_tree_dp(
+    y::Array{Float64},
+    parent::Vector{I},
+    root::I,
+    lam::Float64,
+    mu::Float64 = 1.0,
+) where {I}
     x = similar(y)
     @assert parent[root] == root
     n = length(y)
@@ -114,6 +120,42 @@ function cxx_tree_dp(y::Array{Float64}, parent::Vector{I}, root::I, lam::Float64
         root,
     )
     return x
+end
+
+
+function cxx_tree_dual!(
+    alpha::Vector{Float64},
+    parent::Vector{I},
+    root::I,
+    lam::Float64,
+    mu::Float64 = 1.0,
+) where {I}
+    n = length(parent)
+    @assert length(alpha) == n
+    x = copy(alpha)
+    ccall((:timer_disable, lib), Cvoid)
+    ccall(
+        (:_Z9tree_dualmPdPKiS1_S_ib, lib),
+        Ref{Cdouble},
+        (
+            Csize_t,
+            Ref{Cdouble},
+            Ref{Cint},
+            Ptr{Cint},
+            Ref{Cdouble},
+            Cint,
+            Cuchar,
+        ),
+        n,
+        x,
+        y,
+        parent,
+        0,  # post_order
+        alpha,
+        root,
+        1,  # tree_orientation
+    )
+    return alpha
 end
 
 
