@@ -112,7 +112,11 @@ end
         for i in dp_mem.proc_order
             alpha[parent[i]] += alpha[i]
         end
-        @test alpha[2:end] ≈ tree_alpha[2:end]
+        #=
+        if !(alpha[2:end] ≈ tree_alpha[2:end])
+            @show alpha - tree_alpha
+            @test alpha[2:end] ≈ tree_alpha[2:end]
+        end
         exceed = findall(abs.(tree_alpha) .> 1)
         if exceed != []
             for ei in exceed
@@ -120,6 +124,13 @@ end
                 @show alpha[ei]
             end
         end
+        =#
+    end
+
+    @testset "compare to tree_dual" begin
+        cxx_alpha = Cxx.cxx_tree_dual!(x - copy(y), parent, root)
+        @test abs.(tree_alpha[2:end]) ≈ abs.(cxx_alpha[2:end])
+        @test tree_alpha[2:end] ≈ cxx_alpha[2:end]
     end
 
     local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
