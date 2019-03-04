@@ -5,16 +5,17 @@ module Cxx
 
 import Libdl
 
+const  BUILD_DIR = joinpath(@__DIR__, "..", "deps", "build")
 
-function find_library()::String
-    BUILD_DIR = joinpath(@__DIR__, "..", "deps", "build")
+function _find_python_extension()::String
     _libs = filter(s -> match(Regex("_treelas.+\\.$(Libdl.dlext)"), s) != nothing, readdir(BUILD_DIR))
     @assert length(_libs) == 1
     return joinpath(BUILD_DIR, _libs[1])
 end
 
 
-const lib = find_library()
+const lib = joinpath(BUILD_DIR,
+                     (Sys.isunix() ? "lib" : "") * "treelas.$(Libdl.dlext)")
 
 
 function _find_all_tree_dp()
@@ -86,6 +87,8 @@ end
 function cxx_tree_dp(y::Array{Float64}, parent::Vector{I}, root::I, lam::Float64, mu::Float64 = 1.0) where {I}
     x = similar(y)
     @assert parent[root] == root
+    n = length(y)
+    @assert length(parent) == n
     parent = Vector{Cint}(copy(parent))
     parent .-= 1
     root -= 1

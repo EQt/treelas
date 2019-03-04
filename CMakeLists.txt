@@ -46,6 +46,10 @@ add_object(line_c3    cxx/line/line_c3.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
 
+add_library(treelas SHARED
+    $<TARGET_OBJECTS:tree_dp>
+)
+
 # PYTHON
 set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/pybind11"
     CACHE STRING "Directory where pybind is located")
