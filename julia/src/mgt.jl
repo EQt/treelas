@@ -98,13 +98,9 @@ function gaplas(
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
             # @show tree_alpha
-            @show "alpha update"
             for i in @view selected[2:end]
-                @show i
                 local u::Int, v::Int = edges[i]
-                @assert u < v
                 alpha[i] = if parent[v] == u
-                    # @show (i, u, v)
                     +tree_alpha[u]
                 elseif parent[u] == v
                     -tree_alpha[v]
