@@ -17,6 +17,10 @@ end
 const lib = find_library()
 
 
+function find_tree_dp()
+    ids = readlines(pipeline(`nm -D $(Cxx.lib)`, `grep tree_dp`, `awk '{print $3}'`))
+    ids_cxx = map(s->readchomp(`c++filt $s`), ids)
+end
 
 end
 
