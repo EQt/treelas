@@ -37,6 +37,11 @@ function dual!(
     parent::Vector{I},
     alpha_root::F = F(0.0),
 ) where {F<:Real,I<:Integer}
+    for i in 1:length(parent)
+        let v = parent[i]
+            alpha[i] = i > v ? -alpha[i] : +alpha[i]
+        end
+    end
     for v in @view post_order[1:end-1]
         alpha[parent[v]] += alpha[v]
     end
@@ -61,6 +66,11 @@ function dual!(
     cidx::ChildrenIndex,
     alpha_root::F = F(0.0),
 ) where {F,I}
+    for i in 1:length(parent)
+        let v = parent[i]
+            alpha[i] = i > v ? -alpha[i] : +alpha[i]
+        end
+    end
     dfs_walk(cidx) do v::Int
         if v >= 0
             let p = parent[v]
