@@ -38,7 +38,6 @@ tree_dual(const size_t n,
             const auto v = parent[c];
             alpha[c] = x[c];
             x[v]    += x[c];
-            printf("%d\t%d\t%f\n", c, v, alpha[c]);
         }
     } else {
         for (const auto c : postorder) {
