@@ -6,7 +6,7 @@ import GraphIdx.LinA: IncMat
 
 Compute the gap vector (modifies `dif` and `x`) and stores it in `γ`.
 
-!!! warn
+!!! warning
     This is the old method using Julia's `SparseArrays.SparseMatrixCSC`.
 
 """

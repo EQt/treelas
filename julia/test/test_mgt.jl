@@ -58,6 +58,10 @@ end
          -0.44, -0.78, -0.58, -0.80, -1.43, -0.13,
          -1.06, -0.38]
 
+    # compute γ manually
+    gam = [-abs(y[u] - y[v]) for (u, v) in edges]
+    @test γ ≈ gam
+
     tree_mask = GraphIdx.kruskal_mst(n, edges, γ)
     tree_cost = γ[tree_mask]
     tree_edges = edges[tree_mask]
