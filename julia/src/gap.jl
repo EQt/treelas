@@ -27,11 +27,13 @@ end
 
 
 """
-    gap_vec!(γ, x, α, g::Graph [, c = 1.0])
+    gap_vec!(γ, x, α, g [, c = 1.0])
 
 Compute the duality gap: for each edge `e` we set `γ[e]` to the
 difference of the edge cost ``\\lambda_{ij} |x_i - x_j|`` and the
 linear approximation via the dual ``α_{ij}(x_i - x_j)``.
+
+The graph `g` needs to implement a method `enumerate_edges(::Function, g)`.
 
 If provided, the result is multiplied by `c`.
 """
