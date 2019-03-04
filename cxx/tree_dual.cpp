@@ -34,15 +34,11 @@ tree_dual(const size_t n,
     alpha[root] = std::nan("");
 
     if (tree_orientation) {
-        if (n == 21) {
-            for (size_t i = 0; i < n; i++) {
-                printf("x[%d] = %f\n", int(i), x[i]);
-            }
-        }
         for (const auto c : postorder) {
             const auto v = parent[c];
             alpha[c] = x[c];
             x[v]    += x[c];
+            printf("%d\t%d\t%f\n", c, v, alpha[c]);
         }
     } else {
         for (const auto c : postorder) {

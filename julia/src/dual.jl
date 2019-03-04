@@ -40,8 +40,9 @@ function dual!(
     x = copy(alpha)
     for c in @view post_order[1:end-1]
         let v = parent[c]
-            alpha[c] = c > v ? -x[c] : +x[c];
-            x[v]    += x[c];
+            alpha[c] = x[c]
+            x[v]    += x[c]
+            println(c -1, "\t", v-1, "\t", alpha[c])
         end
     end
     if alpha_root != F(0.0)

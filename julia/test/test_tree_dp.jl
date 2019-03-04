@@ -104,7 +104,9 @@ end
     @testset "dual!" begin
         @test dp_mem.proc_order ==
             [12, 11, 19, 20, 21, 14, 15, 18, 17, 16, 13, 10, 7, 8, 9, 3, 6, 2, 5, 4, 1]
+        @show "julia"
         TreeLas.dual!(tree_alpha, x, copy(y), dp_mem.proc_order, parent)
+        @show "end"
         local alpha = vec(x) - vec(y)
         for i in 1:length(parent)
             alpha[i] *= sign(parent[i] - i)
@@ -129,10 +131,6 @@ end
 
     @testset "compare to tree_dual" begin
         cxx_alpha = Cxx.cxx_tree_dual!(x - copy(y), parent, root)
-        diff = vec(x - y)
-        for i = 1:n
-            println(@sprintf("x[%d] = %f", i-1, diff[i]))
-        end
         @test abs.(tree_alpha[2:end]) ≈ abs.(cxx_alpha[2:end])
         sign01(x) = Int((sign(x) + 1) / 2)
         if !(sign01.(tree_alpha[2:end]) == sign01.(cxx_alpha[2:end]))
