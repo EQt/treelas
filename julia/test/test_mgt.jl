@@ -71,6 +71,8 @@ end
 
     @test GraphIdx.Tree.find_root(parent) == root
     @test parent[root] == root
+    @test parent ==
+        [1, 5, 6, 1, 4, 5, 8, 9, 6, 7, 8, 9, 10, 15, 18, 13, 16, 17, 20, 17, 18]
     @test -sum(tree_cost) ≈ 15.79
 
     prim_edges = [if i < j; (i, j) else (j, i) end
