@@ -124,7 +124,7 @@ end
 
 
 function cxx_tree_dual!(
-    alpha::Vector{Float64},
+    alpha::Array{Float64},
     parent::Vector{I},
     root::I,
 ) where {I}
@@ -135,6 +135,7 @@ function cxx_tree_dual!(
     parent .-= 1
     root -= 1
     x = copy(alpha)
+    post_order = Ptr{Cint}(0)
     ccall((:timer_disable, lib), Cvoid, ())
     ccall((:_Z9tree_dualmPdPKiS1_S_ib, lib),
         Ref{Cdouble},
@@ -150,12 +151,12 @@ function cxx_tree_dual!(
         n,
         x,
         parent,
-        0,  # post_order
+        post_order,
         alpha,
         root,
         1,  # tree_orientation
     )
-    return alpha
+    return vec(alpha)
 end
 
 
