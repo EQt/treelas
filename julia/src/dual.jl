@@ -37,11 +37,9 @@ function dual!(
     parent::Vector{I},
     alpha_root::F = F(0.0),
 ) where {F<:Real,I<:Integer}
-    x = copy(alpha)
     for c in @view post_order[1:end-1]
         let v = parent[c]
-            alpha[c] = x[c]
-            x[v]    += x[c]
+            alpha[v] += alpha[c]
         end
     end
     if alpha_root != F(0.0)
