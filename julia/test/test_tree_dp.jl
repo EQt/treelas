@@ -4,6 +4,7 @@ using Test
 import Printf: @sprintf
 import TreeLas.TreeDP
 import TreeLas: dual
+import GraphIdx;
 import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with
 
 
@@ -54,7 +55,8 @@ end
     y = [0.62 0.73 0.71 1.5 1.17 0.43 1.08
          0.62 1.73 0.95 1.46 1.6 1.16 0.38
          0.9 0.32 -0.48 0.95 1.08 0.02 0.4]
-
+    local n = length(y)
+    local root = 1
     edges = Tuple{Int64,Int64}[
         (1,  2),  (4,  5),  (7, 8), (10, 11), (13, 14), (16, 17),
         (19, 20), (2,  3),  (5, 6), (8,   9), (11, 12), (14, 15),
@@ -64,6 +66,14 @@ end
         (15, 18), (18, 21)
     ]
 
+    γ = [-abs(y[u] - y[v]) for (u, v) in edges]
+
+    parent =
+        [1, 5, 6, 1, 4, 5, 8, 9, 6, 7, 8, 9, 10, 15, 18, 13, 16, 17, 20, 17, 18]
+
+    # local dp_mem = TreeDPMem(n)
+    local tree = GraphIdx.Tree.RootedTree(root, parent)
+    hierarchy(ChildrenIndex(parent))
 end
 
 end

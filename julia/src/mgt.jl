@@ -77,11 +77,8 @@ function gaplas(
             println(@sprintf("%4d %f", it, -sum(γ)))
         end
 
-        # @show γ
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
-        # @show tree
-        # @show selected
 
         z .= y
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
@@ -97,7 +94,6 @@ function gaplas(
         # compute dual ==> update alpha
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
-            # @show tree_alpha
             for i in @view selected[2:end]
                 local u::Int, v::Int = edges[i]
                 alpha[i] = if parent[v] == u
