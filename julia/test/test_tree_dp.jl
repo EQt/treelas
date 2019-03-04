@@ -89,6 +89,10 @@ end
         TreeLas.dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
     end
 
+    @testset "analyse solution" begin
+        @test length(unique(x)) == 2
+    end
+
     @testset "dual!" begin
         @test dp_mem.proc_order ==
             [12, 11, 19, 20, 21, 14, 15, 18, 17, 16, 13, 10, 7, 8, 9, 3, 6, 2, 5, 4, 1]
