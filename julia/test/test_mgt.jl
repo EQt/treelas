@@ -62,7 +62,8 @@ end
     tree_cost = γ[tree_mask]
     tree_edges = edges[tree_mask]
     idx = GraphIdx.NeighborIndex(n, edges)
-    local parent::Vector{Int}, selected = GraphIdx.prim_mst_edges(n, edges, γ, root)
+    local parent::Vector{Int}, selected =
+        GraphIdx.prim_mst_edges(n, edges, γ, root)
 
     @test GraphIdx.Tree.find_root(parent) == root
     @test parent[root] == root
