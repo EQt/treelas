@@ -113,6 +113,13 @@ end
             alpha[parent[i]] += alpha[i]
         end
         @test alpha[2:end] ≈ tree_alpha[2:end]
+        exceed = findall(abs.(tree_alpha) .> 1)
+        if exceed != []
+            for ei in exceed
+                @show ei
+                @show alpha[ei]
+            end
+        end
     end
 
     local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
