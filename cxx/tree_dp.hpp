@@ -1,6 +1,4 @@
 #pragma once
-#include <vector>
-#include "tree/postorder.hpp"
 
 
 template <bool merge_sort, bool lazy_sort = false>
