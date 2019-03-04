@@ -105,9 +105,11 @@ end
         @test all(tlam[1:end .!= root] .≈ 1.0)
     end
 
-    local lam = ones(Float64, length(edges))
-    x = MGT.gaplas(y, edges, lam, max_iter=5)
-    @test mean(x) ≈ mean(y)
+    @testset "call gaplas" begin
+        local lam = ones(Float64, length(edges))
+        x = MGT.gaplas(y, edges, lam, max_iter=5)
+        @test mean(x) ≈ mean(y)
+    end
 end
 
 end
