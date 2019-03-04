@@ -73,7 +73,6 @@ end
         [1, 5, 6, 1, 4, 5, 8, 9, 6, 7, 8, 9, 10, 15, 18, 13, 16, 17, 20, 17, 18]
 
     local tree = GraphIdx.Tree.RootedTree(root, parent)
-    # hierarchy(ChildrenIndex(parent))
     local dp_mem = TreeDP.TreeDPMem(n)
     local x = fill(NaN, size(y)...)
     local tree_alpha = fill(NaN, n)
@@ -91,7 +90,19 @@ end
     wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
     let gam = fill(NaN, n)
         TreeLas.MGT.gap_vec!(gam, x, tree_alpha, wtree)
-        @test gam[1:end .!= root] ≈ zeros(n-1)
+        @test isnan(gam[root])
+        gam[root] = 0.0
+        wrong_ids = [i for i in 1:n if !(gam[i] ≈ 0.0)]
+        if wrong_ids != []
+            for i in wrong_ids
+                @show i, parent[i]
+                @show x[i], x[parent[i]]
+                @show tree_alpha[i]
+                @show gam[i]
+            end
+            hierarchy(ChildrenIndex(parent))            
+            @test wrong_ids == []
+        end
     end
 end
 
