@@ -37,13 +37,12 @@ function dual!(
     parent::Vector{I},
     alpha_root::F = F(0.0),
 ) where {F<:Real,I<:Integer}
-    for i in 1:length(parent)
-        let v = parent[i]
-            alpha[i] = i > v ? -alpha[i] : +alpha[i]
+    x = copy(alpha)
+    for c in @view post_order[1:end-1]
+        let v = parent[c]
+            alpha[c] = c > v ? -x[c] : +x[c];
+            x[v]    += x[c];
         end
-    end
-    for v in @view post_order[1:end-1]
-        alpha[parent[v]] += alpha[v]
     end
     if alpha_root != F(0.0)
         let root = post_order[end], acc = eps() * length(parent)

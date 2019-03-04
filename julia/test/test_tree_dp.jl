@@ -127,7 +127,7 @@ end
         TreeLas.MGT.gap_vec!(gam, x, tree_alpha, wtree)
         @test isnan(gam[root])
         gam[root] = 0.0
-        wrong_ids = [i for i in 1:n if !(gam[i] ≈ 0.0)]
+        wrong_ids = [i for i in 1:n if abs(gam[i]) > 1e-16]
         if wrong_ids != []
             for i in wrong_ids
                 @show i, parent[i]
@@ -135,7 +135,7 @@ end
                 @show tree_alpha[i]
                 @show gam[i]
             end
-            hierarchy(ChildrenIndex(parent))            
+            hierarchy(ChildrenIndex(parent))
             @test wrong_ids == []
         end
     end
