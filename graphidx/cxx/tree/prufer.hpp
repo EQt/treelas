@@ -4,9 +4,10 @@
 
 /** See `prufer2edges` for details.
 
-    @param[out] parent Make sure that :code:`len(parent) == n`
-
-    @returns a root node
+    @param[in]  n      Number of nodes
+    @param[in]  prufer Prüfer sequence (i.e. `len(prufer) == n-2`)
+    @param[out] parent Make sure that `len(parent) == n`
+    @returns a root node (there are two possibilities)
  */
 template<typename int_ = int>
 inline int_
@@ -74,7 +75,7 @@ prufer2parent(const int_ n,
 
 /** Calculate the tree edges from a Prüfer sequence.
 
-    @param[in]  n       number of nodes in the tree
+    @param[in]  n       Number of nodes in the tree
     @param[in]  prufer  Prüfer sequence; 
     @param[out] head    Output edges' head
     @param[out] tail    Output edges' tail
