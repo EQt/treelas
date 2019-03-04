@@ -11,6 +11,9 @@ import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with
 include(joinpath(dirname(pathof(TreeLas)), "cxx.jl"))
 
 
+mean(x) = sum(x) / length(x)
+
+
 @testset "TreeDP                         " begin
 
 @testset "tree_dp: tree.mini.h5          " begin
@@ -91,6 +94,12 @@ end
 
     @testset "analyse solution" begin
         @test length(unique(x)) == 2
+        @test mean(y) ≈ mean(x)
+    end
+
+    @testset "compare to cxx tree_dp" begin
+        cxx_x = Cxx.cxx_tree_dp(y, parent, root, 1.0)
+        @test cxx_x ≈ x
     end
 
     @testset "dual!" begin
@@ -101,11 +110,6 @@ end
             alpha[parent[i]] += alpha[i]
         end
         @test alpha ≈ tree_alpha
-    end
-
-    @testset "compare to cxx tree_dp" begin
-        cxx_x = Cxx.cxx_tree_dp(y, parent, root, 1.0)
-        @test cxx_x ≈ x
     end
 
     local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
