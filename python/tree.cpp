@@ -108,13 +108,15 @@ reg_tree(py::module &m)
              const int root,
              py::array_f64 &alpha,
              const py::array_i32 &post_ord,
-             const bool tree_orientation) -> py::array_f64
+             const bool tree_orientation,
+             const bool verbose) -> py::array_f64
           {
               const auto n = check_1d_len(parent, "parent");
               check_len(n, x, "x");
               if (is_empty(alpha))
                   alpha = py::array_f64({n}, {sizeof(double)});
               check_len(n, alpha, "alpha");
+              TimerQuiet _ (verbose);
               tree_dual(int(n),
                         x.mutable_data(),
                         parent.data(),
@@ -138,7 +140,8 @@ reg_tree(py::module &m)
           py::arg("root") = 0,
           py::arg("alpha") = py::none(),
           py::arg("post_ord") = py::array_i32(),
-          py::arg("tree_orientation") = true);
+          py::arg("tree_orientation") = true,
+          py::arg("verbose") = false);
 
     m.def("tree_dp_w",
           [](const py::array_f64 &y,
