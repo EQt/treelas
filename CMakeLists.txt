@@ -47,7 +47,8 @@ add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
 
 add_library(treelas SHARED
-    $<TARGET_OBJECTS:tree_dp>
+  cxx/app/libtreelas.cpp
+  $<TARGET_OBJECTS:tree_dp>
 )
 
 # PYTHON

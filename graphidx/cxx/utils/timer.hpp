@@ -122,6 +122,7 @@ private:
     bool running = false;
     std::chrono::high_resolution_clock::time_point time0;
     friend struct TimerQuiet;
+    friend void _timer_disable();
 };
 
 

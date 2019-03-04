@@ -92,6 +92,7 @@ function cxx_tree_dp(y::Array{Float64}, parent::Vector{I}, root::I, lam::Float64
     parent = Vector{Cint}(copy(parent))
     parent .-= 1
     root -= 1
+    ccall((:timer_disable, lib), Cvoid, ())
     ccall(
         (:_Z7tree_dpILb0ELb1EEPKdmPdS1_PKiddi, lib),
         Ref{Cdouble},
