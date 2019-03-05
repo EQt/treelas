@@ -32,8 +32,8 @@ import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
         elseif parent[u] == v
             tlam[u] = lambda[i]
         else
-            z[v] -= alpha[i]
             z[u] += alpha[i]
+            z[v] -= alpha[i]
         end
     end
 end
