@@ -59,10 +59,9 @@ Directory Structure
 ChangeLog
 ---------
 
-### v0.12.0.alpha
-Plan:
-- Refactor mgt.jl to reduce the input needed
-- Make MGT callable on grid graphs
+### v0.12.0
+- Julia: Refactored mgt.jl to reduce the input needed
+- Julia: Make MGT callable on grid graphs
 
 ### v0.11.11
 Released 2019-02-13
