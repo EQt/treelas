@@ -102,8 +102,9 @@ end
     end
 
     @testset "dual!" begin
-        @test dp_mem.proc_order ==
-            [12, 11, 19, 20, 21, 14, 15, 18, 17, 16, 13, 10, 7, 8, 9, 3, 6, 2, 5, 4, 1]
+        @test dp_mem.proc_order[end] == root
+        @test dp_mem.proc_order[1:end-1] ==
+            [12, 11, 19, 20, 21, 14, 15, 18, 17, 16, 13, 10, 7, 8, 9, 3, 6, 2, 5, 4]
         TreeLas.dual!(tree_alpha, x, copy(y), dp_mem.proc_order, parent)
         local alpha = vec(x) - vec(y)
         for i in @view dp_mem.proc_order[1:end-1]
