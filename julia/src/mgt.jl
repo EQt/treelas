@@ -18,6 +18,7 @@ module MGT
 include("gap.jl")
 include("dual.jl")
 
+import Statistics
 import Printf: @sprintf
 import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
@@ -110,7 +111,8 @@ function gaplas(
             enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
                 obj[] += lam * abs(x[u] - x[v])
             end
-            println(@sprintf("%4d %7.4f %7.4f", it, -sum(γ), obj[]))
+            println(@sprintf("%4d %12.4f %12.4f  %8f %8f %8f", it, -sum(γ), obj[],
+                             Statistics.quantile(-γ, [0.90, 0.95, 0.98])...))
         end
 
         prim_mst_edges(γ, root_node, mst_mem)
