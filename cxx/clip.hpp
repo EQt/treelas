@@ -23,7 +23,7 @@ clip_front(E *elements,
     /* -t because the next time this event will be triggered,
        it will have included t in the offset */
     elements[--pq.start] = E({x, slope, offset -t});
-    // e = elements[pq.start];0231fde7ea
+    // e = elements[pq.start];
     // assert (e->x * e->slope + e->offset() == t)
     return x;
 }
