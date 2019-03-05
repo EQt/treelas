@@ -120,13 +120,7 @@ function gaplas(
 
         z .= y
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
-
-        tree_dp!(x,
-                 z,
-                 tree,
-                 ArrayWeights(tlam),
-                 ConstantWeights(mu),
-                 dp_mem)
+        tree_dp!(x, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
         process(x)
 
         # compute dual ==> update alpha
