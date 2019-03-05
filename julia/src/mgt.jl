@@ -74,37 +74,9 @@ function gaplas(
     for it in 1:max_iter
         gap_vec!(γ, x, alpha, graph, -1.0)
         if verbose
-            if n < 30
-                let γ = round.(-γ, digits=2)
-                    # @show γ
-                end
-                if it > 1
-                    @assert selected[1] < 0
-                    for i in @view selected[2:end]
-                        if abs(γ[i]) >= 1e-15
-                            talp = vec(x) - vec(z)
-                            for i in @view dp_mem.proc_order[1:end-1]
-                                talp[parent[i]] += talp[i]
-                            end
-                            alp = zeros(m)
-                            for i in @view selected[2:end]
-                                u, v = edges[i]
-                                alp[i] = parent[u] == v ? talp[u] : -talp[v]
-                            end
-                            for i in 1:m
-                                println(@sprintf("%7.3f  %7.3f", alp[i], alpha[i]))
-                            end
-                            @assert(
-                                abs(γ[i]) < 1e-15,
-                                "i=$i: $(edges[i])\n γ=$(γ[i])\n α=$(alpha[i])" *
-                                "\n $(x[edges[i][1]]) $(x[edges[i][2]])" *
-                                "\n $(dp_mem.proc_order)" *
-                                "\n $(y≈z)" *
-                                "\n $(talp ≈ tlam)" * ""
-                            )
-                        end
-                    end
-                end
+            if n < 30 && it > 1
+                tree_gamma_check(γ, alpha, tlam, selected,
+                                 x, z, dp_mem.proc_order, parent)
             end
             local obj::Ref{Float64} = Ref{Float64}(
                 0.5 * sum((x[i] - y[i])^2 for i = 1:n))
@@ -156,6 +128,39 @@ function duality_check(alpha, lambda)
         @assert(abs(alpha[i]) <= (1 + 1e-8)*lambda[i],
                 "$i: $u--$v " *
                 "$(alpha[i]) < $(lambda[i])?")
+    end
+end
+
+
+function tree_gamma_check(γ, alpha, tlam, selected, x, z, proc_order, parent)
+    let γ = round.(-γ, digits=2)
+        # @show γ
+    end
+
+    @assert selected[1] < 0
+    for i in @view selected[2:end]
+        if abs(γ[i]) >= 1e-15
+            talp = vec(x) - vec(z)
+            for i in @view proc_order[1:end-1]
+                talp[parent[i]] += talp[i]
+            end
+            alp = zeros(m)
+            for i in @view selected[2:end]
+                u, v = edges[i]
+                alp[i] = parent[u] == v ? talp[u] : -talp[v]
+            end
+            for i in 1:m
+                println(@sprintf("%7.3f  %7.3f", alp[i], alpha[i]))
+            end
+            @assert(
+                abs(γ[i]) < 1e-15,
+                "i=$i: $(edges[i])\n γ=$(γ[i])\n α=$(alpha[i])" *
+                "\n $(x[edges[i][1]]) $(x[edges[i][2]])" *
+                "\n $(dp_mem.proc_order)" *
+                "\n $(y≈z)" *
+                "\n $(talp ≈ tlam)" * ""
+            )
+        end
     end
 end
 
