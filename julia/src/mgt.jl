@@ -17,8 +17,9 @@ import Printf: @sprintf
 import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx: WeightedGraph, enumerate_edges
-import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
-import ..Utils: sum2
+import GraphIdx: ConstantWeights, ArrayWeights
+import ..TreeDP: TreeDPMem, tree_dp!
+import ..Utils: sum2, primal_objective
 
 
 function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
@@ -158,22 +159,6 @@ function tree_gamma_check(γ, alpha, tlam, selected, x, z, proc_order, parent)
             )
         end
     end
-end
-
-
-function primal_objective(
-    x::Array{F,N},
-    y::Array{F,N},
-    graph::G,
-    mu::F2 = ConstantWeights(1.0),
-)::F where {F,N,G,F1,F2}
-    @assert length(y) == length(x)
-    local n = length(x)
-    local obj::Ref{F} = Ref{F}(0.5 * sum(mu(i) * (x[i] - y[i])^2 for i = 1:n))
-    enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
-        obj[] += lam * abs(x[u] - x[v])
-    end
-    return obj[]
 end
 
 

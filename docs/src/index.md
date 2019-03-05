@@ -28,7 +28,7 @@ Utility Functions
 
 ```@meta
 DocTestSetup  = quote
-    import TreeLas.Utils: sum2
+    import TreeLas.Utils: sum2, primal_objective
 end
 ```
 ```@autodocs
