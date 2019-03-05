@@ -48,4 +48,17 @@ function primal_objective(
 end
 
 
+primal_from_dual(y::Array{Float64}, alpha::Array{Float64}, graph::G)::Float64 where G =
+    primal_from_dual!(copy(y), alpha, graph)
+
+
+function primal_from_dual!(x::Array{Float64}, alpha::Array{Float64}, graph::G)::Float64 where G
+    enumerate_edges(graph) do ei::Int, u::Int, v::Int, _::Float64
+        x[u] += alpha[ei]
+        x[v] -= alpha[ei]
+    end
+    return x
+end
+
+
 end
