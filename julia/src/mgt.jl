@@ -72,8 +72,21 @@ function gaplas(
 
     for it in 1:max_iter
         gap_vec!(γ, x, alpha, graph, -1.0)
-
         if verbose
+            if n < 30
+                let γ = round.(-γ, digits=2)
+                    @show γ
+                end
+                if it > 1
+                    for i in selected
+                        if i >= 1
+                            @assert(abs(γ[i]) < 1e-15,
+                                    "i=$i: $(edges[i])\n γ=$(γ[i])\n α=$(alpha[i])" *
+                                    "\n $(x[edges[i][1]]) $(x[edges[i][2]])")
+                        end
+                    end
+                end
+            end
             local obj::Ref{Float64} = Ref{Float64}(
                 0.5 * sum((x[i] - y[i])^2 for i = 1:n))
             enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
