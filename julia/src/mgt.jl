@@ -74,7 +74,12 @@ function gaplas(
         gap_vec!(γ, x, alpha, graph, -1.0)
 
         if verbose
-            println(@sprintf("%4d %f", it, -sum(γ)))
+            local obj::Ref{Float64} = Ref{Float64}(
+                0.5 * sum((x[i] - y[i])^2 for i = 1:n))
+            enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
+                obj[] += lam * abs(x[u] - x[v])
+            end
+            println(@sprintf("%4d %7.4f %7.4f", it, -sum(γ), obj[]))
         end
 
         prim_mst_edges(γ, root_node, mst_mem)
