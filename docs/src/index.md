@@ -19,7 +19,7 @@ General Graphs
 
 Furtheron, we presend a general graph solver that iteratively picks a subtree and block-optimizes it.
 ```@autodocs
-Modules = [TreeLas.GapLas]
+Modules = [TreeLas.MGT]
 ```
 
 

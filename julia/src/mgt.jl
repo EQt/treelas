@@ -1,10 +1,18 @@
 """
 # Maximum Gap Tree
 
+Also called **Gap Tree Lasso (GapLas)**.
+
 In the central function `gaplas`, a tree having the largest gap
 values (computed by `gap_vec!`) is selected.  The non-tree edge-flows
 are forwarded into the input `y`.  Then the tree solver is used and
 the tree-edges are updated.
+
+## Refactoring
+
+In principle, it is not necessary to actually compute and store the
+edges (and weights); it suffices to have access via `enumerate_edges`
+or alike.
 
 """
 module MGT
