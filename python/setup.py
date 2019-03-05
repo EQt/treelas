@@ -22,17 +22,17 @@ class GetPyBindInc():
         self.user = user
 
     def __str__(self):
-        try:
-            import pybind11
-            return pybind11.get_include(self.user)
-        except ImportError:
-            pybind11_include = path.join(path.dirname(__file__), '..',
-                                         'deps', 'pybind11', 'include')
-            pybind11_h = path.join(pybind11_include, 'pybind11', 'pybind11.h')
+        pybind11_include = path.join(path.dirname(__file__), '..',
+                                     'deps', 'pybind11', 'include')
+        pybind11_h = path.join(pybind11_include, 'pybind11', 'pybind11.h')
 
-            if path.exists(pybind11_h):
-                return pybind11_include
-            else:
+        if path.exists(pybind11_h):
+            return pybind11_include
+        else:
+            try:
+                import pybind11
+                return pybind11.get_include(self.user)
+            except ImportError:
                 raise RuntimeError(f'Please install pybind11')
 
 
