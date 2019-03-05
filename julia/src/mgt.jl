@@ -26,6 +26,26 @@ import GraphIdx: WeightedGraph, enumerate_edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 
+"""
+    sum2(x)
+
+Sum of squares.
+
+```jldoctest
+julia> sum2([1, 11])
+122
+
+```
+"""
+function sum2(x::Array{F,N})::F where{F<:Real,N}
+    local s::F = zero(F)
+    for xi in x
+        s += xi
+    end
+    s
+end
+
+
 function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
     for (i, (u, v)) in enumerate(edges)
         if parent[v] == u
@@ -84,7 +104,7 @@ function gaplas(
             println(@sprintf("%4d %12.4f %12.4f %12.4f    %8f %8f %8f",
                              it,
                              -sum(γ),
-                             0.5*sum(x.^2),
+                             0.5*sum2(x),
                              primal_objective(x, y, graph),
                              quant...))
         end
