@@ -1,9 +1,9 @@
 include("../src/TreeLas.jl")
 
 using Test
-import GraphIdx.Grid: num_nodes, num_edges, GridGraph, iter_edges
+import GraphIdx.Grid: num_nodes, num_edges, GridGraph
 import GraphIdx: neighbors_lambda
-import .TreeLas.GapLas
+import .TreeLas.Dual
 
 
 @testset "GapLas   : 2x3                 " begin
@@ -18,13 +18,13 @@ import .TreeLas.GapLas
     alpha = zeros(Float64, m)
     gam .= -1
     @test all(gam .< 0)
-    GapLas.gap_vec!(gam, x, alpha, g)
+    Dual.gap_vec!(gam, x, alpha, g)
     @test all(gam .≈ 0)
 
     x[1] = 13
     gam .= -1
     @test all(gam .< 0)
-    GapLas.gap_vec!(gam, x, alpha, g)
+    Dual.gap_vec!(gam, x, alpha, g)
     @test gam[1] ≈ 13
     @test gam[4] ≈ 13
     for e = 1:m
@@ -38,7 +38,7 @@ import .TreeLas.GapLas
     x[1, 2] = 13
     gam .= -1
     @test all(gam .< 0)
-    GapLas.gap_vec!(gam, x, alpha, g)
+    Dual.gap_vec!(gam, x, alpha, g)
     @test gam[1] ≈ +13
     @test gam[2] ≈ +13
     @test gam[3] ≈ 0
