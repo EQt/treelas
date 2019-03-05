@@ -122,25 +122,11 @@ function gaplas(
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
         tree_dp!(x, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
         process(x)
-
-        # compute dual ==> update alpha
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             tree_alpha .= vec(x) .- vec(z)
             dual!(tree_alpha, dp_mem.proc_order, parent)
-            @assert selected[1] < 0
-            for i in @view selected[2:end]
-                local u::Int, v::Int = edges[i]
-                alpha[i] = if parent[v] == u
-                    -tree_alpha[v]
-                elseif parent[u] == v
-                    +tree_alpha[u]
-                else
-                    error("Should not happen")
-                end
-                @assert(abs(alpha[i]) <= (1 + 1e-8)*lambda[i],
-                        "$i: $u--$v " *
-                        "$(alpha[i]) < $(lambda[i])?")
-            end
+            update_tree!(alpha, tree_alpha, selected, edges, parent)
+            duality_check(alpha, lambda)
         end
         dprocess(alpha)
 
@@ -148,5 +134,30 @@ function gaplas(
 
     return x
 end
+
+
+function update_tree!(alpha, tree_alpha, selected, edges, parent)
+    @assert selected[1] < 0
+    for i in @view selected[2:end]
+        local u::Int, v::Int = edges[i]
+        alpha[i] = if parent[v] == u
+            -tree_alpha[v]
+        elseif parent[u] == v
+            +tree_alpha[u]
+        else
+            error("Should not happen")
+        end
+    end
+end
+
+
+function duality_check(alpha, lambda)
+    for i in 1:length(alpha)
+        @assert(abs(alpha[i]) <= (1 + 1e-8)*lambda[i],
+                "$i: $u--$v " *
+                "$(alpha[i]) < $(lambda[i])?")
+    end
+end
+
 
 end
