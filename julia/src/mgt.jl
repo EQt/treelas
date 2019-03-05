@@ -81,9 +81,10 @@ function gaplas(
             end
             γ_sorted .= γ .* -1
             local quant = Statistics.quantile!(γ_sorted, [0.90, 0.95, 0.98])
-            println(@sprintf("%4d %12.4f %12.4f  %8f %8f %8f",
+            println(@sprintf("%4d %12.4f %12.4f %12.4f    %8f %8f %8f",
                              it,
                              -sum(γ),
+                             0.5*sum(x.^2),
                              primal_objective(x, y, graph),
                              quant...))
         end
