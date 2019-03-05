@@ -41,7 +41,7 @@ fi
 lang "Julia"
 if (program_exists julia); then
     julia_dir="$(dirname $0)/../julia"
-    jltest='import Pkg; Pkg.activate("'$julia_dir'"); Pkg.test();'
+    jltest='import Pkg; Pkg.activate("'$julia_dir'"); Pkg.build(); Pkg.test();'
     julia  --color=yes -E "$jltest"
 fi
 

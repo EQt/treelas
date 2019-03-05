@@ -3,8 +3,10 @@ const root_dir = joinpath(dirname(@__FILE__), "..", "..")
 const target = "treelas"
 const cmake_opts = ["-DCMAKE_BUILD_TYPE=Release"]
 
-isdir(build_dir) && rm(build_dir, recursive=true)
-mkdir(build_dir)
+# rm(build_dir, recursive=true)
+if !isdir(build_dir)
+    mkdir(build_dir)
+end
 
 cd(build_dir) do
     run(`cmake $root_dir $cmake_opts`)
