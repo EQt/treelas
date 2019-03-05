@@ -18,27 +18,7 @@ import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx: WeightedGraph, enumerate_edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
-
-
-
-"""
-    sum2(x)
-
-Sum of squares.
-
-```jldoctest
-julia> sum2([1, 11])
-122
-
-```
-"""
-function sum2(x::Array{F,N})::F where{F<:Real,N}
-    local s::F = zero(F)
-    for xi in x
-        s += xi
-    end
-    s
-end
+import ..Utils: sum2
 
 
 function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)

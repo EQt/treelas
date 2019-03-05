@@ -13,6 +13,7 @@ Hereby is
 module TreeLas
 
 include("queues.jl")
+include("utils.jl")
 include("tree_dp.jl")
 # include("tree_dp.old.jl")
 include("mgt.jl")

@@ -21,3 +21,16 @@ Furtheron, we presend a general graph solver that iteratively picks a subtree an
 ```@autodocs
 Modules = [TreeLas.GapLas]
 ```
+
+
+Utility Functions
+----------------
+
+```@meta
+DocTestSetup  = quote
+    import TreeLas.Utils: sum2
+end
+```
+```@autodocs
+Modules = [TreeLas.Utils]
+```
