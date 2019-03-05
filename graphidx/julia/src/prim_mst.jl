@@ -66,10 +66,9 @@ function prim_mst_edges(
     pq::PriorityQueue{Int, Float64},
     root::Int = 1,
 )::Vector{Int}
-    n = length(parent)
-    @assert length(selected) == n
+    @assert length(selected) == length(parent)
     @assert isempty(pq)
-    sizehint!(pq, n)
+    sizehint!(pq, length(parent))
 
     # see CLRS page 572 (2nd edition)
     finished .= false
