@@ -1,11 +1,9 @@
 module TestGrid
-include("../src/grid.jl")
 
 using Test
 import LinearAlgebra: norm, norm2
-
-import .Grid: Pixel, line_D, incmat
-import .Grid: GridGraph, iter_edges, iter_edges_pixel, num_edges, num_nodes
+import GraphIdx.Grid: Pixel, line_D, incmat
+import GraphIdx.Grid: GridGraph, iter_edges, iter_edges_pixel, num_edges, num_nodes
 
 
 @testset "Pixel                          " begin
