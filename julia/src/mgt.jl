@@ -51,7 +51,7 @@ function gaplas(
     lambda::Vector{Float64};
     root_node::Int = 1,
     mu::Float64 = 1.0,
-    max_iter::Int = 3,
+    max_iter::Integer = 3,
     verbose::Bool = true,
     process::Fu1 = x->nothing,
     dprocess::Fu2 = α->nothing,
@@ -70,6 +70,7 @@ function gaplas(
     local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
     local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
+    local γ_sorted = similar(γ)
 
     for it in 1:max_iter
         gap_vec!(γ, x, alpha, graph, -1.0)
@@ -78,16 +79,17 @@ function gaplas(
                 tree_gamma_check(γ, alpha, tlam, selected,
                                  x, z, dp_mem.proc_order, parent)
             end
+            γ_sorted .= γ .* -1
+            local quant = Statistics.quantile!(γ_sorted, [0.90, 0.95, 0.98])
             println(@sprintf("%4d %12.4f %12.4f  %8f %8f %8f",
                              it,
                              -sum(γ),
                              primal_objective(x, y, graph),
-                             Statistics.quantile(-γ, [0.90, 0.95, 0.98])...))
+                             quant...))
         end
 
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
-
         z .= y
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
         tree_dp!(x, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
@@ -169,8 +171,8 @@ function primal_objective(
     graph::G,
     mu::F2 = ConstantWeights(1.0),
 )::F where {F,N,G,F1,F2}
-    n = length(x)
-    @assert length(y) == n
+    @assert length(y) == length(x)
+    local n = length(x)
     local obj::Ref{F} = Ref{F}(0.5 * sum(mu(i) * (x[i] - y[i])^2 for i = 1:n))
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
         obj[] += lam * abs(x[u] - x[v])
