@@ -75,14 +75,32 @@ function gaplas(
         if verbose
             if n < 30
                 let γ = round.(-γ, digits=2)
-                    @show γ
+                    # @show γ
                 end
                 if it > 1
-                    for i in selected
-                        if i >= 1
-                            @assert(abs(γ[i]) < 1e-15,
-                                    "i=$i: $(edges[i])\n γ=$(γ[i])\n α=$(alpha[i])" *
-                                    "\n $(x[edges[i][1]]) $(x[edges[i][2]])")
+                    @assert selected[1] < 0
+                    for i in @view selected[2:end]
+                        if abs(γ[i]) >= 1e-15
+                            talp = vec(x) - vec(z)
+                            for i in @view dp_mem.proc_order[1:end-1]
+                                talp[parent[i]] += talp[i]
+                            end
+                            alp = zeros(m)
+                            for i in @view selected[2:end]
+                                u, v = edges[i]
+                                alp[i] = parent[u] == v ? talp[u] : -talp[v]
+                            end
+                            for i in 1:m
+                                println(@sprintf("%7.3f  %7.3f", alp[i], alpha[i]))
+                            end
+                            @assert(
+                                abs(γ[i]) < 1e-15,
+                                "i=$i: $(edges[i])\n γ=$(γ[i])\n α=$(alpha[i])" *
+                                "\n $(x[edges[i][1]]) $(x[edges[i][2]])" *
+                                "\n $(dp_mem.proc_order)" *
+                                "\n $(y≈z)" *
+                                "\n $(talp ≈ tlam)" * ""
+                            )
                         end
                     end
                 end
@@ -111,13 +129,15 @@ function gaplas(
 
         # compute dual ==> update alpha
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
-            dual!(tree_alpha, x, z, dp_mem.proc_order, parent)
+            tree_alpha .= vec(x) .- vec(z)
+            dual!(tree_alpha, dp_mem.proc_order, parent)
+            @assert selected[1] < 0
             for i in @view selected[2:end]
                 local u::Int, v::Int = edges[i]
                 alpha[i] = if parent[v] == u
-                    +tree_alpha[u]
-                elseif parent[u] == v
                     -tree_alpha[v]
+                elseif parent[u] == v
+                    +tree_alpha[u]
                 else
                     error("Should not happen")
                 end
