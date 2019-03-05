@@ -6,12 +6,6 @@ values (computed by `gap_vec!`) is selected.  The non-tree edge-flows
 are forwarded into the input `y`.  Then the tree solver is used and
 the tree-edges are updated.
 
-## Refactoring
-
-Prim's MST algorithm needs an index telling for each node the
-neighbors.  The same is needed for DFS traversal.  Furtheron, an edge
-order need to be specified, i.e. we should provide an edge iterator.
-
 """
 module MGT
 
@@ -24,6 +18,7 @@ import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx: WeightedGraph, enumerate_edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
+
 
 
 """
