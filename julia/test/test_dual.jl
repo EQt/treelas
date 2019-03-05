@@ -1,5 +1,5 @@
 using Test
-import TreeLas: dual!
+import TreeLas.Dual: dual!
 import Random: MersenneTwister
 
 
