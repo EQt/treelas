@@ -14,11 +14,11 @@ module TreeLas
 
 include("queues.jl")
 include("utils.jl")
+include("dual.jl")
 include("tree_dp.jl")
 # include("tree_dp.old.jl")
 include("mgt.jl")
-include("gaplas.jl")
-include("dual.jl")
+# include("gaplas.jl")
 # include("cxx.jl")
 
 end

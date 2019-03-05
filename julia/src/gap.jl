@@ -1,4 +1,5 @@
 import GraphIdx.LinA: IncMat
+import GraphIdx: enumerate_edges
 
 
 """
@@ -48,4 +49,3 @@ function gap_vec!(γ::Vector{F},
         end
     end
 end
-

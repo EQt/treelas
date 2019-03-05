@@ -1,3 +1,7 @@
+module Dual
+
+include("gap.jl")
+
 import GraphIdx.Tree: ChildrenIndex, dfs_walk
 
 
@@ -84,4 +88,6 @@ function dual!(
         end
     end
     return alpha
+end
+
 end

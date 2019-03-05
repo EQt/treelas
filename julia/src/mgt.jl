@@ -9,9 +9,6 @@ the tree-edges are updated.
 """
 module MGT
 
-include("gap.jl")
-include("dual.jl")
-
 import Statistics
 import Printf: @sprintf
 import GraphIdx.Tree: RootedTree
@@ -20,6 +17,7 @@ import GraphIdx: WeightedGraph, enumerate_edges
 import GraphIdx: ConstantWeights, ArrayWeights
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
+import ..Dual: dual!, gap_vec!
 
 
 function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
