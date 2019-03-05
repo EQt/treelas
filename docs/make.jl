@@ -14,8 +14,8 @@ makedocs(
     clean=true,
     pages=[
         "TreeLas" => "index.md",
+        "Tree Solver" => "tree_dp.md",
         "Piecewise-Linear" => "pwl.md",
-        "Queues" => "queues.md",
         "GraphIdx" => "graphidx.index.md",
     ],
     format = Documenter.HTML(

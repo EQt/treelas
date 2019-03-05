@@ -8,10 +8,7 @@ Modules = [TreeLas]
 Exact Tree Solver
 ----------------
 
-The exact solver is found in [`TreeLas.TreeDP`](@ref).
-```@autodocs
-Modules = [TreeLas.TreeDP]
-```
+The exact solver is found in the module [`TreeLas.TreeDP`](@ref).
 
 
 General Graphs
