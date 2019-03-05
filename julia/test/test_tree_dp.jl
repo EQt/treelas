@@ -136,7 +136,7 @@ end
 
     local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
     let gam = fill(NaN, n)
-        TreeLas.MGT.gap_vec!(gam, x, tree_alpha, wtree)
+        TreeLas.MGT.gap_vec!(gam, x, -tree_alpha, wtree)
         @test isnan(gam[root])
         gam[root] = 0.0
         wrong_ids = [i for i in 1:n if abs(gam[i]) > 1e-16]
