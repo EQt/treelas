@@ -26,7 +26,7 @@ import GraphIdx: WeightedGraph, enumerate_edges
 import ..TreeDP: TreeDPMem, tree_dp!, ConstantWeights, ArrayWeights
 
 
-@inline function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
+function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
     for (i, (u, v)) in enumerate(edges)
         if parent[v] == u
             tlam[v] = lambda[i]
@@ -78,12 +78,10 @@ function gaplas(
                 tree_gamma_check(γ, alpha, tlam, selected,
                                  x, z, dp_mem.proc_order, parent)
             end
-            local obj::Ref{Float64} = Ref{Float64}(
-                0.5 * sum((x[i] - y[i])^2 for i = 1:n))
-            enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
-                obj[] += lam * abs(x[u] - x[v])
-            end
-            println(@sprintf("%4d %12.4f %12.4f  %8f %8f %8f", it, -sum(γ), obj[],
+            println(@sprintf("%4d %12.4f %12.4f  %8f %8f %8f",
+                             it,
+                             -sum(γ),
+                             primal_objective(x, y, graph),
                              Statistics.quantile(-γ, [0.90, 0.95, 0.98])...))
         end
 
@@ -162,6 +160,22 @@ function tree_gamma_check(γ, alpha, tlam, selected, x, z, proc_order, parent)
             )
         end
     end
+end
+
+
+function primal_objective(
+    x::Array{F,N},
+    y::Array{F,N},
+    graph::G,
+    mu::F2 = ConstantWeights(1.0),
+)::F where {F,N,G,F1,F2}
+    n = length(x)
+    @assert length(y) == n
+    local obj::Ref{F} = Ref{F}(0.5 * sum(mu(i) * (x[i] - y[i])^2 for i = 1:n))
+    enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
+        obj[] += lam * abs(x[u] - x[v])
+    end
+    return obj[]
 end
 
 
