@@ -53,8 +53,39 @@ function non_tree_idx(n::Int, edges::Vector{E}, selected) where {E}
 end
 
 
-@testset "GapLax: demo 3x7               " begin
+function non_tree_edges(edges::Vector{E}, selected, root) where {E}
+    try
+        selected[root], selected[1] = selected[1], selected[root]
+        @assert selected[1] == -1
+        nt = copy(edges)
+        for s in @view selected[2:end]
+            nt[s] = (0, 0)
+        end
 
+        local m2::Int = length(edges)
+        local i::Int = 1
+        while true
+            while nt[i][1] > 0 && i < m2
+                i += 1
+            end
+            while nt[m2][1] <= 0 && i <= m2
+                m2 -= 1
+            end
+            if i < m2
+                nt[i], nt[m2] = nt[m2], nt[i]
+                i += 1
+                m2 -= 1
+            else
+                return resize!(nt, m2)
+            end
+        end
+    finally
+        selected[root], selected[1] = selected[1], selected[root]
+    end
+end
+
+
+@testset "GapLax: demo 3x7               " begin
     grid = GraphIdx.Grid.GridGraph(3, 7)
     edges, lam = GraphIdx.Grid.collect_edges(grid)
     y = [0.62 0.73 0.71 1.5 1.17 0.43 1.08
@@ -71,9 +102,12 @@ end
     selected = pmem.selected
     cidx = GraphIdx.Tree.ChildrenIndex(pi)
 
-    @assert selected[1] == -1
-    non_tree_edges = edges[selected[2:end]]
-    lcas = GraphIdx.Tree.lowest_common_ancestors(cidx, pi, non_tree_edges)
+    ntree_edges = non_tree_edges(edges, selected, root_node)
+    @test minimum(map(e -> min(e...), ntree_edges)) >= 1
+    @test maximum(map(e -> max(e...), ntree_edges)) <= m
+    @test length(ntree_edges) == m - n + 1
+
+    lcas = GraphIdx.Tree.lowest_common_ancestors(cidx, pi, ntree_edges)
 
     @test sortperm(nidx.pi, by=e -> e[2]) == sort_edges(nidx)
 
