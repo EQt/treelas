@@ -27,7 +27,7 @@ struct PrimMstMem
     selected::Vector{Int}
     pq::PriorityQueue{Int, Float64}
 
-    PrimMstMem(edges::Vector, n) =
+    PrimMstMem(edges::Vector{E}, n::Integer) where {E} =
         PrimMstMem(NeighborIndex(n, edges))
 
     PrimMstMem(head::Vector{I}, tail::Vector{I}, n::Integer) where {I} =
