@@ -23,7 +23,7 @@ function sort_edges(nidx::NeighborIndex)
 end
 
 
-function non_tree_idx_try1(nidx, selected)
+function non_tree_idx(nidx::NeighborIndex, selected)
     m = num_edges(nidx)
     nonidx = deepcopy(nidx)
     edge_rank = sort_edges(nidx)
@@ -37,7 +37,19 @@ function non_tree_idx_try1(nidx, selected)
         nonidx.pi[ri] = (u, 0)
         nonidx.pi[rj] = (v, 0)
     end
+    error("not finished")
     return nonidx
+end
+
+
+function non_tree_idx(n::Int, edges::Vector{E}, selected) where {E}
+    edges = copy(edges)
+    for s in selected
+        if s > 0
+            edges[s] = (0, 0)
+        end
+    end
+    return NeighborIndex(n, edges)
 end
 
 
@@ -60,5 +72,5 @@ cidx = GraphIdx.Tree.ChildrenIndex(pi)
 
 @test sortperm(nidx.pi, by=e -> e[2]) == sort_edges(nidx)
 
-
+nonidx = non_tree_idx(n, edges, selected)
 end
