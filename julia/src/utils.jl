@@ -48,29 +48,4 @@ function primal_objective(
 end
 
 
-"""
-    primal_from_dual(y, α, graph)
-
-If ``D`` is the oriented incidence matrix of `graph`,
-return ``y + D'*α``.
-"""
-primal_from_dual(y::Array{Float64,N}, alpha::Array{Float64}, graph::G)::Array{Float64,N} where {N,G} =
-    primal_from_dual!(copy(y), alpha, graph)
-
-
-"""
-
-    primal_from_dual!(y, α, graph)
-
-Similar to [`primal_from_dual`](@ref) but store the result in y.
-"""
-function primal_from_dual!(x::Array{Float64}, alpha::Array{Float64}, graph::G)::Float64 where G
-    enumerate_edges(graph) do ei::Int, u::Int, v::Int, _::Float64
-        x[u] += alpha[ei]
-        x[v] -= alpha[ei]
-    end
-    return x
-end
-
-
 end

@@ -83,11 +83,17 @@ function gaplas(
             end
             γ_sorted .= γ .* -1
             local quant = Statistics.quantile!(γ_sorted, [0.90, 0.95, 0.98])
-            println(@sprintf("%4d %12.4f %12.4f %12.4f    %8f %8f %8f",
+            local gap = -sum(γ)
+            local dual_obj = 0.5*sum2(x)
+            local frel = 0.5*sum2(y) - dual_obj
+            local prim_obj = primal_objective(x, y, graph)
+
+            println(@sprintf("%4d %12.4f %12.4f %12.4f %12.4f    %8f %8f %8f",
                              it,
-                             -sum(γ),
-                             0.5*sum2(x),
-                             primal_objective(x, y, graph),
+                             gap,
+                             dual_obj,
+                             prim_obj,
+                             0.5*sum2(y),
                              quant...))
         end
 
