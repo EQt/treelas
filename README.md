@@ -6,11 +6,10 @@ TreeLas
 Fused Lasso solver for tree graphs, implemented in C++ with Python bindings.
 We exactly compute the minimizer of the convex function
 
-_f_(_x_) := 
-  ∑<sub>_v_ ∈ _V_</sub> _μ_<sub>_v_</sub> (_x_<sub>_v_</sub> - _y_<sub>_v_</sub>)<sup>2</sup>
-+ ∑<sub>(_u_,_v_) ∈ _E_</sub>_λ_<sub>_uv_</sub> |_x_<sub>_u_</sub> - _x_<sub>_v_</sub>|
-
-whereby _E_ are the edges of a tree.
+```math
+f(x) = \\frac{1}{2} \\sum_{i=1}^n \\mu_i (x_i - y_i)^2 + \\sum_{(i,j) \\in E} \\lambda_{ij} |x_i - x_j|
+```
+whereby _E_ are the edges of a tree graph.
 
 There are several implementations to be able assess e.g. different memory layouts, traversing orders, etc.
 
@@ -146,4 +145,3 @@ Released 2018-12-19
 
 [condat]: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
 [glmgen]: https://github.com/glmgen/glmgen
-
