@@ -48,8 +48,10 @@ function gap_vec!(
     c::F = F(1.0),
 ) where {F<:Real,Graph}
     enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
-        let diff = x[u] - x[v]
-            γ[ei] = c * (lam*abs(diff) - α[ei] * diff)
+        if u < v
+            let diff = x[u] - x[v]
+                γ[ei] = c * (lam*abs(diff) - α[ei] * diff)
+            end
         end
     end
 end
