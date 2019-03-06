@@ -88,15 +88,18 @@ function gaplas(
             local frel = 0.5*sum2(y) - dual_obj
             local prim_obj = primal_objective(x, y, graph)
             local x2 = primal_from_dual(y, alpha, graph)
-            local xdiff = sum2(x - x2)
+            @assert maximum(abs(xi - xi2) for (xi, xi2) in zip(x, x2)) < 1e-12
 
-            println(@sprintf("%4d %12.4f %12.4f %12.4f %12.4f    %8f %8f %8f",
+            println(@sprintf("%4d %12.4f %12.4f %12.4f %12.4f %12.4f",
+                              # "%8f %8f %8f",
                              it,
                              gap,
                              dual_obj,
                              prim_obj,
-                             xdiff,
-                             quant...))
+                             prim_obj + dual_obj - gap,
+                             0.5sum2(y),
+                             ))
+                             # quant...))
         end
 
         prim_mst_edges(γ, root_node, mst_mem)

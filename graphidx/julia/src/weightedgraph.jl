@@ -15,9 +15,11 @@ num_edges(g::WeightedGraph) =
 
 
 function enumerate_edges(f::Function, g::WeightedGraph)
-    for v in 1:num_nodes(g)
-        for (u, ei) in g.idx[v]
-            f(ei, v, u, g.lam[ei])
+    for u in 1:num_nodes(g)
+        for (v, ei) in g.idx[u]
+            if u < v
+                f(ei, u, v, g.lam[ei])
+            end
         end
     end
 end

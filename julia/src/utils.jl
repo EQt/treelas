@@ -42,7 +42,7 @@ function primal_objective(
     local n = length(x)
     local obj::Ref{F} = Ref{F}(0.5 * sum(mu(i) * (x[i] - y[i])^2 for i = 1:n))
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
-        obj[] += u < v ? lam * abs(x[u] - x[v]) : 0
+        obj[] += lam * abs(x[u] - x[v])
     end
     return obj[]
 end
