@@ -117,6 +117,9 @@ function primal_from_dual!(
     graph::G,
 )::Array{F,N} where {F<:Real,N,G}
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, _::Float64
+        if ei < 30
+            @show ei, u, v
+        end
         x[u] += alpha[ei]
         x[v] -= alpha[ei]
     end

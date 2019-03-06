@@ -25,7 +25,7 @@ import GraphIdx: WeightedGraph, enumerate_edges
 import GraphIdx: ConstantWeights, ArrayWeights
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
-import ..Dual: dual!, gap_vec!
+import ..Dual: dual!, gap_vec!, primal_from_dual
 
 
 function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
@@ -87,13 +87,21 @@ function gaplas(
             local dual_obj = 0.5*sum2(x)
             local frel = 0.5*sum2(y) - dual_obj
             local prim_obj = primal_objective(x, y, graph)
+            local x2 = primal_from_dual(y, alpha, graph)
+            if n < 30
+                @show y
+                @show x
+                @show x2
+                @show alpha
+            end
+            local xdiff = sum2(x - x2)
 
             println(@sprintf("%4d %12.4f %12.4f %12.4f %12.4f    %8f %8f %8f",
                              it,
                              gap,
                              dual_obj,
                              prim_obj,
-                             0.5*sum2(y),
+                             xdiff,
                              quant...))
         end
 
