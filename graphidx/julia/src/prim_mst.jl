@@ -45,7 +45,16 @@ struct PrimMstMem
 end
 
 
-prim_mst_edges(weights, root, mem::PrimMstMem) = 
+prim_mst_edges(
+    weights::Vector{Float64},
+    root::Int,
+    edges::Vector{E},
+    n::Integer,
+) where {E} =
+    prim_mst_edges(weights, root, PrimMstMem(edges, n))
+
+
+prim_mst_edges(weights::Vector{Float64}, root::Int, mem::PrimMstMem) = 
     prim_mst_edges(weights,
                    mem.finished,
                    mem.dist,
