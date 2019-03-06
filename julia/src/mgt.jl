@@ -1,5 +1,6 @@
 """
-# Maximum Gap Tree
+Maximum Gap Tree
+================
 
 Also called **Gap Tree Lasso (GapLas)**.
 
@@ -8,7 +9,24 @@ values (computed by `gap_vec!`) is selected.  The non-tree edge-flows
 are forwarded into the input `y`.  Then the tree solver is used and
 the tree-edges are updated.
 
-## Refactoring
+Graph Indexes
+-------------
+
+For the different steps, several indexes are necessary
+1. [`Dual.gap_vec!`](@ref) needs to access every edge once.
+
+2. Prim's minimum spanning tree: `NeighborIndex` providing outgoing
+   edges for a node (i.e. every edge is included in two node's
+   adjacency lists)
+
+3. Once the tree has been determined we need to have a `ChildrenIndex`
+   from the `parent` (e.g. for `dfs_walk`); also needed for computing
+   the `Queues` layout (parenthesis tree representation) and the
+   processing order.
+
+
+Refactoring
+-----------
 
 In principle, it is not necessary to actually compute and store the
 edges (and weights); it suffices to have access via `enumerate_edges`
