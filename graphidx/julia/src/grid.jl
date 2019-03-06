@@ -377,4 +377,22 @@ struct ImplicitGridGraph
 end
 
 
+"""
+    collect_edges(::GridGraph)
+
+Return a `Vector{Tuple{Int,Int}}` of edges and `Vector{Float64}` of weights.
+"""
+function collect_edges(graph::GridGraph)
+    local m = num_edges(graph)
+    local n = num_nodes(graph)
+    edges = Vector{Tuple{Int,Int}}(undef, m)
+    lam = Vector{Float64}(undef, m)
+    enumerate_edges(graph) do ei::Int, u::Int, v::Int, l::Float64
+        edges[ei] = (u, v)
+        lam[ei] = l
+    end
+    return edges, lam
+end
+
+
 end
