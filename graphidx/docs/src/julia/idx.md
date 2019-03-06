@@ -23,6 +23,7 @@ Tree Graphs
 
 ```@docs
 GraphIdx.Tree.ChildrenIndex
+GraphIdx.Tree.root_node(::GraphIdx.Tree.ChildrenIndex)
 ```
 Once, memory has been allocated we can re-use it to store different tree (of same size!) in it.
 ```@docs

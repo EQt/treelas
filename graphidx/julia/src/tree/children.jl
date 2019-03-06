@@ -5,7 +5,6 @@ import ..num_edges
 
 """
 Provide constant time access to children of a node by index operator.
-By convention, the root node is stored at ChildrenIndex.idx[1].
 """
 struct ChildrenIndex
     idx::Vector{Int}
@@ -19,6 +18,14 @@ end
 
 num_nodes(c::ChildrenIndex) = length(c.value)
 
+
+"""
+    root_node(::ChildrenIndex)
+
+Return the root node of the underlying tree.
+This is possible because by convention the root node is stored at
+`ChildrenIndex.idx[1]`.
+"""
 root_node(c::ChildrenIndex) = c.value[1]
 
 Base.length(c::ChildrenIndex) = num_nodes(c)
