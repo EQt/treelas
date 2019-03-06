@@ -70,7 +70,14 @@ pi = GraphIdx.prim_mst_edges(γ, root_node, pmem)
 selected = pmem.selected
 cidx = GraphIdx.Tree.ChildrenIndex(pi)
 
+@assert selected[1] == -1
+non_tree_edges = edges[selected[2:end]]
+lcas = GraphIdx.Tree.lowest_common_ancestors(cidx, pi, non_tree_edges)
+
 @test sortperm(nidx.pi, by=e -> e[2]) == sort_edges(nidx)
 
 nonidx = non_tree_idx(n, edges, selected)
+@test num_edges(nonidx) == m - n + 1
+
+
 end
