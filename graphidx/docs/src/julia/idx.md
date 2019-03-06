@@ -21,6 +21,11 @@ Modules = [GraphIdx.Cluster]
 Tree Graphs
 ----------
 
+```@meta
+DocTestSetup  = quote
+    import GraphIdx.Tree: ChildrenIndex
+end
+```
 ```@docs
 GraphIdx.Tree.ChildrenIndex
 GraphIdx.Tree.root_node(::GraphIdx.Tree.ChildrenIndex)
