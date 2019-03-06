@@ -101,7 +101,7 @@ end
 If ``D`` is the oriented incidence matrix of `graph`,
 return ``y + D'*α``.
 """
-primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::G)::Array{F,N} where {F,N,G} =
+primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::G) where {F,N,G} =
     primal_from_dual!(copy(y), alpha, graph)
 
 
