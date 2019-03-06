@@ -59,6 +59,11 @@ Directory Structure
 ChangeLog
 ---------
 
+
+### v0.12.1
+- Julia: Fix duality gap computation (match C++ code)
+- Julia: Several sanity checks in `gaplas`
+
 ### v0.12.0
 - Julia: Refactored mgt.jl to reduce the input needed
 - Julia: Make MGT callable on grid graphs
