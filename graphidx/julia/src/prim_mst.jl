@@ -2,7 +2,7 @@ import .Utils.Heap: PriorityQueue, dequeue!
 
 
 """
-    prim_mst_edges(g, weights, [root = 1])
+    prim_mst_edges(n, weights, [root = 1])
 
 [Prim's algorithm](https://en.wikipedia.org/wiki/Prim%27s_algorithm)
 for minimum spanning tree.
@@ -10,7 +10,12 @@ Start from node `root` (will become the root node of the spanning
 tree).  Return the parent vector and a Boolean vector indicating for
 each edge whether the edge is part of the spanning tree.
 """
-function prim_mst_edges(n::Integer, edges, weights::Array{Float64}, root = 1)
+function prim_mst_edges(
+    n::Integer,
+    edges::Vector{E},
+    weights::Array{Float64},
+    root::Int = 1,
+) where {E}
     mem = PrimMstMem(edges, n)
     prim_mst_edges(weights, root, mem)
     # swap root element to front
