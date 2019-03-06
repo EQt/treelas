@@ -25,7 +25,7 @@ import GraphIdx: WeightedGraph, enumerate_edges
 import GraphIdx: ConstantWeights, ArrayWeights
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
-import ..Dual: dual!, gap_vec!, primal_from_dual
+import ..Dual: dual!, gap_vec!, primal_from_dual!
 
 
 function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
@@ -72,7 +72,10 @@ function gaplas(
     local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
     local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
-    local γ_sorted = similar(γ)
+    if verbose
+        local γ_sorted = similar(γ)
+        local x2 = similar(x)
+    end
 
     for it in 1:max_iter
         gap_vec!(γ, x, alpha, graph, -1.0)
@@ -81,23 +84,21 @@ function gaplas(
                 tree_gamma_check(γ, alpha, tlam, selected,
                                  x, z, dp_mem.proc_order, parent)
             end
-            γ_sorted .= γ .* -1
-            local quant = Statistics.quantile!(γ_sorted, [0.90, 0.95, 0.98])
+            local quant = Statistics.quantile!(γ_sorted .= γ .* -1,
+                                               [0.90, 0.95, 0.98])
             local gap = -sum(γ)
             local dual_obj = 0.5*sum2(x)
-            local frel = 0.5*sum2(y) - dual_obj
             local prim_obj = primal_objective(x, y, graph)
-            local x2 = primal_from_dual(y, alpha, graph)
-            @assert maximum(abs(xi - xi2) for (xi, xi2) in zip(x, x2)) < 1e-12
+            primal_from_dual!(x2 .= y, alpha, graph)
+            @assert x ≈ x2
+            @assert prim_obj + dual_obj - gap ≈ 0.5sum2(y)
 
-            println(@sprintf("%4d %12.4f %12.4f %12.4f %12.4f %12.4f",
+            println(@sprintf("%4d %12.4f %12.4f %12.4f",
                               # "%8f %8f %8f",
                              it,
                              gap,
                              dual_obj,
                              prim_obj,
-                             prim_obj + dual_obj - gap,
-                             0.5sum2(y),
                              ))
                              # quant...))
         end
