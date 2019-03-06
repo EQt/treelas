@@ -1,3 +1,11 @@
+"""
+In a graph with numbered edges, provide access to neighbors and edge numbers for a specified node.
+
+!!! note
+
+    [`NeighborIndex`](@ref) always includes both directions, i.e. for an edge `(u, v)` with edge index `ei`, it is
+    `(u, ei) ∈ neighbors[v]` and `(v, ei) ∈ neighbors[u]`.
+"""
 struct NeighborIndex
     idx::Vector{Int}
     pi::Vector{Tuple{Int, Int}}
@@ -7,6 +15,11 @@ end
     view(c.pi, c.idx[j]:c.idx[j+1]-1)
 
 
+"""
+    num_edges(::NeighborIndex)
+
+Actual number of (undirected) edges (**not counting** both directions).
+"""
 num_edges(c::NeighborIndex) = length(c.pi) ÷ 2
 
 num_nodes(c::NeighborIndex) = length(c.idx) - 1
