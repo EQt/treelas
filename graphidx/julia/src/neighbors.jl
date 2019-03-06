@@ -36,7 +36,7 @@ If `head[i] <= 0` then edge `i` is excluded.
 """ 
 function NeighborIndex(n::Int, head::Vector{Int}, tail::Vector{Int})
     @assert length(head) == length(tail)
-    NeighborIndex(n, count(i -> i > 0, head), () -> zip(head, tail))
+    NeighborIndex(n, () -> zip(head, tail))
 end
 
 
@@ -46,18 +46,19 @@ end
 Same but for edges like `[(1, 2), (2, 3)]`
 """
 NeighborIndex(n::Int, edges::Vector{Tuple{Int, Int}}) =
-    NeighborIndex(n, count(i -> i[1] > 0, edges), () -> edges)
+    NeighborIndex(n, () -> edges)
 
 """
     NeighborIndex(n, m, iter::Function)
 
 Provide an iterator over the edges
 """
-function NeighborIndex(n::Int, m::Int, iter::Function)
-    pi = Vector{Tuple{Int,Int}}(undef, 2m)
+function NeighborIndex(n::Int, iter::Function)
+    local m::Int = 0
     idx = zeros(Int, n+1)
     for (h::Int, t::Int) in iter()
         h <= 0 && continue
+        m += 1
         idx[h] += 1
         idx[t] += 1
     end
@@ -70,6 +71,7 @@ function NeighborIndex(n::Int, m::Int, iter::Function)
         deg_i, deg_ii = deg_ii, idx[i+1]
     end
     idx[n+1] = acc
+    pi = Vector{Tuple{Int,Int}}(undef, 2m)
     @assert(idx[end] + deg_i == 2m + 1,
             "idx[$(length(idx))]: $(idx[end] + deg_i) != $(2m + 1)")
     for (i, (u, v)) in enumerate(iter())
