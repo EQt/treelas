@@ -53,7 +53,17 @@ function non_tree_idx(n::Int, edges::Vector{E}, selected) where {E}
 end
 
 
-function non_tree_edges(edges::Vector{E}, selected, root) where {E}
+function swap_to_front(f::Function, selected::Vector{E}, root::Integer)
+    try
+        selected[root], selected[1] = selected[1], selected[root]
+        f(selected)
+    finally
+        selected[root], selected[1] = selected[1], selected[root]
+    end
+end        
+
+
+function non_tree_edges(edges::Vector{E}, selected, root::Int) where {E}
     try
         selected[root], selected[1] = selected[1], selected[root]
         @assert selected[1] == -1
