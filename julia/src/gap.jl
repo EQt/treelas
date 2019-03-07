@@ -53,3 +53,29 @@ function gap_vec!(
     γ .= c .* ((α .* dif) .+ abs.(dif))
     return γ
 end
+
+
+"""
+    wolfe_gap_step(x0, α0, x1, α1)
+
+Optimal gap step width according to Wolfe's condition, i.e.
+compute the optimal step width ``θ ∈ [0, 1]`` to walk
+from `(x0, α0)` to `(x1, α1)` such that the `sum(gap_vec)` will be minimized.
+"""
+function wolfe_gap_step(
+    x0::Array{F},
+    α0::Vector{F},
+    x1::Array{F},
+    α1::Vector{F},
+    g::Graph
+)::F where {F<:Real,Graph}
+    θ::F = 0
+    local m = num_edges(g)
+    d0 = Vector{F}(undef, m)
+    d1 = Vector{F}(undef, m)
+    enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
+        d0[ei] = x0[u] - x0[u]
+        d1[ei] = x1[u] - x1[u]
+    end
+    return θ
+end
