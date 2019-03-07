@@ -7,8 +7,8 @@ For a list of pairs `[(u1, v1), ..., (uk, vk)]` compute the
 ancestor (parent, grand-parent, grand-grand-parent, etc.) of both, `ui` and `vi`.
 
 Runtime is `O(length(tree) + length(pairs))`.
-More precisely, the inverse Ackermann function is at most 4 for all
-practical instances.
+More precisely, due to the use of the [`GraphIdx.Utils.UnionFind`](@ref) data structure, the inverse Ackermann function is also included;
+however the impact is at most 4 for all practical instances (``n < 10^{100}``).
 
 See CLRS (3rd edition) page 584 or
 [`networkx`](https://github.com/networkx/networkx/blob/master/networkx/algorithms/lowest_common_ancestors.py).
