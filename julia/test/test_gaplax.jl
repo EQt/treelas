@@ -53,7 +53,7 @@ function non_tree_idx(n::Int, edges::Vector{E}, selected) where {E}
 end
 
 
-function swap_to_front(f::Function, selected::Vector{E}, root::Integer)
+function swap_to_front(f::Function, selected::Vector{E}, root::Integer) where {E}
     try
         selected[root], selected[1] = selected[1], selected[root]
         f(selected)
@@ -63,9 +63,8 @@ function swap_to_front(f::Function, selected::Vector{E}, root::Integer)
 end        
 
 
-function non_tree_edges(edges::Vector{E}, selected, root::Int) where {E}
-    try
-        selected[root], selected[1] = selected[1], selected[root]
+function non_tree_edges(edges::Vector{E}, selected::Vector{I}, root::Int) where {E,I}
+    swap_to_front(selected, root) do selected::Vector{I}
         @assert selected[1] == -1
         nt = copy(edges)
         for s in @view selected[2:end]
@@ -89,8 +88,6 @@ function non_tree_edges(edges::Vector{E}, selected, root::Int) where {E}
                 return resize!(nt, m2)
             end
         end
-    finally
-        selected[root], selected[1] = selected[1], selected[root]
     end
 end
 
