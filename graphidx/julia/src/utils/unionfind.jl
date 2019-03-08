@@ -4,6 +4,21 @@
 
 Classical Union-Find data structure with path compression as described
 e.g. in CLRS in Chapter 21 "Disjooint Sets" (3rd edition).
+
+## Example
+
+```jldoctest
+julia> u = UnionFind(2);
+
+julia> find(u, 1) == find(u, 2)
+false
+
+julia> unite!(u, find(u, 1), find(u, 2));
+
+julia> find(u, 1) == find(u, 2)
+true
+
+```
 """
 struct UnionFind
     p::Vector{Int}
