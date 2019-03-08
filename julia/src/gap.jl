@@ -74,8 +74,8 @@ function wolfe_gap_step(
     d0 = Vector{F}(undef, m)
     d1 = Vector{F}(undef, m)
     enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
-        d0[ei] = x0[u] - x0[u]
-        d1[ei] = x1[u] - x1[u]
+        d0[ei] = x0[u] - x0[v]
+        d1[ei] = x1[u] - x1[v]
     end
     return θ
 end
