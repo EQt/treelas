@@ -27,22 +27,22 @@ function lowest_common_ancestors(
     local k = num_edges(pairs)
     local n = num_nodes(tree)
     local uf = UnionFind(n)
-    local colors::Vector{Bool} = fill(false, n)
-    local ancestors::Vector{Int} = collect(Int, 1:n)
+    local colors = fill(false, n)
+    local ancestors = collect(Int, 1:n)
     lcas = fill(-1, k)
 
     dfs_walk(tree) do v::Int
         if v >= 0   # v just finished
             for (u, ei) in pairs[v]
                 if colors[u]
-                    lcas[ei] = ancestors[Int(uf[u])]
+                    lcas[ei] = ancestors[uf[u]]
                 end
             end
 
             colors[v] = true
             if v != parent[v]
                 unite!(uf, uf[v], uf[parent[v]])
-                ancestors[Int(uf[parent[v]])] = parent[v]
+                ancestors[uf[parent[v]]] = parent[v]
             end
         end
     end
