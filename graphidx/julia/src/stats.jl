@@ -28,15 +28,11 @@ whereby `∂` is the derivative of the convex function ``f``
 Return the interval ``[a, b]`` containing the minimizer (if unique ``a = b``).
 
 """
-weighted_median(x::Vector{X}, w::Vector{W}, ∂::F= _ -> W(0)) where {X, W, F} =
-    weighted_median!(copy(x), copy(w), ∂)
-
-
 weighted_median(x::Vector{X}) where {X} =
-    weighted_median!(copy(x), ones(length(x)))
+    weighted_median(x, ones(length(x)))
 
 
-function weighted_median!(
+function weighted_median(
     x::Vector{X},
     w::Vector{W},
     ∂::F = _ -> W(0),

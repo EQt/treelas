@@ -5,7 +5,10 @@ import GraphIdx.Stats: weighted_median
 @testset "unweighted median              " begin
     @test weighted_median([13]) == (13, 13)
     @test weighted_median([13, -42]) == (-42, 13)
-    @test weighted_median([1, 3.9, 50, 13]) == (3.9, 13)
+    let x = [1, 3.9, 50, 13]
+        @test weighted_median(copy(x)) == (3.9, 13)
+        @test x == [1, 3.9, 50, 13]
+    end
     @test weighted_median([1, 3.9, 50, 13, 5]) == (5, 5)
 end
 
