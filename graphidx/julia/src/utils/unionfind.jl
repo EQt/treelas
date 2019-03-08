@@ -36,7 +36,7 @@ function Base.show(io::IO, u::UnionFind)
 end
 
 
-function init(u::UnionFind)
+function reset!(u::UnionFind)
     for i in 1:length(u.p)
         u.p[i] = i
     end
