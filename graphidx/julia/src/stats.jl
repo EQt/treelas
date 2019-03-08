@@ -12,7 +12,7 @@ function permcumsum(w::Array{W}, pi::Vector{I}) where {W, I<:Integer}
         acc += w[j]
         w[j] = acc
     end
-    return w
+    return ArrayWeights(w)
 end
 
 
@@ -77,6 +77,5 @@ function weighted_median(
         return x[pi[first]], x[pi[last]]
     end
 end
-    
 
 end
