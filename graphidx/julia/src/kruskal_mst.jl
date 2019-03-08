@@ -1,4 +1,4 @@
-import .Utils: UnionFind, unite!, init, find
+import .Utils: UnionFind, unite!, reset!, find
 
 
 """
@@ -19,7 +19,7 @@ end
 function _kruskal_mst(weight, edges, selected, order, unfi)
     selected .= false
     sortperm!(order, weight, rev=false)  # , alg=Base.Sort.DEFAULT_STABLE)
-    init(unfi)
+    reset!(unfi)
     for ei in order
         (u, v) = edges[ei]
         fu, fv = find(unfi, u), find(unfi, v)
