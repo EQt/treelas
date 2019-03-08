@@ -17,7 +17,7 @@ whereby `∂` is the derivative of the convex function ``f``
 
 
 """
-weighted_median(x::Vector{X}, w::Vector{W}, ∂::F=(x) -> W(0)) where {X, W, F} =
+weighted_median(x::Vector{X}, w::Vector{W}, ∂::F= _ -> W(0)) where {X, W, F} =
     weighted_median!(copy(x), copy(w), ∂)
 
 
@@ -28,7 +28,7 @@ weighted_median(x::Vector{X}) where {X} =
 function weighted_median!(
     x::Vector{X},
     w::Vector{W},
-    ∂::F = (x) -> W(0),
+    ∂::F = _ -> W(0),
     pi::Vector{Int} = Int[],
 )::Tuple{X,X} where {X, W, F <: Function}
     @assert length(x) == length(w)
