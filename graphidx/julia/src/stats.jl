@@ -3,15 +3,21 @@ Some statistical functions.
 """
 module Stats
 
+import ..GraphIdx: ConstantWeights, ArrayWeights
 
-function permcumsum!(w::Array{W}, pi::Vector{I}) where {W, I<:Integer}
+
+function permcumsum(w::Array{W}, pi::Vector{I}) where {W, I<:Integer}
     local acc::W = 0
     for j in pi
         acc += w[j]
         w[j] = acc
     end
+    return w
 end
 
+
+permcumsum(w::ConstantWeights{W}, pi::Vector{I}) where {W, I<:Integer} =
+    ArrayWeights(pi)
 
 
 """
@@ -29,22 +35,24 @@ Return the interval ``[a, b]`` containing the minimizer (if unique ``a = b``).
 
 """
 weighted_median(x::Vector{X}) where {X} =
-    weighted_median(x, ones(length(x)))
+    weighted_median(x, ConstantWeights(1))
 
 
 function weighted_median(
     x::Vector{X},
-    w::Vector{W},
-    ∂::F = _ -> W(0),
+    ww::W,
+    ∂::F = _ -> 0,
     pi::Vector{Int} = Int[],
 )::Tuple{X,X} where {X, W, F <: Function}
-    @assert length(x) == length(w)
+    if ww isa Array
+        @assert length(x) == length(ww)
+    end
     local n = length(x)
     resize!(pi, n)
     sortperm!(pi, x)
 
     # Precompute  wsum(i) = sum(-w[j] for j < i) + sum(+w[j] for j > i) + ∂(x[i])
-    permcumsum!(w, pi)
+    local w = permcumsum(ww, pi)
 
     local wsum0 = -w[pi[end]]
     w0(i::Int) = i == 1 ? w[pi[1]] : w[pi[i]] - w[pi[i-1]]
