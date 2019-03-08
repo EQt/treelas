@@ -41,6 +41,7 @@ function weighted_median!(
     # Precompute  wsum(i) = sum(-w[j] for j < i) + sum(+w[j] for j > i) + ∂(x[i])
     cumsum!(w, w)
     local wsum0 = -w[end]
+    w0(i::Int) = i == 1 ? w[1] : w[i] - w[i-1]
     wsum(i::Int) = wsum0 + ∂(x[i]) + w[i] + (i == 1 ? 0 : w[i-1])
         
     # sum of abs "derivative" if t < x[first] (and x is sorted)
@@ -53,10 +54,10 @@ function weighted_median!(
             last = mid
         end
     end
-
-    if wsum(first) >= 0
+    # @show first, last, wsum(first), wsum(last)
+    if wsum(first) + w0(first) > 0
         return x[first], x[first]
-    elseif wsum(last) <= 0
+    elseif wsum(last) - w0(last) < 0
         return x[last], x[last]
     else
         return x[first], x[last]
