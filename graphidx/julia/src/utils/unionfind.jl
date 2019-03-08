@@ -8,6 +8,8 @@ e.g. in CLRS in Chapter 21 "Disjooint Sets" (3rd edition).
 ## Example
 
 ```jldoctest
+julia> import GraphIdx.Utils: UnionFind, find, unite!
+
 julia> u = UnionFind(2);
 
 julia> find(u, 1) == find(u, 2)
