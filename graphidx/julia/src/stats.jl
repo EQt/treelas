@@ -4,6 +4,16 @@ Some statistical functions.
 module Stats
 
 
+function permcumsum!(w::Array{W}, pi::Vector{I}) where {W, I<:Integer}
+    local acc::W = 0
+    for j in pi
+        acc += w[j]
+        w[j] = acc
+    end
+end
+
+
+
 """
     weighted_median(x, [w, [∂ ]])
 
@@ -16,6 +26,7 @@ whereby `∂` is the derivative of the convex function ``f``
 (by default constant `0` for ordinary weighted median).
 
 Return the interval ``[a, b]`` containing the minimizer (if unique ``a = b``).
+
 """
 weighted_median(x::Vector{X}, w::Vector{W}, ∂::F= _ -> W(0)) where {X, W, F} =
     weighted_median!(copy(x), copy(w), ∂)
@@ -35,13 +46,13 @@ function weighted_median!(
     local n = length(x)
     resize!(pi, n)
     sortperm!(pi, x)
-    w = w[pi]
 
     # Precompute  wsum(i) = sum(-w[j] for j < i) + sum(+w[j] for j > i) + ∂(x[i])
-    cumsum!(w, w)
-    local wsum0 = -w[end]
-    w0(i::Int) = i == 1 ? w[1] : w[i] - w[i-1]
-    wsum(i::Int) = wsum0 + ∂(x[pi[i]]) + w[i] + (i == 1 ? 0 : w[i-1])
+    permcumsum!(w, pi)
+
+    local wsum0 = -w[pi[end]]
+    w0(i::Int) = i == 1 ? w[pi[1]] : w[pi[i]] - w[pi[i-1]]
+    wsum(i::Int) = wsum0 + ∂(x[pi[i]]) + w[pi[i]] + (i == 1 ? 0 : w[pi[i-1]])
         
     # sum of abs "derivative" if t < x[first] (and x is sorted)
     local first::Int, last::Int = 1, length(x)
