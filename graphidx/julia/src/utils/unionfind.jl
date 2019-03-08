@@ -53,6 +53,9 @@ struct Rep
 end
 
 
+Base.Int(r::Rep) = r.i
+
+
 Base.getindex(u::UnionFind, x::Int)::Rep =  find(u, x)
 
 
