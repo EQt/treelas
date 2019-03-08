@@ -34,7 +34,6 @@ The most important submodules are
 - [`Tree`](@ref): Rooted Trees (including minimum spanning trees).
 - [`Grid`](@ref): Specialized code for grid graphs.
 - [`LinA`](@ref): Linear algebra (e.g. incidence matrix)
-- [`Utils`](@ref): Priority queues (e.g. binary heap)
 """
 module GraphIdx
 
