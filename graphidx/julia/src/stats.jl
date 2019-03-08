@@ -15,7 +15,7 @@ Hereby, we minimize
 whereby `∂` is the derivative of the convex function ``f``
 (by default constant `0` for ordinary weighted median).
 
-
+Return the interval ``[a, b]`` containing the minimizer (if unique ``a = b``).
 """
 weighted_median(x::Vector{X}, w::Vector{W}, ∂::F= _ -> W(0)) where {X, W, F} =
     weighted_median!(copy(x), copy(w), ∂)
