@@ -21,7 +21,7 @@ Kruskal's Algorithm
 GraphIdx.kruskal_mst
 ```
 
-As you know, Kruskal's algorithm is best implemented using the [`UnionFind`](@ref GraphIdx.UnionFind) data structure which is useful on its own:
+As you know, Kruskal's algorithm is best implemented using the [`UnionFind`](@ref GraphIdx.Utils.UnionFind) data structure which is useful on its own:
 
 ```@docs
 GraphIdx.Utils.UnionFind
