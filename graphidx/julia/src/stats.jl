@@ -35,14 +35,13 @@ function weighted_median!(
     local n = length(x)
     resize!(pi, n)
     sortperm!(pi, x)
-    x = x[pi]
     w = w[pi]
 
     # Precompute  wsum(i) = sum(-w[j] for j < i) + sum(+w[j] for j > i) + ∂(x[i])
     cumsum!(w, w)
     local wsum0 = -w[end]
     w0(i::Int) = i == 1 ? w[1] : w[i] - w[i-1]
-    wsum(i::Int) = wsum0 + ∂(x[i]) + w[i] + (i == 1 ? 0 : w[i-1])
+    wsum(i::Int) = wsum0 + ∂(x[pi[i]]) + w[i] + (i == 1 ? 0 : w[i-1])
         
     # sum of abs "derivative" if t < x[first] (and x is sorted)
     local first::Int, last::Int = 1, length(x)
@@ -56,11 +55,11 @@ function weighted_median!(
     end
     # @show first, last, wsum(first), wsum(last)
     if wsum(first) + w0(first) > 0
-        return x[first], x[first]
+        return x[pi[first]], x[pi[first]]
     elseif wsum(last) - w0(last) < 0
-        return x[last], x[last]
+        return x[pi[last]], x[pi[last]]
     else
-        return x[first], x[last]
+        return x[pi[first]], x[pi[last]]
     end
 end
     
