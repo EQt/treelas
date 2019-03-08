@@ -1,6 +1,10 @@
 include("../src/utils/unionfind.jl")
 
 using Test
+import Base.==
+
+
+==(r::Rep, i::Int) = r.i == i
 
 
 @testset "UnionFind, mini_test_2         " begin

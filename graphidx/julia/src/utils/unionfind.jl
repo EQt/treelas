@@ -36,33 +36,43 @@ function Base.show(io::IO, u::UnionFind)
 end
 
 
-function reset!(u::UnionFind)
+function reset!(u::UnionFind)::UnionFind
     for i in 1:length(u.p)
         u.p[i] = i
     end
     u.rank .= 0
+    u
 end
 
 
-Base.getindex(u::UnionFind, x::Int) =
-    find(u, x)
+"""
+Representant of a partition in UnionFind.
+"""
+struct Rep
+    i::Int
+end
 
 
-function find(u::UnionFind, x::Int)
+Base.getindex(u::UnionFind, x::Int)::Rep =  find(u, x)
+
+
+function find(u::UnionFind, x::Int)::Rep
     if u.p[x] != x
-        u.p[x] = find(u, u.p[x])
+        u.p[x] = find(u, u.p[x]).i
     end
-    return u.p[x]
+    return Rep(u.p[x])
 end
 
 
-function unite!(u::UnionFind, fx::Int, fy::Int)
-    if u.rank[fx] > u.rank[fy]
-        u.p[fy] = fx
-    else
-        u.p[fx] = fy
-        if u.rank[fx] == u.rank[fy]
-           u.rank[fy] += 1
+function unite!(u::UnionFind, fx::Rep, fy::Rep)::UnionFind
+    let fx::Int = fx.i, fy::Int = fy.i
+        if u.rank[fx] > u.rank[fy]
+            u.p[fy] = fx
+        else
+            u.p[fx] = fy
+            if u.rank[fx] == u.rank[fy]
+                u.rank[fy] += 1
+            end
         end
     end
     return u
