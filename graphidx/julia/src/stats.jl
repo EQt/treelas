@@ -38,7 +38,7 @@ function weighted_median!(
     x = x[pi]
     w = w[pi]
 
-    # Precompute  wsum(i,j) = sum(w[i:j])
+    # Precompute  wsum(i) = sum(-w[j] for j < i) + sum(+w[j] for j > i) + ∂(x[i])
     cumsum!(w, w)
     local wsum0 = -w[end]
     wsum(i::Int) = wsum0 + ∂(x[i]) + w[i] + (i == 1 ? 0 : w[i-1])
@@ -47,18 +47,12 @@ function weighted_median!(
     local first::Int, last::Int = 1, length(x)
     while last - first > 1
         local mid::Int = (first + last) ÷ 2
-        local mid_val = wsum(mid)
-        @show mid
         if wsum(mid) < 0
             first = mid
-            @show first
         else
             last = mid
-            @show last
         end
     end
-
-    @show wsum(first), wsum(last)
 
     if wsum(first) >= 0
         return x[first], x[first]
