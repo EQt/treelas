@@ -53,6 +53,10 @@ struct Rep
 end
 
 
+# make it possible to a[find(u, 4)], where a::Array
+Base.to_index(r::Rep) = r.i
+
+
 Base.getindex(u::UnionFind, x::Int)::Rep =  find(u, x)
 
 
