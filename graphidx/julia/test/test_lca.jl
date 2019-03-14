@@ -1,15 +1,15 @@
 include("../src/GraphIdx.jl")
 
 using Test
-import .GraphIdx.Tree: lowest_common_ancestors, ChildrenIndex, NeighborIndex
+import .GraphIdx.Tree: lowest_common_ancestors, ChildrenIndex, IncidenceIndex
 
 
-@testset "LCA NeighborIndex              " begin
+@testset "LCA IncidenceIndex             " begin
     pairs = [(5, 7), (5, 2), (5, 3), (2, 3)]
-    idx = NeighborIndex(7, pairs)
+    idx = IncidenceIndex(7, pairs)
     @test Set(idx[5]) == Set([(7, 1), (2, 2), (3, 3)])
     @test Set(idx[2]) == Set([(5, 2), (3, 4)])
-    idx2 = NeighborIndex(7, [(5, 2)])
+    idx2 = IncidenceIndex(7, [(5, 2)])
     @test Set(idx2[2]) == Set([(5, 1)])
 end
 

@@ -5,8 +5,8 @@ General Graphs
 -------------
 
 ```@docs
-GraphIdx.NeighborIndex
-GraphIdx.num_edges(::GraphIdx.NeighborIndex)
+GraphIdx.IncidenceIndex
+GraphIdx.num_edges(::GraphIdx.IncidenceIndex)
 ```
 
 

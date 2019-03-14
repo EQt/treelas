@@ -28,17 +28,17 @@ struct PrimMstMem
     finished::Vector{Bool}
     dist::Vector{Float64}
     parent::Vector{Int}
-    neighbors::NeighborIndex
+    neighbors::IncidenceIndex
     selected::Vector{Int}
     pq::PriorityQueue{Int, Float64}
 
     PrimMstMem(edges::Vector{E}, n::Integer) where {E} =
-        PrimMstMem(NeighborIndex(n, edges))
+        PrimMstMem(IncidenceIndex(n, edges))
 
     PrimMstMem(head::Vector{I}, tail::Vector{I}, n::Integer) where {I} =
-        PrimMstMem(NeighborIndex(n, head, tail))
+        PrimMstMem(IncidenceIndex(n, head, tail))
 
-    function PrimMstMem(neighbors::NeighborIndex)
+    function PrimMstMem(neighbors::IncidenceIndex)
         local n = num_nodes(neighbors)
         finished = Vector{Bool}(undef, n)
         dist = Vector{Float64}(undef, n)
@@ -75,7 +75,7 @@ function prim_mst_edges(
     finished::Vector{Bool},
     dist::Vector{Float64},
     parent::Vector{Int},
-    neighbors::NeighborIndex,
+    neighbors::IncidenceIndex,
     selected::Vector{Int},
     pq::PriorityQueue{Int, Float64},
     root::Int = 1,

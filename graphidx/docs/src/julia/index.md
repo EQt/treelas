@@ -19,7 +19,7 @@ Generate a random spanning tree on a `20×32` grid graph:
 
 ```julia
 import GraphIdx.Grid: GridGraph
-import GraphIdx.NeighborIndex
+import GraphIdx.IncidenceIndex
 
 TODO: Extend
 ```

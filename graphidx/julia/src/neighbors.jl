@@ -3,57 +3,57 @@ In a graph with numbered edges, provide access to neighbors and edge numbers for
 
 !!! note
 
-    [`NeighborIndex`](@ref) always includes both directions, i.e. for an edge `(u, v)` with edge index `ei`, it is
+    [`IncidenceIndex`](@ref) always includes both directions, i.e. for an edge `(u, v)` with edge index `ei`, it is
     `(u, ei) ∈ neighbors[v]` and `(v, ei) ∈ neighbors[u]`.
 """
-struct NeighborIndex
+struct IncidenceIndex
     idx::Vector{Int}
     pi::Vector{Tuple{Int, Int}}
 end
 
-@inline Base.getindex(c::NeighborIndex, j::Int) =
+@inline Base.getindex(c::IncidenceIndex, j::Int) =
     view(c.pi, c.idx[j]:c.idx[j+1]-1)
 
 
 """
-    num_edges(::NeighborIndex)
+    num_edges(::IncidenceIndex)
 
 Actual number of (undirected) edges (**not counting** both directions).
 """
-num_edges(c::NeighborIndex) = length(c.pi) ÷ 2
+num_edges(c::IncidenceIndex) = length(c.pi) ÷ 2
 
-num_nodes(c::NeighborIndex) = length(c.idx) - 1
+num_nodes(c::IncidenceIndex) = length(c.idx) - 1
 
-Base.length(c::NeighborIndex) = num_nodes(c)
+Base.length(c::IncidenceIndex) = num_nodes(c)
 
 
 """
-    NeighborIndex(n, head, tail)
+    IncidenceIndex(n, head, tail)
 
 Construct an index for `n` nodes of the (undirected) neighbors given
 by the edges `zip(head, tail)`.
 If `head[i] <= 0` then edge `i` is excluded.
 """ 
-function NeighborIndex(n::Int, head::Vector{Int}, tail::Vector{Int})
+function IncidenceIndex(n::Int, head::Vector{Int}, tail::Vector{Int})
     @assert length(head) == length(tail)
-    NeighborIndex(n, () -> zip(head, tail))
+    IncidenceIndex(n, () -> zip(head, tail))
 end
 
 
 """
-    NeighborIndex(n, edges)
+    IncidenceIndex(n, edges)
 
 Same but for edges like `[(1, 2), (2, 3)]`
 """
-NeighborIndex(n::Int, edges::Vector{Tuple{Int, Int}}) =
-    NeighborIndex(n, () -> edges)
+IncidenceIndex(n::Int, edges::Vector{Tuple{Int, Int}}) =
+    IncidenceIndex(n, () -> edges)
 
 """
-    NeighborIndex(n, m, iter::Function)
+    IncidenceIndex(n, m, iter::Function)
 
 Provide an iterator over the edges
 """
-function NeighborIndex(n::Int, iter::Function)
+function IncidenceIndex(n::Int, iter::Function)
     local m::Int = 0
     idx = zeros(Int, n+1)
     for (h::Int, t::Int) in iter()
@@ -82,5 +82,5 @@ function NeighborIndex(n::Int, iter::Function)
         idx[v+1] += 1
     end
     @assert(idx[end] == 2m + 1, "$(idx[end]) vs $(2m + 1)")
-    return NeighborIndex(idx, pi)
+    return IncidenceIndex(idx, pi)
 end

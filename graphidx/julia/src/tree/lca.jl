@@ -20,7 +20,7 @@ See CLRS (3rd edition) page 584 or
 function lowest_common_ancestors(
     tree::ChildrenIndex,
     parent::Vector{Int},
-    pairs::NeighborIndex,
+    pairs::IncidenceIndex,
 )::Vector{Int}
     @assert parent[root_node(tree)] == root_node(tree)
 
@@ -52,5 +52,5 @@ end
 
 
 lowest_common_ancestors(tree, parent, pairs::Vector{Tuple{Int, Int}}) =
-    lowest_common_ancestors(tree, parent, NeighborIndex(length(tree), pairs))
+    lowest_common_ancestors(tree, parent, IncidenceIndex(length(tree), pairs))
 

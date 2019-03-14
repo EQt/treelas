@@ -1,5 +1,5 @@
 import ..Utils: UnionFind, unite!
-import ..NeighborIndex
+import ..IncidenceIndex
 import ..num_edges
 
 

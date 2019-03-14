@@ -2,7 +2,7 @@ import .Tree
 
 
 struct WeightedGraph
-    idx::NeighborIndex
+    idx::IncidenceIndex
     lam::Vector{Float64}
 end
 

@@ -3,11 +3,11 @@ using Test
 
 include("../src/neighbors.jl")
 
-@testset "NeighborIndex: Square          " begin
+@testset "IncidenceIndex: Square         " begin
     #       1  2  3  4
     head = [1, 1, 2, 3]
     tail = [2, 3, 4, 4]
-    idx = NeighborIndex(4, head, tail)
+    idx = IncidenceIndex(4, head, tail)
     @test length(idx) == 4
     @test Set(idx[1]) == Set([(2, 1), (3, 2)])
     @test Set(idx[2]) == Set([(1, 1), (4, 3)])
@@ -16,11 +16,11 @@ include("../src/neighbors.jl")
 end
 
 
-@testset "NeighborIndex: Square -1       " begin
+@testset "IncidenceIndex: Square -1      " begin
     #       1  2  3  4
     head = [1, 1, 2, 0]
     tail = [2, 3, 4, 4]
-    idx = NeighborIndex(4, head, tail)
+    idx = IncidenceIndex(4, head, tail)
     @test length(idx) == 4
     @test Set(idx[1]) == Set([(2, 1), (3, 2)])
     @test Set(idx[2]) == Set([(1, 1), (4, 3)])
@@ -29,11 +29,11 @@ end
 end
 
 
-@testset "NeighborIndex: Test_1          " begin
+@testset "IncidenceIndex: Test_1         " begin
     #       1  2  3  4
     head = [1, 2, 3, 4]
     tail = [2, 4, 2, 3]
-    idx = NeighborIndex(4, head, tail)
+    idx = IncidenceIndex(4, head, tail)
     @test length(idx) == 4
     @test Set(idx[1]) == Set([(2, 1)])
     @test Set(idx[2]) == Set([(1, 1), (4, 2), (3, 3)])
@@ -42,7 +42,7 @@ end
 end
 
 
-@testset "NeighborIndex: Petgraph::Csr   " begin
+@testset "IncidenceIndex: Petgraph::Csr  " begin
     edges = [   # zero indexed!
         (0, 1),
         (0, 2),
@@ -55,7 +55,7 @@ end
     n = maximum(edges)
     @test n == 5
     edges = vec(mapslices(Tuple, edges, dims = [2]))
-    idx = NeighborIndex(n, edges)
+    idx = IncidenceIndex(n, edges)
     @test Set(map(first, idx[1])) == Set([2, 3])
     @test Set(map(first, idx[2])) == Set([0, 1] .+ 1)
     @test Set(map(first, idx[3])) == Set([0, 2, 4] .+ 1)  # we take both directions!
