@@ -104,16 +104,16 @@ function tree_dp!(
 
     sig .= 0
     for i in @view mem.proc_order[1:end-1]
-        sig[t.parent[i]] += λ(i)
+        sig[t.parent[i]] += λ[i]
         local sig_i::F = sig[i]
-        lb[i] = clip_front(mem.queues, i, µ(i), -µ(i)*y[i] -sig_i, -λ(i))
-        ub[i] = clip_back( mem.queues, i, µ(i), -µ(i)*y[i] +sig_i, +λ(i))
+        lb[i] = clip_front(mem.queues, i, µ[i], -µ[i]*y[i] -sig_i, -λ[i])
+        ub[i] = clip_back( mem.queues, i, µ[i], -µ[i]*y[i] +sig_i, +λ[i])
         merge(mem.queues.events::Vector{Event}, mem.queues.pq::Vector{Range},
               t.parent[i]::Int, i::Int)
     end
 
     let r = t.root
-        x[r] = clip_front(mem.queues, r,  µ(r), -µ(r)*y[r] -sig[r], 0.0)
+        x[r] = clip_front(mem.queues, r,  µ[r], -µ[r]*y[r] -sig[r], 0.0)
     end
     for v in @view mem.proc_order[end-1:-1:1]
         x[v] = clamp(x[t.parent[v]], lb[v], ub[v])
