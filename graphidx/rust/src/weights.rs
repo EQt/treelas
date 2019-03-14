@@ -1,12 +1,12 @@
 use std::ops::Index;
 
 #[derive(PartialEq, Debug)]
-struct ConstantWeights {
-    c: f64,
+struct ConstantWeights<T> {
+    c: T,
 }
 
-impl Index<usize> for ConstantWeights {
-    type Output = f64;
+impl<T> Index<usize> for ConstantWeights<T> {
+    type Output = T;
     fn index(&self, _i: usize) -> &Self::Output {
         &self.c
     }
