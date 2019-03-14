@@ -1,7 +1,7 @@
 module TestNeighbors
 using Test
 
-include("../src/neighbors.jl")
+include("../src/incidence.jl")
 
 @testset "IncidenceIndex: Square         " begin
     #       1  2  3  4

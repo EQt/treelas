@@ -46,7 +46,7 @@ end
 
 
 include("cluster.jl")
-include("neighbors.jl")
+include("incidence.jl")
 include("tree.jl")
 include("weightedgraph.jl")
 include("prim_mst.jl")
