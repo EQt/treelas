@@ -66,7 +66,7 @@ end
     tree_mask = GraphIdx.kruskal_mst(n, edges, γ)
     tree_cost = γ[tree_mask]
     tree_edges = edges[tree_mask]
-    idx = GraphIdx.NeighborIndex(n, edges)
+    idx = GraphIdx.IncidenceIndex(n, edges)
     local parent::Vector{Int}, selected =
         GraphIdx.prim_mst_edges(n, edges, γ, root)
 

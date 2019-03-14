@@ -15,7 +15,7 @@ Graph Indexes
 For the different steps, several indexes are necessary
 1. [`Dual.gap_vec!`](@ref) needs to access every edge once.
 
-2. Prim's minimum spanning tree: `NeighborIndex` providing outgoing
+2. Prim's minimum spanning tree: `IncidenceIndex` providing outgoing
    edges for a node (i.e. every edge is included in two node's
    adjacency lists)
 
@@ -146,7 +146,7 @@ end
 
 Graph has to implement several methods:
 - `iter_edges(::Function, ::Graph)`
-- `NeighborIndex(::Graph)`
+- `IncidenceIndex(::Graph)`
 """
 function gaplas(y::Array{Float64}, g::Graph) where {Graph}
     x = copy(y)

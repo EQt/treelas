@@ -49,7 +49,7 @@ import .TreeLas.Dual
 end
 
 
-@testset "NeighborIndex(GridGraph(2, 3)  " begin
+@testset "IncidenceIndex(GridGraph(2, 3)  " begin
     g = GridGraph(2, 3)
     idx, lam = neighbors_lambda(g)
     @test all(lam .≈ 1)

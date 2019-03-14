@@ -5,11 +5,11 @@ module TestGapLaX
 
 using Test
 import GraphIdx
-import GraphIdx: num_edges, NeighborIndex
+import GraphIdx: num_edges, IncidenceIndex
 import TreeLas
 
 
-function sort_edges(nidx::NeighborIndex)
+function sort_edges(nidx::IncidenceIndex)
     local m = num_edges(nidx)
     edge_rank = zeros(Int, 2m)
     for (i, (v, ei)) in enumerate(nidx.pi)
@@ -23,7 +23,7 @@ function sort_edges(nidx::NeighborIndex)
 end
 
 
-function non_tree_idx(nidx::NeighborIndex, selected)
+function non_tree_idx(nidx::IncidenceIndex, selected)
     m = num_edges(nidx)
     nonidx = deepcopy(nidx)
     edge_rank = sort_edges(nidx)
@@ -49,7 +49,7 @@ function non_tree_idx(n::Int, edges::Vector{E}, selected) where {E}
             edges[s] = (0, 0)
         end
     end
-    return NeighborIndex(n, edges)
+    return IncidenceIndex(n, edges)
 end
 
 
@@ -103,7 +103,7 @@ end
     α = zeros(Float64, m)
     γ = Vector{Float64}(undef, m)
     TreeLas.Dual.gap_vec!(γ, y, α, grid, -1.0)
-    nidx = GraphIdx.NeighborIndex(n, edges)
+    nidx = GraphIdx.IncidenceIndex(n, edges)
     pmem = GraphIdx.PrimMstMem(nidx)
     pi = GraphIdx.prim_mst_edges(γ, root_node, pmem)
     selected = pmem.selected
