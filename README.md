@@ -57,6 +57,9 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.12.2
+- Julia: NeighborIndex --> IncidenceIndex
+- Julia: generalized weighted median
 
 ### v0.12.1
 - Julia: Fix duality gap computation (match C++ code)
