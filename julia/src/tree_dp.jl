@@ -85,7 +85,7 @@ Like `tree_dp` but do not allocate an output buffer for `x`.
 If `mem::TreeDPMem` is provided, no additional allocations will be
 needed.
 """
-tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
+tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::La, µ::Mu) where {F,N,La,Mu} =
     tree_dp!(x, y, t, λ, µ, TreeDPMem(length(y)))
 
 
