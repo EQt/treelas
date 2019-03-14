@@ -13,7 +13,7 @@ pub struct ChildrenIndex {
 ///
 /// Have a rooted tree (root is 0) whereby nodes 1 and 2 have parent
 /// 0, node 3 has parent 2:
-/// 
+///
 /// ```rust
 /// use graphidx::tree::ChildrenIndex;
 /// let cidx = ChildrenIndex::from_parent(&[0, 0, 0, 2]).unwrap();
@@ -46,8 +46,15 @@ impl ChildrenIndex {
                 deg_ii = idx[i + 1];
             }
             idx[n] = acc;
-            assert_eq!(acc + deg_i, n, "n={}, deg_i={}, deg_ii={}, idx={:?}",
-                       n, deg_i, deg_ii, idx);
+            assert_eq!(
+                acc + deg_i,
+                n,
+                "n={}, deg_i={}, deg_ii={}, idx={:?}",
+                n,
+                deg_i,
+                deg_ii,
+                idx
+            );
         }
 
         let mut child: Vec<usize> = Vec::new();
@@ -166,8 +173,7 @@ mod tests {
     #[test]
     fn children_panic() {
         let pi = [0, 2];
-        let res = std::panic::catch_unwind(move ||
-                                           ChildrenIndex::from_parent(&pi));
+        let res = std::panic::catch_unwind(move || ChildrenIndex::from_parent(&pi));
         assert!(res.is_err());
     }
 }
