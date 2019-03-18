@@ -26,3 +26,8 @@ As you know, Kruskal's algorithm is best implemented using the [`UnionFind`](@re
 ```@docs
 GraphIdx.Utils.UnionFind
 ```
+
+To make sure that we cannot unite elements before we found its representative we introduce 
+```@docs
+GraphIdx.Utils.Rep
+```
