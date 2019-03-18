@@ -1,5 +1,5 @@
 """
-Some statistical functions.
+Some statistical functions, mainly related to (weighted) median computations.
 """
 module Stats
 
@@ -35,8 +35,9 @@ Return the interval ``[a, b]`` containing the minimizer (if unique ``a = b``).
 
 
 !!! todo
+
     Compare the sorting to binary search and median strategies.
-    Maybe use [SIMD for median](https://gist.github.com/jw3126/3a3c65009e96af2c4fcc96f701bd4913)
+    Maybe use [SIMD for median](https://gist.github.com/jw3126/3a3c65009e96af2c4fcc96f701bd4913).
 
 """
 weighted_median(x::Vector{X}) where {X} =

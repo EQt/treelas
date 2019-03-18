@@ -22,6 +22,7 @@ makedocs(
         "Tree Graphs" => "tree.md",
         "Minimum Spanning Trees" => "mst.md",
         "Linear Algebra" => "lina.md",
+        "Order Statistics" => "stats.md",
         "Bits and Bytes" => "bits.md",
     ],
     format = Documenter.HTML(
