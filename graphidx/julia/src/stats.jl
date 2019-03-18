@@ -6,6 +6,11 @@ module Stats
 import ..GraphIdx: ConstantWeights, ArrayWeights
 
 
+"""
+    permcumsum(w, pi)
+
+Return the cumulative sums over `w` in order `pi`.
+"""
 function permcumsum(w::Array{W}, pi::Vector{I}) where {W, I<:Integer}
     local acc::W = 0
     for j in pi
