@@ -45,7 +45,10 @@ struct Tree12xStatus
 
 template<typename float_ = float, typename int_ = int>
 size_t
-tree_12x_iter(Tree12xStatus<float_, int_> &s, const float_ lam, const float_ delta)
+tree_12x_iter(
+    Tree12xStatus<float_, int_> &s,
+    const float_ lam,
+    const float_ delta)
 {
     const auto root = s.forder[s.n-1];
 

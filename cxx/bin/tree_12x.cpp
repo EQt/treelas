@@ -12,6 +12,7 @@
 #include <minih5.hpp>
 
 #include "utils/viostream.hpp"
+#include "utils/timer.hpp"
 
 #include "thousand.hpp"
 
@@ -23,6 +24,7 @@ void
 process_file(const char *fname,
              const char *group,
              const int max_iter,
+             const bool quiet,
              const bool /* dfs */,
              const bool reorder = false,
              const unsigned PRINT_MAX = 10)
@@ -91,6 +93,7 @@ main(int argc, char *argv[])
         ap.add_option('d', "dfs",     "Use DFS instead of BFS order");
         ap.add_option('6', "float64", "Calculate in float64_t precision");
         ap.add_option('r', "reorder", "Relabel nodes in post-order");
+        ap.add_option('q', "quiet",   "Suppress timer output");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No tree file!\n");
@@ -104,18 +107,22 @@ main(int argc, char *argv[])
 
         printf("reorder  = %s\n", reorder ? "true" : "false");
         printf("max_iter = %d\n", max_iter);
-        if (ap.has_option("float64")) {
-            printf("float64\n");
-            process_file<double, int_>(fname, group,
-                                       max_iter,
-                                       ap.has_option("dfs"),
-                                       reorder);
-        } else {
-            printf("float32\n");
-            process_file<float, int_>(fname, group,
-                                      max_iter,
-                                      ap.has_option("dfs"),
-                                      reorder);
+        {
+            if (ap.has_option("float64")) {
+                printf("float64\n");
+                process_file<double, int_>(fname, group,
+                                           max_iter,
+                                           ap.has_option("quiet"),
+                                           ap.has_option("dfs"),
+                                           reorder);
+            } else {
+                printf("float32\n");
+                process_file<float, int_>(fname, group,
+                                          max_iter,
+                                          ap.has_option("quiet"),
+                                          ap.has_option("dfs"),
+                                          reorder);
+            }
         }
     } catch (ArgParser::ArgParserException &ex) {
         fprintf(stderr, "%s\n", ex.what());
