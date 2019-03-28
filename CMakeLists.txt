@@ -47,7 +47,7 @@ add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
 
 add_library(treelas SHARED
-  cxx/app/libtreelas.cpp
+  cxx/bin/libtreelas.cpp
   $<TARGET_OBJECTS:tree_dp>
   $<TARGET_OBJECTS:tree_dual>
 )
@@ -103,23 +103,23 @@ if (HDF5_FOUND)
   endif()
 
   add_executable_h5(traverse
-    cxx/app/traverse.cpp
+    cxx/bin/traverse.cpp
     $<TARGET_OBJECTS:argparser>
   )
 
   add_executable_h5(tree_apx
-    cxx/app/tree_apx.cpp
+    cxx/bin/tree_apx.cpp
     $<TARGET_OBJECTS:argparser>
   )
 
   add_executable_h5(tree_12x
-    cxx/app/tree_12x.cpp
+    cxx/bin/tree_12x.cpp
     cxx/tree_12x.cpp
     $<TARGET_OBJECTS:argparser>
   )
 
   add_executable_h5(tree_solve
-    cxx/app/tree_solve.cpp
+    cxx/bin/tree_solve.cpp
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:argparser>
   )
