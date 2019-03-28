@@ -116,6 +116,7 @@ tree_12x(
     float_ *x,
     const int_ root_,
     const int max_iter,
+    const bool print_timings,
     const bool reorder)
 {
     std::vector<int> forder_;
@@ -171,9 +172,17 @@ tree_12x(
 
     {   Timer _ ("Iterations:\n");
         for (int k = 0; k < max_iter; k++) {
-            Timer::log("%2ld ...\n", k+1);
+            size_t changed = 0;
+            if (print_timings)
+                Timer::log("%2ld ...\n", k+1);
+            else
+                Timer::log("%2ld ...", k+1);
+
             delta = float_(0.5*delta);
-            const auto changed = tree_12x_iter(s, lam, delta);
+            {
+                TimerQuiet _ (print_timings);
+                changed = tree_12x_iter(s, lam, delta);
+            }
             if (changed)
                 Timer::log("  %d", changed);
             Timer::log("\n");
@@ -198,6 +207,7 @@ tree_12x(
     float *x,
     const int root_,
     const int max_iter,
+    const bool print_timings,
     const bool reorder);
 
 
@@ -211,4 +221,5 @@ tree_12x(
     double *x,
     const int root_,
     const int max_iter,
+    const bool print_timings,
     const bool reorder);

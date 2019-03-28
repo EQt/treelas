@@ -21,13 +21,14 @@
 
 template<typename float_ = float, typename int_ = int>
 void
-process_file(const char *fname,
-             const char *group,
-             const int max_iter,
-             const bool quiet,
-             const bool /* dfs */,
-             const bool reorder = false,
-             const unsigned PRINT_MAX = 10)
+process_file(
+    const char *fname,
+    const char *group,
+    const int max_iter,
+    const bool quiet,
+    const bool /* dfs */,
+    const bool reorder = false,
+    const unsigned PRINT_MAX = 10)
 {
     std::vector<float_> xt, y, lam, x;
     std::vector<int_> parent;
@@ -59,6 +60,7 @@ process_file(const char *fname,
              x.data(),
              -1 /* root*/,
              max_iter,
+             !quiet,
              reorder);
 
     if (n <= PRINT_MAX) {

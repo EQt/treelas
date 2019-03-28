@@ -12,6 +12,7 @@ tree_12x(
     float_ *x,
     const int_ root_ = int_(-1),
     const int max_iter = 3,
+    const bool print_timings = true,
     const bool reorder = false);
 
 
@@ -25,6 +26,7 @@ tree_12x(
     float *x,
     const int root_,
     const int max_iter,
+    const bool print_timings,
     const bool reorder);
 
 
@@ -38,4 +40,5 @@ tree_12x(
     double *x,
     const int root_,
     const int max_iter,
+    const bool print_timings,
     const bool reorder);
