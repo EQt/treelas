@@ -117,8 +117,15 @@ main(int argc, char *argv[])
                                       ap.has_option("dfs"),
                                       reorder);
         }
+    } catch (ArgParser::ArgParserException &ex) {
+        fprintf(stderr, "%s\n", ex.what());
+        return 1;
+    } catch (const std::exception &ex) {
+        fprintf(stderr, "EXCEPTION: %s\n", ex.what());
+        return 2;
     } catch (const char *msg) {
         fprintf(stderr, "EXCEPTION: %s\n", msg);
+        return 3;
     }
     return 0;
 }
