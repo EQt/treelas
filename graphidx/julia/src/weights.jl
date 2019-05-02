@@ -1,3 +1,13 @@
+"""
+Represent a constant weight that is indexable and callable, e.g.
+```jldoctest
+julia> w = ConstantWeights(5.4); w(3)
+5.4
+
+julia> w[3]
+5.4
+```
+"""
 struct ConstantWeights{F<:Real}
     w::F
 end
