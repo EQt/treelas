@@ -1,5 +1,7 @@
 """
-Represent a constant weight that is indexable and callable, e.g.
+Represent weighting that is indexable and callable where each index has the same value.
+
+## Example
 ```jldoctest
 julia> w = ConstantWeights(5.4); w(3)
 5.4
@@ -19,6 +21,18 @@ Base.getindex(c::ConstantWeights{F}, _::Integer) where {F} = c.w
 
 
 
+"""
+Weighting of nodes where every weight can be different.
+The actual value of a node can be accessed via call - or index syntax.
+
+## Example
+```jldoctest
+julia> w = ArrayWeights([0.1, 0.2, 0.3]); w(1)
+0.1
+
+julia> w[3]
+0.3
+"""
 struct ArrayWeights{F<:Real}
     a::Vector{F}
 end
