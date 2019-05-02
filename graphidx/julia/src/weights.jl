@@ -1,6 +1,8 @@
 """
 Represent weighting that is indexable and callable where each index has the same value.
 
+Usually, weights are assumed to be positive!
+
 ## Example
 ```jldoctest
 julia> w = ConstantWeights(5.4); w(3)
