@@ -9,6 +9,21 @@ GraphIdx.IncidenceIndex
 GraphIdx.num_edges(::GraphIdx.IncidenceIndex)
 ```
 
+Weights
+-------
+
+Often, nodes or edges might have an associated weight.
+To give the optimizer the possibility to distinguish constant weights (all weights the same) from individual weights we provide the following structs:
+
+```@meta
+DocTestSetup  = quote
+    import GraphIdx
+end
+```
+```@docs
+GraphIdx.ConstantWeights
+GraphIdx.ArrayWeights
+```
 
 Graph Partition
 --------------

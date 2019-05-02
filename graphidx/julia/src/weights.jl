@@ -5,7 +5,9 @@ Usually, weights are assumed to be positive!
 
 ## Example
 ```jldoctest
-julia> w = ConstantWeights(5.4); w(3)
+julia> w = GraphIdx.ConstantWeights(5.4);
+
+julia> w(3)
 5.4
 
 julia> w[3]
@@ -29,11 +31,14 @@ The actual value of a node can be accessed via call - or index syntax.
 
 ## Example
 ```jldoctest
-julia> w = ArrayWeights([0.1, 0.2, 0.3]); w(1)
+julia> w = GraphIdx.ArrayWeights([0.1, 0.2, 0.3]);
+
+julia> w(1)
 0.1
 
 julia> w[3]
 0.3
+```
 """
 struct ArrayWeights{F<:Real}
     a::Vector{F}
@@ -43,4 +48,3 @@ end
 (c::ArrayWeights{F})(i::Integer) where {F} = c.a[i]
 
 Base.getindex(c::ArrayWeights{F}, i::Integer) where {F} = c.a[i]
-
