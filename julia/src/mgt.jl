@@ -76,6 +76,7 @@ function gaplas(
     process::Fu1 = x->nothing,
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
+    learn::Float64 = 0.0,
 )::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function}
     local m = length(edges)
     local n = length(y)
@@ -98,7 +99,7 @@ function gaplas(
     for it in 1:max_iter
         gap_vec!(γ, x, alpha, graph, -1.0)
         if verbose
-            if n < 30 && it > 1
+            if n < 30 && it > 1 && false
                 tree_gamma_check(γ, alpha, tlam, selected,
                                  x, z, dp_mem.proc_order, parent)
             end
@@ -128,12 +129,16 @@ function gaplas(
         tprocess(γ, parent)
         z .= y
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
-        tree_dp!(x, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
+        x_new = copy(x)
+        tree_dp!(x_new, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
+        x .= learn .* x .+ (1 - learn) .* x_new
         process(x)
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
-            tree_alpha .= vec(x) .- vec(z)
+            tree_alpha .= vec(x_new) .- vec(z)
             dual!(tree_alpha, dp_mem.proc_order, parent)
-            update_tree!(alpha, tree_alpha, selected, edges, parent)
+            alpha_new = copy(alpha)
+            update_tree!(alpha_new, tree_alpha, selected, edges, parent)
+            alpha .= learn .* alpha .+ (1 - learn) .* alpha_new
             duality_check(alpha, lambda)
         end
         dprocess(alpha)
@@ -204,6 +209,7 @@ function tree_gamma_check(γ, alpha, tlam, selected, x, z, proc_order, parent)
     let γ = round.(-γ, digits=2)
         # @show γ
     end
+    m = length(alpha)
 
     @assert selected[1] < 0
     for i in @view selected[2:end]
