@@ -94,8 +94,8 @@ function gaplas(
     local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
     local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
-    local x_new = learn >= 1.0 ? x : copy(x)
-    local alpha_new = learn >= 1.0 ? alpha : copy(alpha)
+    local x_new::Array{Float64,N} = learn >= 1.0 ? x : copy(x)
+    local alpha_new::Array{Float64} = learn >= 1.0 ? alpha : copy(alpha)
     if verbose
         local γ_sorted = similar(γ)
         local x2 = similar(x)
@@ -136,14 +136,18 @@ function gaplas(
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
         x_new .= x
         tree_dp!(x_new, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
-        x === x_new || x .= (1 - learn) .* x .+ learn .* x_new
+        if !(x === x_new)
+            x .= (1 - learn) .* x .+ learn .* x_new
+        end
         process(x)
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             tree_alpha .= vec(x_new) .- vec(z)
             dual!(tree_alpha, dp_mem.proc_order, parent)
             alpha_new .= alpha
             update_tree!(alpha_new, tree_alpha, selected, edges, parent)
-            alpha === alpha_new || alpha .= (1 - learn) .* alpha .+ learn .* alpha_new
+            if !(alpha === alpha_new)
+                alpha .= (1 - learn) .* alpha .+ learn .* alpha_new
+            end
             duality_check(alpha, lambda)
         end
         dprocess(alpha)
