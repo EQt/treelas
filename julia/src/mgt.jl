@@ -171,6 +171,11 @@ function gaplas!(x::Array{Float64}, α::Vector{Float64}, γ::Vector{Float64},
 end
 
 
+"""
+    update_tree!(α, αt, selected, edges, parent)
+
+Update the global dual `α` by a tree dual `αt`.
+"""
 function update_tree!(alpha, tree_alpha, selected, edges, parent)
     @assert selected[1] < 0
     for i in @view selected[2:end]
