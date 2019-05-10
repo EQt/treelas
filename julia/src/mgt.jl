@@ -111,14 +111,17 @@ function gaplas(
             @assert x ≈ x2
             @assert prim_obj + dual_obj - gap ≈ 0.5sum2(y)
 
-            println(@sprintf("%4d %12.4f %12.4f %12.4f",
-                              # "%8f %8f %8f",
-                             it,
-                             gap,
-                             dual_obj,
-                             prim_obj,
-                             ))
-                             # quant...))
+            print(@sprintf("%4d %12.4f %12.4f %12.4f",
+                           it,
+                           gap,
+                           dual_obj,
+                           prim_obj,
+                           ))
+
+            if false
+                print(@sprintf("%8f %8f %8f", quant...))
+            end
+            println()
         end
 
         prim_mst_edges(γ, root_node, mst_mem)
