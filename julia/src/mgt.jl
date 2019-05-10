@@ -61,9 +61,12 @@ end
 
 
 """
-    gaplas(y, edges, λ)
+    gaplas(y, edges, λ; learn=1.0, max_iter=3, ...)
 
 Optimize in each iteration along a tree.
+
+The `learn` parameter controls how much of the new tree
+solution should be taken (should be between ``0`` and ``1.0``).
 """
 function gaplas(
     y::Array{Float64,N},
@@ -76,7 +79,7 @@ function gaplas(
     process::Fu1 = x->nothing,
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
-    learn::Float64 = 0.0,
+    learn::Float64 = 1.0,
 )::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function}
     local m = length(edges)
     local n = length(y)
@@ -131,14 +134,14 @@ function gaplas(
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
         x_new = copy(x)
         tree_dp!(x_new, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
-        x .= learn .* x .+ (1 - learn) .* x_new
+        x .= (1 - learn) .* x .+ learn .* x_new
         process(x)
         let tree_alpha = tlam   # alpha within the tree (tlam is not needed)
             tree_alpha .= vec(x_new) .- vec(z)
             dual!(tree_alpha, dp_mem.proc_order, parent)
             alpha_new = copy(alpha)
             update_tree!(alpha_new, tree_alpha, selected, edges, parent)
-            alpha .= learn .* alpha .+ (1 - learn) .* alpha_new
+            alpha .= (1 - learn) .* alpha .+ learn .* alpha_new
             duality_check(alpha, lambda)
         end
         dprocess(alpha)
