@@ -204,6 +204,10 @@ function update_tree!(alpha, tree_alpha, selected, edges, parent)
 end
 
 
+"""
+Ensure that the alpha is dually feasible, i.e.
+componentwise absolutely not greater than lambda.
+"""
 function duality_check(alpha, lambda)
     for i in 1:length(alpha)
         @assert(abs(alpha[i]) <= (1 + 1e-8)*lambda[i],
