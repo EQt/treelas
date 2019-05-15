@@ -151,7 +151,6 @@ function gaplas(
             duality_check(alpha, lambda)
         end
         dprocess(alpha)
-
     end
 
     return x
