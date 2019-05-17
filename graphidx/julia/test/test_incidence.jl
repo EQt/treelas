@@ -1,7 +1,20 @@
 module TestNeighbors
 using Test
+import Base.==
 
 include("../src/incidence.jl")
+
+
+==(a::IncidenceIndex, b::IncidenceIndex) =
+    a.pi == b.pi && a.idx == b.idx
+
+
+@testset "IncidenceIndex: Order          " begin
+    idx1 = IncidenceIndex(3, [(3, 1), (3, 2)])
+    idx2 = IncidenceIndex(3, [(1, 3), (2, 3)])
+    @test idx1 == idx2
+end
+
 
 @testset "IncidenceIndex: Square         " begin
     #       1  2  3  4
