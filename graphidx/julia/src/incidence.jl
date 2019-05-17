@@ -84,3 +84,9 @@ function IncidenceIndex(n::Int, iter::Function)
     @assert(idx[end] == 2m + 1, "$(idx[end]) vs $(2m + 1)")
     return IncidenceIndex(idx, pi)
 end
+
+
+import Base.==
+
+==(a::IncidenceIndex, b::IncidenceIndex) =
+    a.pi == b.pi && a.idx == b.idx

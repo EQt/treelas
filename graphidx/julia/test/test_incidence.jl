@@ -1,12 +1,7 @@
 module TestNeighbors
 using Test
-import Base.==
 
 include("../src/incidence.jl")
-
-
-==(a::IncidenceIndex, b::IncidenceIndex) =
-    a.pi == b.pi && a.idx == b.idx
 
 
 @testset "IncidenceIndex: Order          " begin
