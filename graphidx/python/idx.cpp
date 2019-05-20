@@ -23,16 +23,6 @@ reg_idx(py::module &m)
 
     py::class_<AdjacencyIndex_int> PyAdjacencyIndex_int (m, "AdjacencyIndex_int");
     PyAdjacencyIndex_int
-        // .def(py::init([](const py::array_i32 &value,
-        //                  const py::array_i32 &index)
-        //               {
-        //                   return new AdjacencyIndex_int(
-        //                       std::vector<int>(value.data(), value.data() + value.size()),
-        //                       std::vector<int>(index.data(), value.data() + value.size())
-        //                   );
-        //               }),
-        //      py::arg("value"),
-        //      py::arg("index"))
         .def("__getitem__",
              [](const AdjacencyIndex_int &b, const int i) -> IndexIter_int
              {
