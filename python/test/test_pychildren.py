@@ -72,3 +72,7 @@ def test_children_3():
     cidx = ChildrenIndex.compute([0, 0, 1])
     assert all(cidx.idx == [0, 1, 2, 2])
     assert all(cidx.pi == [1, 2, 0])
+
+
+if __name__ == '__main__':
+    test_children_root2()
