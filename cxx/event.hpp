@@ -17,28 +17,12 @@ struct Event
     const static int _p = 5;
     const static int _w = 6;
 
-    bool operator==(const Event &o) const {
+    inline bool operator==(const Event &o) const {
         return x == o.x && slope == o.slope && offset() == o.offset();
     }
-};
 
-
-struct Event2
-{
-    double x;
-    double slope;
-
-    Event2() : Event2(0., 0.) {}
-    Event2(double x, double slope, double) : Event2(x, slope) {}
-    Event2(double x, double slope) : x(x), slope(slope) {}
-    inline double offset() const { return -x * slope; }
-    inline double val() const { return x * slope + offset(); }
-
-    const static int _p = 5;
-    const static int _w = 6;
-
-    bool operator==(const Event2 &o) const {
-        return x == o.x && slope == o.slope;
+    inline bool operator<(const Event &other) const {
+        return this->x < other.x;
     }
 };
 
@@ -55,6 +39,30 @@ operator<<(std::ostream &o, const Event &e)
 }
 
 
+struct Event2
+{
+    double x;
+    double slope;
+
+    Event2() : Event2(0., 0.) {}
+    Event2(double x, double slope, double) : Event2(x, slope) {}
+    Event2(double x, double slope) : x(x), slope(slope) {}
+    inline double offset() const { return -x * slope; }
+    inline double val() const { return x * slope + offset(); }
+
+    const static int _p = 5;
+    const static int _w = 6;
+
+    inline bool operator==(const Event2 &o) const {
+        return x == o.x && slope == o.slope;
+    }
+
+    inline bool operator<(const Event2 &other) const {
+        return this->x < other.x;
+    }
+};
+
+
 inline std::ostream&
 operator<<(std::ostream &o, const Event2 &e)
 {
@@ -63,16 +71,4 @@ operator<<(std::ostream &o, const Event2 &e)
       << std::setw(Event2::_w) << std::setprecision(Event2::_p) << e.slope << ", "
       << std::endl;
     return o;
-}
-
-
-inline bool
-operator<(const Event2 &e1, const Event2 &e2) {
-    return e1.x < e2.x;
-}
-
-
-inline bool
-operator<(const Event &e1, const Event &e2) {
-    return e1.x < e2.x;
 }
