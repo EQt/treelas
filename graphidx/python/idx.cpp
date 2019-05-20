@@ -81,7 +81,8 @@ reg_idx(py::module &m)
                          const int root_)
                       {
                           const auto n = check_1d_len(parent);
-                          const int root = root_ < 0 ? find_root(n, parent.data()) : root_;
+                          const int root = root_ < 0 ? find_root(n, parent.data()) :
+                              root_;
                           if (root < 0)
                               throw std::runtime_error("root not found");
                           return ChildrenIndex(n, parent.data(), root);
@@ -120,7 +121,8 @@ reg_idx(py::module &m)
              [](const IndexIter_int &self) -> std::string
              {
                  std::ostringstream os;
-                 os << "<IndexIter_int(" << self.size() <<") @" << (void*)&self << ">";
+                 os << "<IndexIter_int(" << self.size()
+                    <<") @" << (void*)&self << ">";
                  return os.str();
              })
         .def("__len__",
