@@ -57,6 +57,11 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.12.3
+Release 2019-05-20
+- Julia: `MGT.gaplas` got a new `learn` parameter to control the portion to update the dual solutioon.
+- Documentation extended.
+
 ### v0.12.2
 - Julia: NeighborIndex --> IncidenceIndex
 - Julia: generalized weighted median
