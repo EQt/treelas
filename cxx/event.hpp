@@ -8,9 +8,9 @@ struct Event
     double x;
     double slope;
     double _offset;
-    // Event() : Event(0, 0, 0) {}
-    /* Event(double x, double slope, double offset) :
-       x(x), slope(slope), offset(offset) {} */
+    Event() : Event(0, 0, 0) {}
+    Event(double x, double slope, double offset) :
+       x(x), slope(slope), _offset(offset) {}
     // double extra[20] = {0.};
     inline double val() const { return x * slope + offset(); }
 
