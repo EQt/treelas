@@ -8,12 +8,10 @@ struct Event
     double x;
     double slope;
     double _offset;
-    Event() : Event(0, 0, 0) {}
-    Event(double x, double slope, double offset) :
-       x(x), slope(slope), _offset(offset) {}
-    // double extra[20] = {0.};
-    inline double val() const { return x * slope + offset(); }
 
+    Event() : Event(0, 0, 0) {}
+    Event(double x, double s, double o) : x(x), slope(s), _offset(o) {}
+    inline double val() const { return x * slope + offset(); }
     inline double offset() const { return _offset; }
 
     const static int _p = 5;
@@ -29,6 +27,7 @@ struct Event2
 {
     double x;
     double slope;
+
     Event2() : Event2(0., 0.) {}
     Event2(double x, double slope, double) : Event2(x, slope) {}
     Event2(double x, double slope) : x(x), slope(slope) {}
