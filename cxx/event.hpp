@@ -9,8 +9,11 @@ struct Event
     double slope;
     double _offset;
 
+    /*  // Clang does not support syntax({.x = .3, .slope = 1.0, ._offset})
     Event() : Event(0, 0, 0) {}
     Event(double x, double s, double o) : x(x), slope(s), _offset(o) {}
+    */
+
     inline double val() const { return x * slope + offset(); }
     inline double offset() const { return _offset; }
 
