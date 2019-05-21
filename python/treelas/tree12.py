@@ -46,7 +46,6 @@ def iperm(perm):
     @njit(locals=dict(perm=int64[:], iperm=int64[:], n=int64))
     def iperm_(perm, iperm):
         """Inverse permuation: Implementation"""
-        n = len(perm)
         for i, j in enumerate(perm):
             iperm[j] = i
         return iperm
