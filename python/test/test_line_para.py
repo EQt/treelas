@@ -1,6 +1,5 @@
 import numpy as np
 from treelas import line_para
-from pytest import mark
 
 
 def test_line1_para():
