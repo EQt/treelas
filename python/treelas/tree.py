@@ -140,7 +140,10 @@ parent = {repr(self.parent)})"""
 
     @property
     def dual(self):
-        """Dual solution, corresponding to self.x (if called the first time, compute it)"""
+        """
+        Dual solution, corresponding to self.x.
+        If called the first time, compute it.
+        """
         if self.z is None:
             if self.x is None:
                 self.solve()
@@ -207,7 +210,7 @@ parent = {repr(self.parent)})"""
                     if overwrite:
                         del io[n]
                     else:
-                        raise RuntimeError(f"Allowed to delete {n} in {fname}?")
+                        raise RuntimeError(f"Allow to delete {n} in {fname}?")
                 if n in ["root"]:       # support compression?
                     io.create_dataset(n, data=v)
                 else:
@@ -233,7 +236,7 @@ parent = {repr(self.parent)})"""
             if "mu" in io:
                 mu = io["mu"].value
             else:
-                warnings.warn(f"No mu found in {fname}:{group}: setting mu == 0.5")
+                warnings.warn(f"No µ found in {fname}:{group}: set µ := 0.5")
                 mu = 0.5
             root = -1
             if "root" in io:
