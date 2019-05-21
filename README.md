@@ -57,6 +57,11 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.12.4
+Released 2019-05-21
+- C++: Prepare to remove Event with 3 variables
+- Python: PEP8, PyFlakes
+
 ### v0.12.3
 Release 2019-05-20
 - Julia: `MGT.gaplas` got a new `learn` parameter to control the portion to update the dual solutioon.
