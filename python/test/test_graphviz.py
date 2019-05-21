@@ -1,4 +1,4 @@
-from treelas.graphviz import print_dot, print_tree
+from treelas.graphviz import print_tree
 from os import path
 import h5py
 from io import StringIO
@@ -22,3 +22,8 @@ def test_print_tree():
     buf = StringIO()
     print_tree(parent, out=buf)
     assert buf.getvalue() == mini_dot
+
+
+def test_import():
+    from treelas.graphviz import print_dot
+    assert print_dot
