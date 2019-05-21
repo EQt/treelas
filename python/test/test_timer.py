@@ -1,5 +1,5 @@
 # from time import sleep
-from treelas.timer import Timer, now
+from treelas.timer import Timer
 import pytest
 
 
