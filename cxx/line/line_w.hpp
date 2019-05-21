@@ -32,7 +32,7 @@ dp_forward_w(
     const double *mu,
     const double *lam,
     double &off,
-    Event2 *event);
+    EvenT *event);
 
 
 /**
@@ -64,7 +64,7 @@ dp_reverse_w(
     const double *mu,
     const double *lam,
     double &off,
-    Event2 *event);
+    EvenT *event);
 
 
 template<typename float_ = double>
