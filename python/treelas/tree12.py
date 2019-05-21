@@ -154,7 +154,7 @@ def process_tree(treeh5, args=None):
             if not isinstance(lam, float):
                 lam = lam[0]
             xt = io['xt'][:] if 'xt' in io else \
-                 io['x++'][:] if 'x++' in io else None
+                io['x++'][:] if 'x++' in io else None
 
     y = y.flatten()
     n = len(parent)
@@ -190,9 +190,9 @@ def process_tree(treeh5, args=None):
         print("\nrlevels:", levels[::-1])
         nl = len(levels)
         for i in range(len(levels)-1):
-            l = levels[nl-i-2]
-            u = levels[nl-i-1]
-            print("  %d [%d:%d):" % (i, l, u), bfs[l:u])
+            low = levels[nl-i-2]
+            upp = levels[nl-i-1]
+            print("  %d [%d:%d):" % (i, low, upp), bfs[low:upp])
 
     with Timer("Inverse Order"):
         if args is not None and args.use_levels:
