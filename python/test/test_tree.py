@@ -25,7 +25,8 @@ def test_tree5():
     assert t.root == 0
     ti = TreeInstance(y, t.parent, lam=lam)
     ti.solve()
-    diff = np.abs(ti.x*3 - [22.7, 22.7, 22.7, 18.9, 18.9, 21.9,  9.9,  8.2,  8.2,  8.2])
+    diff = np.abs(ti.x*3 -
+                  [22.7, 22.7, 22.7, 18.9, 18.9, 21.9,  9.9,  8.2,  8.2,  8.2])
     assert diff.max() < 1e-14, f'{diff}, x={ti.x}'
     assert ti.x.mean() == ti.y.mean()
 
