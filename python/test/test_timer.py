@@ -1,4 +1,4 @@
-from time import sleep
+# from time import sleep
 from treelas.timer import Timer, now
 import pytest
 
