@@ -3,7 +3,8 @@
 Analyze the tree level structure of a tree.
 
 At the moment, BFS is computed using numpy.ndarray.argsort.
-However, it should be possible to compute it in linear time if you know the tree (as a linked list, e.g.).
+However, it should be possible to compute it in linear time if you know
+the tree (as a linked list, e.g.).
 """
 import argparse
 import sys
