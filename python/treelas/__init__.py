@@ -14,7 +14,6 @@ be arbitrary and the i-th element lam[i] contains the information for edge
 See https://github.com/eqt/treelas.
 
 """
-import re
 from .tree import Tree, TreeInstance
 from .segment import line_mean
 from .children import PyChildrenIndex
@@ -37,5 +36,5 @@ from ._treelas import (
     tree_dual_gap,
     random_spanning_tree,
     post_order,
-#   dp_forward, dp_reverse,
+    # dp_forward, dp_reverse,
 )
