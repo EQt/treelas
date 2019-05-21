@@ -52,7 +52,8 @@ class Timer:
         self.time1 = now()
         if type(self).verbose:
             if self.end.endswith('\n'):
-                print("%-*s" % (self.indent, " ..."), file=type(self).out, end='')
+                out = type(self).out
+                print("%-*s" % (self.indent, " ..."), file=out, end='')
             print(self.fmt % (1000.0 * float(self)),
                   file=type(self).out, flush=True)
 
