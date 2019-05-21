@@ -27,6 +27,8 @@
 #pragma once
 #define DEBUG 0
 
+#include <vector>
+
 #include "event.hpp"
 #include "range.hpp"
 #include "bits/hex.hpp"
