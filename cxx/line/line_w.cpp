@@ -26,9 +26,9 @@ dp_forward_w(
     const float_ *mu,
     const float_ *lam,
     float_ &off,
-    Event3_ *event)
+    Event_ *event)
 {
-    VecAlloc<Event3_> _ (&event, size_t(2*n));
+    VecAlloc<Event_> _ (&event, size_t(2*n));
     double min_y, max_y;
     find_minmax(y, n, min_y, max_y);
     Range pq {n, n-1};
@@ -67,9 +67,9 @@ dp_reverse_w(
     const float_ *mu,
     const float_ *lam,
     float_ &off,
-    Event3_ *event)
+    Event_ *event)
 {
-    VecAlloc<Event3_> _ (&event, size_t(2*n));
+    VecAlloc<Event_> _ (&event, size_t(2*n));
     double min_y, max_y;
     find_minmax(y, n, min_y, max_y);
     Range pq {n, n-1};

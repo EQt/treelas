@@ -16,14 +16,14 @@
 #include "../clip.hpp"
 
 
-template<typename float_, typename Event>
+template<typename float_, typename Event_>
 void
 dp_forward(
     const float_ *y,
     const float_ lam,
     float_ *lb,
     float_ *ub,
-    Event *event,
+    Event_ *event,
     Range &pq,
     const size_t begin,
     const size_t end)
@@ -54,14 +54,14 @@ dp_forward(
     const size_t end);
 
 
-template<typename float_, typename Event>
+template<typename float_, typename Event_>
 void
 dp_reverse(
     const float_ *y,
     const float_ lam,
     float_ *lb,
     float_ *ub,
-    Event *event,
+    Event_ *event,
     Range &pq,
     const size_t begin,
     const size_t end)
