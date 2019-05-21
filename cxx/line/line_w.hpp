@@ -8,7 +8,7 @@
    Return optimal x[0].
 */
 template<typename float_ = double,
-         typename Event_ = EvenT>
+         typename Event_ = Event>
 Range
 dp_forward_w(
     const int n,
@@ -41,7 +41,7 @@ dp_forward_w(
    Return optimal x[n-1].
 */
 template<typename float_ = double,
-         typename Event_ = EvenT>
+         typename Event_ = Event>
 Range
 dp_reverse_w(
     const int n,

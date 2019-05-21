@@ -25,7 +25,7 @@ line_dp(const size_t n,
         const bool increasing);
 
 
-template<typename float_ = double, typename Event_ = EvenT>
+template<typename float_ = double, typename Event_ = Event>
 void
 dp_forward(
     const float_ *y,
@@ -51,7 +51,7 @@ dp_forward(
     const size_t end);
 
 
-template<typename float_ = double, typename Event_ = EvenT>
+template<typename float_ = double, typename Event_ = Event>
 void
 dp_reverse(
     const float_ *y,
