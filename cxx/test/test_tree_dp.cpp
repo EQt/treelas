@@ -146,8 +146,8 @@ TEST(dptree0, proc_order)
 
     std::vector<double> lb (n, 0), ub (n);
     std::vector<double>  &sig = lb;
-    std::vector<Event> elements_ (2*n);
-    Event *elements = elements_.data();
+    std::vector<Event3> elements_ (2*n);
+    Event3 *elements = elements_.data();
 
     ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0, 0, 0, 0, 0}));
     {   int i = proc_order[0];
@@ -168,7 +168,7 @@ TEST(dptree0, proc_order)
         ASSERT_DOUBLE_EQ(lb[i], 2.0 - 0.01);
         ASSERT_EQ(pq[i], Range({3, 3}));
         ASSERT_EQ(elements[3],
-                  Event({.x = lb[i], .slope = mu[i],
+                  Event3({.x = lb[i], .slope = mu[i],
                          ._offset = -mu[i]*y[i] + lam[i]}));
 
         ub[i] = clip_back  (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
@@ -176,7 +176,7 @@ TEST(dptree0, proc_order)
         ASSERT_DOUBLE_EQ(ub[i], 2.0 + 0.01);
         ASSERT_EQ(pq[i], Range({3, 4}));
         ASSERT_EQ(elements[4],
-                  Event({.x = ub[i], .slope = -mu[i],
+                  Event3({.x = ub[i], .slope = -mu[i],
                          ._offset = +mu[i]*y[i] + lam[i]}));
 
         ASSERT_EQ(pq[parent[i]], Range({7, 6}));
@@ -202,14 +202,14 @@ TEST(dptree0, proc_order)
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.02, 0, 0, -0.01, 1.99}));
         ASSERT_EQ(pq[i], Range({5, 5}));
         ASSERT_EQ(elements[5],
-                  Event({.x = lb[i], .slope = mu[i],
+                  Event3({.x = lb[i], .slope = mu[i],
                          ._offset = -mu[i]*y[i] + lam[i]}));
 
         ub[i] = clip_back (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         ASSERT_DOUBLE_EQ(ub[i], 0.0 + 0.01);
         ASSERT_EQ(pq[i], Range({5, 6}));
         ASSERT_EQ(elements[6],
-                  Event({.x = ub[i], .slope = -mu[i],
+                  Event3({.x = ub[i], .slope = -mu[i],
                          ._offset = +mu[i]*y[i] + lam[i]}));
 
         ASSERT_EQ(pq[parent[i]], Range({3, 4}));
@@ -241,7 +241,7 @@ TEST(dptree0, proc_order)
             auto &e = elements[q.start];
             ASSERT_EQ(offset, -0.02);
             ASSERT_EQ(slope, 0.0);
-            ASSERT_EQ(e, Event({.x = -0.01, .slope = 1, ._offset=+0.01}));
+            ASSERT_EQ(e, Event3({.x = -0.01, .slope = 1, ._offset=+0.01}));
             ASSERT_EQ(slope * e.x + offset, -0.02);
             ASSERT_EQ(t, -0.02);
             ASSERT_EQ(slope * e.x + offset, t);

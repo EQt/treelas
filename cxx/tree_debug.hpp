@@ -105,12 +105,12 @@
 
 inline void
 dump_events(std::ostream &io,
-            const Event *elements,
+            const Event3 *elements,
             const int a,
             const int b)
 {
     for (int i = a; i <= b; i++) {
-        const Event &e = elements[i];
+        const Event3 &e = elements[i];
         if (i == a)
             io << "elements = {" << std::endl;
         else
@@ -146,7 +146,7 @@ dump_events(std::ostream &io,
 
 
 
-template<typename E = Event>
+template<typename E = Event3>
 inline void
 dump_events(std::ostream &io,
             const std::vector<E> &elements,
@@ -158,7 +158,7 @@ dump_events(std::ostream &io,
 
 
 
-template<typename E = Event>
+template<typename E = Event3>
 inline void
 dump_events(std::ostream &io,
             const E *elements,
@@ -170,7 +170,7 @@ dump_events(std::ostream &io,
 
 inline void
 dump_events(std::ostream &io,
-            const std::vector<Event> &elements,
+            const std::vector<Event3> &elements,
             const Range &pq)
 {
     return dump_events(io, elements.data(), pq);
@@ -178,7 +178,7 @@ dump_events(std::ostream &io,
 
 
 /** Read into python: see dpdebug.py */
-template<typename E = Event>
+template<typename E = Event3>
 inline void
 debug_dump(std::ostream &io,
            const E *e,

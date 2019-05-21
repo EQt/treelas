@@ -7,7 +7,7 @@
 
 TEST(reference, problem_clip_front)
 {
-    std::vector<Event> elements =
+    std::vector<Event3> elements =
         {{9, -99, 9},
          {4,  -8, 0},
          {3, -16, 0},
@@ -27,14 +27,14 @@ TEST(reference, problem_clip_front)
     }
     ASSERT_EQ(pq.start, 4);
     ASSERT_NE(elements, ecopy);
-    ASSERT_EQ(elements, std::vector<Event> (
+    ASSERT_EQ(elements, std::vector<Event3> (
                   {ecopy[0], ecopy[4], ecopy[2], ecopy[3], ecopy[4]}));
 }
 
 
 TEST(reference, solved_clip_front)
 {
-    std::vector<Event> elements =
+    std::vector<Event3> elements =
         {{9, -99, 9},
          {4,  -8, 0},
          {3, -16, 0},

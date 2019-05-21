@@ -3,7 +3,7 @@
 #include <iomanip>          // std::setw
 
 
-struct Event
+struct Event3
 {
     double x;
     double slope;
@@ -20,23 +20,23 @@ struct Event
     const static int _p = 5;
     const static int _w = 6;
 
-    inline bool operator==(const Event &o) const {
+    inline bool operator==(const Event3 &o) const {
         return x == o.x && slope == o.slope && offset() == o.offset();
     }
 
-    inline bool operator<(const Event &other) const {
+    inline bool operator<(const Event3 &other) const {
         return this->x < other.x;
     }
 };
 
 
 inline std::ostream&
-operator<<(std::ostream &o, const Event &e)
+operator<<(std::ostream &o, const Event3 &e)
 {
     o << "Event("
-      << std::setw(Event::_w) << std::setprecision(Event::_p) << e.x << ", "
-      << std::setw(Event::_w) << std::setprecision(Event::_p) << e.slope << ", "
-      << std::setw(Event::_w) << std::setprecision(Event::_p) << e.offset() << ")"
+      << std::setw(Event3::_w) << std::setprecision(Event3::_p) << e.x << ", "
+      << std::setw(Event3::_w) << std::setprecision(Event3::_p) << e.slope << ", "
+      << std::setw(Event3::_w) << std::setprecision(Event3::_p) << e.offset() << ")"
       << std::endl;
     return o;
 }

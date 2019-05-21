@@ -9,9 +9,9 @@
 
 
 /** end is exclusive! */
-template<typename Event = Event>
+template<typename Event = Event3>
 std::string
-pwl_csv(const Event *begin, const Event *end, const double margin = 1.0)
+pwl_csv(const Event3 *begin, const Event3 *end, const double margin = 1.0)
 {
     double sumo = 0.0;
     for (auto it = begin; it != end; it++) {
@@ -31,7 +31,7 @@ pwl_csv(const Event *begin, const Event *end, const double margin = 1.0)
             << std::showpos << y << std::endl;
     };
     out();
-    for (const Event *e = begin; e != end; e++) {
+    for (const Event3 *e = begin; e != end; e++) {
         x = e->x;
         offset += e->offset();
         slope += e->slope;
@@ -44,17 +44,17 @@ pwl_csv(const Event *begin, const Event *end, const double margin = 1.0)
 
 
 /** Printout the knots given by events `els` in the range `q` */
-template<typename Event = Event>
+template<typename Event = Event3>
 std::string
-pwl_csv(const Range &q, const Event *els)
+pwl_csv(const Range &q, const Event3 *els)
 {
     return pwl_csv(els + q.start, els + q.stop + 1);
 }
 
 
-template<typename Event = Event>
+template<typename Event = Event3>
 std::string
-pwl_csv(const Range &q, const std::vector<Event> els)
+pwl_csv(const Range &q, const std::vector<Event3> els)
 {
     return pwl_csv(q, els.data());
 }

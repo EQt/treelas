@@ -18,7 +18,7 @@ dp_forward_w(
     const float_ *mu,
     const float_ *lam,
     float_ &off,
-    Event_ *event = nullptr);
+    Event3_ *event = nullptr);
 
 
 // template is compiled somewhere else for those types
@@ -51,7 +51,7 @@ dp_reverse_w(
     const float_ *mu,
     const float_ *lam,
     float_ &off,
-    Event_ *event = nullptr);
+    Event3_ *event = nullptr);
 
 
 extern template
