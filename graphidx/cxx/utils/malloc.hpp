@@ -1,12 +1,17 @@
-// Prefer the C allocator (compared to the C++ new operator)
 #pragma once
 #include <cstdlib>
 
+
+/**
+   Prefer the C allocator `malloc(...)` to the C++ new operator.
+   In the destructor, the owned object will be `free`ed.   
+*/
 template<typename T>
 struct Malloc
 {
     size_t n;
     T *_x;
+
     Malloc(size_t n) : n(n) {
         _x = (T*) malloc(n * sizeof(T));
     }
