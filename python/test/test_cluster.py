@@ -44,4 +44,4 @@ def test_cluster_2x2_1vs1vs1vs2():
 
 
 if __name__ == '__main__':
-    test_cluster_2x2()
+    test_cluster_2x2_2vs2_v()
