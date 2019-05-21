@@ -1,7 +1,8 @@
 #pragma once
-#include <sstream>          // for std::stringstream
-#include <iomanip>          // std::setw
 #include <cmath>            // std::abs
+#include <iomanip>          // std::setw
+#include <sstream>          // for std::stringstream
+#include <vector>
 
 #include "event.hpp"
 #include "range.hpp"
