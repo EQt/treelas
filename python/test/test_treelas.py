@@ -4,7 +4,6 @@ Very basic tests concerning refcounts and boost::numpy
 import treelas as t
 import numpy as np
 import sys
-import gc
 
 
 def test_create_array():
