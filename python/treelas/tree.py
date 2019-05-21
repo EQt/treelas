@@ -9,7 +9,7 @@ from .prufer import prufer_from_children_spec
 from .children import PyChildrenIndex as ChildrenIndex
 
 
-@njit
+@njit(cache=True)
 def find_root(parent):
     """Return the smallest i with parent[i] == i"""
     for i, p in enumerate(parent):
