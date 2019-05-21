@@ -6,10 +6,10 @@ Determine the lowest common ancestor
 def test_defaultdict():
     from collections import defaultdict
 
-    assert bool() == False
+    assert bool() is False
     colors = defaultdict(bool)          # dictionary with default False
-    assert colors[0] == False
-    assert colors[1] == False
+    assert colors[0] is False
+    assert colors[1] is False
 
 
 def lca_networkx(G, root, pairs):
@@ -26,7 +26,6 @@ def lca_networkx(G, root, pairs):
     from networkx.utils import UnionFind, arbitrary_element
     from networkx import dfs_postorder_nodes
 
-
     pair_dict = defaultdict(set)
     for u, v in pairs:
         pair_dict[u].add(v)
@@ -39,7 +38,7 @@ def lca_networkx(G, root, pairs):
     for node in G:
         ancestors[node] = uf[node]
 
-    colors = defaultdict(bool)  
+    colors = defaultdict(bool)
     for node in dfs_postorder_nodes(G, root):
         colors[node] = True
         for v in pair_dict[node]:
