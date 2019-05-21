@@ -57,6 +57,12 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.13
+Guiding Ideas
+- C++: Refactor `clip_front` and `clip_back` methods such that they can be combined with their weighted counter parts `clip_fronw` and `clip_backw`.
+  This will effect all the `line/*` methods and the `tree_dp.hpp` as well.
+- For preparation: Create tests for `clip_{front,fronw}` that also involve the divide by zero case.
+
 ### v0.12.4
 Released 2019-05-21
 - C++: Prepare to remove Event with 3 variables
