@@ -14,7 +14,7 @@ def test_nan():
         t.solve()
     assert 'y[1] = nan' in str(e)
     t.y = np.array([0., 0, 0])
-    t.mu = mu=np.array([1., 0., np.nan])
+    t.mu = np.array([1., 0., np.nan])
     with pytest.raises(RuntimeError) as e:
         t.solve()
     assert 'mu[2] = nan' in str(e)
