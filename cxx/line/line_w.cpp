@@ -108,11 +108,11 @@ line_w(
 {
     std::vector<float_>
         lb_ (n-1), ub_ (n-1);
-    std::vector<Event2> events_ (2*n);
+    std::vector<EvenT> events_ (2*n);
     float_
         *lb = lb_.data(),
         *ub = ub_.data();
-    Event2 *event = events_.data();
+    EvenT *event = events_.data();
 
     double off;
     Range pq = dp_forward_w(n, lb, ub, y, mu, lam, off, event);

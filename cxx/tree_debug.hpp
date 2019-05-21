@@ -126,12 +126,12 @@ dump_events(std::ostream &io,
 
 inline void
 dump_events(std::ostream &io,
-            const Event2 *elements,
+            const EvenT *elements,
             const int a,
             const int b)
 {
     for (int i = a; i <= b; i++) {
-        const Event2 &e = elements[i];
+        const EvenT &e = elements[i];
         if (i == a)
             io << "elements = {" << std::endl;
         else

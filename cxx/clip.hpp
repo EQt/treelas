@@ -5,7 +5,7 @@
 #define SLOPE_EPS (1e-8)
 
 
-template<typename E = Event2>
+template<typename E = EvenT>
 inline double
 clip_front(E *elements,
            Range &pq,
@@ -29,7 +29,7 @@ clip_front(E *elements,
 }
 
 
-template<typename E = Event2>
+template<typename E = EvenT>
 inline double
 clip_back(E *elements,
           Range &pq,
@@ -52,7 +52,7 @@ clip_back(E *elements,
 
 inline double
 clip_fronw(
-    Event2 *elements,
+    EvenT *elements,
     Range &pq,
     double slope,
     double offset,
@@ -61,7 +61,7 @@ clip_fronw(
 {
 //    CLIP_START();
     const int start0 = pq.start;
-    const Event2 *e = &elements[start0];
+    const EvenT *e = &elements[start0];
     while (pq.start <= pq.stop && slope * e->x + offset < t) {
         offset += e->offset();
         slope += e->slope;
@@ -84,7 +84,7 @@ clip_fronw(
     */
     /* -t because the next time this event will be triggered,
        it will have included t in the offset */
-    elements[--pq.start] = Event2({x, slope});
+    elements[--pq.start] = EvenT({x, slope});
 
 // #ifdef DEBUG
 //     // if (x > upper_bound - t)
@@ -98,7 +98,7 @@ clip_fronw(
 
 inline double
 clip_backw(
-    Event2 *elements,
+    EvenT *elements,
     Range &pq,
     double slope,
     double offset,
@@ -107,7 +107,7 @@ clip_backw(
 {
     const auto stop0 = pq.stop;
 //    CLIP_START();
-    const Event2 *e = &elements[stop0];
+    const EvenT *e = &elements[stop0];
     while (pq.start <= pq.stop && slope * e->x + offset > t) {
         offset -= e->offset();
         slope -= e->slope;
@@ -119,7 +119,7 @@ clip_backw(
     }
 
     const double x = (t - offset)/slope;
-    elements[++pq.stop] = Event2({x, -slope});
+    elements[++pq.stop] = EvenT({x, -slope});
 // #ifdef DEBUG
 //     if (x > upper_bound + t)
 //         CLIP_THROW("clip_back: x is too big");

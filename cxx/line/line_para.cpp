@@ -20,14 +20,14 @@ line_para(const size_t n,
           float_ *x,
           const bool parallel)
 {
-    std::vector<Event2> event_;
+    std::vector<EvenT> event_;
     std::vector<float_> ub_;
     {   Timer _ ("allocation");
         event_.reserve(2*n);
         ub_.reserve(n);
     }
 
-    Event2 *event = event_.data();
+    EvenT *event = event_.data();
     float_
         *ub = ub_.data(),
         *lb = x;

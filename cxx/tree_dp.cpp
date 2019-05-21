@@ -15,7 +15,7 @@
 #include "merge.hpp"
 
 
-template<typename E = Event2>
+template<typename E = EvenT>
 struct TreeDPStatus
 {
     TreeDPStatus(const size_t n) :
@@ -119,7 +119,7 @@ tree_dp(
     Timer timer ("memory alloc");
     if (x == nullptr)
         x = new double[n];
-    TreeDPStatus<Event2> s(n);
+    TreeDPStatus<EvenT> s(n);
     timer.stop();
     return _tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, root, s);
 }
@@ -170,7 +170,7 @@ tree_dp_w(
     if (x == nullptr) {
         x = new double[n];
     }
-    std::vector<Event2> elements_ (2*n);
+    std::vector<EvenT> elements_ (2*n);
     std::vector<int> proc_order;
     ChildrenIndex childs (n);
     std::vector<Range> pq (n);

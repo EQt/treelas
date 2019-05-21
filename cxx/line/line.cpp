@@ -114,12 +114,12 @@ line_dp(const size_t n,
     Event2 *event = event_.data();
     float_ *ub = ub_.data();
 #else
-    std::vector<Event2> event_;
+    std::vector<EvenT> event_;
     std::vector<float_> ub_;
     event_.reserve(2*n);
     ub_.reserve(n-1);
 
-    Event2 *event = event_.data();
+    EvenT *event = event_.data();
     float_ *ub = ub_.data();
 #endif
     t.stop();
