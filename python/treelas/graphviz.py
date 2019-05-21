@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 Load edges/{head,tail} and show the graph structure
-using the `dot` (https://www.graphviz.org/) program 
+using the `dot` (https://www.graphviz.org/) program
 """
 import sys
 import argparse
@@ -88,7 +88,7 @@ def ascii_dot(args):
     [parent] = re.findall(r'.*{([\d,\s]+)}.*', parent)
     parent = np.fromstring(parent, sep=',', dtype=int)
     show_tree(parent, prg="graph-easy --as boxart -",
-              wait=False, out=sys.stdout)    
+              wait=False, out=sys.stdout)
 
 
 if __name__ == '__main__':
