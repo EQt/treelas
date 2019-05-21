@@ -45,7 +45,7 @@ dp_forward(
     const double lam,
     double *lb,
     double *ub,
-    EvenT *event,
+    Event *event,
     Range &pq,
     const size_t begin,
     const size_t end);
@@ -71,7 +71,7 @@ dp_reverse(
     const double lam,
     double *lb,
     double *ub,
-    EvenT *event,
+    Event *event,
     Range &pq,
     const size_t begin,
     const size_t end);

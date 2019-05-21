@@ -48,7 +48,7 @@ dp_forward(
     const double lam,
     double *lb,
     double *ub,
-    EvenT *event,
+    Event *event,
     Range &pq,
     const size_t begin,
     const size_t end);
@@ -86,7 +86,7 @@ dp_reverse(
     const double lam,
     double *lb,
     double *ub,
-    EvenT *event,
+    Event *event,
     Range &pq,
     const size_t begin,
     const size_t end);
@@ -104,14 +104,14 @@ line_dp(const size_t n,
 
     Timer t ("alloc");
 #ifdef UNIQUE_PTR
-    std::unique_ptr<EvenT> event_ (new EvenT[2*n]);
+    std::unique_ptr<Event> event_ (new Event[2*n]);
     std::unique_ptr<float_> ub_ (new float_[2*n]);
-    EvenT *event = event_.get();
+    Event *event = event_.get();
     float_ *ub = ub_.get();
 #elif defined MALLOC
-    Malloc<EvenT> event_(2*n);
+    Malloc<Event> event_(2*n);
     Malloc<float_> ub_ (n);
-    EvenT *event = event_.data();
+    Event *event = event_.data();
     float_ *ub = ub_.data();
 #else
     std::vector<Event> event_;
