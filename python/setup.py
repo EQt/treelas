@@ -79,15 +79,9 @@ class BuildExt(build_ext):
         opts = self.c_opts.get(ct, [])
         if ct == 'unix':
             opts.append('-std=c++14')
-            # opts.append('-g')
             opts.append('-O3')
             opts.append('-Wall')
             opts.append('-fvisibility=hidden')
-            if hasattr(self.compiler, "compiler"):
-                if self.compiler.compiler[0] in ['gcc', 'g++', 'c++']:
-                    cso = self.compiler.compiler_so
-                    if '-Wstrict-prototypes' in cso:
-                        cso.remove('-Wstrict-prototypes')
         for ext in self.extensions:
             ext.extra_compile_args = opts
         build_ext.build_extensions(self)
