@@ -8,3 +8,7 @@ formula.svg: formula_main.dvi
 
 %.dvi: %.tex
 	latex $<
+
+cxx:
+	doxygen
+	sphinx-build -b html src/cxx html/cxx

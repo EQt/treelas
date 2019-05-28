@@ -6,9 +6,11 @@
 
 
 /**
-  The reason why there are two different versions of the `clip_front` method (@see `clip_fronw`):
+  The reason why there are two different versions of the `clip_front` method (`clip_fronw`):
 
   In the end we usually divide by slope to obtain a position x, which might be problematic in case that slope is (almost) zero.
+
+  @see `clip_fronw`
 */
 template<typename E = Event>
 inline double
