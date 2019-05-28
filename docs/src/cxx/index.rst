@@ -15,6 +15,10 @@ Hereby is
  * :math:`E` the edges, usually from a tree, and
  * :math:`\lambda_{ij} > 0` is the edge weight for :math:`(i,j)`.
 
+
+More Concepts
+-------------
+
 .. toctree::
 
    clip
