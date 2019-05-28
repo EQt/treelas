@@ -2,6 +2,7 @@
 #include "event.hpp"
 #include "range.hpp"
 
+/** Minimal slope after which the PWL is treated as having zero slope. */
 #define SLOPE_EPS (1e-8)
 
 
