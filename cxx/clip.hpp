@@ -6,10 +6,14 @@
 #define SLOPE_EPS (1e-8)
 
 
-/**
-  The reason why there are two different versions of the `clip_front` method (`clip_fronw`):
+/** Cut all knots until the PWL is at least `t`.
 
-  In the end we usually divide by slope to obtain a position x, which might be problematic in case that slope is (almost) zero.
+  The reason why there are two versions, `clip_front` and `clip_fronw`:
+
+  In the end we usually divide by slope to obtain a position x, which
+  might be problematic in case that slope is (almost) zero.
+  Setting the position `x` to \f$-\infty\f$ will result in the problem that
+  `x` times `slope` is not exactly `t`.
 
   @see `clip_fronw`
 */
