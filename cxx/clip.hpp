@@ -2,15 +2,14 @@
 #include "event.hpp"
 #include "range.hpp"
 
-/*
-  The reason why there are two different versions of the clip_front method:
-
-  In the end we usually divide by slope to obtain a position x, which might be problematic in case that slope is (almost) zero.
-*/
-
 #define SLOPE_EPS (1e-8)
 
 
+/**
+  The reason why there are two different versions of the `clip_front` method (@see `clip_fronw`):
+
+  In the end we usually divide by slope to obtain a position x, which might be problematic in case that slope is (almost) zero.
+*/
 template<typename E = Event>
 inline double
 clip_front(E *elements,
