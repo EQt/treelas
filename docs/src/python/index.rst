@@ -3,4 +3,10 @@ For the Julia documentation see `here <../index.html>`_.
 
 .. automodule:: treelas
 
-   
+
+Further Topics
+--------------
+
+.. toctree::
+   line
+   tree
