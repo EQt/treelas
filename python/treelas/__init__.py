@@ -1,18 +1,21 @@
 """
-Treelas: a fused lasso solver for trees
----------------------------------------
+TreeLas: a Fused Lasso Solver for Trees
+=======================================
 
 
-## Tree Edges
+Tree Edges
+----------
+
 Information on tree edges (e.g. lambda) are encoded as vector of length n
 (albeit there are only n-1 edges).  We do so because than the root node can
 be arbitrary and the i-th element lam[i] contains the information for edge
 (i, parent[i]).
 
 
-## Details
-See https://github.com/eqt/treelas.
+Details
+-------
 
+See https://github.com/eqt/treelas 
 """
 from .tree import Tree, TreeInstance
 from .segment import line_mean
