@@ -3,6 +3,13 @@ Line Algorithms
 
 .. currentmodule:: treelas
 
+.. autofunction:: line_las
 .. autofunction:: line_w
 
-.. autofunction:: line_las
+
+For Comparison
+--------------
+
+.. currentmodule:: treelas
+.. autofunction:: line_glmgen
+.. autofunction:: line_condat
