@@ -41,8 +41,7 @@ def print_dot(head, tail=None, indent="   ", out=sys.stdout,
 
 def show_dot(graph, prg="dot -Tx11", wait=True, out=sp.DEVNULL):
     """Start dot program on string `graph`"""
-    dot = sp.Popen(prg.split(), stdin=sp.PIPE,
-                   stdout=out, stderr=sp.DEVNULL)
+    dot = sp.Popen(prg.split(), stdin=sp.PIPE)
     dot.stdin.write(graph.encode())
     dot.stdin.close()
     if wait:
