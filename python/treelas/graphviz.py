@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 """
 Load edges/{head,tail} and show the graph structure
-using the `dot` (https://www.graphviz.org/) program
+using the `dot` (https://www.graphviz.org/) program 
 """
 import sys
-import argparse
-import h5py
 import subprocess as sp
 from io import StringIO
 
@@ -58,6 +56,7 @@ def show_tree(parent, prg="dot -Tx11", wait=True, out=sp.DEVNULL):
 
 
 def main(args=None):
+    import h5py
     from .graphio import load_edges
 
     buf = StringIO()
@@ -92,6 +91,8 @@ def ascii_dot(args):
 
 
 if __name__ == '__main__':
+    import argparse
+
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('inh5', type=str, help='inh5 file to show')
     p.add_argument('-v', '--verbose', action='store_true',
