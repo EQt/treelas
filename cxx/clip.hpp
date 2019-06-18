@@ -15,6 +15,12 @@
   Setting the position `x` to \f$-\infty\f$ will result in the problem that
   `x` times `slope` is not exactly `t`.
 
+  Hence we agree that we will never insert an Event with zero slope.
+  Zero-slope Events can occur only at the beginning or the end of a queue.
+  That is way they can be merged into the adjoining events.
+  Just bear in mind that the initial offset might change by this change.
+  That is way I started two different implementations.
+
   @see `clip_fronw`
 */
 template<typename E = Event>
