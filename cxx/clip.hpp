@@ -21,7 +21,13 @@
   Just bear in mind that the initial offset might change by this change.
   That is way I started two different implementations.
 
+  In case I favor a solution that returns the initial `offset` and the position `x` the method
+  <a href="http://www.cplusplus.com/reference/tuple/tie/">std::tie</a>
+  might be helpful.
+
   @see `clip_fronw`
+
+
 */
 template<typename E = Event>
 inline double
