@@ -1,7 +1,20 @@
+//! Weight parameters associated to a collection, e.g. nodes or edges.
+//!
+//! There are mainly to different kinds of weights:
+//!
+//! 1. [`ConstantWeights`] provides the same weight for every element.
+//!
+//! 2. [`ArrayWeights`] provides access to a weight stored in a vector.
+//!
+//! Both classes provide access by index notation.
+//!
+//! [`ConstantWeights`]: struct.ConstantWeights.html
+//! [`ArrayWeights`]: struct.ConstantWeights.html
 use std::ops::Index;
 
+/// Same weight for every element.
 #[derive(PartialEq, Debug)]
-struct ConstantWeights<T> {
+pub struct ConstantWeights<T> {
     c: T,
 }
 
@@ -12,8 +25,9 @@ impl<T> Index<usize> for ConstantWeights<T> {
     }
 }
 
+/// Weights stored in an array.
 #[derive(PartialEq, Debug)]
-struct ArrayWeights<T> {
+pub struct ArrayWeights<T> {
     a: Vec<T>,
 }
 
@@ -38,7 +52,7 @@ mod tests {
 
     #[test]
     fn array_weights_123() {
-        let w = ArrayWeights { a : vec![1, 2, 5] };
+        let w = ArrayWeights { a: vec![1, 2, 5] };
         assert_eq!(w[2], 5);
         assert_eq!(w[0], 1);
         assert_eq!(w[1], 2);

@@ -18,7 +18,7 @@ impl Tree {
     pub fn from_parent(parent: Vec<usize>) -> Option<Self> {
         Some(Self {
             root: find_root(&parent)?,
-            parent: parent
+            parent: parent,
         })
     }
 }
