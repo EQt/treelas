@@ -1,12 +1,6 @@
 use super::find_root;
 use std::ops::Index;
 
-#[derive(PartialEq, Debug)]
-pub struct ChildrenIndex {
-    idx: Vec<usize>,
-    child: Vec<usize>,
-}
-
 /// Find all children of a node in constant time.
 ///
 /// # Example
@@ -23,7 +17,14 @@ pub struct ChildrenIndex {
 /// assert_eq!(cidx[1], []);
 /// assert_eq!(cidx[2], [3]);
 /// ```
+#[derive(PartialEq, Debug)]
+pub struct ChildrenIndex {
+    idx: Vec<usize>,
+    child: Vec<usize>,
+}
+
 impl ChildrenIndex {
+    /// Build a new `Children Index`.
     pub fn from_tree(parent: &[usize], root: usize) -> Self {
         let n = parent.len();
         assert!(n > 0);
@@ -76,14 +77,17 @@ impl ChildrenIndex {
         }
     }
 
+    /// Construct a new `ChildrenIndex` by first finding the `root` node.
     pub fn from_parent(parent: &[usize]) -> Option<Self> {
         return Some(Self::from_tree(parent, find_root(parent)?));
     }
 
+    /// The root node of the underlying tree.
     pub fn root_node(self: &Self) -> usize {
         return self.child[0];
     }
 
+    /// Number of nodes in the underlying tree.
     pub fn len(self: &Self) -> usize {
         return self.child.len();
     }

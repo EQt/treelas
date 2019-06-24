@@ -5,6 +5,8 @@ mod root;
 pub use children::*;
 pub use root::find_root;
 
+/// A tree represented by a `parent` array that tells the parent node.
+/// For the `root` node it must hold `parent[root] == root`.
 #[allow(dead_code)]
 pub struct Tree {
     root: usize,
@@ -12,6 +14,7 @@ pub struct Tree {
 }
 
 impl Tree {
+    /// Compute the `root` node by `find_root`.
     pub fn from_parent(parent: Vec<usize>) -> Option<Self> {
         Some(Self {
             root: find_root(&parent)?,
