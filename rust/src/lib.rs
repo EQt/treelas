@@ -1,4 +1,7 @@
+mod event;
+
 use graphidx;
+use event::Event;
 
 pub struct TreeDP {
     post_order: Vec<u64>,
@@ -9,26 +12,7 @@ impl TreeDP {
     where
         W1: graphidx::weights::Weights<f64>,
     {
-    }
-}
-
-pub struct Event {
-    x: f64,
-    slope: f64,
-}
-
-impl Default for Event {
-    fn default() -> Self {
-        Event {
-            x: 0.0,
-            slope: 0.0,
-        }
-    }
-}
-
-impl Event {
-    fn offset(&self) -> f64 {
-        -self.x / self.slope
+        unimplemented!();
     }
 }
 
