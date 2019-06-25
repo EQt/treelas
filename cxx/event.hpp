@@ -17,12 +17,21 @@ struct Event
     double x;
     double slope;
 
+    /// Zero event: does not change anything.
     Event() : Event(0., 0.) {}
-    Event(double x, double slope, double) : Event(x, slope) {}
+
+    /// Default constructor.
     Event(double x, double slope) : x(x), slope(slope) {}
+
+    /// For compatibility: ignore third argument
+    Event(double x, double slope, double) : Event(x, slope) {}
+
     inline double offset() const { return -x * slope; }
 
+    /// Printing precision.
     const static int _p = 5;
+
+    /// Printing width.
     const static int _w = 6;
 
     inline bool operator==(const Event &o) const {
