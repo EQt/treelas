@@ -27,6 +27,9 @@ impl<T> Index<usize> for ConstantWeights<T> {
     }
 }
 
+impl<T> Weights<T> for ConstantWeights<T> {
+}
+
 /// Weights stored in an array.
 #[derive(PartialEq, Debug)]
 pub struct ArrayWeights<T> {
@@ -38,6 +41,9 @@ impl<T> Index<usize> for ArrayWeights<T> {
     fn index(&self, i: usize) -> &Self::Output {
         &self.a[i]
     }
+}
+
+impl<T> Weights<T> for ArrayWeights<T> {
 }
 
 #[cfg(test)]
