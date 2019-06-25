@@ -21,13 +21,34 @@
   Just bear in mind that the initial offset might change by this change.
   That is way I started two different implementations.
 
-  In case I favor a solution that returns the initial `offset` and the position `x` the method
+  In case I favor a solution that returns the initial `offset` and the
+  position `x` the method
   <a href="http://www.cplusplus.com/reference/tuple/tie/">std::tie</a>
   might be helpful.
 
+  ## Usage
+
+  This methods returns the position where the event will happen next time.
+  Furthermore, a corresponding event is prepended to `elements`.
+
+  ## Why do we need the position `x` at all?
+
+  There are mainly to occasions: We need it to
+   1. order the events
+   2. have a proper bound in case slope is not zero
+
+  Regarding the first point, the ordering: In principle it is possible
+  to avoid the division and store `(offset, slope)` instead of `(x, slope)`.
+  However, to compare two Event s we would need to do a multiplication
+  each time.
+
+  Also for the second point we could avoid the division if we store
+  the slope and offset instead of the postion `x`.
+
+  All in all I realized that events with zero-slope can be avoided:
+  they simple don't have an effect on further processing.
+
   @see `clip_fronw`
-
-
 */
 template<typename E = Event>
 inline double
