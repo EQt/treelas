@@ -6,7 +6,7 @@ cxx:
 
 rust:
 	cd $(realpath .)/.. && cargo doc
-	cp -R $(realpath .)/../rust/target/doc/ html/rust
+	cp -R $(realpath .)/../../rust/target/doc/graphidx html/rust
 
 julia:
 	julia --color=yes make.jl
