@@ -22,7 +22,7 @@ TEST(Line, line_las3)
                 const size_t i = n-1;
                 ASSERT_EQ(i, 2);
                 ASSERT_EQ(y[i], 0.5);
-                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off, -lam);
+                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off + lam);
                 ASSERT_EQ(lb[i-1], 0.0);
                 ASSERT_EQ(pq, Range({int(n-1), int(n-1)}));
                 ASSERT_EQ(event[pq.start], Event({0.0, 1.0}));
@@ -36,7 +36,7 @@ TEST(Line, line_las3)
                 const size_t i = n-2;
                 ASSERT_EQ(i, 1);
                 ASSERT_EQ(y[i], 0.0);
-                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off, -lam);
+                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off + lam);
                 ASSERT_EQ(pq, Range({int(n-2), int(n)}));
                 ASSERT_EQ(lb[i-1], 0.0);
                 ub[i-1] = clip_back (event, pq, mu, -mu*y[i]+off, +lam);

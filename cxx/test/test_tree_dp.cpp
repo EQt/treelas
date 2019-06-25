@@ -162,8 +162,8 @@ TEST(dptree0, proc_order)
         const auto sig_i = sig[i];
         lb[i] = clip_front(elements, pq[i],
                            /* slope  */ +mu[i],
-                           /* offset */ -mu[i]*y[i] -sig_i,
-                           /* t      */ -lam_i);
+                           /* offset */ -mu[i]*y[i] -sig_i
+                           /* t      */ +lam_i);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 1.99}));
         ASSERT_DOUBLE_EQ(lb[i], 2.0 - 0.01);
         ASSERT_EQ(pq[i], Range({3, 3}));
@@ -196,8 +196,8 @@ TEST(dptree0, proc_order)
         ASSERT_DOUBLE_EQ(sig_i, 0.0);
         lb[i] = clip_front(elements, pq[i],
                            /* slope  */ +mu[i],
-                           /* offset */ -mu[i]*y[i] -sig_i,
-                           /* t      */ -lam_i);
+                           /* offset */ -mu[i]*y[i] -sig_i
+                           /* t      */ +lam_i);
         ASSERT_DOUBLE_EQ(lb[i], 0.0 - 0.01);
         ASSERT_EQ(sig, std::vector<double>({0.0, 0, 0.02, 0, 0, -0.01, 1.99}));
         ASSERT_EQ(pq[i], Range({5, 5}));
@@ -248,7 +248,7 @@ TEST(dptree0, proc_order)
             ASSERT_LE(q.start, q.stop);
             lb[i] = clip_front(elements, pq[i],
                                /* slope  */ slope,
-                               /* offset */ offset,
+                               /* offset */ offset +
                                /* t      */ t);
             // ASSERT_EQ(lb[i], 0.0 /*-0.01*/);    // uncertainty...
             // ASSERT_EQ(offset - t, 0.0);

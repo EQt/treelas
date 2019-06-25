@@ -116,7 +116,7 @@ line_w(
 
     double off;
     Range pq = dp_forward_w(n, lb, ub, y, mu, lam, off, event);
-    x[0] = clip_front(event, pq, mu[0], -mu[0]*y[0] -off, 0.0);
+    x[0] = clip_front(event, pq, mu[0], -mu[0]*y[0] -off + 0.0);
     for (int i = 1; i < n; i++) {
         x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
     }
