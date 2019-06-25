@@ -9,9 +9,9 @@ The software herein aims to **minimize** the following objective function
 
 Hereby is
  * :math:`y_i` the input signal for node :math:`i`,
- * :math:`\mu_i \geq 0` is the node weight for node :math:`i`,
+ * :math:`\\mu_i \\geq 0` is the node weight for node :math:`i`,
  * :math:`E` the edges, usually from a tree, and
- * :math:`\lambda_{ij} > 0` is the edge weight for :math:`(i,j)`.
+ * :math:`\\lambda_{ij} > 0` is the edge weight for :math:`(i,j)`.
 
 
 Tree Edges
