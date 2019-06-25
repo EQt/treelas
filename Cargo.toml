@@ -1,0 +1,3 @@
+[workspace]
+members = [ "rust", "graphidx/rust" ]
+exclude = [ "graphidx" ]
