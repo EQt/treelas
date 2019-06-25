@@ -21,7 +21,6 @@ struct Event
     Event(double x, double slope, double) : Event(x, slope) {}
     Event(double x, double slope) : x(x), slope(slope) {}
     inline double offset() const { return -x * slope; }
-    inline double val() const { return x * slope + offset(); }
 
     const static int _p = 5;
     const static int _w = 6;
