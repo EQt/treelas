@@ -12,6 +12,8 @@
 //! [`ArrayWeights`]: struct.ConstantWeights.html
 use std::ops::Index;
 
+pub trait Weights<T>: Index<usize> {}
+
 /// Same weight for every element.
 #[derive(PartialEq, Debug)]
 pub struct ConstantWeights<T> {

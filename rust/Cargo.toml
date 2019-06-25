@@ -1,0 +1,8 @@
+[package]
+name = "treelas"
+version = "0.1.0"
+authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
+edition = "2018"
+
+[dependencies]
+graphidx = { path = "../graphidx/rust" }
