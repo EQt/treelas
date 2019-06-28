@@ -1,11 +1,11 @@
 use graphidx;
 
 pub struct TreeDP {
-    post_order: Vec<u64>,
+    post_order: Vec<usize>,
 }
 
 impl TreeDP {
-    pub fn solve<W1, W2>(x: &mut [f64], y: &[f64], lam: W1, mu: W2)
+    pub fn solve<W1, W2>(&self, x: &mut [f64], y: &[f64], lam: W1, mu: W2)
     where
         W1: graphidx::weights::Weights<f64>,
         W2: graphidx::weights::Weights<f64>,
@@ -13,8 +13,13 @@ impl TreeDP {
         let n = y.len();
         assert!(n == x.len());
         assert!(mu.len() >= n);
-        assert!(x.len() - 1 >= lam.len());
-        unimplemented!();
+        assert!(x.len() >= lam.len());
+        let x = &mut x[..];
+        for v in &self.post_order {
+            let v = *v;
+            x[v] = y[v]
+        }
+        // unimplemented!();
     }
 }
 
@@ -23,10 +28,15 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_treedp() {
-        let _t = TreeDP {
+    fn test_treedp_empty() {
+        let t = TreeDP {
             post_order: vec![],
         };
+        let mut x = vec![];
+        let y = vec![];
+        let lam = graphidx::weights::ConstantWeights::new(1.0);
+        let mu = graphidx::weights::ConstantWeights::new(0.5);
+        t.solve(&mut x, &y, lam, mu);
         assert!(true);
     }
 }
