@@ -57,6 +57,8 @@ pub struct PWL {
 }
 
 impl PWL {
+    const EPS: f64 = 1e-9;
+
     pub fn new(n: usize) -> Self {
         Self {
             offset: 0.0,
@@ -76,7 +78,7 @@ impl PWL {
         let (o, s) =
             clip_front(&mut self.r, event, offset + self.offset, slope);
         self.offset += o;
-        if s.abs() > 1e-9 {
+        if s.abs() > Self::EPS {
             let x = -o / s;
             self.r.start -= 1;
             event[self.r.start] = Event {
