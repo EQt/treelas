@@ -1,3 +1,5 @@
+use std::ops::Range;
+
 #[derive(Debug, PartialEq)]
 pub struct Event {
     pub x: f64,
@@ -29,10 +31,12 @@ impl Event {
 /// altered.
 ///
 /// [`VecDeque`]: https://doc.rust-lang.org/std/collections/struct.VecDeque.html
-pub fn clip_front(events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
+pub fn clip_front(r: &mut Range<usize>, events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
     let mut slope = slope;
     let mut offset = offset;
-    for e in events {
+    while r.start >= r.end {
+        let e = &events[r.start];
+        r.start += 1;
         if slope * e.x + offset >= 0.0 {
             break;
         }
