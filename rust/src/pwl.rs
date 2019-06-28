@@ -31,26 +31,6 @@ impl Event {
 /// altered.
 ///
 /// [`VecDeque`]: https://doc.rust-lang.org/std/collections/struct.VecDeque.html
-pub fn clip_front(
-    r: &mut Range<usize>,
-    events: &[Event],
-    offset: f64,
-    slope: f64,
-) -> (f64, f64) {
-    let mut slope = slope;
-    let mut offset = offset;
-    while r.start >= r.end {
-        let e = &events[r.start];
-        r.start += 1;
-        if slope * e.x + offset >= 0.0 {
-            break;
-        }
-        slope += e.slope;
-        offset += e.offset();
-    }
-    (slope, offset)
-}
-
 pub struct PWL {
     offset: f64,
     r: Range<usize>,
@@ -75,8 +55,21 @@ impl PWL {
         offset: f64,
         slope: f64,
     ) -> Option<f64> {
-        let (o, s) =
-            clip_front(&mut self.r, event, offset + self.offset, slope);
+        let (o, s) = {
+            let mut r = &mut self.r;
+            let mut slope = slope;
+            let mut offset = offset + self.offset;
+            while r.start >= r.end {
+                let e = &event[r.start];
+                r.start += 1;
+                if slope * e.x + offset >= 0.0 {
+                    break;
+                }
+                slope += e.slope;
+                offset += e.offset();
+            }
+            (slope, offset)
+        };
         self.offset += o;
         if s.abs() > Self::EPS {
             let x = -o / s;
