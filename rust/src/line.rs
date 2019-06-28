@@ -35,8 +35,11 @@ impl LineDP {
             let (o, s) = clip_front(&mut r, &self.event, mu[i], offset - lam[i]);
             offset += o;
             r.start -= 1;
-            let x = -o/s;
-            self.event[r.start] = Event{ x: x, slope: s };
+            if s.abs() > 1e-9 {
+                let x = -o/s;
+                self.event[r.start] = Event{ x: x, slope: s };
+                self.lb[i] = x;
+            }
         }
         unimplemented!();
     }
