@@ -1,4 +1,4 @@
-use crate::event::{Event};
+use crate::pwl::{Event};
 
 pub struct LineDP {
     event: Vec<Event>,
