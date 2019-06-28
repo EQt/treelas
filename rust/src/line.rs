@@ -6,8 +6,17 @@ pub struct LineDP {
     ub: Vec<f64>,
 }
 
-fn clip_front(e: &[Event], slope: f64, offset: f64) -> (f64, f64) {
-    unimplemented!();
+pub fn clip_front(events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
+    let mut slope = slope;
+    let mut offset = offset;
+    for e in events {
+        if slope * e.x + offset >= 0.0 {
+            break;
+        }
+        slope += e.slope;
+        offset += e.offset();
+    }
+    (slope, offset)
 }
 
 impl LineDP {
@@ -33,5 +42,15 @@ impl LineDP {
         assert!(mu.len() >= n);
         assert!(x.len() - 1 >= lam.len());
         unimplemented!();
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    // use super::*;
+
+    #[test]
+    fn test_linedp() {
+        assert!(true);
     }
 }

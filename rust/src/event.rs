@@ -1,7 +1,7 @@
 #[derive(Debug, PartialEq)]
 pub struct Event {
-    x: f64,
-    slope: f64,
+    pub x: f64,
+    pub slope: f64,
 }
 
 impl Default for Event {
@@ -14,7 +14,7 @@ impl Default for Event {
 }
 
 impl Event {
-    fn offset(&self) -> f64 {
+    pub fn offset(&self) -> f64 {
         -self.x / self.slope
     }
 }
