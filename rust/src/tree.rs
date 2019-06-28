@@ -15,8 +15,7 @@ impl TreeDP {
         assert!(mu.len() >= n);
         assert!(std::cmp::min(lam.len(), std::usize::MAX -1) + 1 >= n);
         let x = &mut x[..];
-        for v in &self.post_order {
-            let v = *v;
+        for &v in &self.post_order {
             x[v] = y[v]
         }
         // unimplemented!();
