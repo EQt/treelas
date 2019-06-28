@@ -50,3 +50,42 @@ pub fn clip_front(
     }
     (slope, offset)
 }
+
+pub struct PWL {
+    offset: f64,
+    r: Range<usize>,
+}
+
+impl PWL {
+    pub fn new(n: usize) -> Self {
+        Self {
+            offset: 0.0,
+            r: Range {
+                start: n,
+                end: n - 1,
+            },
+        }
+    }
+
+    pub fn clip_front(
+        &mut self,
+        event: &mut [Event],
+        offset: f64,
+        slope: f64,
+    ) -> Option<f64> {
+        let (o, s) =
+            clip_front(&mut self.r, event, offset + self.offset, slope);
+        self.offset += o;
+        if s.abs() > 1e-9 {
+            let x = -o / s;
+            self.r.start -= 1;
+            event[self.r.start] = Event {
+                x: x,
+                slope: s,
+            };
+            Some(x)
+        } else {
+            None
+        }
+    }
+}
