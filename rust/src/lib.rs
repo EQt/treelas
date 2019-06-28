@@ -1,6 +1,6 @@
+pub mod tree;
+pub mod line;
 mod event;
-mod tree;
-mod line;
 
 #[cfg(test)]
 mod tests {
