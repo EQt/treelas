@@ -20,10 +20,13 @@ impl TreeDP {
 
 #[cfg(test)]
 mod tests {
-    // use super::*;
+    use super::*;
 
     #[test]
     fn test_treedp() {
+        let _t = TreeDP {
+            post_order: vec![],
+        };
         assert!(true);
     }
 }
