@@ -41,5 +41,3 @@ pub fn clip_front(events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
     }
     (slope, offset)
 }
-
-

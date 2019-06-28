@@ -1,4 +1,4 @@
-use crate::pwl::{Event};
+use crate::pwl::Event;
 
 pub struct LineDP {
     event: Vec<Event>,
@@ -9,11 +9,11 @@ pub struct LineDP {
 impl LineDP {
     pub fn new(n: usize) -> Self {
         let mut dp = LineDP {
-            event: Vec::with_capacity(2*n),
+            event: Vec::with_capacity(2 * n),
             lb: Vec::with_capacity(n),
             ub: Vec::with_capacity(n),
         };
-        dp.event.resize_with(2*n, Default::default);
+        dp.event.resize_with(2 * n, Default::default);
         dp.lb.resize(n, std::f64::NAN);
         dp.ub.resize(n, std::f64::NAN);
         return dp;

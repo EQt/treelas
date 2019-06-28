@@ -1,6 +1,6 @@
-pub mod tree;
 pub mod line;
 pub mod pwl;
+pub mod tree;
 
 #[cfg(test)]
 mod tests {
