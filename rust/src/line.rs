@@ -1,22 +1,9 @@
-use crate::event::Event;
+use crate::event::{Event};
 
 pub struct LineDP {
     event: Vec<Event>,
     lb: Vec<f64>,
     ub: Vec<f64>,
-}
-
-pub fn clip_front(events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
-    let mut slope = slope;
-    let mut offset = offset;
-    for e in events {
-        if slope * e.x + offset >= 0.0 {
-            break;
-        }
-        slope += e.slope;
-        offset += e.offset();
-    }
-    (slope, offset)
 }
 
 impl LineDP {

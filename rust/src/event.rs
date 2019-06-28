@@ -14,7 +14,22 @@ impl Default for Event {
 }
 
 impl Event {
-    pub fn offset(&self) -> f64 {
+    fn offset(&self) -> f64 {
         -self.x / self.slope
     }
 }
+
+pub fn clip_front(events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
+    let mut slope = slope;
+    let mut offset = offset;
+    for e in events {
+        if slope * e.x + offset >= 0.0 {
+            break;
+        }
+        slope += e.slope;
+        offset += e.offset();
+    }
+    (slope, offset)
+}
+
+
