@@ -19,6 +19,10 @@ impl Event {
     }
 }
 
+/// # Problem
+///
+/// How can the position be returned where the loop will end?
+/// How can this be implemented for clip_back?
 pub fn clip_front(events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
     let mut slope = slope;
     let mut offset = offset;
