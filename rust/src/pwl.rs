@@ -34,8 +34,8 @@ impl Event {
 pub fn clip_front(
     r: &mut Range<usize>,
     events: &[Event],
-    slope: f64,
     offset: f64,
+    slope: f64,
 ) -> (f64, f64) {
     let mut slope = slope;
     let mut offset = offset;
