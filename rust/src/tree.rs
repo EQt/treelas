@@ -13,7 +13,7 @@ impl TreeDP {
         let n = y.len();
         assert!(n == x.len());
         assert!(mu.len() >= n);
-        assert!(x.len() >= lam.len());
+        assert!(lam.len() + 1 >= n);
         let x = &mut x[..];
         for v in &self.post_order {
             let v = *v;
