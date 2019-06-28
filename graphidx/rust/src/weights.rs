@@ -35,6 +35,14 @@ impl<T> Weights<T> for ConstantWeights<T> {
     }
 }
 
+impl<T> ConstantWeights<T> {
+        pub fn new(c: T) -> Self {
+        ConstantWeights {
+            c: c,
+        }
+    }
+}
+
 /// Weights stored in an array.
 #[derive(PartialEq, Debug)]
 pub struct ArrayWeights<T> {
@@ -60,7 +68,7 @@ mod tests {
 
     #[test]
     fn constant_weights_13() {
-        let w = ConstantWeights { c: 13.5 };
+        let w = ConstantWeights::new(13.5);
         assert_eq!(w[5], 13.5);
         assert_eq!(w[0], 13.5);
         assert_eq!(w[13], 13.5);
