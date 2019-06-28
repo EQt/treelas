@@ -31,7 +31,12 @@ impl Event {
 /// altered.
 ///
 /// [`VecDeque`]: https://doc.rust-lang.org/std/collections/struct.VecDeque.html
-pub fn clip_front(r: &mut Range<usize>, events: &[Event], slope: f64, offset: f64) -> (f64, f64) {
+pub fn clip_front(
+    r: &mut Range<usize>,
+    events: &[Event],
+    slope: f64,
+    offset: f64,
+) -> (f64, f64) {
     let mut slope = slope;
     let mut offset = offset;
     while r.start >= r.end {
