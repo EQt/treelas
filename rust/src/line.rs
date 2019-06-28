@@ -1,4 +1,5 @@
-use crate::pwl::Event;
+use crate::pwl::{clip_front, Event};
+use std::ops::Range;
 
 pub struct LineDP {
     event: Vec<Event>,
@@ -19,7 +20,7 @@ impl LineDP {
         return dp;
     }
 
-    pub fn solve<W1, W2>(x: &mut [f64], y: &[f64], lam: W1, mu: W2)
+    pub fn solve<W1, W2>(&mut self, x: &mut [f64], y: &[f64], lam: W1, mu: W2)
     where
         W1: graphidx::weights::Weights<f64>,
         W2: graphidx::weights::Weights<f64>,
@@ -28,6 +29,15 @@ impl LineDP {
         assert!(n == x.len());
         assert!(mu.len() >= n);
         assert!(x.len() - 1 >= lam.len());
+        let mut r = Range { start: n, end: n-1 };
+        let mut offset = 0.0;
+        for i in 0..n {
+            let (o, s) = clip_front(&mut r, &self.event, mu[i], offset - lam[i]);
+            offset += o;
+            r.start -= 1;
+            let x = -o/s;
+            self.event[r.start] = Event{ x: x, slope: s };
+        }
         unimplemented!();
     }
 }
