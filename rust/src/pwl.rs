@@ -83,4 +83,14 @@ impl PWL {
             None
         }
     }
+
+    #[allow(unused_variables)]
+    pub fn clip_back(
+        &mut self,
+        event: &mut [Event],
+        offset: f64,
+        slope: f64,
+    ) -> Option<f64> {
+        unimplemented!();
+    }
 }

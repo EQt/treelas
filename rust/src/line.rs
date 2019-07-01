@@ -35,6 +35,11 @@ impl LineDP {
                 .pwl
                 .clip_front(&mut self.event, -lam[i], mu[i])
                 .unwrap_or(-std::f64::INFINITY);
+
+            self.ub[i] = self
+                .pwl
+                .clip_back(&mut self.event, lam[i], mu[i])
+                .unwrap_or(std::f64::INFINITY);
         }
         unimplemented!();
     }
