@@ -177,7 +177,8 @@ mod tests {
     #[test]
     fn children_panic() {
         let pi = [0, 2];
-        let res = std::panic::catch_unwind(move || ChildrenIndex::from_parent(&pi));
+        let res =
+            std::panic::catch_unwind(move || ChildrenIndex::from_parent(&pi));
         assert!(res.is_err());
     }
 }

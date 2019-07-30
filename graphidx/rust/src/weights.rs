@@ -12,7 +12,9 @@
 //! [`ArrayWeights`]: struct.ConstantWeights.html
 use std::ops::Index;
 
-pub trait Weights<T>: Index<usize> {}
+pub trait Weights<T>: Index<usize, Output = T> {
+    fn len(&self) -> usize;
+}
 
 /// Same weight for every element.
 #[derive(PartialEq, Debug)]
@@ -28,6 +30,17 @@ impl<T> Index<usize> for ConstantWeights<T> {
 }
 
 impl<T> Weights<T> for ConstantWeights<T> {
+    fn len(&self) -> usize {
+        std::usize::MAX
+    }
+}
+
+impl<T> ConstantWeights<T> {
+    pub fn new(c: T) -> Self {
+        ConstantWeights {
+            c: c,
+        }
+    }
 }
 
 /// Weights stored in an array.
@@ -44,6 +57,9 @@ impl<T> Index<usize> for ArrayWeights<T> {
 }
 
 impl<T> Weights<T> for ArrayWeights<T> {
+    fn len(&self) -> usize {
+        self.a.len()
+    }
 }
 
 #[cfg(test)]
@@ -52,7 +68,7 @@ mod tests {
 
     #[test]
     fn constant_weights_13() {
-        let w = ConstantWeights { c: 13.5 };
+        let w = ConstantWeights::new(13.5);
         assert_eq!(w[5], 13.5);
         assert_eq!(w[0], 13.5);
         assert_eq!(w[13], 13.5);
@@ -60,7 +76,9 @@ mod tests {
 
     #[test]
     fn array_weights_123() {
-        let w = ArrayWeights { a: vec![1, 2, 5] };
+        let w = ArrayWeights {
+            a: vec![1, 2, 5],
+        };
         assert_eq!(w[2], 5);
         assert_eq!(w[0], 1);
         assert_eq!(w[1], 2);
