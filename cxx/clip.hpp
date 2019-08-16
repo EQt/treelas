@@ -43,7 +43,7 @@
   each time.
 
   Also for the second point we could avoid the division if we store
-  the slope and offset instead of the postion `x`.
+  the slope and offset instead of the position `x`.
 
   All in all I realized that events with zero-slope can be avoided:
   they simple don't have an effect on further processing.
