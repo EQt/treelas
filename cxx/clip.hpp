@@ -48,6 +48,30 @@
   All in all I realized that events with zero-slope can be avoided:
   they simple don't have an effect on further processing.
 
+  The only that can happen is that the associated edge edge might shrink
+  the possible flow (or overtake the effect of the proceeding other edges).
+  That is why I would like to return both, x and initial offset while
+  the zero slope should not go into the queue.
+
+
+  # Checking `abs(slope) > eps`
+
+  When is this really necessary?
+
+  It cannot happen if we never insert a line with `slope == 0`.
+  But can it happen at other places after some events have been processed?
+
+  What does it mean?
+  The implication is that a node's value is not unique.
+  Of course that can also happen for "inner nodes" with non-latent children, e.g.
+
+  ```
+  (V) -- (L) -- (V)
+
+  L: latent
+  V: non-latent
+  ```
+
   @see `clip_fronw`
 */
 template<typename E = Event>
