@@ -1,6 +1,5 @@
 import sys
 import io
-from treelas import Tree
 from treelas.idx import ChildrenIndex
 
 
