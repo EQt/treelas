@@ -4,7 +4,8 @@ from treelas import Tree
 from treelas.idx import ChildrenIndex
 
 
-def _hierarchy(cidx: ChildrenIndex, v: int, indent: str, last: bool, out: io.IOBase):
+def _hierarchy(cidx: ChildrenIndex, v: int, indent: str, last: bool,
+               out: io.IOBase):
     """Print a tree as a hierarchy to `out`.
 
     Copied and adpated from https://stackoverflow.com/a/27141402
