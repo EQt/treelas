@@ -41,7 +41,7 @@ class DeQue:
     """
     Double ended queue
     """
-    def __init__(self):
+    def __init__(self, n=None):
         from collections import deque
         self._e = deque()
 
@@ -98,7 +98,7 @@ def line_lasso(
     n = len(y)
     lb = np.full(n, np.nan)
     ub = np.full(n, np.nan)
-    event = DeQue()
+    event = DeQue(n)
 
     lam0, lam1 = 0.0, lam[0]
     for i in range(n-1):
