@@ -51,12 +51,15 @@ def clip(elements: deque, slope: float, offset: float, forward: bool):
     dir = 'F' if forward else 'R'
     first = -1 if forward else 0
     print(f"clip: ({slope}, {offset}, {dir}): {pformat(elements)}")
-    while elements and slope * elements[first].x + offset > 0:
+    while elements and slope * elements[first].x + offset < 0:
         e = elements.popleft() if forward else elements.pop()
-        offset -= e.offset()
-        slope -= e.slope
+        offset += e.offset()
+        slope += e.slope
     x = - offset/slope
-    elements.append(Event(x, -slope))
+    if forward:
+        elements.appendleft(Event(x, slope))
+    else:
+        elements.append(Event(x, slope))
     return x
 
 
@@ -69,7 +72,7 @@ def line_lasso(y: np.ndarray, lam: float, mu = ConstantWeights(1.0)):
     lam0, lam1 = 0.0, lam
     for i in range(n-1):
         lb[i] = clip_front(event, mu[i], -mu[i] * y[i] -lam0, -lam1)
-        ub[i] = clip(event, mu[i], -mu[i] * y[i] +lam0 - lam1, forward=False)
+        ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam1, forward=False)
         lam0, lam1 = lam1, lam
 
     x = np.full(n, np.nan)
