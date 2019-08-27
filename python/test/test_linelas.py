@@ -61,5 +61,5 @@ def test_dual(i):
 
 @pytest.mark.parametrize("i", insts)
 def test_lines(i):
-    x = linelas.line_lasso(y=i.y, lam=i.lam)
+    x = linelas.line_lasso(y=i.y, lam=i.lam, mu=i.mu)
     assert np.allclose(x, i.x)
