@@ -20,14 +20,19 @@ from .rounder import _fround, _int_or_round
 DEBUG = False
 
 
-@dataclass(repr=False)
+@dataclass(repr=False, init=False)
 class Event:
     x: float
     slope: float
 
+    def __init__(self, x: float, slope: float, offset=None):
+        self.x = x
+        self.slope = slope
+
     def __repr__(self):
         s = _int_or_round(self.slope)
-        return f"{type(self).__name__}(x={_fround(self.x, 3)}, slope={s:+})"
+        return f"{type(self).__name__}(x={_fround(self.x, 3)}, slope={s:+}" + \
+            f", offset={_fround(self.offset())})"
 
     def offset(self) -> float:
         return - self.x * self.slope
@@ -75,10 +80,18 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
     if DEBUG:
         print(f"clip: ({slope:+}, {offset:+},",
               ('F' if forward else 'R') + f"):\n{_fmt(elem._e)}")
+        if elem:
+            print(' test:', _fround(slope * elem.peek(forward).x + offset))
+        else:
+            print('empty')
     while elem and slope * elem.peek(forward).x + offset < 0:
         e = elem.pop(forward)
         offset += e.offset()
         slope += e.slope
+        if DEBUG and elem:
+            print(' test:', _fround(slope * elem.peek(forward).x + offset))
+        else:
+            print('empty')
     x = - offset/slope
     elem.append(Event(x, slope), forward)
     if DEBUG:
