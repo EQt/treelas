@@ -81,6 +81,8 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
         slope += e.slope
     x = - offset/slope
     elem.append(Event(x, slope), forward)
+    if DEBUG:
+        print(f" --> x = {x:+}")
     return x
 
 
