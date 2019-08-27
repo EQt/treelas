@@ -12,12 +12,12 @@ def test_nan():
                      root=2)
     with pytest.raises(RuntimeError) as e:
         t.solve()
-    assert 'y[1] = nan' in str(e)
+        assert 'y[1] = nan' in str(e.value)
     t.y = np.array([0., 0, 0])
     t.mu = np.array([1., 0., np.nan])
     with pytest.raises(RuntimeError) as e:
         t.solve()
-    assert 'mu[2] = nan' in str(e)
+        assert 'mu[2] = nan' in str(e.value)
 
 
 def test_zero3():
