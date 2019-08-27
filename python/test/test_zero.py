@@ -81,7 +81,6 @@ def test_zero3c():
     assert (v > -1e-10).all(), f'v={v}\nx={t.x}\nalpha={t.dual}\nlam={t.lam}'
 
 
-
 def test_zero4():
     """
     Tree with 4 nodes, actually a line graph where just the two end
