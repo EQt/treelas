@@ -63,6 +63,11 @@ Guiding Ideas
   This will effect all the `line/*` methods and the `tree_dp.hpp` as well.
 - For preparation: Create tests for `clip_{front,fronw}` that also involve the divide by zero case.
 
+### v0.12.5
+Released 2019-08-27
+- Python: Implement the unified `clip` as template for C++/Rust
+- Include line test instances
+
 ### v0.12.4
 Released 2019-05-21
 - C++: Prepare to remove Event with 3 variables
