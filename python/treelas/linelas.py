@@ -5,7 +5,6 @@ on line graphs.
 TODO
 ====
 
-- [ ]. Test different lam values
 - [ ]. Integrate mu = 0
 """
 from __future__ import annotations
