@@ -1,12 +1,6 @@
 """
 Pure python implementation of the dynamic programming algorithm
 on line graphs.
-
-TODO
-====
-
-- [ ]. Test different lam values
-- [ ]. Integrate mu = 0
 """
 from __future__ import annotations
 import numpy as np
@@ -20,14 +14,19 @@ from .rounder import _fround, _int_or_round
 DEBUG = False
 
 
-@dataclass(repr=False)
+@dataclass(repr=False, init=False)
 class Event:
     x: float
     slope: float
 
+    def __init__(self, x: float, slope: float, offset=None):
+        self.x = x
+        self.slope = slope
+
     def __repr__(self):
         s = _int_or_round(self.slope)
-        return f"{type(self).__name__}(x={_fround(self.x, 3)}, slope={s})"
+        return f"{type(self).__name__}(x={_fround(self.x, 3)}, slope={s:+}" + \
+            f", offset={_fround(self.offset())})"
 
     def offset(self) -> float:
         return - self.x * self.slope
@@ -49,9 +48,9 @@ class DeQue:
         return self._e.popleft() if forward else self._e.pop()
 
     def peek(self, forward: bool):
-        return self._e[-1 if forward else 0]
+        return self._e[0 if forward else -1]
 
-    def append(self, x, forward: bool):
+    def push(self, x, forward: bool):
         if forward:
             self._e.appendleft(x)
         else:
@@ -73,14 +72,27 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
     way round (not forward)
     """
     if DEBUG:
-        print(f"clip: ({slope}, {offset},",
-              'F' if forward else 'R' + f"): {_fmt(elem)}")
+        print(f"clip_{'f' if forward else 'r'}:",
+              f"({slope:+}, {offset:+}):\n{_fmt(elem._e)}")
+        if elem:
+            print(' test:', _fround(slope * elem.peek(forward).x + offset))
+        else:
+            print('empty')
     while elem and slope * elem.peek(forward).x + offset < 0:
         e = elem.pop(forward)
         offset += e.offset()
         slope += e.slope
-    x = - offset/slope
-    elem.append(Event(x, slope), forward)
+        if DEBUG and elem:
+            print(' test:', _fround(slope * elem.peek(forward).x + offset))
+        else:
+            print('empty')
+    if abs(slope) <= 1e-10:
+        x = -np.inf if forward else +np.inf
+    else:
+        x = - offset/slope
+        elem.push(Event(x, slope), forward)
+    if DEBUG:
+        print(f" --> x = {_fround(x)}")
     return x
 
 
@@ -100,14 +112,16 @@ def line_lasso(
     ub = np.full(n, np.nan)
     event = DeQue(n)
 
-    lam0, lam1 = 0.0, lam[0]
+    lam0 = 0.0          # old lambda
     for i in range(n-1):
-        lb[i] = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam1, forward=True)
-        ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam1, forward=False)
-        lam0, lam1 = lam1, lam[i+1]
+        lb[i] = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam[i], True)
+        ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam[i], False)
+        lam0 = lam[i] if mu[i] > 1e-10 else min(lam0, lam[i])
+        if DEBUG:
+            print("lam0:", lam0, '( lam[i] =', lam[i], ')\n')
 
     x = np.full(n, np.nan)
-    x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam[-1] + 0.0, forward=True)
+    x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam0 + 0.0, forward=True)
     for i in range(n-1)[::-1]:
         x[i] = np.clip(x[i+1], lb[i], ub[i])
     return x
