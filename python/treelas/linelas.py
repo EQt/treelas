@@ -55,7 +55,7 @@ class DeQue:
     def peek(self, forward: bool):
         return self._e[0 if forward else -1]
 
-    def append(self, x, forward: bool):
+    def push(self, x, forward: bool):
         if forward:
             self._e.appendleft(x)
         else:
@@ -92,7 +92,7 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
         else:
             print('empty')
     x = - offset/slope
-    elem.append(Event(x, slope), forward)
+    elem.push(Event(x, slope), forward)
     if DEBUG:
         print(f" --> x = {x:+}")
     return x
