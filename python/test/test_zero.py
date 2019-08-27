@@ -65,3 +65,16 @@ def test_zero4():
     assert (g < +1e-10).all(), f'gamma={g}'
     v = t.dual_diff
     assert (v > -1e-10).all(), f'v={v}\nx={t.x}\nalpha={t.dual}\nlam={t.lam}'
+
+
+def test_nonzero():
+    """
+    Similar to test_zero4 but with default mu == 1
+    """
+    t = TreeInstance(y=np.array( [0., 0., 0., 2.]),
+                     mu=np.array([1., 1., 1., 1.]),
+                     lam=np.array([1.0, 0.3, np.nan, 1.0]),
+                     parent=np.array([1, 2, 2, 2], dtype=np.int32),
+                     root=2)
+    t.solve()
+    assert np.allclose(t.x, [0.15, 0.15, 0.7, 1.0])
