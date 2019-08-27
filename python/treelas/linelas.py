@@ -77,8 +77,8 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
     way round (not forward)
     """
     if DEBUG:
-        print(f"clip: ({slope:+}, {offset:+},",
-              ('F' if forward else 'R') + f"):\n{_fmt(elem._e)}")
+        print(f"clip_{'f' if forward else 'r'}:",
+              f"({slope:+}, {offset:+}):\n{_fmt(elem._e)}")
         if elem:
             print(' test:', _fround(slope * elem.peek(forward).x + offset))
         else:
@@ -91,6 +91,8 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
             print(' test:', _fround(slope * elem.peek(forward).x + offset))
         else:
             print('empty')
+    if abs(slope) <= 1e-10:
+        return -np.inf if forward else +np.inf
     x = - offset/slope
     elem.push(Event(x, slope), forward)
     if DEBUG:
