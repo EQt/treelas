@@ -52,8 +52,10 @@ insts = Instance.from_toml(data_dir("test", "lines.toml"))
 @pytest.mark.parametrize("i", insts)
 def test_dual(i):
     alpha = np.cumsum(i.x - i.y)
+    if isinstance(i.lam, list):
+        i.lam = np.array(i.lam)
     assert np.isclose(alpha[-1], 0)
-    assert all(np.abs(alpha[:-1]) < i.lam)
+    assert all(np.abs(alpha[:-1]) <= i.lam * (1 + 1e-8))
 
 
 @pytest.mark.parametrize("i", insts)
