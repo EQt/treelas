@@ -1,5 +1,20 @@
+from __future__ import annotations
+
+
 class Weights:
-    pass
+    @staticmethod
+    def new(x) -> Weights:
+        """
+        Depending on the type of x, construct `ConstantWeights`
+        or `ArrayWeights`
+        """
+        if isinstance(x, Weights):
+            return x
+        elif isinstance(x, (float, int)):
+            return ConstantWeights(x)
+        elif hasattr(x, '__getitem__'):
+            return ArrayWeights(x)
+        raise ValueError(type(x))
 
 
 class ConstantWeights(Weights):

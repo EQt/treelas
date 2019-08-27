@@ -5,6 +5,7 @@ on line graphs.
 TODO
 ====
 
+- [ ]. Test different lam values
 - [ ]. Integrate mu = 0
 """
 from __future__ import annotations
@@ -88,8 +89,7 @@ def line_lasso(
     Return an minimizer `x` of the fused lasso problem on line graph
     with node values `y` (weighted with `mu`) and edge weights `lam`.
     """
-    if isinstance(lam, float):
-        lam = ConstantWeights(lam)
+    lam = Weights.new(lam)
     n = len(y)
     lb = np.full(n, np.nan)
     ub = np.full(n, np.nan)
