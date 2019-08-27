@@ -9,7 +9,6 @@ TODO
 """
 from __future__ import annotations
 import numpy as np
-from collections import deque
 from dataclasses import dataclass
 from pprint import pformat
 from typing import Optional
@@ -34,19 +33,41 @@ class Event:
         return (e2.offset() - e1.offset()) / (e1.slope - e2.slope)
 
 
-def clip(elements: deque, slope: float, offset: float, forward: bool) -> float:
+class DeQue:
+    def __init__(self):
+        from collections import deque
+
+        self._e = deque()
+
+    def pop(self, forward):
+        return self._e.popleft() if forward else self._e.pop()
+
+    def peek(self, forward):
+        return self._e[-1 if forward else 0]
+
+    def append(self, x, forward: bool):
+        if forward:
+            self._e.appendleft(x)
+        else:
+            self._e.append(x)
+
+    def __bool__(self):
+        return bool(self._e)
+
+    def __len__(self):
+        return len(self._e)
+
+
+def clip(elements: DeQue, slope: float, offset: float, forward: bool) -> float:
     dir = 'F' if forward else 'R'
-    first = -1 if forward else 0
     print(f"clip: ({slope}, {offset}, {dir}): {pformat(elements)}")
-    while elements and slope * elements[first].x + offset < 0:
-        e = elements.popleft() if forward else elements.pop()
+    while elements and slope * elements.peek(forward).x + offset < 0:
+        e = elements.pop(forward)
         offset += e.offset()
         slope += e.slope
     x = - offset/slope
-    if forward:
-        elements.appendleft(Event(x, slope))
-    else:
-        elements.append(Event(x, slope))
+    elements.append(Event(x, slope), forward)
+
     return x
 
 
@@ -54,7 +75,7 @@ def line_lasso(y: np.ndarray, lam: float, mu = ConstantWeights(1.0)):
     n = len(y)
     lb = np.full(n, np.nan)
     ub = np.full(n, np.nan)
-    event = deque()
+    event = DeQue()
 
     lam0, lam1 = 0.0, lam
     for i in range(n-1):
