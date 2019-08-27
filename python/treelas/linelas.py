@@ -5,7 +5,6 @@ on line graphs.
 TODO
 ====
 
-- [ ]. Properly test it
 - [ ]. Unify clip_front/clip_back
 - [ ]. Integrate mu = 0
 - [ ]. Move into treelas
