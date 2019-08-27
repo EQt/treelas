@@ -54,7 +54,7 @@ class DeQue:
         return self._e.popleft() if forward else self._e.pop()
 
     def peek(self, forward: bool):
-        return self._e[-1 if forward else 0]
+        return self._e[0 if forward else -1]
 
     def append(self, x, forward: bool):
         if forward:
