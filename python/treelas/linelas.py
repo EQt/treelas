@@ -27,7 +27,7 @@ class Event:
 
     def __repr__(self):
         s = _int_or_round(self.slope)
-        return f"{type(self).__name__}(x={_fround(self.x, 3)}, slope={s})"
+        return f"{type(self).__name__}(x={_fround(self.x, 3)}, slope={s:+})"
 
     def offset(self) -> float:
         return - self.x * self.slope
@@ -73,8 +73,8 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
     way round (not forward)
     """
     if DEBUG:
-        print(f"clip: ({slope}, {offset},",
-              'F' if forward else 'R' + f"): {_fmt(elem)}")
+        print(f"clip: ({slope:+}, {offset:+},",
+              ('F' if forward else 'R') + f"):\n{_fmt(elem._e)}")
     while elem and slope * elem.peek(forward).x + offset < 0:
         e = elem.pop(forward)
         offset += e.offset()
