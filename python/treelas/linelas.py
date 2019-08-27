@@ -57,6 +57,9 @@ class DeQue:
     def __len__(self):
         return len(self._e)
 
+    def __repr__(self):
+        return repr(self._e)
+
 
 def clip(elements: DeQue, slope: float, offset: float, forward: bool) -> float:
     dir = 'F' if forward else 'R'
@@ -67,7 +70,6 @@ def clip(elements: DeQue, slope: float, offset: float, forward: bool) -> float:
         slope += e.slope
     x = - offset/slope
     elements.append(Event(x, slope), forward)
-
     return x
 
 
