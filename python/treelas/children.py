@@ -49,7 +49,7 @@ class PyChildrenIndex:
 
         assert parent[root] == root
         n = len(parent)
-
+        parent = np.array(parent)
         idx = np.zeros(n+1, dtype=int)
         pi = -np.ones(n, dtype=int)
         _compute(n, parent, root, idx, pi)
