@@ -10,12 +10,13 @@ TODO
 - [ ]. Integrate mu = 0
 - [ ]. Move into treelas
 """
+from __future__ import annotations
 import numpy as np
 from collections import deque
 from dataclasses import dataclass
 from pprint import pprint, pformat
 from typing import Optional
-from treelas.graphidx.weights import ConstantWeights
+from .graphidx.weights import ConstantWeights
 from trendlas.rounder import _fround, _int_or_round
 
 
