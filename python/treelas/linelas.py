@@ -63,19 +63,19 @@ class DeQue:
         return repr(self._e)
 
 
-def clip(elements: DeQue, slope: float, offset: float, forward: bool) -> float:
+def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> float:
     """
     Clip from little to big indexes (forward) or the other
     way round (not forward)
     """
     dir = 'F' if forward else 'R'
-    print(f"clip: ({slope}, {offset}, {dir}): {pformat(elements)}")
-    while elements and slope * elements.peek(forward).x + offset < 0:
-        e = elements.pop(forward)
+    print(f"clip: ({slope}, {offset}, {dir}): {pformat(elem)}")
+    while elem and slope * elem.peek(forward).x + offset < 0:
+        e = elem.pop(forward)
         offset += e.offset()
         slope += e.slope
     x = - offset/slope
-    elements.append(Event(x, slope), forward)
+    elem.append(Event(x, slope), forward)
     return x
 
 
