@@ -63,6 +63,10 @@ Guiding Ideas
   This will effect all the `line/*` methods and the `tree_dp.hpp` as well.
 - For preparation: Create tests for `clip_{front,fronw}` that also involve the divide by zero case.
 
+### v0.12.6
+Released 2019-08-27
+- Python: `linelas.py`: Latent nodes and `lam` parameter work
+
 ### v0.12.5
 Released 2019-08-27
 - Python: Implement the unified `clip` as template for C++/Rust
