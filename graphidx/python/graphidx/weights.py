@@ -1,4 +1,8 @@
-class ConstantWeights:
+class Weights:
+    pass
+
+
+class ConstantWeights(Weights):
     def __init__(self, c: float):
         self.c = c
 
@@ -9,7 +13,7 @@ class ConstantWeights:
         return self.c
 
 
-class ArrayWeights:
+class ArrayWeights(Weights):
     def __init__(self, a):
         self.a = a
 
