@@ -100,14 +100,14 @@ def line_lasso(
     ub = np.full(n, np.nan)
     event = DeQue(n)
 
-    lam0, lam1 = 0.0, lam[0]
+    lam0 = 0.0          # old lambda
     for i in range(n-1):
-        lb[i] = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam1, forward=True)
-        ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam1, forward=False)
-        lam0, lam1 = lam1, lam[i+1]
+        lb[i] = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam[i], forward=True)
+        ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam[i], forward=False)
+        lam0 = lam[i]
 
     x = np.full(n, np.nan)
-    x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam[-1] + 0.0, forward=True)
+    x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam0 + 0.0, forward=True)
     for i in range(n-1)[::-1]:
         x[i] = np.clip(x[i+1], lb[i], ub[i])
     return x
