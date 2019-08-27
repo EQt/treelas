@@ -12,7 +12,7 @@ import numpy as np
 from dataclasses import dataclass
 from pprint import pformat
 from typing import Optional
-from .graphidx.weights import ConstantWeights
+from .graphidx.weights import ConstantWeights, Weights
 from .rounder import _fround, _int_or_round
 
 
@@ -79,20 +79,26 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
     return x
 
 
-def line_lasso(y: np.ndarray, lam: float, mu=ConstantWeights(1.0)) -> np.ndarray:
+def line_lasso(
+    y: np.ndarray,
+    lam: Weights,
+    mu: Weights = ConstantWeights(1.0),
+) -> np.ndarray:
+    if isinstance(lam, float):
+        lam = ConstantWeights(lam)
     n = len(y)
     lb = np.full(n, np.nan)
     ub = np.full(n, np.nan)
     event = DeQue()
 
-    lam0, lam1 = 0.0, lam
+    lam0, lam1 = 0.0, lam[0]
     for i in range(n-1):
         lb[i] = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam1, forward=True)
         ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam1, forward=False)
-        lam0, lam1 = lam1, lam
+        lam0, lam1 = lam1, lam[i+1]
 
     x = np.full(n, np.nan)
-    x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam + 0.0, forward=True)
+    x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam[-1] + 0.0, forward=True)
     for i in range(n-1)[::-1]:
         x[i] = np.clip(x[i+1], lb[i], ub[i])
     return x
