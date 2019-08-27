@@ -50,6 +50,13 @@ insts = Instance.from_toml(data_dir("test", "lines.toml"))
 
 
 @pytest.mark.parametrize("i", insts)
+def test_dual(i):
+    alpha = np.cumsum(i.x - i.y)
+    assert np.isclose(alpha[-1], 0)
+    assert all(np.abs(alpha[:-1]) < i.lam)
+
+
+@pytest.mark.parametrize("i", insts)
 def test_lines(i):
     x = linelas.line_lasso(y=i.y, lam=i.lam)
     assert np.allclose(x, i.x)
