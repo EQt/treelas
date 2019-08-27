@@ -11,10 +11,13 @@ TODO
 from __future__ import annotations
 import numpy as np
 from dataclasses import dataclass
-from pprint import pformat
+from pprint import pformat as _fmt
 from typing import Optional
 from .graphidx.weights import ConstantWeights, Weights
 from .rounder import _fround, _int_or_round
+
+
+DEBUG = False
 
 
 @dataclass(repr=False)
@@ -69,8 +72,9 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
     Clip from little to big indexes (forward) or the other
     way round (not forward)
     """
-    dir = 'F' if forward else 'R'
-    print(f"clip: ({slope}, {offset}, {dir}): {pformat(elem)}")
+    if DEBUG:
+        print(f"clip: ({slope}, {offset},",
+              'F' if forward else 'R' + f"): {_fmt(elem)}")
     while elem and slope * elem.peek(forward).x + offset < 0:
         e = elem.pop(forward)
         offset += e.offset()
@@ -90,6 +94,7 @@ def line_lasso(
     with node values `y` (weighted with `mu`) and edge weights `lam`.
     """
     lam = Weights.new(lam)
+    mu = Weights.new(mu)
     n = len(y)
     lb = np.full(n, np.nan)
     ub = np.full(n, np.nan)

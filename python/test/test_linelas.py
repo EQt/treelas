@@ -4,6 +4,9 @@ from os import path
 from treelas import linelas
 
 
+linelas.DEBUG = True
+
+
 class Instance:
     """
     Fused Lasso line instance.
@@ -23,7 +26,8 @@ class Instance:
         assert isinstance(data, dict)
         self.fname = fname
         self.y = np.array(data['y'], dtype=float)
-        self.lam = float(data['lam'])
+        self.lam = data['lam']
+        self.mu = data.get('mu', 1.0)
         self.nr = type(self)._nr
         self.name = str(data['name']) if 'name' in data else None
         if 'x' in data:
