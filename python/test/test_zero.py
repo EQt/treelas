@@ -78,7 +78,20 @@ def test_zero3c():
     assert (g > -1e-10).all(), f'gamma={g}'
     assert (g < +1e-10).all(), f'gamma={g}'
     v = t.dual_diff
+    if False:
+        t.show(wait=False)
     assert (v > -1e-10).all(), f'v={v}\nx={t.x}\nalpha={t.dual}\nlam={t.lam}'
+
+
+def test_zero3d():
+    """Tree with 3 nodes and zero input"""
+    t = TreeInstance(y=np.array( [0., 0., 3.]),
+                     mu=np.array([1., 0., 1.]),
+                     lam=np.array([0.5, 1.0, np.nan]),
+                     parent=np.array([1, 2, 2], dtype=np.int32),
+                     root=2)
+    t.solve()
+    assert np.allclose(t.x, [0.5, 2.5, 2.5])
 
 
 def test_zero4():

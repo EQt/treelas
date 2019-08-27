@@ -1,11 +1,6 @@
 """
 Pure python implementation of the dynamic programming algorithm
 on line graphs.
-
-TODO
-====
-
-- [ ]. Integrate mu = 0
 """
 from __future__ import annotations
 import numpy as np
