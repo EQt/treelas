@@ -217,6 +217,7 @@ parent = {repr(self.parent)})"""
                     io.create_dataset(n, data=v, compression=compression)
 
     def objective(self, x):
+        """Compute the primal objective value for `x`"""
         assert x.size == self.n
         raise NotImplementedError()
 
