@@ -94,7 +94,7 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
     x = - offset/slope
     elem.push(Event(x, slope), forward)
     if DEBUG:
-        print(f" --> x = {x:+}")
+        print(f" --> x = {_fround(x)}")
     return x
 
 
