@@ -92,12 +92,12 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
         else:
             print('empty')
     if abs(slope) <= 1e-10:
-        return -np.inf if forward else +np.inf
+        return (-np.inf if forward else +np.inf), offset
     x = - offset/slope
     elem.push(Event(x, slope), forward)
     if DEBUG:
         print(f" --> x = {_fround(x)}")
-    return x
+    return x, offset
 
 
 def line_lasso(
@@ -118,12 +118,16 @@ def line_lasso(
 
     lam0 = 0.0          # old lambda
     for i in range(n-1):
-        lb[i] = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam[i], forward=True)
-        ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam[i], forward=False)
-        lam0 = lam[i]
+        lb[i], l0 = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam[i], True)
+        ub[i], l1 = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam[i], False)
+        if mu[i] < 1e-10:
+            assert np.isclose(l0, l1), f"{l0} != {l1}"
+        lam0 = lam[i] if mu[i] > 1e-10 else min(l0, lam[i])
+        if DEBUG:
+            print("lam0:", lam0, '( l0 =', l0, ' lam[i] =', lam[i], ')\n')
 
     x = np.full(n, np.nan)
-    x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam0 + 0.0, forward=True)
+    x[-1], _ = clip(event, mu[-1], -mu[-1] * y[-1] - lam0 + 0.0, forward=True)
     for i in range(n-1)[::-1]:
         x[i] = np.clip(x[i+1], lb[i], ub[i])
     return x
