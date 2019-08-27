@@ -34,7 +34,7 @@ class Event:
         return (e2.offset() - e1.offset()) / (e1.slope - e2.slope)
 
 
-def clip(elements: deque, slope: float, offset: float, forward: bool):
+def clip(elements: deque, slope: float, offset: float, forward: bool) -> float:
     dir = 'F' if forward else 'R'
     first = -1 if forward else 0
     print(f"clip: ({slope}, {offset}, {dir}): {pformat(elements)}")
