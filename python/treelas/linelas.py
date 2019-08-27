@@ -84,6 +84,10 @@ def line_lasso(
     lam: Weights,
     mu: Weights = ConstantWeights(1.0),
 ) -> np.ndarray:
+    """
+    Return an minimizer `x` of the fused lasso problem on line graph
+    with node values `y` (weighted with `mu`) and edge weights `lam`.
+    """
     if isinstance(lam, float):
         lam = ConstantWeights(lam)
     n = len(y)
