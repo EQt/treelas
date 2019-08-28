@@ -11,3 +11,4 @@ def test_retain(n=10):
     alpha_b = np.cumsum(np.flip(x - y))
     assert np.isclose(alpha_b[-1], 0)
     assert np.isclose(alpha_f[-1], 0)
+    assert np.allclose(alpha_f + np.flip(alpha_b), x - y)
