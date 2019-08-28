@@ -44,13 +44,13 @@ class DeQue:
         from collections import deque
         self._e = deque()
 
-    def pop(self, forward: bool):
+    def pop(self, forward: bool = True):
         return self._e.popleft() if forward else self._e.pop()
 
-    def peek(self, forward: bool):
+    def peek(self, forward: bool = True):
         return self._e[0 if forward else -1]
 
-    def push(self, x, forward: bool):
+    def push(self, x, forward: bool = True):
         if forward:
             self._e.appendleft(x)
         else:
