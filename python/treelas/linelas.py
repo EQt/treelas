@@ -42,7 +42,8 @@ class DeQue:
     """
     def __init__(self, n=None):
         from collections import deque
-        self._e = deque()
+        from collections.abc import Iterable
+        self._e = if isinstance(n, Iterable) deque(n) else deque() 
 
     def pop(self, forward: bool = True):
         return self._e.popleft() if forward else self._e.pop()
@@ -63,7 +64,14 @@ class DeQue:
         return len(self._e)
 
     def __repr__(self) -> str:
-        return repr(self._e)
+        name = type(self).__name__
+        amen = type(self._e).__name__
+        r = repr(self._e)
+        assert r.startswith(amen)
+        return name + r[len(amen):]
+
+    def __iter__(self):
+        return iter(self._e)
 
 
 def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> float:
