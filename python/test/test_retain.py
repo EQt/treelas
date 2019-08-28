@@ -3,6 +3,7 @@ from treelas import line_las
 
 
 def test_retain(n=10):
+    """Flow along a line of `n` nodes: Comparing backward and forward flow"""
     np.random.seed(42)
     y = np.random.randint(6, size=n).astype(float)
     lam = 1
