@@ -12,6 +12,7 @@ from .rounder import _fround, _int_or_round
 
 
 DEBUG = False
+EPS = 1e-10
 
 
 @dataclass(repr=False, init=False)
@@ -94,7 +95,7 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
             print(' test:', _fround(slope * elem.peek(forward).x + offset))
         else:
             print('empty')
-    if abs(slope) <= 1e-10:
+    if abs(slope) <= EPS:
         x = -np.inf if forward else +np.inf
     else:
         x = - offset/slope
@@ -124,7 +125,7 @@ def line_lasso(
     for i in range(n-1):
         lb[i] = clip(event, +mu[i], -mu[i] * y[i] - lam0 + lam[i], True)
         ub[i] = clip(event, -mu[i], +mu[i] * y[i] - lam0 + lam[i], False)
-        lam0 = lam[i] if mu[i] > 1e-10 else min(lam0, lam[i])
+        lam0 = lam[i] if mu[i] > EPS else min(lam0, lam[i])
         if DEBUG:
             print("lam0:", lam0, '( lam[i] =', lam[i], ')\n')
 
