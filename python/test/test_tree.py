@@ -36,6 +36,10 @@ def tree5(request):
     return TreeInstance(y, t.parent, lam=lam)
 
 
+def test_len(tree5):
+    assert len(tree5) == 10
+
+
 def test_tree5_solve(tree5):
     ti = tree5
     ti.solve()
