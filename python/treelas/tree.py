@@ -1,8 +1,8 @@
 from __future__ import annotations
 import h5py
-import warnings
 import numpy as np
 from numba import njit
+from typing import Dict, Any
 
 from . import _treelas as _tl
 from .graphviz import show_tree
@@ -180,7 +180,29 @@ parent = {repr(self.parent)})"""
         """Number of nodes"""
         return len(self.parent)
 
-    def save(self, fname, group="/", overwrite=True, compression=4):
+    def _to_write(self) -> Dict[str, Any]:
+        to_write = dict(
+            parent=self.parent,
+            y=self.y,
+            lam=self.lam,
+            mu=self.mu,
+            root=self.root)
+        for n, v in {'x': self.x, 'alpha': self.alpha}.items():
+            if v is not None:
+                to_write[n] = v
+        if isinstance(self.mu, (int, float)) and self.mu == 1.0:
+            del to_write['mu']
+        if isinstance(self.lam, float):
+            to_write['lam'] = [to_write['lam']]
+        return  to_write
+
+    def save(self, fname, *args, **kwargs):
+        if fname.endswith(".toml"):
+            self._save_toml(fname, *args, **kwargs)
+        else:
+            self._save_h5(fname, *args, **kwargs)
+
+    def _save_h5(self, fname, group="/", overwrite=True, compression=4):
         """Store in HDF5 file format"""
         with h5py.File(fname, 'a') as io:
             if group != "/":
@@ -191,21 +213,7 @@ parent = {repr(self.parent)})"""
                     else:       # overwrite
                         del io[group]
                 io = io.create_group(group)
-            to_write = dict(
-                parent=self.parent,
-                y=self.y,
-                lam=self.lam,
-                mu=self.mu,
-                root=self.root)
-            for n, v in {'x': self.x, 'alpha': self.alpha}.items():
-                if v is not None:
-                    to_write[n] = v
-            if isinstance(self.mu, (int, float)) and self.mu == 1.0:
-                del to_write['mu']
-            if isinstance(self.lam, float):
-                to_write['lam'] = [to_write['lam']]
-
-            for n, v in to_write.items():
+            for n, v in self._to_write().items():
                 if n in io:
                     if overwrite:
                         del io[n]
@@ -237,7 +245,7 @@ parent = {repr(self.parent)})"""
             lam = io["lam"][()]
             if len(lam) == 1:
                 lam = lam[0]
-            mu = io["mu"][:] if "mu" in io else 1.0
+            mu = io["mu"][()] if "mu" in io else 1.0
             root = io["root"][()] if "root" in io else find_root(parent)
             x = io["x"].value if "x" in io else None
             alpha = io["alpha"][()] if "alpha" in io else None
