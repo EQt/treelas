@@ -117,8 +117,9 @@ parent = {repr(self.parent)})"""
             assert self.mu > 0
             self.x = _tl.tree_dp(y=self.y,
                                  parent=self.parent,
-                                 lam=self.lam/self.mu,
+                                 lam=self.lam,
                                  root=self.root,
+                                 mu=self.mu,
                                  x=x,
                                  verbose=verbose,
                                  **args)
