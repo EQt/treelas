@@ -259,7 +259,7 @@ parent = {repr(self.parent)})"""
             break
 
         for n in ["lam", "mu"]:
-            if isinstance(val[n], list):
+            if n in val and isinstance(val[n], list):
                 if len(val[n]) == 1:
                     val[n] = val[n][0]
                 else:
