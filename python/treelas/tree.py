@@ -221,6 +221,7 @@ parent = {repr(self.parent)})"""
         assert x.size == self.n
         raise NotImplementedError()
 
+    @staticmethod
     def load(fname, group="/"):
         """Load a tree instance from a HDF5 file"""
         with h5py.File(fname) as io:
