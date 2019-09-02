@@ -1,14 +1,12 @@
 import treelas as tl
 import h5py
-from os import path
 import numpy as np
 import sys
+from data import data_dir
 
 
 def load_mini_h5():
-    mini_h5 = path.join(path.dirname(__file__), '..', '..', 'data', 'tree.mini.h5')
-    assert path.exists(mini_h5)
-    with h5py.File(mini_h5) as io:
+    with h5py.File(data_dir('tree.mini.h5')) as io:
         y = io['y'][:]
         parent = io['parent'][:]
         xt = io['xt'][:]
