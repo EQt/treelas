@@ -235,17 +235,8 @@ parent = {repr(self.parent)})"""
             lam = io["lam"].value
             if len(lam) == 1:
                 lam = lam[0]
-            mu = None
-            if "mu" in io:
-                mu = io["mu"].value
-            else:
-                warnings.warn(f"No µ found in {fname}:{group}: set µ := 0.5")
-                mu = 0.5
-            root = -1
-            if "root" in io:
-                root = io["root"].value
-            else:
-                root = find_root(parent)
+            mu = io.get("mu", [1.0])[:]
+            root = io["root"][:] if "root" in io else find_root(parent)
             x = io["x"].value if "x" in io else None
             alpha = io["alpha"].value if "alpha" in io else None
         t = TreeInstance(y=y, parent=parent, lam=lam, mu=mu, root=root)
