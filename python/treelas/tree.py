@@ -215,8 +215,7 @@ parent = {repr(self.parent)})"""
             enc.dump_funcs[np.float32] = enc.dump_funcs[float]
             enc.dump_funcs[np.float64] = enc.dump_funcs[float]
             enc.dump_funcs[np.ndarray] = enc.dump_funcs[list]
-            toml.dumps({header: [self._to_write()]}, encoder=enc)
-            toml.dump({header: [self._to_write()]}, io, encoder=enc)
+            io.write(toml.dumps({header: [self._to_write()]}, encoder=enc))
 
     def _save_h5(self, fname, group="/", overwrite=True, compression=4):
         """Store in HDF5 file format"""
