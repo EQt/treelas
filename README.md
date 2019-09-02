@@ -63,6 +63,10 @@ Guiding Ideas
   This will effect all the `line/*` methods and the `tree_dp.hpp` as well.
 - For preparation: Create tests for `clip_{front,fronw}` that also involve the divide by zero case.
 
+### v0.12.8
+Released 2019-09-02
+- Python: More tree test instances; simplified `treelas.tree_dp`
+
 ### v0.12.7
 Released 2019-09-02
 - Python: `tree.py`: Test read/write of TreeInstance
