@@ -64,6 +64,13 @@ def test_tree5_write_simple(tree5):
         assert 'parent' in io
 
 
+def test_tree5_write_read(tree5):
+    ti = tree5
+    ti.save('tree5.h5')
+    t2 = TreeInstance.load('tree5.h5')
+    assert ti == t2, f"\n\n{ti}\n\n{t2}\n"
+
+
 def test_rtree(n=5, seed=2018, eps=1e-14):
     t = Tree.random(n, seed=seed)
     assert t.n == n
