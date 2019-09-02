@@ -213,17 +213,8 @@ tree_dp_w(
                 ub[i] = clip_backw(elements, pq[i], mu[i], -
                                    mu[i]*y[i] +sigi, +lami, max_y);
                 // EVENT_CHECK(pq[i].stop, ub[i]);
-                if (pq[i].start <= pq[i].stop) {
-                    double lam_plus = mu[i] > 1e-10 ? lami : std::min(lami, sigi);
-                    if (lam_plus > 0) {
-                        sig[parent[i]] += lam_plus;
-                    } else {
-                        if (lam_plus < -1e-9) {
-                            throw std::runtime_error("shit");
-                            // EVENT_CHECK(pq[i].stop, ub[i]);
-                        }
-                    }
-                }
+                sig[parent[i]] += mu[i] > 1e-10 ? lami : std::min(lami, sigi);
+
             }
             pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
             if (!lazy_sort)
