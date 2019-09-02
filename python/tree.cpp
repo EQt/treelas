@@ -47,13 +47,13 @@ reg_tree(py::module &m)
              const py::array_i32 &parent,
              const double lam,
              const int32_t root,
+             const double mu,
              py::array_f64 &x,
              const bool verbose,
              const bool merge_sort,
              const bool lazy_sort) -> py::array_f64
           {
               TimerQuiet _ (verbose);
-              const double mu = 1.0;
               const auto n = check_1d_len(y, "y");
               check_len(n, parent, "parent");
               if (is_empty(x)) {
@@ -97,6 +97,7 @@ reg_tree(py::module &m)
           py::arg("parent"),
           py::arg("lam"),
           py::arg("root") = 0,
+          py::arg("mu") = 1.0,
           py::arg("x") = py::none(),
           py::arg("verbose") = false,
           py::arg("merge_sort") = false,
