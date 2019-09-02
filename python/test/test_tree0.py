@@ -1,3 +1,6 @@
+"""
+Load trees containing latent nodes and perform some checks
+"""
 import pytest
 import numpy as np
 from treelas import TreeInstance
@@ -46,5 +49,13 @@ def test_solve_x(tree0):
     )
 
 
-def test_gap_x(tree0):
-    pass
+@pytest.mark.parametrize("t", ["tree0.toml", "tree0.1.toml"])
+def test_gap_x0(t, gap=1e-10):
+    t = TreeInstance.load(test_dir(t))
+    x = t.solve().x
+    alpha = t.dual
+    assert np.isnan(alpha[t.root])
+    assert not np.isnan(alpha[:-1]).any()
+    assert all(np.abs(alpha[:-1]) <= t.lam[:-1] + gap)
+    assert min(t.gamma) >= -1e-12
+    assert max(t.gamma) < 1e-10
