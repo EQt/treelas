@@ -200,8 +200,7 @@ parent = {repr(self.parent)})"""
             for n, v in {'x': self.x, 'alpha': self.alpha}.items():
                 if v is not None:
                     to_write[n] = v
-
-            if self.mu == 1.0:
+            if isinstance(self.mu, (int, float)) and self.mu == 1.0:
                 del to_write['mu']
             if isinstance(self.lam, float):
                 to_write['lam'] = [to_write['lam']]
@@ -222,6 +221,9 @@ parent = {repr(self.parent)})"""
         assert x.size == self.n
         raise NotImplementedError()
 
+    def __len__(self) -> int:
+        return len(self.parent)
+
     @staticmethod
     def load(fname: str, group: str = "/") -> TreeInstance:
         """Load a tree instance from a HDF5 file"""
@@ -235,8 +237,8 @@ parent = {repr(self.parent)})"""
             lam = io["lam"].value
             if len(lam) == 1:
                 lam = lam[0]
-            mu = io.get("mu", [1.0])[:]
-            root = io["root"][:] if "root" in io else find_root(parent)
+            mu = io["mu"][:] if "mu" in io else 1.0
+            root = io["root"].value if "root" in io else find_root(parent)
             x = io["x"].value if "x" in io else None
             alpha = io["alpha"].value if "alpha" in io else None
         t = TreeInstance(y=y, parent=parent, lam=lam, mu=mu, root=root)
