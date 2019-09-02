@@ -204,18 +204,10 @@ parent = {repr(self.parent)})"""
             self._save_h5(fname, *args, **kwargs)
 
     def _save_toml(self, fname, header="tree"):
-        import toml
+        from . import _toml as toml
 
         with open(fname, 'w') as io:
-            enc = toml.TomlEncoder()
-            enc.dump_funcs[np.int64] = enc.dump_funcs[int]
-            enc.dump_funcs[np.int32] = enc.dump_funcs[int]
-            enc.dump_funcs[np.uint64] = enc.dump_funcs[int]
-            enc.dump_funcs[np.uint32] = enc.dump_funcs[int]
-            enc.dump_funcs[np.float32] = enc.dump_funcs[float]
-            enc.dump_funcs[np.float64] = enc.dump_funcs[float]
-            enc.dump_funcs[np.ndarray] = enc.dump_funcs[list]
-            io.write(toml.dumps({header: [self._to_write()]}, encoder=enc))
+            toml.dump({header: [self._to_write()]}, io)
 
     def _save_h5(self, fname, group="/", overwrite=True, compression=4):
         """Store in HDF5 file format"""
