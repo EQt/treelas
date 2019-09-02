@@ -29,6 +29,8 @@ def tree5(request):
     assert t.root == 0
 
     def cleaner():
+        if os.path.exists('tree5.toml'):
+            os.remove('tree5.toml')
         if os.path.exists('tree5.h5'):
             os.remove('tree5.h5')
 
@@ -59,7 +61,7 @@ def test_tree5_solve(tree5):
     assert gap.max() <= 1e-13, f'{gap}'
 
 
-def test_tree5_write_simple(tree5):
+def test_tree5_write_h5_simple(tree5):
     ti = tree5
     ti.save('tree5.h5')
     with h5py.File('tree5.h5') as io:
@@ -68,7 +70,7 @@ def test_tree5_write_simple(tree5):
         assert 'parent' in io
 
 
-def test_tree5_write_mu(tree5):
+def test_tree5_write_h5_mu(tree5):
     ti = tree5
     n = 10
     assert len(ti.parent) == n
@@ -81,7 +83,7 @@ def test_tree5_write_mu(tree5):
         assert 'mu' in io
 
 
-def test_tree5_write_read(tree5):
+def test_tree5_write_h5_read(tree5):
     ti = tree5
     ti.save('tree5.h5')
     t2 = TreeInstance.load('tree5.h5')
@@ -89,6 +91,7 @@ def test_tree5_write_read(tree5):
 
 
 def test_rtree(n=5, seed=2018, eps=1e-14):
+    """Random tree creation"""
     t = Tree.random(n, seed=seed)
     assert t.n == n
     y = np.array([ 0.1,  1.7, -0.1,  1. ,  1.1])
