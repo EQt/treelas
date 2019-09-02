@@ -91,7 +91,8 @@ class TreeInstance(Tree):
     def __init__(self, y, parent, lam, mu=1.0, root=-1):
         assert isinstance(lam, float) or \
             (isinstance(lam, np.ndarray) and lam.dtype == np.float64), f"{type(lam)}"
-        assert isinstance(mu, float) or mu.dtype == np.float64
+        assert isinstance(mu, float) or \
+            (isinstance(mu, np.ndarray) and mu.dtype == np.float64), f"{type(mu)}"
         super().__init__(parent, root=root)
         self.y = np.asarray(y, dtype=np.float64)
         self.lam = lam
@@ -256,8 +257,11 @@ parent = {repr(self.parent)})"""
         io = toml.load(fname)
         for name, [val] in io.items():
             break
-        if isinstance(val["lam"], list) and len(val["lam"]) == 1:
-            val["lam"] = val["lam"][0]
+        if isinstance(val["lam"], list):
+            if len(val["lam"]) == 1:
+                val["lam"] = val["lam"][0]
+            else:
+                val["lam"] = np.array(val["lam"], dtype=float)
         t = TreeInstance(
             y=val["y"],
             parent=val["parent"],
