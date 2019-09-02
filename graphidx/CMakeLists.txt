@@ -19,4 +19,5 @@ set(TESTS
   test_van_emde_boas.cpp
   test_csc.cpp
   test_neg.cpp
+  test_weights.cpp
 )
