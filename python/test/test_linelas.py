@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 from os import path
 from treelas import linelas
+from data import test_dir
 
 
 linelas.DEBUG = True
@@ -44,12 +45,7 @@ class Instance:
         return len(self.y)
 
 
-def data_dir(*args):
-    """Return a path relative to the `data` directory"""
-    return path.join(path.dirname(__file__), "..", "..", "data", *args)
-
-
-insts = Instance.from_toml(data_dir("test", "lines.toml"))
+insts = Instance.from_toml(test_dir("lines.toml"))
 
 
 @pytest.mark.parametrize("i", insts)
