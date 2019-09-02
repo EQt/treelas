@@ -30,6 +30,8 @@ def tree5(request):
     assert t.root == 0
 
     def cleaner():
+        if os.getenv("KEEP"):
+            return
         if os.path.exists('tree5.toml'):
             os.remove('tree5.toml')
         if os.path.exists('tree5.h5'):
