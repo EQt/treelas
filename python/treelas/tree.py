@@ -124,7 +124,7 @@ parent = {repr(self.parent)})"""
                                  verbose=verbose,
                                  **args)
         else:
-            self.x = _tl.tree_dp_w(y=self.y,
+            self.x = _tl.tree_dp(y=self.y,
                                    parent=self.parent,
                                    lam=self.lam,
                                    mu=self.mu,

@@ -43,7 +43,7 @@ def test_mini_h5_w():
     n = len(y)
     mua = np.ones(n)
     lama = lam * np.ones(n)
-    x2 = tl.tree_dp_w(y=y, parent=parent, lam=lama, mu=mua, root=root)
+    x2 = tl.tree_dp(y=y, parent=parent, lam=lama, mu=mua, root=root)
     assert (x2.reshape(xt.shape) == xt).all()
 
 

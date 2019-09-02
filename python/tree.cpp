@@ -144,7 +144,7 @@ reg_tree(py::module &m)
           py::arg("tree_orientation") = true,
           py::arg("verbose") = false);
 
-    m.def("tree_dp_w",
+    m.def("tree_dp",
           [](const py::array_f64 &y,
              const py::array_i32 &parent,
              const py::array_f64 &lam,
