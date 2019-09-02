@@ -1,7 +1,7 @@
 from treelas.graphviz import print_tree
-from os import path
 import h5py
 from io import StringIO
+from data import data_dir
 
 
 mini_dot =  """digraph tree {
@@ -16,7 +16,7 @@ mini_dot =  """digraph tree {
 
 
 def test_print_tree():
-    fname = path.join(path.dirname(__file__), '..', '..', 'data', 'tree.mini.h5')
+    fname = data_dir('tree.mini.h5')
     with h5py.File(fname) as io:
         parent = io['parent'][:]
     buf = StringIO()
