@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <sstream>          // std::ostringstream
+#include <limits>
 
 #include "bits/finite.hpp"
 #include "bits/minmax.hpp"
@@ -153,18 +154,9 @@ tree_dp_w(
                                     std::to_string(parent[root]) + " != root");
     }
 
-    double min_y, max_y;
-    {   Timer _ ("minmax");
-        find_minmax(y, n, min_y, max_y);
-        if (n > 50 && min_y < 0.0) {
-            throw std::runtime_error(std::string("y < 0: ") +
-                                     std::to_string(min_y));
-        }
-        if (n > 50 && max_y > 1.0) {
-            throw std::runtime_error(std::string("y > 1: ") +
-                                     std::to_string(max_y));
-        }
-    }
+    const double
+        min_y = -std::numeric_limits<double>::infinity(),
+        max_y = +std::numeric_limits<double>::infinity();
 
     Timer timer ("memory alloc");
     if (x == nullptr) {
