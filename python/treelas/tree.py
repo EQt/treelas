@@ -234,13 +234,13 @@ parent = {repr(self.parent)})"""
             y = io["y"][:].astype(np.float64).reshape(-1)
             if "lam" not in io:
                 raise RuntimeError(f"no lam found in {fname}:{group}")
-            lam = io["lam"].value
+            lam = io["lam"][()]
             if len(lam) == 1:
                 lam = lam[0]
             mu = io["mu"][:] if "mu" in io else 1.0
-            root = io["root"].value if "root" in io else find_root(parent)
+            root = io["root"][()] if "root" in io else find_root(parent)
             x = io["x"].value if "x" in io else None
-            alpha = io["alpha"].value if "alpha" in io else None
+            alpha = io["alpha"][()] if "alpha" in io else None
         t = TreeInstance(y=y, parent=parent, lam=lam, mu=mu, root=root)
         t.x = x
         t.alpha = alpha
