@@ -1,5 +1,7 @@
 import numpy as np
+import h5py
 import pytest
+import os
 from treelas import Tree, TreeInstance
 
 
@@ -18,17 +20,23 @@ def test_degree3():
 
 
 @pytest.fixture
-def tree5():
+def tree5(request):
     #         0  1  2  3  4  5  6  7  8  9
     parent = [0, 0, 1, 2, 3, 0, 7, 8, 3, 8]
     y = [8.2, 7.0, 9.5, 6.8, 5.8, 6.3, 4.3, 2.2, 1.2, 2.8]
     lam = 1.0
     t = Tree(parent)
     assert t.root == 0
+
+    def cleaner():
+        if os.path.exists('tree5.h5'):
+            os.remove('tree5.h5')
+
+    request.addfinalizer(cleaner)
     return TreeInstance(y, t.parent, lam=lam)
 
 
-def test_tree5(tree5):
+def test_tree5_solve(tree5):
     ti = tree5
     ti.solve()
     diff = np.abs(ti.x*3 -
@@ -45,6 +53,15 @@ def test_tree5(tree5):
     gap = ti.gamma
     assert (gap >= 0).all()
     assert gap.max() <= 1e-13, f'{gap}'
+
+
+def test_tree5_write_simple(tree5):
+    ti = tree5
+    ti.save('tree5.h5')
+    with h5py.File('tree5.h5') as io:
+        assert 'lam' in io
+        assert 'y' in io
+        assert 'parent' in io
 
 
 def test_rtree(n=5, seed=2018, eps=1e-14):
