@@ -1,5 +1,4 @@
 from __future__ import annotations
-import h5py
 import numpy as np
 from numba import njit
 from typing import Dict, Any
@@ -79,6 +78,8 @@ Tree(n={self.n},
 
     @staticmethod
     def load(fname):
+        import h5py
+
         with h5py.File(fname) as io:
             parent = io['parent'][:]
             root = io['root'][:] if 'root' in io else _tl.find_root(parent)
@@ -204,6 +205,8 @@ parent = {repr(self.parent)})"""
 
     def _save_h5(self, fname, group="/", overwrite=True, compression=4):
         """Store in HDF5 file format"""
+        import h5py
+
         with h5py.File(fname, 'a') as io:
             if group != "/":
                 if group in io:
@@ -235,6 +238,8 @@ parent = {repr(self.parent)})"""
     @staticmethod
     def load(fname: str, group: str = "/") -> TreeInstance:
         """Load a tree instance from a HDF5 file"""
+        import h5py
+
         with h5py.File(fname) as io:
             io = io[group]
             parent = io["parent"][:].astype(np.int32)
