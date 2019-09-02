@@ -242,7 +242,33 @@ parent = {repr(self.parent)})"""
         return len(self.parent)
 
     @staticmethod
-    def load(fname: str, group: str = "/") -> TreeInstance:
+    def load(fname: str, **kwargs) -> TreeInstance:
+        if fname.endswith(".toml"):
+            return TreeInstance._load_toml(fname, **kwargs)
+        else:
+            return TreeInstance._load_h5(fname, **kwargs)
+
+    @staticmethod
+    def _load_toml(fname: str) -> TreeInstance:
+        import toml
+
+        io = toml.load(fname)
+        for name, [val] in io.items():
+            break
+        if isinstance(val["lam"], list) and len(val["lam"]) == 1:
+            val["lam"] = val["lam"][0]
+        t = TreeInstance(
+            y=val["y"],
+            parent=val["parent"],
+            lam=val["lam"],
+            mu=val.get("mu", 1.0),
+            root=val["root"] if "root" in val else find_root(val["parent"]),
+        )
+        t.x = val.get("x")
+        t.alpha = val.get("alpha")
+
+    @staticmethod
+    def _load_h5(fname: str, group: str = "/") -> TreeInstance:
         """Load a tree instance from a HDF5 file"""
         import h5py
 

@@ -1,5 +1,6 @@
 import numpy as np
 import h5py
+import toml
 import pytest
 import os
 from treelas import Tree, TreeInstance
@@ -70,6 +71,15 @@ def test_tree5_write_h5_simple(tree5):
         assert 'parent' in io
 
 
+def test_tree5_write_toml_simple(tree5):
+    ti = tree5
+    ti.save('tree5.toml')
+    [io] = toml.load('tree5.toml')['tree']
+    assert 'lam' in io
+    assert 'y' in io
+    assert 'parent' in io
+
+
 def test_tree5_write_h5_mu(tree5):
     ti = tree5
     n = 10
@@ -87,6 +97,13 @@ def test_tree5_write_h5_read(tree5):
     ti = tree5
     ti.save('tree5.h5')
     t2 = TreeInstance.load('tree5.h5')
+    assert repr(ti) == repr(t2), f"\n\n{ti}\n\n{t2}\n"
+
+
+def test_tree5_write_h5_read(tree5):
+    ti = tree5
+    ti.save('tree5.toml')
+    t2 = TreeInstance.load('tree5.toml')
     assert repr(ti) == repr(t2), f"\n\n{ti}\n\n{t2}\n"
 
 
