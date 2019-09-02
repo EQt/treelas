@@ -203,6 +203,12 @@ parent = {repr(self.parent)})"""
         else:
             self._save_h5(fname, *args, **kwargs)
 
+    def _save_toml(self, fname, header="tree"):
+        import toml
+
+        with open(fname, 'w') as io:
+            toml.dump({header: [self._to_write()]}, io)
+
     def _save_h5(self, fname, group="/", overwrite=True, compression=4):
         """Store in HDF5 file format"""
         import h5py
