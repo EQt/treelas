@@ -1,3 +1,4 @@
+from __future__ import annotations
 import h5py
 import warnings
 import numpy as np
@@ -216,13 +217,13 @@ parent = {repr(self.parent)})"""
                 else:
                     io.create_dataset(n, data=v, compression=compression)
 
-    def objective(self, x):
+    def objective(self, x: np.ndarray) -> float:
         """Compute the primal objective value for `x`"""
         assert x.size == self.n
         raise NotImplementedError()
 
     @staticmethod
-    def load(fname, group="/"):
+    def load(fname: str, group: str = "/") -> TreeInstance:
         """Load a tree instance from a HDF5 file"""
         with h5py.File(fname) as io:
             io = io[group]
