@@ -64,6 +64,19 @@ def test_tree5_write_simple(tree5):
         assert 'parent' in io
 
 
+def test_tree5_write_mu(tree5):
+    ti = tree5
+    n = 10
+    assert len(ti.parent) == n
+    ti.mu = np.linspace(0, 1, num=n)
+    ti.save('tree5.h5')
+    with h5py.File('tree5.h5') as io:
+        assert 'lam' in io
+        assert 'y' in io
+        assert 'parent' in io
+        assert 'mu' in io
+
+
 def test_tree5_write_read(tree5):
     ti = tree5
     ti.save('tree5.h5')
