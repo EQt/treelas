@@ -257,11 +257,13 @@ parent = {repr(self.parent)})"""
         io = toml.load(fname)
         for name, [val] in io.items():
             break
-        if isinstance(val["lam"], list):
-            if len(val["lam"]) == 1:
-                val["lam"] = val["lam"][0]
-            else:
-                val["lam"] = np.array(val["lam"], dtype=float)
+
+        for n in ["lam", "mu"]:
+            if isinstance(val[n], list):
+                if len(val[n]) == 1:
+                    val[n] = val[n][0]
+                else:
+                    val[n] = np.array(val[n], dtype=float)
         t = TreeInstance(
             y=val["y"],
             parent=val["parent"],
