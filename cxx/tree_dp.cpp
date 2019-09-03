@@ -3,7 +3,6 @@
  */
 #include <iostream>
 #include <stdexcept>
-#include <sstream>          // std::ostringstream
 #include <limits>
 
 #include "bits/finite.hpp"
