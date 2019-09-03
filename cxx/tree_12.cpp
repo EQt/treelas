@@ -98,6 +98,13 @@ tree_12(const size_t n,
     {   Timer _ ("iorder");
         iperm(n, iorder.data(), postord.data());
     }
+
+    for (size_t it = 0; it < max_iter; it++) {
+        ;
+    }
+
+    for (size_t i = 0; i < n; i++)
+        x[i] = y[i] + 0 * lam;
 }
 
 
