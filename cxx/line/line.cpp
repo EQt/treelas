@@ -5,8 +5,6 @@
 
 #include <vector>
 #include <cmath>
-#include <memory>               // for std::unique_ptr
-#include <cstdlib>              // for malloc
 
 #include "utils/timer.hpp"
 #include "utils/malloc.hpp"
@@ -103,17 +101,6 @@ line_dp(const size_t n,
     const float_ mu = 1.0;
 
     Timer t ("alloc");
-#ifdef UNIQUE_PTR
-    std::unique_ptr<Event> event_ (new Event[2*n]);
-    std::unique_ptr<float_> ub_ (new float_[2*n]);
-    Event *event = event_.get();
-    float_ *ub = ub_.get();
-#elif defined MALLOC
-    Malloc<Event> event_(2*n);
-    Malloc<float_> ub_ (n);
-    Event *event = event_.data();
-    float_ *ub = ub_.data();
-#else
     std::vector<Event> event_;
     std::vector<float_> ub_;
     event_.reserve(2*n);
@@ -121,7 +108,7 @@ line_dp(const size_t n,
 
     Event *event = event_.data();
     float_ *ub = ub_.data();
-#endif
+
     t.stop();
 
     Range pq {int(n), int(n-1)};
