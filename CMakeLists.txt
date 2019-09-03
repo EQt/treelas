@@ -38,6 +38,7 @@ add_subdirectory(ci)
 add_library(argparser OBJECT deps/argparser/argparser.cpp)
 
 add_object(line       cxx/line/line.cpp)
+add_object(line_dp    cxx/line/line_dp.cpp)
 add_object(line_w     cxx/line/line_w.cpp)
 add_object(line_para  cxx/line/line_para.cpp)
 add_object(line_c     cxx/line/line_c.cpp)
@@ -77,6 +78,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
     $<TARGET_OBJECTS:line>
+    $<TARGET_OBJECTS:line_dp>
     $<TARGET_OBJECTS:line_w>
     $<TARGET_OBJECTS:line_para>
     $<TARGET_OBJECTS:line_c>
