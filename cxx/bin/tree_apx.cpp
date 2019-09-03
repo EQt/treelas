@@ -7,7 +7,6 @@
 */
 #include <cmath>        // for std::abs
 #include <vector>
-#include <algorithm>    // for std::min_element
 #include <argparser.hpp>
 #include <minih5.hpp>
 
