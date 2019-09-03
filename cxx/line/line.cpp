@@ -100,17 +100,16 @@ line_dp(const size_t n,
 {
     const float_ mu = 1.0;
 
-    Timer t ("alloc");
     std::vector<Event> event_;
     std::vector<float_> ub_;
-    event_.reserve(2*n);
-    ub_.reserve(n-1);
+    {
+        Timer _ ("alloc");
+        event_.reserve(2*n);
+        ub_.reserve(n-1);
+    }
 
     Event *event = event_.data();
     float_ *ub = ub_.data();
-
-    t.stop();
-
     Range pq {int(n), int(n-1)};
 
     if (increasing) {
