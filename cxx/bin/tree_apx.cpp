@@ -12,7 +12,6 @@
 #include <minih5.hpp>
 
 #include "utils/timer.hpp"
-
 #include "thousand.hpp"
 
 #include "../tree_io.hpp"
@@ -78,7 +77,6 @@ tree_12(const TreeLasso<float_, int_> &tree,
 
     return xv;
 }
-
 
 
 template<typename float_ = float, typename int_ = int>
