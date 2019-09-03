@@ -10,7 +10,7 @@
 #include "std/stack.hpp"
 #include "utils/timer.hpp"
 
-#include "tree_debug.hpp"
+// #include "tree_debug.hpp"
 #include "clip.hpp"
 #include "merge.hpp"
 
