@@ -235,8 +235,7 @@ reg_line(py::module &m)
               }
               return x;
           },
-          R"pbdoc(
-            )pbdoc",
+          "",
           py::arg("y"),
           py::arg("lam"),
           py::arg("mu") = 1.0,
@@ -264,8 +263,7 @@ reg_line(py::module &m)
               }
               return x;
           },
-          R"pbdoc(
-            )pbdoc",
+          "",
           py::arg("y"),
           py::arg("lam"),
           py::arg("mu") = 1.0,
@@ -293,8 +291,7 @@ reg_line(py::module &m)
               }
               return x;
           },
-          R"pbdoc(
-            )pbdoc",
+          "",
           py::arg("y"),
           py::arg("lam"),
           py::arg("mu") = 1.0,
