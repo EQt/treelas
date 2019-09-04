@@ -13,4 +13,7 @@ TEST(line_dp, line00)
     x.resize(y.size());
 
     line_las(y.size(), x.data(), y.data(), lam);
+    ASSERT_DOUBLE_EQ(x[0], 1.1);
+    ASSERT_DOUBLE_EQ(x[1], 1.8);
+    ASSERT_DOUBLE_EQ(x[2], 1.1);
 }
