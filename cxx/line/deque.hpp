@@ -13,6 +13,9 @@ private:
     size_t front = 1, back = 0;
 
 public:
+    DeQue() {}
+    DeQue(size_t n) { reserve(n); }
+
     /// allocate space for 2*n elements; resetting to the middle
     void reserve(const size_t n) { _e.reserve(2*n); front = n; back = n-1; }
 
@@ -33,4 +36,7 @@ public:
 
     /// number of elements present at the moment
     size_t size() const { return back - front + 1; }
+
+    /// number of elements that could fit in
+    size_t capacity() const { return _e.capacity(); }
 };
