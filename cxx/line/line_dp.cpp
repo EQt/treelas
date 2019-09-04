@@ -15,20 +15,51 @@
 const auto EPS = 1e-10;
 
 
-template<int step, bool need_check = false, typename float_ = double>
+template <typename E>
+struct DeQue
+{
+private:
+    std::vector<E> _e;
+    size_t front = 1, back = 0;
+
+public:
+    /// allocate space for 2*n elements; resetting to the middle
+    void reserve(const size_t n) { _e.reserve(2*n); front = n; back = n-1; }
+
+    /// first or last element (depending on forward)
+    template <bool forward = true>
+    const E& peek() const { return forward ? _e[front] : _e[back]; }
+
+    /// remove first/last element
+    template <bool forward = true>
+    E pop() { return forward ? _e[front++] : _e[back--]; }
+
+    /// append an element to front/back of the queue
+    template <bool forward = true>
+    void push(E x) { if (forward) _e[--front] = x; else _e[++back] = x; }
+
+    /// is the queue empty?
+    operator bool() const { return front <= back; }
+};
+
+
+template<bool forward, bool need_check = false, typename float_ = double>
 inline float_
-clip(Event *elem,
-     Range &pq,
+clip(DeQue<Event> pq,
      float_ slope,
      float_ offset)
 {
-    const auto *e = &elem[pq.stop];
-    while (pq.start <= pq.stop && slope * e->x + offset < 0) {
+    const auto *e = &pq.peek<forward>();
+    while (pq && slope * e->x + offset < 0) {
+        offset += e->offset();
+        slope += e->slope;
+        pq.pop<forward>();
     }
     if (need_check && std::abs(slope) <= EPS) {
         return -1.0;
     }
     const auto x = -offset/slope;
+    pq.push<forward>({x, slope});
     return x;
 }
 
@@ -57,22 +88,20 @@ line_las(
     if (!is_positive(mu[n-1]))
         throw std::invalid_argument("End node must not be latent");
 
-    std::vector<Event> event_;
+    DeQue<Event> pq;
     std::vector<float_> ub_;
     {
         Timer _ ("alloc");
-        event_.reserve(2*n);
+        pq.reserve(n);
         ub_.reserve(n-1);
     }
-    Range pq {int(n), int(n-1)};
-    Event *event = event_.data();
     float_
         *ub = ub_.data(),
         *lb = x,
         lam0 = float_(0.0);
 
     for (size_t i = 0; i < n-1; i++) {
-        lb[i] = clip<+1>(event, pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-        ub[i] = clip<-1>(event, pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
+        lb[i] = clip<true>(pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+        ub[i] = clip<false>(pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
     }
 }
