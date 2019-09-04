@@ -73,13 +73,14 @@ line_las(
 
     DeQue<Event> pq;
     std::vector<float_> ub;
+    std::vector<float_> lb;
     {
         Timer _ ("alloc");
         pq.reserve(n);
         ub.reserve(n-1);
+        lb.reserve(n-1);
     }
     float_
-        *lb = x,
         lam0 = float_(0.0);
 
     for (size_t i = 0; i < n-1; i++) {
