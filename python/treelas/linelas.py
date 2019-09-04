@@ -132,5 +132,13 @@ def line_lasso(
     x = np.full(n, np.nan)
     x[-1] = clip(event, mu[-1], -mu[-1] * y[-1] - lam0 + 0.0, forward=True)
     for i in range(n-1)[::-1]:
+        if DEBUG:
+            print(lb[i], ub[i])
         x[i] = np.clip(x[i+1], lb[i], ub[i])
     return x
+
+
+if __name__ == '__main__':
+    # mini test instance
+    DEBUG = True
+    line_lasso(y=[1, 2, 1], lam=0.1)
