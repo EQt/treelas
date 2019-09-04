@@ -23,6 +23,17 @@ clip(Event *elem,
 }
 
 
+template<typename float_, typename Wlam>
+inline void
+line_las(
+    const size_t n,
+    float_ *x,
+    const float_ *y,
+    const Wlam lam)
+{
+    line_las(n, x, y, lam, ConstantWeights<float_>(float_(1.0)));
+}
+
 
 template<typename float_, typename Wlam, typename Wmu>
 void
@@ -31,7 +42,7 @@ line_las(
     float_ *x,
     const float_ *y,
     const Wlam lam,
-    const Wmu mu = ConstantWeights<float_>(float_(1.0)))
+    const Wmu mu)
 {
     if (!is_positive(mu[n-1]))
         throw std::invalid_argument("End node must not be latent");
