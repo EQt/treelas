@@ -80,7 +80,7 @@ install:
 script:
   - df -h ~
   - mkdir -p build && cd build
-  - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug
+  - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug -DASAN=ON
   - make -j$(nproc) && ./tests
   - cd .. && rm -fr build
   - cd ./python && pwd && rm -fr build
