@@ -59,6 +59,11 @@ line_las(
 
     std::vector<Event> event_;
     std::vector<float_> ub_;
+    {
+        Timer _ ("alloc");
+        event_.reserve(2*n);
+        ub_.reserve(n-1);
+    }
     Range pq {int(n), int(n-1)};
     Event *event = event_.data();
     float_
