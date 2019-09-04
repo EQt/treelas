@@ -148,6 +148,7 @@ if (BUILD_TESTS)
     cxx/test/test_ref.cpp
     cxx/test/test_strtok.cpp
     cxx/test/test_line.cpp
+    cxx/test/test_line_dp.cpp
     cxx/test/test_tree_12.cpp
     cxx/test/test_tree_dp.cpp
   )
