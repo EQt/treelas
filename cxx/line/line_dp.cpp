@@ -89,14 +89,13 @@ line_las(
         throw std::invalid_argument("End node must not be latent");
 
     DeQue<Event> pq;
-    std::vector<float_> ub_;
+    std::vector<float_> ub;
     {
         Timer _ ("alloc");
         pq.reserve(n);
-        ub_.reserve(n-1);
+        ub.reserve(n-1);
     }
     float_
-        *ub = ub_.data(),
         *lb = x,
         lam0 = float_(0.0);
 
