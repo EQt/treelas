@@ -13,8 +13,10 @@
 #include "bits/positive.hpp"
 #include "deque.hpp"
 
+
 static const auto EPS = 1e-10;
-static const auto DEBUG = true;
+static const auto DEBUG = false;
+
 
 template<typename float_ = float>
 inline float_
@@ -30,13 +32,15 @@ clip(DeQue<Event> &pq,
      float_ slope,
      float_ offset)
 {
-    if (DEBUG)
-        printf("clip_%s: (%+f, %+f)\n", forward ? "f" : "b", slope, offset);
-    const auto *e = &pq.peek<forward>();
-    while (pq && slope * e->x + offset < 0) {
-        offset += e->offset();
-        slope += e->slope;
-        pq.pop<forward>();
+    if (DEBUG) {
+        printf("clip_%s: (%+g, %+.2f)\n", forward ? "f" : "b", slope, offset);
+        if (pq)
+            printf(" test: %f\n", slope * pq.peek<forward>().x + offset);
+    }
+    while (pq && slope * pq.peek<forward>().x + offset < 0) {
+        const Event e = pq.pop<forward>();
+        offset += e.offset();
+        slope += e.slope;
     }
     if (need_check && std::abs(slope) <= EPS)
         return forward ?
