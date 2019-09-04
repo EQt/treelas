@@ -37,9 +37,10 @@ clip(DeQue<Event> &pq,
         slope += e->slope;
         pq.pop<forward>();
     }
-    if (need_check && std::abs(slope) <= EPS) {
-        return -1.0;
-    }
+    if (need_check && std::abs(slope) <= EPS)
+        return forward ?
+            -std::numeric_limits<float_>::infinity() :
+            +std::numeric_limits<float_>::infinity();
     const auto x = -offset/slope;
     pq.push<forward>({x, slope});
     return x;
