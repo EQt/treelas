@@ -12,11 +12,11 @@
 #include "bits/positive.hpp"
 
 
-template<int step, typename Tdouble, typename float_ = double>
+template<int step, bool need_check = false, typename float_ = double>
 inline float_
 clip(Event *elem,
      Range &pq,
-     Tdouble slope,
+     float_ slope,
      float_ offset)
 {
     const auto *e = &elem[pq.stop];
