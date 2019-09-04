@@ -330,35 +330,6 @@ reg_line(py::module &m)
           py::arg("mu"),
           py::arg("x") = py::none());
 
-    m.def("line_w",
-          [](const py::array_f64 &y,
-             const py::array_f64 &mu,
-             const py::array_f64 &lam,
-             py::array_f64 &x) -> py::array_t<double>
-          {
-              const auto n = check_1d_len(y);
-              check_len(n, mu, "mu");
-              check_len(n-1, lam, "lam");
-              if (is_empty(x))
-                  x = py::array_f64({n}, {sizeof(double)});
-              check_len(n, x, "x");
-              line_w(int(n),
-                     x.mutable_data(),
-                     y.data(),
-                     mu.data(),
-                     lam.data());
-              return x;
-          },
-          R"pbdoc(
-                Line solver (weights).
-
-                Memory: ??*len(y)*sizeof(uint32_t)
-            )pbdoc",
-          py::arg("y"),
-          py::arg("mu"),
-          py::arg("lam"),
-          py::arg("x") = py::none());
-
     /*
     m.def("dp_forward_w",
           [](const py::array_f64 &y,
