@@ -6,7 +6,6 @@
 
 #include "../cxx/line/line.hpp"
 #include "../cxx/line/line_dp.hpp"
-#include "../cxx/line/line_w.hpp"
 #include "../cxx/line/line_para.hpp"
 #include "../cxx/line/line_c.hpp"
 #include "../cxx/line/line_c2.hpp"
