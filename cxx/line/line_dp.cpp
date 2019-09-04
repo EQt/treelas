@@ -18,7 +18,7 @@ const auto EPS = 1e-10;
 
 template<bool forward, bool need_check = false, typename float_ = double>
 inline float_
-clip(DeQue<Event> pq,
+clip(DeQue<Event> &pq,
      float_ slope,
      float_ offset)
 {
