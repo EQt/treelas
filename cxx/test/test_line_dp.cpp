@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-#include "../line/line_dp.cpp"
+#include "../line/line_dp.hpp"
 #include "bits/weights.hpp"
 
 
