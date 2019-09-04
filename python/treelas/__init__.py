@@ -37,6 +37,7 @@ from ._treelas import (
     line_condat,
     line_glmgen,
     line_las,
+    line_dp,
     line_w,
     line_para,
     line_lasc,

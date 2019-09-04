@@ -5,6 +5,7 @@
 #include "../deps/condat/condat_tv_v2.hpp"
 
 #include "../cxx/line/line.hpp"
+#include "../cxx/line/line_dp.hpp"
 #include "../cxx/line/line_w.hpp"
 #include "../cxx/line/line_para.hpp"
 #include "../cxx/line/line_c.hpp"
@@ -211,6 +212,126 @@ reg_line(py::module &m)
           py::arg("out") = py::none(),
           py::arg("verbose") = false,
           py::arg("parallel") = false);
+
+
+    m.def("line_dp",
+          [](const py::array_f64 &y,
+             const double lam,
+             const double mu,
+             py::array_f64 &x) -> py::array_f64
+          {
+              const auto n = check_1d_len(y);
+              if (is_empty(x))
+                  x = py::array_f64({n}, {sizeof(double)});
+              check_len(n, x, "x");
+              {
+                  ConstantWeights<double> _lam (lam);
+                  ConstantWeights<double> _mu  (mu);
+                  line_las(n,
+                           x.mutable_data(),
+                           y.data(),
+                           _lam,
+                           _mu);
+              }
+              return x;
+          },
+          R"pbdoc(
+            )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("mu") = 1.0,
+          py::arg("x") = py::none());
+
+    m.def("line_dp",
+          [](const py::array_f64 &y,
+             const py::array_f64 &lam,
+             const double mu,
+             py::array_f64 &x) -> py::array_f64
+          {
+              const auto n = check_1d_len(y);
+              check_len(n-1, lam, "lam");
+              if (is_empty(x))
+                  x = py::array_f64({n}, {sizeof(double)});
+              check_len(n, x, "x");
+              {
+                  ArrayWeights<double> _lam (lam.data());
+                  ConstantWeights<double> _mu  (mu);
+                  line_las(n,
+                           x.mutable_data(),
+                           y.data(),
+                           _lam,
+                           _mu);
+              }
+              return x;
+          },
+          R"pbdoc(
+            )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("mu") = 1.0,
+          py::arg("x") = py::none());
+
+    m.def("line_dp",
+          [](const py::array_f64 &y,
+             const double lam,
+             const py::array_f64 &mu,
+             py::array_f64 &x) -> py::array_f64
+          {
+              const auto n = check_1d_len(y);
+              check_len(n, mu, "mu0");
+              if (is_empty(x))
+                  x = py::array_f64({n}, {sizeof(double)});
+              check_len(n, x, "x");
+              {
+                  ConstantWeights<double> _lam (lam);
+                  ArrayWeights<double>    _mu  (mu.data());
+                  line_las(n,
+                           x.mutable_data(),
+                           y.data(),
+                           _lam,
+                           _mu);
+              }
+              return x;
+          },
+          R"pbdoc(
+            )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("mu") = 1.0,
+          py::arg("x") = py::none());
+
+    m.def("line_dp",
+          [](const py::array_f64 &y,
+             const py::array_f64 &lam,
+             const py::array_f64 &mu,
+             py::array_f64 &x) -> py::array_t<double>
+          {
+              const auto n = check_1d_len(y);
+              check_len(n-0, mu, "mu1");
+              check_len(n-1, lam, "lam");
+              if (is_empty(x))
+                  x = py::array_f64({n}, {sizeof(double)});
+              check_len(n, x, "x");
+              {
+                  ArrayWeights<double> _lam (lam.data());
+                  ArrayWeights<double> _mu  (mu.data());
+                  line_las(n,
+                           x.mutable_data(),
+                           y.data(),
+                           _lam,
+                           _mu);
+              }
+              return x;
+          },
+          R"pbdoc(
+                Line solver (weights).
+
+                Memory: ??*len(y)*sizeof(uint32_t)
+            )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("mu"),
+          py::arg("x") = py::none());
 
     m.def("line_w",
           [](const py::array_f64 &y,
