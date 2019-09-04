@@ -13,8 +13,8 @@
 #include "bits/positive.hpp"
 #include "deque.hpp"
 
-const auto EPS = 1e-10;
-
+static const auto EPS = 1e-10;
+static const auto DEBUG = true;
 
 template<typename float_ = float>
 inline float_
@@ -30,6 +30,8 @@ clip(DeQue<Event> &pq,
      float_ slope,
      float_ offset)
 {
+    if (DEBUG)
+        printf("clip_%s: (%+f, %+f)\n", forward ? "f" : "b", slope, offset);
     const auto *e = &pq.peek<forward>();
     while (pq && slope * e->x + offset < 0) {
         offset += e->offset();
@@ -85,6 +87,7 @@ line_las(
     for (size_t i = 0; i < n-1; i++) {
         lb[i] = clip<true >(pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
         ub[i] = clip<false>(pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
+        lam0 = mu[i] > EPS ? lam[i] : std::min(lam0, lam[i]);
     }
 
     x[n-1] = clip<true>(pq, mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0.0);
