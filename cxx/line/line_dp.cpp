@@ -4,12 +4,15 @@
 #pragma once
 #include <stdexcept>
 #include <vector>
+#include <limits>
 
 #include "../event.hpp"
 #include "../range.hpp"
 #include "utils/timer.hpp"
 #include "bits/weights.hpp"
 #include "bits/positive.hpp"
+
+const auto EPS = 1e-10;
 
 
 template<int step, bool need_check = false, typename float_ = double>
@@ -20,6 +23,13 @@ clip(Event *elem,
      float_ offset)
 {
     const auto *e = &elem[pq.stop];
+    while (pq.start <= pq.stop && slope * e->x + offset < 0) {
+    }
+    if (need_check && std::abs(slope) <= EPS) {
+        return -1.0;
+    }
+    const auto x = -offset/slope;
+    return x;
 }
 
 
@@ -49,6 +59,7 @@ line_las(
 
     std::vector<Event> event_;
     std::vector<float_> ub_;
+    Range pq {int(n), int(n-1)};
     Event *event = event_.data();
     float_
         *ub = ub_.data(),
@@ -56,7 +67,7 @@ line_las(
         lam0 = float_(0.0);
 
     for (size_t i = 0; i < n-1; i++) {
-        lb[i] = clip<+1>(event, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-        ub[i] = clip<-1>(event, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
+        lb[i] = clip<+1>(event, pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+        ub[i] = clip<-1>(event, pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
     }
 }
