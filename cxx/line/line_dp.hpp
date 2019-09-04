@@ -2,15 +2,14 @@
   New implementation
 */
 #pragma once
-#include <stdexcept>
+#include <stdexcept>        // std::invalid_argument
 #include <vector>
 #include <limits>
 
-#include "../event.hpp"
-#include "../clip.hpp"
 #include "utils/timer.hpp"
 #include "bits/weights.hpp"
 #include "std/deque.hpp"
+#include "../event.hpp"
 
 
 static const auto EPS = 1e-10;
