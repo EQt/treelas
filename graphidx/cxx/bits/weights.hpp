@@ -2,7 +2,7 @@
 #include <cstddef>
 
 
-template <typename T>
+template <typename T = double>
 struct ConstantWeights
 {
     const T c;
@@ -13,7 +13,7 @@ struct ConstantWeights
 };
 
 
-template <typename T>
+template <typename T = double>
 struct ArrayWeights
 {
     const T *a;
