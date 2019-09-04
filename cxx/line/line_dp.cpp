@@ -83,7 +83,7 @@ line_las(
         lam0 = float_(0.0);
 
     for (size_t i = 0; i < n-1; i++) {
-        lb[i] = clip<true>(pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+        lb[i] = clip<true >(pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
         ub[i] = clip<false>(pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
     }
 
