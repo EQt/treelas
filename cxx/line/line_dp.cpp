@@ -10,7 +10,6 @@
 #include "../clip.hpp"
 #include "utils/timer.hpp"
 #include "bits/weights.hpp"
-#include "bits/positive.hpp"
 #include "deque.hpp"
 
 
@@ -73,7 +72,7 @@ line_las(
     const Wlam lam,
     const Wmu mu)
 {
-    if (!is_positive(mu[n-1]))
+    if ((mu[n-1]) <= 0)
         throw std::invalid_argument("End node must not be latent");
 
     DeQue<Event> pq;
