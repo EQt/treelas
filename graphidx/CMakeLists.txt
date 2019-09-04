@@ -20,4 +20,5 @@ set(TESTS
   test_csc.cpp
   test_neg.cpp
   test_weights.cpp
+  test_deque.cpp
 )

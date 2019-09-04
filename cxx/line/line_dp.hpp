@@ -10,7 +10,7 @@
 #include "../clip.hpp"
 #include "utils/timer.hpp"
 #include "bits/weights.hpp"
-#include "deque.hpp"
+#include "std/deque.hpp"
 
 
 static const auto EPS = 1e-10;

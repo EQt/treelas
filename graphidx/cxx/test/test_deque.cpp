@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../line/deque.hpp"
+#include "../std/deque.hpp"
 
 
 TEST(DeQue, empty_bool)
