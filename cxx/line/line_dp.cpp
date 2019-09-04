@@ -24,7 +24,6 @@ clap(float_ x, float_ a, float_ b)
 }
 
 
-
 template<bool forward, bool need_check = false, typename float_ = double>
 inline float_
 clip(DeQue<Event> &pq,
