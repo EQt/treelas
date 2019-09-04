@@ -227,11 +227,12 @@ reg_line(py::module &m)
               {
                   ConstantWeights<double> _lam (lam);
                   ConstantWeights<double> _mu  (mu);
-                  line_las(n,
-                           x.mutable_data(),
-                           y.data(),
-                           _lam,
-                           _mu);
+                  line_las<double, decltype(_lam), decltype(_mu), false>(
+                      n,
+                      x.mutable_data(),
+                      y.data(),
+                      _lam,
+                      _mu);
               }
               return x;
           },
@@ -255,11 +256,12 @@ reg_line(py::module &m)
               {
                   ArrayWeights<double> _lam (lam.data());
                   ConstantWeights<double> _mu  (mu);
-                  line_las(n,
-                           x.mutable_data(),
-                           y.data(),
-                           _lam,
-                           _mu);
+                  line_las<double, decltype(_lam), decltype(_mu), false>(
+                      n,
+                      x.mutable_data(),
+                      y.data(),
+                      _lam,
+                      _mu);
               }
               return x;
           },
@@ -283,11 +285,12 @@ reg_line(py::module &m)
               {
                   ConstantWeights<double> _lam (lam);
                   ArrayWeights<double>    _mu  (mu.data());
-                  line_las(n,
-                           x.mutable_data(),
-                           y.data(),
-                           _lam,
-                           _mu);
+                  line_las<double, decltype(_lam), decltype(_mu), true>(
+                      n,
+                      x.mutable_data(),
+                      y.data(),
+                      _lam,
+                      _mu);
               }
               return x;
           },
@@ -329,38 +332,4 @@ reg_line(py::module &m)
           py::arg("lam"),
           py::arg("mu"),
           py::arg("x") = py::none());
-
-    /*
-    m.def("dp_forward_w",
-          [](const py::array_f64 &y,
-             const py::array_f64 &mu,
-             const py::array_f64 &lam) -> py::tuple
-          {
-              using float_ = double;
-              const auto n = check_1d_len(y, "y");
-              check_len(n, mu, "mu");
-              check_len(n-1, lam, "lam");
-              py::array_f64
-                  lb = py::array_t<float_>({n-1}, {sizeof(float_)}),
-                  ub = py::array_t<float_>({n-1}, {sizeof(float_)});
-              const float_ zero = dp_forward_w(
-                  n,
-                  lb.mutable_data(),
-                  ub.mutable_data(),
-                  y.data(),
-                  mu.data(),
-                  lam.data());
-              return py::make_tuple(zero, lb, ub);
-          },
-          "Forward clipping along a line",
-          py::arg("y"),
-          py::arg("mu"),
-          py::arg("lam"));
-    */
-    // py::def("dp_reverse", np_dp_reverse, (
-    //             arg("y"),
-    //             arg("mu"),
-    //             arg("lam")),
-    //         "Reverse clipping along a line");
-
 }
