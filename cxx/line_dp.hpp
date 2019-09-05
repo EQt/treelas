@@ -82,17 +82,22 @@ line_las(
         pq.reserve(n);
         ub.reserve(n-1);
     }
-    float_
-        *lb = x,
-        lam0 = float_(0.0);
+    {
+        Timer _ ("forward");
+        float_
+            *lb = x,
+            lam0 = float_(0.0);
 
-    for (size_t i = 0; i < n-1; i++) {
-        lb[i] = clip<true , check>(pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-        ub[i] = clip<false, check>(pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
-        lam0 = mu[i] > EPS ? lam[i] : std::min(lam0, lam[i]);
+        for (size_t i = 0; i < n-1; i++) {
+            lb[i] = clip<true , check>(pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+            ub[i] = clip<false, check>(pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
+            lam0 = mu[i] > EPS ? lam[i] : std::min(lam0, lam[i]);
+        }
     }
-
-    x[n-1] = clip<true, check>(pq, mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0.0);
-    for (size_t i = n-1; i >= 1; i--)
-        x[i-1] = clap(x[i], lb[i-1], ub[i-1]);
+    {
+        Timer _ ("backward")
+            x[n-1] = clip<true, check>(pq, mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0);
+        for (size_t i = n-1; i >= 1; i--)
+            x[i-1] = clap(x[i], lb[i-1], ub[i-1]);
+    }
 }
