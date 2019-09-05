@@ -58,10 +58,6 @@ set(PYBIND_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/pybind11"
     CACHE STRING "Directory where pybind is located")
 if (BUILD_PYEXT)
   # download as submodule?
-  # if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/pybind11/CMakeLists.txt")
-  #   execute_process(COMMAND git submodule update --init deps/pybind11
-  #     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
-  # endif()
   if (NOT EXISTS "${PYBIND_DIR}/CMakeLists.txt")
     execute_process(COMMAND git submodule update --init deps/pybind11
       WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
