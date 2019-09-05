@@ -36,8 +36,6 @@ add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
 add_subdirectory(ci)
 
-add_library(argparser OBJECT deps/argparser/argparser.cpp)
-
 add_object(line       cxx/line/line.cpp)
 add_object(line_dp    cxx/line/line_dp.cpp)
 add_object(line_para  cxx/line/line_para.cpp)
@@ -47,6 +45,7 @@ add_object(line_c3    cxx/line/line_c3.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
 
+add_library(argparser OBJECT deps/argparser/argparser.cpp)
 add_library(treelas SHARED
   cxx/bin/libtreelas.cpp
   $<TARGET_OBJECTS:tree_dp>
@@ -91,7 +90,6 @@ if (BUILD_PYEXT)
     COMMAND py.test ${CMAKE_SOURCE_DIR}/python/test VERBATIM)
 endif()
 
-
 # HDF5
 find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
@@ -122,7 +120,6 @@ if (HDF5_FOUND)
     $<TARGET_OBJECTS:argparser>
   )
 endif()
-
 
 # TESTS
 if (BUILD_TESTS)
