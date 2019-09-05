@@ -86,9 +86,7 @@ if (BUILD_PYEXT)
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:tree_dual>
   )
-  if (ASAN)
-    set_target_properties(_treelas PROPERTIES LINK_FLAGS "-static-libasan -lasan -lubsan")
-  endif()
+
   # target_link_libraries(_treelas PUBLIC -pthread)
   add_custom_target(pysetup  DEPENDS _treelas
     COMMAND ${CMAKE_COMMAND} -E copy
