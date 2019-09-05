@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-#include "../line/line_dp.hpp"
-#include "bits/weights.hpp"
+#include "../line_dp.hpp"
 
 
 TEST(line_dp, line00)
