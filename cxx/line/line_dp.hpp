@@ -4,6 +4,7 @@
 #pragma once
 #include <stdexcept>        // std::invalid_argument
 #include <vector>
+#include <cmath>            // std::abs
 #include <limits>
 
 #include "utils/timer.hpp"
