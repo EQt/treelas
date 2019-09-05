@@ -44,7 +44,7 @@ matrix:
 
     - language: cpp
       os: linux
-      env: url="$curl-Linux-x86_64.sh"
+      env: url="$curl-Linux-x86_64.sh" cmake_opts="-DASAN=ON"
 
     - language: cpp
       os: osx
@@ -80,7 +80,7 @@ install:
 script:
   - df -h ~
   - mkdir -p build && cd build
-  - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug -DASAN=ON
+  - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug $cmake_opts
   - make -j$(nproc) && ./tests
   - cd .. && rm -fr build
   - cd ./python && pwd && rm -fr build
