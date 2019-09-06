@@ -22,6 +22,12 @@ public:
 
     /** Unit the sets with representants fx und fy. */
     void unite(int_ fx, int_ fy);
+
+    /** Reset such that every element is separated, again */
+    void reset();
+
+    /** Number of elements */
+    size_t size() const { return p.size(); }
 };
 
 
@@ -29,7 +35,16 @@ template <typename int_>
 UnionFind<int_>::UnionFind(size_t n)
     : p(n), rank(n)
 {
-    for (int_ i = 0; i < int_(n); i++) {
+    reset();
+}
+
+
+template <typename int_>
+void
+UnionFind<int_>::reset()
+{
+    const auto n = int_(size());
+    for (int_ i = 0; i < n; i++) {
         p[i] = i;
         rank[i] = 0;
     }
