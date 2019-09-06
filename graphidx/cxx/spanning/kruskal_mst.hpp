@@ -20,7 +20,7 @@ _spanning_tree(const size_t n,
         const int
             u = source[e],
             v = target[e];
-        const int
+        const auto
             fu = uf.find(u),
             fv = uf.find(v);
         if (fu != fv) {

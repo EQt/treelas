@@ -13,15 +13,25 @@ class UnionFind
     std::vector<int_> p;
     std::vector<int_> rank;
 
+    /** Represantant of a partition */
+    struct Rep
+    {
+        int_ i;
+
+        bool operator!=(const Rep &other) const { return i != other.i; }
+        bool operator==(const Rep &other) const { return i == other.i; }
+        bool operator==(const int_ &other) const { return i == other; }
+    };
+
 public:
     /** Initialize as n singleton sets. */
-    UnionFind(size_t n);
+    UnionFind(const size_t n);
 
     /** Find representant for x. */
-    int_ find(int_ x);
+    UnionFind<int_>::Rep find(int_ x);
 
     /** Unit the sets with representants fx und fy. */
-    void unite(int_ fx, int_ fy);
+    void unite(UnionFind<int_>::Rep fx, UnionFind<int_>::Rep fy);
 
     /** Reset such that every element is separated, again */
     void reset();
@@ -32,7 +42,7 @@ public:
 
 
 template <typename int_>
-UnionFind<int_>::UnionFind(size_t n)
+UnionFind<int_>::UnionFind(const size_t n)
     : p(n), rank(n)
 {
     reset();
@@ -52,25 +62,25 @@ UnionFind<int_>::reset()
 
 
 template <typename int_>
-void
-UnionFind<int_>::unite(int_ fx, int_ fy)
+inline void
+UnionFind<int_>::unite(UnionFind<int_>::Rep fx, UnionFind<int_>::Rep fy)
 {
-    if (rank[fx] > rank[fy])
-        p[fy] = fx;
+    if (rank[fx.i] > rank[fy.i])
+        p[fy.i] = fx.i;
     else {
-        p[fx] = fy;
-        if (rank[fx] == rank[fy])
-            rank[fy]++;
+        p[fx.i] = fy.i;
+        if (rank[fx.i] == rank[fy.i])
+            rank[fy.i]++;
     }
 }
 
 
 template <typename int_>
-int_
+typename UnionFind<int_>::Rep
 UnionFind<int_>::find(int_ x)
 {
     if (p[x] != x)
-        p[x] = find(p[x]);
-    return p[x];
+        p[x] = find(p[x]).i;
+    return Rep {p[x]};
 }
 
