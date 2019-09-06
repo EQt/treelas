@@ -37,7 +37,7 @@ end
 
 
 function reset!(u::UnionFind)::UnionFind
-    for i in 1:length(u.p)
+    for i in 1:length(u)
         u.p[i] = i
     end
     u.rank .= 0
@@ -56,8 +56,9 @@ end
 # make it possible to a[find(u, 4)], where a::Array
 Base.to_index(r::Rep) = r.i
 
+Base.getindex(u::UnionFind, x::Int)::Rep = find(u, x)
 
-Base.getindex(u::UnionFind, x::Int)::Rep =  find(u, x)
+Base.length(u::UnionFind) = length(u.p)
 
 
 function find(u::UnionFind, x::Int)::Rep
