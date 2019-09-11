@@ -32,8 +32,14 @@ include_directories(deps/graphidx/cxx)
 include_directories(deps/minih5/include)
 include_directories(deps/argparser)
 
+if (NOT EXISTS "deps/graphidx/CMakeLists.txt")
+    execute_process(COMMAND git submodule update --init deps/graphidx
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+endif()
+
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
+add_subdirectory(deps/graphidx)
 add_subdirectory(ci)
 
 add_object(line_dp    cxx/line_dp.cpp)
@@ -134,7 +140,6 @@ if (BUILD_TESTS)
   set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
   add_subdirectory(deps/googletest)
   include_directories(deps/googletest/googletest/include)
-  add_subdirectory(deps/graphidx)
   get_directory_property(GRAPHIDX_TESTS DIRECTORY deps/graphidx DEFINITION TESTS)
   list(TRANSFORM GRAPHIDX_TESTS PREPEND "deps/graphidx/cxx/test/")
   set(TESTS
