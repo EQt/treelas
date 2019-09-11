@@ -39,6 +39,7 @@ matrix:
       os: linux
       rust: stable
       install:
+        - git submodule update --init deps/graphidx
         - cargo --version
       script:
         - cargo test
