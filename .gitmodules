@@ -9,5 +9,5 @@
 	url = git@github.com:eqt/treelas
 	branch = gh-pages
 [submodule "graphidx"]
-	path = graphidx
+	path = deps/graphidx
 	url = git@github.com:EQt/graphidx.git

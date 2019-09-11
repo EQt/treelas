@@ -28,7 +28,7 @@ if (APPLE)
   set(HDF5_USE_STATIC_LIBRARIES ON)
 endif()
 
-include_directories(graphidx/cxx)
+include_directories(deps/graphidx/cxx)
 include_directories(deps/minih5/include)
 include_directories(deps/argparser)
 
@@ -66,9 +66,9 @@ if (BUILD_PYEXT)
     python/_treelas.cpp
     python/line.cpp
     python/tree.cpp
-    graphidx/python/idx.cpp
-    graphidx/python/order.cpp
-    graphidx/python/spanning.cpp
+    deps/graphidx/python/idx.cpp
+    deps/graphidx/python/order.cpp
+    deps/graphidx/python/spanning.cpp
     cxx/tree_12x.cpp
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>
@@ -134,9 +134,9 @@ if (BUILD_TESTS)
   set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
   add_subdirectory(deps/googletest)
   include_directories(deps/googletest/googletest/include)
-  add_subdirectory(graphidx)
-  get_directory_property(GRAPHIDX_TESTS DIRECTORY graphidx DEFINITION TESTS)
-  list(TRANSFORM GRAPHIDX_TESTS PREPEND "graphidx/cxx/test/")
+  add_subdirectory(deps/graphidx)
+  get_directory_property(GRAPHIDX_TESTS DIRECTORY deps/graphidx DEFINITION TESTS)
+  list(TRANSFORM GRAPHIDX_TESTS PREPEND "deps/graphidx/cxx/test/")
   set(TESTS
     cxx/test/test_ref.cpp
     cxx/test/test_strtok.cpp
