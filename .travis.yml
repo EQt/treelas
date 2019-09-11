@@ -24,6 +24,7 @@ matrix:
       os: linux  # don't need it specifically for osx
       julia: 1.1
       before_install:
+        - git submodule update --init deps/graphidx
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="deps/graphidx/julia"))'
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
         - julia --color=yes -e 'import Pkg; Pkg.instantiate()'
