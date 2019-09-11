@@ -8,3 +8,6 @@
 	path = docs/github.io
 	url = git@github.com:eqt/treelas
 	branch = gh-pages
+[submodule "graphidx"]
+	path = graphidx
+	url = git@github.com:EQt/graphidx.git
