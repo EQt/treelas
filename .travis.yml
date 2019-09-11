@@ -40,7 +40,7 @@ matrix:
       install:
         - cargo --version
       script:
-        - cd graphidx && cargo test
+        - cargo test
 
     - language: cpp
       os: linux
