@@ -24,7 +24,7 @@ matrix:
       os: linux  # don't need it specifically for osx
       julia: 1.1
       before_install:
-        - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="graphidx/julia"))'
+        - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="deps/graphidx/julia"))'
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
         - julia --color=yes -e 'import Pkg; Pkg.instantiate()'
       install:
