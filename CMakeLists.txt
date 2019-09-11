@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.11)
 project(treelas)
 
 option(BUILD_TESTS "Build unit tests using googletest" ON)
