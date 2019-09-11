@@ -5,4 +5,4 @@ authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 edition = "2018"
 
 [dependencies]
-graphidx = { path = "../graphidx/rust" }
+graphidx = { path = "../deps/graphidx/rust" }
