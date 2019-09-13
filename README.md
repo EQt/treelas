@@ -57,11 +57,15 @@ Directory Structure
 ChangeLog
 ---------
 
-### v0.13
+### v0.14
 Guiding Ideas
 - C++: Refactor `clip_front` and `clip_back` methods such that they can be combined with their weighted counter parts `clip_fronw` and `clip_backw`.
   This will effect all the `line/*` methods and the `tree_dp.hpp` as well.
 - For preparation: Create tests for `clip_{front,fronw}` that also involve the divide by zero case.
+
+### v0.13.0
+Released 2019-09-13
+GraphIdx becomes an independent Git-Module
 
 ### v0.12.9
 Released 2019-09-04
