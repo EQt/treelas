@@ -1,6 +1,7 @@
 import numpy as np
-import treelas as tl
 from pytest import approx
+from treelas.graphidx import find_root
+import treelas as tl
 
 
 def test_dual3(root=0):
@@ -20,7 +21,7 @@ def test_dual3(root=0):
 def test_root_sum(n=10, seed=42):
     parent = np.arange(-1, n-1, dtype=np.int32)
     parent[0] = 0
-    root = tl.find_root(parent)
+    root = find_root(parent)
     assert root == 0
     np.random.seed(seed)
     x = np.random.uniform(size=n)
