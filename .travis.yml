@@ -88,5 +88,4 @@ script:
   - cd ./python && pwd && rm -fr build
   - CC=$CXX python setup.py install
   - pip install toml
-  - py.test --color=yes ../graphidx/python/
   - py.test --color=yes test/
