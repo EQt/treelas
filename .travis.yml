@@ -79,7 +79,7 @@ install:
   - python -m pybind11 --include
   - python -c 'from sys import byteorder as b; print("byte-order:", b)'
 
-script:
+test:
   - df -h ~
   - mkdir -p build && cd build
   - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug $cmake_opts
