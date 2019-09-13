@@ -1,5 +1,4 @@
 #include <cstdint>
-#include <algorithm>                // for std::sort
 #include <pybind11/pybind11.h>
 
 #include "utils/compiler.hpp"
@@ -57,13 +56,6 @@ PYBIND11_MODULE(_treelas, m)
     m.def("_is_empty", &is_empty, R"pbdoc(
         Tell whether an np.ndarray is empty
     )pbdoc");
-
-    m.def("_stdcxx_sort", [](py::array_f64 a) -> void {
-        std::sort(a.mutable_data(), a.mutable_data()+a.size());
-      },
-      R"pbdoc(
-        std::sort from libstdc++ (to be compared against numpy.sort)
-      )pbdoc");
 
     reg_line(m);
     reg_tree(m);
