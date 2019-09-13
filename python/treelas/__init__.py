@@ -30,7 +30,10 @@ See https://github.com/eqt/treelas
 """
 from .tree import Tree, TreeInstance
 from .segment import line_mean
-from .children import PyChildrenIndex
+from .graphidx._graphidx import (
+    random_spanning_tree,
+    post_order,
+)
 from ._treelas import (
     __compiler__,
     __author__,
@@ -42,12 +45,9 @@ from ._treelas import (
     line_lasc,
     line_las2,
     line_las3,
-    find_root,
     tree_dp,
     tree_12x,
     tree_dual,
     tree_dual_gap,
-    random_spanning_tree,
-    post_order,
     # dp_forward, dp_reverse,
 )

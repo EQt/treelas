@@ -72,9 +72,6 @@ if (BUILD_PYEXT)
     python/_treelas.cpp
     python/line.cpp
     python/tree.cpp
-    deps/graphidx/python/idx.cpp
-    deps/graphidx/python/order.cpp
-    deps/graphidx/python/spanning.cpp
     cxx/tree_12x.cpp
     $<TARGET_OBJECTS:condat_tv>
     $<TARGET_OBJECTS:tf_dp>

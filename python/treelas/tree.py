@@ -3,10 +3,12 @@ import numpy as np
 from numba import njit
 from typing import Dict, Any
 
-from . import _treelas as _tl
 from .graphviz import show_tree
+from .graphidx._graphidx import find_root as c_find_root
+from .graphidx._graphidx import prufer2parent
 from .prufer import prufer_from_children_spec
-from .children import PyChildrenIndex as ChildrenIndex
+from .graphidx.children import PyChildrenIndex as ChildrenIndex
+from . import _treelas as _tl
 
 
 @njit(cache=True)
@@ -24,7 +26,7 @@ class Tree:
         if isinstance(n, int):
             assert len(self.parent) == n
         if root < 0:
-            root = _tl.find_root(parent)
+            root = c_find_root(parent)
             assert root >= 0
             assert root < len(parent)
         self.root = np.int32(root)
@@ -62,7 +64,7 @@ Tree(n={self.n},
     @staticmethod
     def from_prufer(prufer):
         """If choose root by the Prüfer sequence"""
-        parent, root = _tl.prufer2parent(np.asarray(prufer, dtype=np.int32))
+        parent, root = prufer2parent(np.asarray(prufer, dtype=np.int32))
         return Tree(parent, root=root)
 
     @classmethod
@@ -82,7 +84,7 @@ Tree(n={self.n},
 
         with h5py.File(fname) as io:
             parent = io['parent'][:]
-            root = io['root'][:] if 'root' in io else _tl.find_root(parent)
+            root = io['root'][:] if 'root' in io else c_find_root(parent)
         return Tree(parent=parent, root=root)
 
 

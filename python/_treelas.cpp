@@ -9,11 +9,7 @@ namespace py = pybind11;
 
 
 void reg_line(py::module &m);
-void reg_order(py::module &m);
 void reg_tree(py::module &m);
-void reg_idx(py::module &m);
-void reg_spanning(py::module &m);
-
 
 /**
    For testing: create an array with 3 elements
@@ -70,8 +66,5 @@ PYBIND11_MODULE(_treelas, m)
       )pbdoc");
 
     reg_line(m);
-    reg_order(m);
     reg_tree(m);
-    reg_idx(m);
-    reg_spanning(m);
 }
