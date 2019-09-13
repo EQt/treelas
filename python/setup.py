@@ -58,12 +58,13 @@ sources = [
 
 
 includes = [
-    path.join(path.dirname(__file__), "..", "graphidx", "cxx")
+    path.join(path.dirname(__file__), "..", "deps", "graphidx", "cxx"),
+    GetPyBindInc(False),
+    GetPyBindInc(True),
 ]
 
 _treelas = Extension("treelas._treelas", sources, language='c++',
-                     include_dirs=[GetPyBindInc(False), GetPyBindInc(True),
-                                   *includes])
+                     include_dirs=includes)
 
 
 class BuildExt(build_ext):
