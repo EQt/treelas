@@ -1,91 +1,9 @@
 from __future__ import annotations
 import numpy as np
-from numba import njit
 from typing import Dict, Any
 
-from .graphviz import show_tree
-from .graphidx._graphidx import find_root as c_find_root
-from .graphidx._graphidx import prufer2parent
-from .prufer import prufer_from_children_spec
-from .graphidx.children import PyChildrenIndex as ChildrenIndex
+from .graphidx.tree import find_root, Tree
 from . import _treelas as _tl
-
-
-@njit(cache=True)
-def find_root(parent):
-    """Return the smallest i with parent[i] == i"""
-    for i, p in enumerate(parent):
-        if i == p:
-            return i
-
-
-class Tree:
-    """Rooted tree, stored as a parent np.array"""
-    def __init__(self, parent, root=-1, n=None):
-        self.parent = np.asarray(parent, dtype=np.int32)
-        if isinstance(n, int):
-            assert len(self.parent) == n
-        if root < 0:
-            root = c_find_root(parent)
-            assert root >= 0
-            assert root < len(parent)
-        self.root = np.int32(root)
-        self.childidx = None
-        assert self.parent[self.root] == self.root
-
-    @property
-    def children(self):
-        if self.childidx is None:
-            self.childidx = ChildrenIndex.compute(self.parent, self.root)
-        return self.childidx
-
-    @property
-    def degree(self):
-        degs = np.diff(self.children.idx) + 1
-        degs[-1] -= 1
-        return degs
-
-    @property
-    def n(self):
-        """Number of nodes"""
-        return len(self.parent)
-
-    def __repr__(self):
-        return f"""
-Tree(n={self.n},
-     root={self.root},
-     parent={repr(self.parent)})""".strip()
-
-    def show(self, wait=True):
-        """Show the tree using graphviz' dot"""
-        show_tree(self.parent, wait=wait)
-        return self
-
-    @staticmethod
-    def from_prufer(prufer):
-        """If choose root by the Prüfer sequence"""
-        parent, root = prufer2parent(np.asarray(prufer, dtype=np.int32))
-        return Tree(parent, root=root)
-
-    @classmethod
-    def generate(cls, degrees, seed=42):
-        return cls.from_prufer(prufer_from_children_spec(degrees, seed=seed))
-
-    @staticmethod
-    def random(n, seed=None):
-        if seed is not None:
-            np.random.seed(seed)
-        t = Tree.from_prufer(np.random.randint(0, n, size=n-2, dtype=np.int32))
-        return t
-
-    @staticmethod
-    def load(fname):
-        import h5py
-
-        with h5py.File(fname) as io:
-            parent = io['parent'][:]
-            root = io['root'][:] if 'root' in io else c_find_root(parent)
-        return Tree(parent=parent, root=root)
 
 
 class TreeInstance(Tree):
