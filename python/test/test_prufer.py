@@ -1,11 +1,11 @@
 import numpy as np
-from treelas import _treelas
+from treelas.graphidx._graphidx import prufer2parent
 from treelas import Tree
 
 
 def test_prufer3():
     p = np.array([2, 2, 3], np.int32)
-    parent, r = _treelas.prufer2parent(p)
+    parent, r = prufer2parent(p)
     assert (parent == [2, 2, 3, 4, 4]).all()
     assert r == 4
 
