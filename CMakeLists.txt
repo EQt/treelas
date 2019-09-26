@@ -133,9 +133,8 @@ if (BUILD_TESTS)
     get_directory_property(GRAPHIDX_TESTS DIRECTORY deps/graphidx DEFINITION TESTS)
     list(TRANSFORM GRAPHIDX_TESTS PREPEND "deps/graphidx/cxx/test/")
     set(TESTS
-        cxx/test/test_ref.cpp
         cxx/test/test_strtok.cpp
-        cxx/test/test_line.cpp
+        cxx/test/test_ref.cpp
         cxx/test/test_line_dp.cpp
         cxx/test/test_tree_12.cpp
         cxx/test/test_tree_dp.cpp
@@ -143,6 +142,7 @@ if (BUILD_TESTS)
     add_subdirectory(${DOCTEST_DIR})
     add_executable(doctests
         cxx/test/doctests.cpp
+        cxx/test/test_line.cpp
     )
     target_link_libraries(doctests PRIVATE doctest::doctest)
 

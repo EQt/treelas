@@ -1,13 +1,15 @@
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <vector>
+
 #include "../line/line.hpp"
 #include "../clip.hpp"
 
 
-TEST(Line, line_las3)
+TEST_CASE("Line: line_las3")
 {
     std::vector<double> y {1.0, 0.0, 0.5};
     const size_t n = y.size();
-    ASSERT_EQ(n, 3);
+    REQUIRE(3 == n);
 
     const double lam = 0.5;
     std::vector<Event> event_ (2*n);
@@ -20,25 +22,25 @@ TEST(Line, line_las3)
             double off = 0.0;
             { // i = 2
                 const size_t i = n-1;
-                ASSERT_EQ(i, 2);
-                ASSERT_EQ(y[i], 0.5);
+                REQUIRE(2 == i);
+                REQUIRE(0.5 == y[i]);
                 lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off + lam);
-                ASSERT_EQ(lb[i-1], 0.0);
-                ASSERT_EQ(pq, Range({int(n-1), int(n-1)}));
-                ASSERT_EQ(event[pq.start], Event({0.0, 1.0}));
+                REQUIRE(0.0 == lb[i-1]);
+                REQUIRE(Range({int(n-1), int(n-1)}) == pq);
+                REQUIRE(Event({0.0, 1.0}) == event[pq.start]);
                 ub[i-1] = clip_back (event, pq, mu, -mu*y[i]+off, +lam);
-                ASSERT_EQ(ub[i-1], 1.0);
-                ASSERT_EQ(pq, Range({int(n-1), int(n)}));
-                ASSERT_EQ(event[pq.stop], Event({1.0, -1.0}));
+                REQUIRE(1.0 == ub[i-1]);
+                REQUIRE(Range({int(n-1), int(n)}) == pq);
+                REQUIRE(Event({1.0, -1.0}) == event[pq.stop]);
                 off = lam;
             }
             { // i = 1
                 const size_t i = n-2;
-                ASSERT_EQ(i, 1);
-                ASSERT_EQ(y[i], 0.0);
+                REQUIRE(1 == i);
+                REQUIRE(0.0 == y[i]);
                 lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off + lam);
-                ASSERT_EQ(pq, Range({int(n-2), int(n)}));
-                ASSERT_EQ(lb[i-1], 0.0);
+                REQUIRE(Range({int(n-2), int(n)}) == pq);
+                REQUIRE(0.0 == lb[i-1]);
                 ub[i-1] = clip_back (event, pq, mu, -mu*y[i]+off, +lam);
             }
     }
