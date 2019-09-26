@@ -140,6 +140,12 @@ if (BUILD_TESTS)
         cxx/test/test_tree_12.cpp
         cxx/test/test_tree_dp.cpp
     )
+    add_subdirectory(${DOCTEST_DIR})
+    add_executable(doctests
+        cxx/test/doctests.cpp
+    )
+    target_link_libraries(doctests PRIVATE doctest::doctest)
+
     if (HDF5_FOUND)
         list(APPEND TESTS deps/minih5/test/test_hdf5.cpp)
     endif()
