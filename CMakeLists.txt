@@ -5,7 +5,7 @@ option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
 option(ASAN        "Use Address SANitizer"             OFF)
 set(GRAPHIDX_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx"
-    CACHE STRING "Which graphidx to be used")
+    CACHE STRING   "Which graphidx to be used")
 
 # FLAGS
 set(CMAKE_CXX_STANDARD 14)
@@ -119,24 +119,13 @@ endif()
 
 
 if (BUILD_TESTS)
-    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/deps/googletest/CMakeLists.txt")
-        execute_process(COMMAND git submodule update --init deps/googletest
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+    if (NOT EXISTS "${DOCTEST_DIR}/CMakeLists.txt")
+        execute_process(COMMAND git submodule update --init ${DOCTEST_DIR})
     endif()
-    set(BUILD_GMOCK OFF)
-    set(BUILD_GTEST ON)
-    mark_as_advanced(BUILD_GMOCK)
-    mark_as_advanced(BUILD_GTEST)
-    set(gtest_force_shared_crt ON CACHE BOOL "Always use msvcrt.dll")
-    add_subdirectory(deps/googletest)
-    include_directories(deps/googletest/googletest/include)
-    get_directory_property(GRAPHIDX_TESTS DIRECTORY deps/graphidx DEFINITION TESTS)
-    list(TRANSFORM GRAPHIDX_TESTS PREPEND "deps/graphidx/cxx/test/")
-    set(TESTS
-    )
     add_subdirectory(${DOCTEST_DIR})
     add_executable(doctests
         cxx/test/doctests.cpp
+        ${TESTS}
         cxx/test/test_line.cpp
         cxx/test/test_strtok.cpp
         cxx/test/test_ref.cpp
@@ -145,27 +134,6 @@ if (BUILD_TESTS)
         cxx/test/test_tree_12.cpp
     )
     target_link_libraries(doctests PRIVATE doctest::doctest)
-
-    if (HDF5_FOUND)
-        list(APPEND TESTS deps/minih5/test/test_hdf5.cpp)
-    endif()
-    add_executable(tests
-        cxx/test/tests.cpp
-        ${GRAPHIDX_TESTS}
-        ${TESTS}
-        $<TARGET_OBJECTS:line>
-    )
-    target_compile_definitions(tests PUBLIC _STACK_DEBUG=1)
-    target_link_libraries(tests gtest_main "${CMAKE_THREAD_LIBS_INIT}")
-    if (HDF5_FOUND)
-        target_include_directories(tests PUBLIC ${HDF5_INCLUDE_DIR})
-        target_link_libraries(tests ${HDF5_LIBRARIES})
-    endif()
-    if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-        target_link_libraries(tests -v)
-    endif()
-    enable_testing()
-    add_test(NAME cxxtest COMMAND tests)
 endif()
 
 # Local Variables:
