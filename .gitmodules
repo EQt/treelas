@@ -11,3 +11,6 @@
 [submodule "graphidx"]
 	path = deps/graphidx
 	url = git@github.com:EQt/graphidx.git
+[submodule "deps/doctest"]
+	path = deps/doctest
+	url = https://github.com/onqtam/doctest
