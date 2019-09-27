@@ -1,6 +1,7 @@
 #!/usr/bin/env julia
 using Test
 
+include("test_cxx.jl")
 include("test_queues.jl")
 include("test_tree_dp.jl")
 include("test_tree_dp.old.jl")
