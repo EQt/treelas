@@ -56,10 +56,19 @@ class BuildExt(build_ext):
 
 
 if __name__ == '__main__':
-    graphidx_setup = path.join(
-        path.dirname(__file__),
-        "..", "deps", "graphidx", "python", "setup.py"
-    )
+    graphidx_dir = path.join(path.dirname(__file__), "..", "deps", "graphidx")
+    graphidx_setup = path.join(graphidx_dir, "python", "setup.py")
+
+    if not path.exists(graphidx_setup):
+        import subprocess as sp
+
+        cmd = f'git submodule update --init {graphidx_dir}'
+        try:
+            sp.check_call(cmd.split(), cwd=deps)
+        except:
+            print(cmd)
+            raise
+    
     gs = imp.load_source('gs', graphidx_setup)
     graphidx_sources = [path.join(path.dirname(graphidx_setup), s) for s in gs.sources]
     _graphidx = Extension(
