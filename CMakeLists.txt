@@ -61,10 +61,6 @@ add_library(treelas SHARED
 
 # PYTHON
 if (BUILD_PYEXT)
-    if (NOT EXISTS "${PYBIND_DIR}/CMakeLists.txt")
-        execute_process(COMMAND git submodule update --init ${PYBIND_DIR})
-    endif()
-
     pybind11_add_module(_treelas
         python/_treelas.cpp
         python/line.cpp

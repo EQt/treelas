@@ -1,6 +1,3 @@
-[submodule "extern/pybind11"]
-	path = deps/pybind11
-	url = git@github.com:pybind/pybind11.git
 [submodule "docs/github.io"]
 	path = docs/github.io
 	url = git@github.com:eqt/treelas
