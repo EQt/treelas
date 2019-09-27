@@ -1,7 +1,11 @@
 const build_dir = joinpath(dirname(@__FILE__), "build")
 const root_dir = joinpath(dirname(@__FILE__), "..", "..")
 const target = "treelas"
-const cmake_opts = ["-DCMAKE_BUILD_TYPE=Release"]
+const cmake_opts = [
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DBUILD_TESTS=OFF",
+    "-DBUILD_PYEXT=OFF",
+]
 
 # rm(build_dir, recursive=true)
 if !isdir(build_dir)
