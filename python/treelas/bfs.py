@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numba import njit, jitclass, int64
 
-from .graphviz import print_tree
+from .graphidx.graphviz import print_tree
 from .graphio import load_tree
 # from queue import Queue
 
