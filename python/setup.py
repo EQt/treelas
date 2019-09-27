@@ -10,33 +10,6 @@ from setuptools.command.build_ext import build_ext
 from gitversion import describe_tag
 
 
-class GetPyBindInc():
-    """
-    Helper class to determine the pybind11 include path
-    The purpose of this class is to postpone importing pybind11
-    until it is actually installed, so that the ``get_include()``
-    method can be invoked.
-
-    Copied from github.com:pybind/pybind11_example/setup.py
-    """
-    def __init__(self, user=False):
-        self.user = user
-
-    def __str__(self):
-        pybind11_include = path.join(path.dirname(__file__), '..',
-                                     'deps', 'pybind11', 'include')
-        pybind11_h = path.join(pybind11_include, 'pybind11', 'pybind11.h')
-
-        if path.exists(pybind11_h):
-            return pybind11_include
-        else:
-            try:
-                import pybind11
-                return pybind11.get_include(self.user)
-            except ImportError:
-                raise RuntimeError(f'Please install pybind11')
-
-
 sources = [
     "_treelas.cpp",
     "line.cpp",
@@ -57,8 +30,7 @@ sources = [
 
 includes = [
     path.join(path.dirname(__file__), "..", "deps", "graphidx", "cxx"),
-    GetPyBindInc(False),
-    GetPyBindInc(True),
+    path.join(path.dirname(__file__), "..", "deps", "graphidx", "deps", "pybind11", "include"),
 ]
 
 
