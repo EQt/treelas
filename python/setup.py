@@ -92,6 +92,6 @@ if __name__ == '__main__':
           license="MIT",
           packages=['treelas', 'treelas.graphidx'],
           install_requires=['pybind11>=2.2'],
-          ext_modules=[_graphidx, _treelas],
+          ext_modules=[_treelas, _graphidx],
           cmdclass={'build_ext': BuildExt}
     )
