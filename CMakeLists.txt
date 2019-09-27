@@ -6,6 +6,8 @@ option(BUILD_PYEXT "Build python extension module"     ON)
 option(ASAN        "Use Address SANitizer"             OFF)
 set(GRAPHIDX_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx"
     CACHE STRING   "Which graphidx to be used")
+set(DOCTEST_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx/deps/doctest"
+    CACHE STRING   "Which graphidx to be used")
 
 # FLAGS
 set(CMAKE_CXX_STANDARD 14)
@@ -61,6 +63,7 @@ add_library(treelas SHARED
 
 # PYTHON
 if (BUILD_PYEXT)
+    message("-- Enable python extension")
     pybind11_add_module(_treelas
         python/_treelas.cpp
         python/line.cpp
@@ -115,8 +118,10 @@ endif()
 
 
 if (BUILD_TESTS)
+    message("-- Enable unit tests")
     if (NOT EXISTS "${DOCTEST_DIR}/CMakeLists.txt")
-        execute_process(COMMAND git submodule update --init ${DOCTEST_DIR})
+        execute_process(COMMAND git submodule update --init ${DOCTEST_DIR}
+            WORKING_DIRECTORY ${GRAPHIDX_DIR})
     endif()
     add_subdirectory(${DOCTEST_DIR})
     add_executable(doctests
