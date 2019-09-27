@@ -90,8 +90,8 @@ if __name__ == '__main__':
           author="Elias Kuthe",
           author_email="elias.kuthe@tu-dortmund.de",
           license="MIT",
-          packages=['treelas', 'treelas.graphidx'],
+          packages=['treelas', 'treelas.graphidx', 'treelas.graphidx.py'],
           install_requires=['pybind11>=2.2'],
           ext_modules=[_treelas, _graphidx],
-          cmdclass={'build_ext': BuildExt}
+          cmdclass={'build_ext': BuildExt},
     )
