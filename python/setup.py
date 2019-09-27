@@ -2,6 +2,7 @@
 http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
 import sys
+import imp
 from os import path
 from setuptools import setup
 from setuptools.extension import Extension
@@ -60,9 +61,6 @@ includes = [
     GetPyBindInc(True),
 ]
 
-_treelas = Extension("treelas._treelas", sources, language='c++',
-                     include_dirs=includes)
-
 
 class BuildExt(build_ext):
     """A custom build extension for adding compiler-specific options."""
@@ -85,12 +83,34 @@ class BuildExt(build_ext):
         build_ext.build_extensions(self)
 
 
-setup(name="treelas",
-      version=describe_tag(default="0.12.9"),
-      author="Elias Kuthe",
-      author_email="elias.kuthe@tu-dortmund.de",
-      license="MIT",
-      packages=['treelas', 'treelas.graphidx'],
-      install_requires=['pybind11>=2.2'],
-      ext_modules=[_treelas],
-      cmdclass={'build_ext': BuildExt})
+if __name__ == '__main__':
+    graphidx_setup = path.join(
+        path.dirname(__file__),
+        "..", "deps", "graphidx", "python", "setup.py"
+    )
+    gs = imp.load_source('gs', graphidx_setup)
+    graphidx_sources = [path.join(path.dirname(graphidx_setup), s) for s in gs.sources]
+    _graphidx = Extension(
+        "treelas.graphidx._graphidx",
+        language='c++',
+        sources=graphidx_sources,
+        include_dirs=gs.includes,
+    )
+
+    _treelas = Extension(
+        "treelas._treelas",
+        language='c++',
+        sources=sources,
+        include_dirs=includes,
+    )
+
+    setup(name="treelas",
+          version=describe_tag(default="0.12.9"),
+          author="Elias Kuthe",
+          author_email="elias.kuthe@tu-dortmund.de",
+          license="MIT",
+          packages=['treelas', 'treelas.graphidx'],
+          install_requires=['pybind11>=2.2'],
+          ext_modules=[_graphidx, _treelas],
+          cmdclass={'build_ext': BuildExt}
+    )
