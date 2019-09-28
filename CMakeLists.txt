@@ -17,7 +17,8 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O1")
     if (ASAN)
         message("-- Enable Address Sanitizer")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=leak")
+        set(CMAKE_CXX_FLAGS
+            "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=leak")
     endif()
     set(CMAKE_CXX_FLAGS_RELEASE
         "${CMAKE_CXX_FLAGS_RELEASE} -O3 -mtune=native -march=native")
@@ -25,11 +26,6 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         add_definitions(-Wno-sign-conversion)
     endif()
-elseif (MSVC)
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
-endif()
-if (APPLE)
-    set(HDF5_USE_STATIC_LIBRARIES ON)
 endif()
 
 if (NOT EXISTS "${GRAPHIDX_DIR}/CMakeLists.txt")
@@ -37,12 +33,12 @@ if (NOT EXISTS "${GRAPHIDX_DIR}/CMakeLists.txt")
 endif()
 
 include_directories(deps/graphidx/cxx)
-include_directories(deps/minih5/include)
 include_directories(deps/argparser)
 
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
 add_subdirectory(deps/graphidx)
+add_subdirectory(deps/minih5)
 add_subdirectory(ci)
 
 add_object(line_dp    cxx/line_dp.cpp)
@@ -88,14 +84,8 @@ if (BUILD_PYEXT)
         COMMAND py.test ${CMAKE_SOURCE_DIR}/python/test VERBATIM)
 endif()
 
-# HDF5
 find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
-    set(HDF5_LIBRARIES ${HDF5_C_LIBRARIES})
-    if (MSVC)
-        add_definitions(-DH5_BUILT_AS_DYNAMIC_LIB)
-    endif()
-
     add_executable_h5(traverse
         cxx/bin/traverse.cpp
         $<TARGET_OBJECTS:argparser>
@@ -134,7 +124,7 @@ if (BUILD_TESTS)
         cxx/test/test_tree_dp.cpp
         cxx/test/test_tree_12.cpp
     )
-    target_link_libraries(doctests PRIVATE doctest::doctest)
+    target_link_libraries(doctests PRIVATE doctest::doctest graphidx)
 endif()
 
 # Local Variables:

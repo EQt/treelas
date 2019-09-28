@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 #include <cerrno>
 #include <regex>
 
@@ -7,30 +7,31 @@
 
 
 // https://github.com/google/googletest/blob/master/googletest/docs/Primer.md
-class HDF5Test : public ::testing::Test
+class HDF5Test
 {
 public:
     static constexpr bool delete_after = true;
     const char *fname = "test.h5";
-protected:
-    virtual void SetUp() {
+    HDF5Test() {
         if (delete_after && path::exists(fname)) {
-            EXPECT_FALSE(true) << "fname=" << fname
-                               << " exists in CWD=" << path::cwd();
-            ASSERT_EQ(path::remove(fname), 0) << "errno=" << errno;
+            INFO("fname=" << fname << " exists in CWD=" << path::cwd());
+            const auto r = path::remove(fname);
+            INFO("errno=" << errno);
+            REQUIRE(r == 0);
         }
     }
 
-    virtual void TearDown() {
+    ~HDF5Test() {
         if (delete_after) {
             if (path::exists(fname)) {
-                ASSERT_EQ(path::remove(fname), 0) << "errno=" << errno
-                                                  << ", EACCES=" << EACCES;
+                const auto r = path::remove(fname);
+                INFO("errno=" << errno << ", EACCES=" << EACCES);
+                REQUIRE(r == 0);
             }
-            ASSERT_FALSE(path::exists(fname)) << "CWD=" << path::cwd()
-                                              << ", fname=" << fname;
+            INFO("CWD=" << path::cwd() << ", fname=" << fname);
+            REQUIRE(!path::exists(fname));
         } else {
-            ASSERT_TRUE(path::exists(fname));
+            REQUIRE(path::exists(fname));
             fprintf(stderr, "Leaving %s/%s\n", path::cwd().c_str(), fname);
         }
     }
@@ -38,7 +39,7 @@ protected:
 
 
 /*
-TEST(HDF5lib, DISABLED_libversion)
+TEST_CASE("HDF5lib: DISABLED_libversion")
 {
 
     ASSERT_TRUE(std::regex_match(HDF5::libversion(), std::regex("1\\.8\\..*")))
@@ -46,165 +47,161 @@ TEST(HDF5lib, DISABLED_libversion)
 }
 */
 
-TEST_F(HDF5Test, create)
+TEST_CASE_FIXTURE(HDF5Test, "create")
 {
     if (delete_after) {
-        ASSERT_THROW(HDF5(fname, "r"), std::runtime_error);
+        REQUIRE_THROWS_AS(HDF5(fname, "r"), std::runtime_error);
     }
     {
         HDF5 io (fname, "w");
     }   // automatically close it
-    ASSERT_TRUE(path::exists(fname));
-    ASSERT_NO_THROW(HDF5 io (fname, "r"));
+    REQUIRE(path::exists(fname));
+    REQUIRE_NOTHROW(HDF5 io (fname, "r"));
 }
 
 
-TEST_F(HDF5Test, has_nothing)
+TEST_CASE_FIXTURE(HDF5Test, "has_nothing")
 {
     HDF5 io (fname, "w");
-    ASSERT_FALSE(io.has("blub"));
+    REQUIRE(!io.has("blub"));
 }
 
 
-TEST_F(HDF5Test, write_double)
+TEST_CASE_FIXTURE(HDF5Test, "write_double")
 {
     const std::vector<double> x ({1, 2, 3});
     {   // write
         HDF5 io (fname, "w");
-        ASSERT_FALSE(io.has("x"));
+        REQUIRE(!io.has("x"));
         io.write("x", x);
     }
     {   // read
         HDF5 io (fname, "r");
-        ASSERT_TRUE(io.has("x"));
+        REQUIRE(io.has("x"));
         {
             const auto dims = io.dimensions("x");
-            ASSERT_EQ(dims.size(), 1);
-            ASSERT_EQ(dims[0], 3);
+            REQUIRE(1 == dims.size());
+            REQUIRE(3 == dims[0]);
         }
         // auto xr = io.read<double>("x");
-        // ASSERT_EQ(x, xr);
+        // REQUIRE(xr == x);
     }
 }
 
 
-TEST_F(HDF5Test, write_int)
+TEST_CASE_FIXTURE(HDF5Test, "write_int")
 {
     const std::vector<int> x ({1, 2, 3});
     {   // write
         HDF5 io (fname, "w");
-        ASSERT_FALSE(io.has("x"));
+        REQUIRE(!io.has("x"));
         io.write("x", x);
     }
     {   // read
         HDF5 io (fname, "r");
-        ASSERT_TRUE(io.has("x"));
+        REQUIRE(io.has("x"));
         auto xr = io.read<int>("x");
-        ASSERT_EQ(x, xr);
+        REQUIRE(xr == x);
     }
 }
 
 
-TEST_F(HDF5Test, compress_int)
+TEST_CASE_FIXTURE(HDF5Test, "compress_int")
 {
     const std::vector<int> x ({1, 2, 3});
     {   // write
         HDF5 io (fname, "w");
-        ASSERT_THROW(io.set_compression(10), std::range_error);
+        REQUIRE_THROWS_AS(io.set_compression(10), std::range_error);
         io.set_compression(5);
-        ASSERT_FALSE(io.has("x"));
+        REQUIRE(!io.has("x"));
         io.write("x", x);
         // check via `h5dump -p -H ./test.h5`
     }
     {   // read
         HDF5 io (fname, "r");
-        ASSERT_TRUE(io.has("x"));
+        REQUIRE(io.has("x"));
         auto xr = io.read<int>("x");
-        ASSERT_EQ(x, xr);
+        REQUIRE(xr == x);
     }
 }
 
 
-TEST_F(HDF5Test, group_empty0)
+TEST_CASE_FIXTURE(HDF5Test, "group_empty0")
 {
     HDF5 io (fname, "w");
-    ASSERT_EQ(io.group(), "/");
+    REQUIRE("/" == io.group());
 }
 
 
-TEST_F(HDF5Test, group_empty)
+TEST_CASE_FIXTURE(HDF5Test, "group_empty")
 {
     HDF5 io (fname, "w");
-    ASSERT_EQ(io.group(), "/");
-    ASSERT_EQ(io.group("bla"), "/bla");
+    REQUIRE("/" == io.group());
+    REQUIRE("/bla" == io.group("bla"));
 }
 
 
-TEST_F(HDF5Test, group_empty2)
+TEST_CASE_FIXTURE(HDF5Test, "group_empty2")
 {
     HDF5 io (fname, "w");
-    ASSERT_EQ(io.group(), "/");
-    ASSERT_EQ(io.group("bla"), "/bla");
-    ASSERT_EQ(io.group("bli"), "/bla/bli");
+    REQUIRE("/" == io.group());
+    REQUIRE("/bla" == io.group("bla"));
+    REQUIRE("/bla/bli" == io.group("bli"));
 }
 
 
-TEST_F(HDF5Test, group)
+TEST_CASE_FIXTURE(HDF5Test, "group")
 {
     const std::vector<int> x ({1, 2, 3});
     {   // write
         HDF5 io (fname, "w");
-        ASSERT_EQ(io.group(), "/");
-        ASSERT_EQ(io.group("blub"), "/blub");
-        ASSERT_EQ(io.group(), "/blub");
+        REQUIRE("/" == io.group());
+        REQUIRE("/blub" == io.group("blub"));
+        REQUIRE("/blub" == io.group());
         io.write("x", x);
     }
     // {   // read, absolute
     //     HDF5 io (fname, "r");
-    //     ASSERT_EQ(io.group(), "/");
-    //     ASSERT_TRUE(io.has("/blub"));
-    //     ASSERT_EQ(io.group("blub"), "/blub");
-    //     ASSERT_EQ(io.group(), "/blub");
-    //     ASSERT_TRUE(io.has("x"));
+    // REQUIRE("/" == io.group());
+    // REQUIRE(io.has("/blub"));
+    // REQUIRE("/blub" == io.group("blub"));
+    // REQUIRE("/blub" == io.group());
+    // REQUIRE(io.has("x"));
     //     auto xr = io.read<int>("/blub/x");
-    //     ASSERT_EQ(x, xr);
+    // REQUIRE(xr == x);
     // }
     // {   // read, relative
     //     HDF5 io (fname, "r");
-    //     ASSERT_THROW(io.group("bla"), std::runtime_error);
+    // REQUIRE_THROWS_AS(io.group("bla"), std::runtime_error);
     //     io.group("blub");
-    //     ASSERT_TRUE(io.has("x"));
+    // REQUIRE(io.has("x"));
     //     auto xr = io.read<int>("x");
-    //     ASSERT_EQ(x, xr);
+    // REQUIRE(xr == x);
     // }
 }
 
 
-TEST_F(HDF5Test, read_not_exists)
+TEST_CASE_FIXTURE(HDF5Test, "read_not_exists")
 {
     {
         HDF5 io (fname, "w");
     }
     {
         HDF5 io (fname);
-        ASSERT_THROW(io.read<int>("bb"), std::runtime_error);
+        REQUIRE_THROWS_AS(io.read<int>("bb"), std::runtime_error);
     }
 }
 
 
-TEST_F(HDF5Test, write_readonly)
+
+TEST_CASE_FIXTURE(HDF5Test, "write_readonly")
 {
     {
         HDF5 io (fname, "w");
     }
     {
         HDF5 io (fname, "r");
-        ASSERT_THROW(io.write<int>("bb", std::vector<int>({1})),
-                     std::runtime_error);
+        REQUIRE_THROWS_AS(io.write<int>("bb", std::vector<int>({1})),
+                          std::runtime_error);
     }
 }
-
-
-// Local Variables:
-// compile-command: "cd ../build && make tests && ./tests --gtest_filter='HDF5Test.*'"
-// End:

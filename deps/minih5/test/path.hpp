@@ -1,6 +1,6 @@
 #pragma once
 #include <fstream>
-#include <gtest/internal/gtest-filepath.h>
+#include <filesystem>
 
 
 class path
@@ -17,7 +17,7 @@ public:
     }
 
     static std::string cwd() {
-        return ::testing::internal::FilePath::GetCurrentDir().string();
+        return std::filesystem::current_path().string();
     }
 
 
