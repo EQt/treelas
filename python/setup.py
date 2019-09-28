@@ -1,14 +1,13 @@
 """
 http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
-import sys
 import imp
 from os import path
 from setuptools import setup
 from setuptools.extension import Extension
-from setuptools.command.build_ext import build_ext
 from gitversion import describe_tag
 
+graphidx_dir = path.join(path.dirname(__file__), "..", "deps", "graphidx")
 
 sources = [
     "_treelas.cpp",
@@ -27,36 +26,13 @@ sources = [
     "../cxx/tree_dual.cpp"
 ]
 
-
 includes = [
-    path.join(path.dirname(__file__), "..", "deps", "graphidx", "cxx"),
-    path.join(path.dirname(__file__), "..", "deps", "graphidx", "deps", "pybind11", "include"),
+    path.join(graphidx_dir, "cxx"),
+    path.join(graphidx_dir, "deps", "pybind11", "include"),
 ]
 
 
-class BuildExt(build_ext):
-    """A custom build extension for adding compiler-specific options."""
-    c_opts = {'msvc': ['/EHsc'],
-              'unix': []}
-
-    if sys.platform == 'darwin':
-        c_opts['unix'] += ['-stdlib=libc++', '-mmacosx-version-min=10.7']
-
-    def build_extensions(self):
-        ct = self.compiler.compiler_type
-        opts = self.c_opts.get(ct, [])
-        if ct == 'unix':
-            opts.append('-std=c++14')
-            opts.append('-O3')
-            opts.append('-Wall')
-            opts.append('-fvisibility=hidden')
-        for ext in self.extensions:
-            ext.extra_compile_args = opts
-        build_ext.build_extensions(self)
-
-
 if __name__ == '__main__':
-    graphidx_dir = path.join(path.dirname(__file__), "..", "deps", "graphidx")
     graphidx_setup = path.join(graphidx_dir, "python", "setup.py")
 
     if not path.exists(graphidx_setup):
@@ -64,7 +40,7 @@ if __name__ == '__main__':
 
         cmd = f'git submodule update --init {graphidx_dir}'
         try:
-            sp.check_call(cmd.split(), cwd=deps)
+            sp.check_call(cmd.split())
         except:
             print(cmd)
             raise
@@ -93,5 +69,5 @@ if __name__ == '__main__':
           packages=['treelas', *('treelas.' + p for p in gs.packages)],
           install_requires=['pybind11>=2.2'],
           ext_modules=[_treelas, _graphidx],
-          cmdclass={'build_ext': BuildExt},
+          cmdclass={'build_ext': gs.BuildExt},
     )
