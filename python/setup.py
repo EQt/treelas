@@ -1,7 +1,8 @@
 """
 http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
-import imp
+import importlib
+import subprocess as sp
 from os import path
 from setuptools import setup
 from setuptools.extension import Extension
@@ -36,21 +37,21 @@ if __name__ == '__main__':
     graphidx_setup = path.join(graphidx_dir, "python", "setup.py")
 
     if not path.exists(graphidx_setup):
-        import subprocess as sp
-
         cmd = f'git submodule update --init {graphidx_dir}'
         try:
             sp.check_call(cmd.split())
         except:
             print(cmd)
             raise
-    
-    gs = imp.load_source('gs', graphidx_setup)
-    graphidx_sources = [path.join(path.dirname(graphidx_setup), s) for s in gs.sources]
+
+    spec = importlib.util.spec_from_file_location('gs', graphidx_setup)
+    gs = spec.loader.load_module()
+
     _graphidx = Extension(
         "treelas.graphidx._graphidx",
         language='c++',
-        sources=graphidx_sources,
+        sources=[path.join(path.dirname(graphidx_setup), s)
+                 for s in gs.sources],
         include_dirs=gs.includes,
     )
 
