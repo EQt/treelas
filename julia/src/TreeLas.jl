@@ -14,6 +14,7 @@ module TreeLas
 
 include("utils.jl")
 include("dual.jl")
+include("line_dp.jl")
 include("tree_dp.jl")
 # include("tree_dp.old.jl")
 # include("cxx.jl")

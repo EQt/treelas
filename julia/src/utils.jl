@@ -9,7 +9,7 @@ import GraphIdx: ConstantWeights, enumerate_edges
 Sum of squares.
 
 ```jldoctest
-julia> sum2([1, 11])
+julia> TreeLas.Utils.sum2([1, 11])
 122
 
 ```

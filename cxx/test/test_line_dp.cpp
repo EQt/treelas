@@ -2,6 +2,7 @@
 #include <vector>
 
 #include "../line_dp.hpp"
+#include "utils/timer.hpp"
 
 
 TEST_CASE("line_dp: line00")
@@ -13,7 +14,10 @@ TEST_CASE("line_dp: line00")
     std::vector<double> x;
     x.resize(y.size());
 
-    line_las(y.size(), x.data(), y.data(), lam);
+    {
+        TimerQuiet _;
+        line_las(y.size(), x.data(), y.data(), lam);
+    }
     CHECK(1.1 == Approx(x[0]));
     CHECK(1.8 == Approx(x[1]));
     REQUIRE(1.1 == Approx(x[2]));

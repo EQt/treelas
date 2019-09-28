@@ -5,6 +5,8 @@ push!(LOAD_PATH, "../src/")
 using Documenter
 import TreeLas
 
+DocMeta.setdocmeta!(TreeLas, :DocTestSetup, :(import TreeLas);
+                    recursive=true, warn=true)
 
 makedocs(
     modules=[TreeLas],

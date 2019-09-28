@@ -104,12 +104,13 @@ function tree_dp!(
 
     sig .= 0
     for i in @view mem.proc_order[1:end-1]
-        sig[t.parent[i]] += λ[i]
         local sig_i::F = sig[i]
         lb[i] = clip_front(mem.queues, i, µ[i], -µ[i]*y[i] -sig_i, -λ[i])
         ub[i] = clip_back( mem.queues, i, µ[i], -µ[i]*y[i] +sig_i, +λ[i])
-        merge(mem.queues.events::Vector{Event}, mem.queues.pq::Vector{Range},
+        merge(mem.queues.events::Vector{Event},
+              mem.queues.pq::Vector{Range},
               t.parent[i]::Int, i::Int)
+        sig[t.parent[i]] += μ[i] > EPS ? λ[i] : min(sig_i, λ[i])
     end
 
     let r = t.root

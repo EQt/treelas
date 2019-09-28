@@ -1,25 +1,33 @@
 import .QueueUnion: Range, Queues
 
+const EPS = 1e-10
 
-function clip_front(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                    slope::Float64, offset::Float64, t::Float64)::Float64
-    begin
-        pq = pqs[i]::Range
-        start = pq.start
-        stop = pq.stop
+function clip_front(
+    elements::Vector{Event},
+    pqs::Vector{Range},
+    i::Int,
+    slope::Float64,
+    offset::Float64,
+    t::Float64,
+)::Float64
+    pq = pqs[i]::Range
+    start = pq.start
+    stop = pq.stop
+    e = elements[start]::Event
+    while start <= stop && slope * e.x + offset < t
+        offset += intercept(e)
+        slope  += e.slope
+        start += 1
         e = elements[start]::Event
-        while start <= stop && slope * e.x + offset < t
-            offset += intercept(e)
-            slope  += e.slope
-            start += 1
-            e = elements[start]::Event
-        end
-        x = (t - offset)/slope
-        start -= 1
-        elements[start] = Event(x, slope)
-        pqs[i] = Range(start, stop)
-        return x
     end
+    if abs(slope) <= EPS
+        return -Inf
+    end
+    x = (t - offset)/slope
+    start -= 1
+    elements[start] = Event(x, slope)
+    pqs[i] = Range(start, stop)
+    return x
 end
 
 
@@ -35,6 +43,9 @@ function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
             slope  -= e.slope
             stop -= 1
             e = elements[stop]::Event
+        end
+        if abs(slope) <= EPS
+            return +Inf
         end
         x = (t - offset)/slope
         stop += 1
