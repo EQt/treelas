@@ -4,6 +4,8 @@ dist: bionic
 git:
   submodules: false
 
+sudo: false
+
 notifications:
   email:
     on_failure: change
@@ -41,8 +43,7 @@ matrix:
       install:
         - git submodule update --init deps/graphidx
         - cargo --version
-      script:
-        - cargo test
+      script: cargo test
 
     - language: cpp
       os: linux
@@ -62,11 +63,7 @@ before_cache:
   - rm -fr $CONDA_BASE/lib/python*/site-packages/treelas*
 
 install:
-# - git describe --tags
   - uname -a && echo $TRAVIS_OS_NAME && pwd
-  - export CC=${C_COMPILER:-cc} && echo $CC && $CC --version
-  - export CXX=${CXX_COMPILER:-c++} && echo $CXX && $CXX --version
-  - echo | ${CC} -dM -E -x c -
   - if [[ ! -d $CONDA_BASE/bin ]]; then
       wget $url -O miniconda.sh;
       rm -fr $CONDA_BASE;
@@ -74,18 +71,12 @@ install:
     fi
   - export PATH=$CONDA_BASE/bin:$PATH;
   - conda install -y pytest networkx h5py numba
-  - if [ "$TRAVIS_OS_NAME" == "osx" ]; then conda install -y cmake; fi
-  - pip install pybind11
-  - python -m pybind11 --include
-  - python -c 'from sys import byteorder as b; print("byte-order:", b)'
 
 script:
-  - df -h ~
-  - mkdir -p build && cd build
-  - CXX=$CXX CC=$CC cmake .. -DCMAKE_BUILD_TYPE=Debug $cmake_opts
+  - mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug $cmake_opts
   - make -j$(nproc) && ./doctests
   - cd .. && rm -fr build
   - cd ./python && pwd && rm -fr build
-  - CC=$CXX python setup.py install
+  - python setup.py install
   - pip install toml
   - py.test --color=yes test/
