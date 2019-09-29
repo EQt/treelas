@@ -31,9 +31,9 @@ matrix:
         - cd python && CC=c++ python setup.py install
       script: pytest test
 
-    - *python
-      language: python
+    - <<: *python
       os: osx
+      osx_image: xcode11
  
     - language: julia
       os: linux  # don't need it specifically for osx
