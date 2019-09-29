@@ -22,7 +22,8 @@ env:
 
 matrix:
   include:
-    - language: python
+    - &python
+      language: python
       os: linux
       python: "3.7"
       install:
@@ -30,7 +31,10 @@ matrix:
         - cd python && CC=c++ python setup.py install
       script: pytest test
 
-
+    - *python
+      language: python
+      os: osx
+ 
     - language: julia
       os: linux  # don't need it specifically for osx
       julia: 1.2
