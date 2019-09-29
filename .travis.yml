@@ -30,7 +30,11 @@ matrix:
 
     - <<: *python
       os: osx
- 
+      language: minimal
+      os: osx
+      osx_image: xcode10.2
+      name: "Python 3.7" 
+
     - language: julia
       os: linux  # don't need it specifically for osx
       julia: 1.2
@@ -58,7 +62,7 @@ matrix:
       language: cpp
       os: linux
       env: cmake_opts="-DASAN=ON"
-      install: mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug $cmake_opts
+      install: mkdir -p build && cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug $cmake_opts -DPYTHON_EXECUTABLE:FILEPATH=$(which python3)
       script: make -j$(nproc) && ./doctests -s
 
     - <<: *cmake
