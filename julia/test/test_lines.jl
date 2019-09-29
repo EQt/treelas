@@ -1,5 +1,7 @@
 module TestLines
 
+include("data.jl")
+
 using Test
 import Pkg: TOML
 import TreeLas
@@ -19,8 +21,7 @@ function instance(line)
 end
 
 
-const lines_toml = joinpath(dirname(pathof(TreeLas)),
-                            "..", "..", "data", "test", "lines.toml")
+const lines_toml = data_dir("test", "lines.toml")
 lines = TOML.parsefile(lines_toml)["test"]
 
 
