@@ -77,6 +77,6 @@ script:
   - make -j$(nproc) && ./doctests
   - cd .. && rm -fr build
   - cd ./python && pwd && rm -fr build
-  - python setup.py install
+  - CC=c++ python setup.py install
   - pip install toml
   - py.test --color=yes test/
