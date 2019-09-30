@@ -5,21 +5,28 @@ const EPS = 1e-10
 const DEBUG = false
 
 
-@deprecate(clip_front(elements, pqs, i, slope, offset, t),
-           clip(elements, Ref(pqs, i), +slope, +offset - t, Val(true)))
+@deprecate(
+    clip_front(elements, pqs, i, slope, offset, t),
+    clip(elements, Ref(pqs, i), +slope, +offset - t, Val(true))
+)
 
 
-@deprecate(clip_back(elements, pqs, i, slope, offset, t),
-           clip(elements, Ref(pqs, i), -slope, -offset + t, Val(false)))
+@deprecate(
+    clip_back(elements, pqs, i, slope, offset, t),
+    clip(elements, Ref(pqs, i), -slope, -offset + t, Val(false))
+)
 
 
+@deprecate(
+    clip_front(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I},
+    clip(qs.events, Ref(qs.pq, i), slope, offset - t, Val(true))
+)
 
-clip_front(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
-    clip_front(qs.events, qs.pq, i, slope, offset, t)
 
-
-clip_back(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
-    clip_back(qs.events, qs.pq, i, slope, offset, t)
+@deprecate(
+    clip_back(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I},
+    clip(qs.events, Ref(qs.pq, i), -slope, -offset + t, Val(false))
+)
 
 
 function clip(
