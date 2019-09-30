@@ -76,6 +76,6 @@ mod tests {
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
         solver.solve(&mut x, &y, lam, mu);
-        assert!(x == vec![1.1, 1.8, 1.1], "x = {:?}", x);
+        assert!(x == vec![1.1, 1.8, 1.1], "x = {:?}, lb = {:?}", x, solver.lb);
     }
 }

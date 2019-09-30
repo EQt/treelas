@@ -32,7 +32,7 @@ pub fn clip<Forward: Bool>(
     mut offset: f64,
 ) -> f64 {
     let mut start = pq.start;
-    let mut stop = pq.end;
+    let mut stop = pq.end - 1;
     let mut e = &elements[if Forward::is_true() {
         start
     } else {
@@ -69,7 +69,7 @@ pub fn clip<Forward: Bool>(
             x: x,
             slope: slope,
         };
-        *pq = start..stop;
+        *pq = start..stop+1;
         x
     }
 }
