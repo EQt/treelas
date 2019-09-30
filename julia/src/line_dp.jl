@@ -23,10 +23,10 @@ LineDPMem{F}() where {F} =
     LineDPMem{F}([], [])
 
 LineDPMem{F}(n::Integer) where {F} =
-    reset!(LineDPMem{F}(), n)
+    resize!(LineDPMem{F}(), n)
     
 
-function reset!(mem::LineDPMem{F}, n::Integer)::LineDPMem{F} where {F}
+function Base.resize!(mem::LineDPMem{F}, n::Integer)::LineDPMem{F} where {F}
     resize!(mem.events, 2n)
     resize!(mem.lb, n-1)
     mem
@@ -34,6 +34,7 @@ end
 
 
 function line_las!(
+    mem::LineDPMem{F},
     x::Array{F,N},
     y::Array{F,N},
     λ::Lam,
@@ -41,7 +42,7 @@ function line_las!(
 )::Array{F,N}  where {F, N, Lam, Mu}
     n = length(y)
     @assert n == length(x)
-    local mem = LineDPMem{F}(n)
+    resize!(mem, n)
     local events::Vector{Event} = mem.events
     local lb::Vector{F} = mem.lb
     local ub::Vector{F} = x
@@ -63,6 +64,9 @@ function line_las!(
     return x
 end
 
+
+line_las!(x::Array{F,N}, y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
+    line_las!(LineDPMem{F}(N), x, y, λ, µ)
 
 line_las(y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
     line_las!(similar(y), y, λ, µ)
