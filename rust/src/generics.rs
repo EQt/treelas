@@ -1,3 +1,11 @@
+//! Const Generics
+//! ==============
+//!
+//! As long as [`#[feature(const_generics)]`][rfc] is unstable, we need a work around:
+//! Define types with a unique value to be known at compile time.
+//!
+//! [rfc]: https://github.com/rust-lang/rfcs/blob/master/text/2000-const-generics.md
+
 pub trait Bool {
     fn is_true() -> bool;
 }
