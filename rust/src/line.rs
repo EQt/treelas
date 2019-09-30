@@ -2,6 +2,14 @@ use crate::generics::{Bool, False, True};
 use crate::pwl::{clip, Event, EPS};
 use std::ops::Range;
 
+#[inline]
+fn clamp(x: f64, min: f64, max: f64) -> f64 {
+    let mut x = x;
+    if x < min { x = min; }
+    if x > max { x = max; }
+    x
+}
+
 pub struct LineDP {
     lb: Vec<f64>,
     ub: Vec<f64>,
@@ -48,6 +56,10 @@ impl LineDP {
                 lam0.min(lam[i])
             };
         }
+        x[n-1] = self.clip::<True>(mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0.0);
+        for i in (0..n-2).rev() {
+            x[i] = clamp(x[i+1], self.lb[i], self.ub[i]);
+        }
     }
 }
 
@@ -64,6 +76,6 @@ mod tests {
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
         solver.solve(&mut x, &y, lam, mu);
-        assert!(true);
+        assert!(x == vec![1.1, 1.8, 1.1], "x = {:?}", x);
     }
 }
