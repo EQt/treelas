@@ -11,14 +11,12 @@ rest.
 """
 module TreeDP
 
-include("queues.jl")
-include("event.jl")
-include("clip.jl")
-
 import GraphIdx
 import GraphIdx: ConstantWeights, ArrayWeights
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
-import .QueueUnion: Queues, merge, reset!, Range
+import ..Pwl: clip, Range, Event, EPS, DEBUG
+import ..Pwl: clip_front, clip_back
+import ..Pwl.QueueUnion: Queues, merge, reset!
 
 const Tree = GraphIdx.Tree.RootedTree
 

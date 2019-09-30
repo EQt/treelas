@@ -1,7 +1,7 @@
 module TestQueues
 
 using Test
-import TreeLas.TreeDP.QueueUnion: Queues, Range, reset!
+import TreeLas.Pwl.QueueUnion: Queues, Range, reset!
 import TreeLas.TreeDP: Tree
 import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
 
