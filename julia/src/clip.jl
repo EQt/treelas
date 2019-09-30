@@ -50,12 +50,15 @@ function clip(
                          forward ? "f" : "b", slope, offset)
         e = elements[forward ? start += 1 : stop -= 1]
     end
-    if abs(slope) <= EPS
-        return forward ? -Inf : +Inf
+    local x::F = if abs(slope) <= EPS
+        forward ? -Inf : +Inf
+    else
+        let x::F = -offset/slope
+            elements[forward ? start -= 1 : stop += 1] = Event(x, slope)
+            x
+        end
     end
-    local x::F = -offset/slope
     DEBUG && @printf("  ip_%s:  --> %g\n", forward ? "f" : "b", x)
-    elements[forward ? start -= 1 : stop += 1] = Event(x, slope)
     pq[] = Range(start, stop)
     return x
 end
