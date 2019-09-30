@@ -19,15 +19,18 @@ const DEBUG = false
 
 @deprecate(
     clip_front(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I},
-    clip(qs.events, Ref(qs.pq, i), slope, offset - t, Val(true))
+    clip(qs, i, slope, offset - t, Val(true))
 )
 
 
 @deprecate(
     clip_back(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I},
-    clip(qs.events, Ref(qs.pq, i), -slope, -offset + t, Val(false))
+    clip(qs, i, -slope, -offset + t, Val(false))
 )
 
+
+clip(qs::Queues{Event}, i::I, slope::F, offset::F, v::Val{D}) where {F,I,D} =
+    clip(qs.events, Ref(qs.pq, i), slope, offset, v)
 
 function clip(
     elements::Vector{Event},
