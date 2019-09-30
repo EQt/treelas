@@ -5,28 +5,13 @@ const EPS = 1e-10
 const DEBUG = false
 
 
-function clip_front(
-    elements::Vector{Event},
-    pqs::Vector{Range},
-    i::Int,
-    slope::Float64,
-    offset::Float64,
-    t::Float64,
-)::Float64
-    clip(elements, Ref(pqs, i), slope, offset - t, Val(true))
-end
+@deprecate(clip_front(elements, pqs, i, slope, offset, t),
+           clip(elements, Ref(pqs, i), +slope, +offset - t, Val(true)))
 
 
-function clip_back(
-    elements::Vector{Event},
-    pqs::Vector{Range},
-    i::Int,
-    slope::Float64,
-    offset::Float64,
-    t::Float64,
-)::Float64
-    clip(elements, Ref(pqs, i), -slope, -offset + t, Val(false))
-end
+@deprecate(clip_back(elements, pqs, i, slope, offset, t),
+           clip(elements, Ref(pqs, i), -slope, -offset + t, Val(false)))
+
 
 
 clip_front(qs::Queues{Event}, i::I, slope::F, offset::F, t::F) where {F,I} =
