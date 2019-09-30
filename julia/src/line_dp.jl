@@ -1,14 +1,7 @@
 module LineDP
 
-const EPS = 1e-10
-const DEBUG = false
-
 import Printf: @printf
-
-include("event.jl")
-include("queues.jl")
-include("clip.jl")
-
+import ..Pwl: clip, Range, Event, EPS, DEBUG
 
 """
 Contains all memory needed for `line_las!`.
