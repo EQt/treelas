@@ -34,28 +34,32 @@ function clip_front(
 end
 
 
-function clip_back(elements::Vector{Event}, pqs::Vector{Range}, i::Int,
-                   slope::Float64, offset::Float64, t::Float64)::Float64
-    begin
-        pq = pqs[i]::Range
-        start = pq.start
-        stop = pq.stop
+function clip_back(
+    elements::Vector{Event},
+    pqs::Vector{Range},
+    i::Int,
+    slope::Float64,
+    offset::Float64,
+    t::Float64,
+)::Float64
+    pq = pqs[i]::Range
+    start = pq.start
+    stop = pq.stop
+    e = elements[stop]::Event
+    while start <= stop && slope * e.x + offset > t
+        offset -= intercept(e)
+        slope  -= e.slope
+        stop -= 1
         e = elements[stop]::Event
-        while start <= stop && slope * e.x + offset > t
-            offset -= intercept(e)
-            slope  -= e.slope
-            stop -= 1
-            e = elements[stop]::Event
-        end
-        if abs(slope) <= EPS
-            return +Inf
-        end
-        x = (t - offset)/slope
-        stop += 1
-        elements[stop] = Event(x, -slope)
-        pqs[i] = Range(start, stop)
-        return x
     end
+    if abs(slope) <= EPS
+        return +Inf
+    end
+    x = (t - offset)/slope
+    stop += 1
+    elements[stop] = Event(x, -slope)
+    pqs[i] = Range(start, stop)
+    return x
 end
 
 
