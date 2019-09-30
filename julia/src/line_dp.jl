@@ -21,9 +21,9 @@ function line_las!(
 )::Array{F,N}  where {F, N, Lam, Mu}
     n = length(y)
     @assert n == length(x)
-    local lb::Vector{F} = Vector{F}(undef, n-1)
-    local ub::Vector{F} = Vector{F}(undef, n-1)
     local events = Vector{Event}(undef, 2n)
+    local lb::Vector{F} = Vector{F}(undef, n-1)
+    local ub::Vector{F} = x
     local pq = Ref(Range(n+1, n))
     local λ0::F = F(0.0)
 
