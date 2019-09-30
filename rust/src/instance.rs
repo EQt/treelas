@@ -10,7 +10,6 @@ pub enum Weights<T> {
     Array(Vec<T>),
 }
 
-
 /// All data needed in a fused lasso line problem
 ///
 /// Usually the instance is stored in a TOML-file and can be loaded
@@ -35,16 +34,20 @@ pub struct Instance {
 impl Instance {
     pub fn from_path<P: AsRef<Path>>(
         fname: P,
+        kind: &str,
     ) -> Result<Vec<Self>, Box<dyn std::error::Error>> {
         let instances: Map<String, Vec<Self>> = {
             let buf = std::fs::read(fname)?;
             toml::from_slice(&buf)
         }?;
-        Ok(Self::from_map(instances))
+        Ok(Self::from_map(instances, kind))
     }
 
-    pub fn from_map(mut instances: Map<String, Vec<Self>>) -> Vec<Self> {
-        if let Some(mut trees) = instances.remove("tree") {
+    pub fn from_map(
+        mut instances: Map<String, Vec<Self>>,
+        kind: &str,
+    ) -> Vec<Self> {
+        if let Some(mut trees) = instances.remove(kind) {
             for i in 0..trees.len() {
                 trees[i].nr = Some((i + 1) as u32);
             }
@@ -54,9 +57,12 @@ impl Instance {
         }
     }
 
-    pub fn from_str(toml: &str) -> Result<Vec<Self>, toml::de::Error> {
+    pub fn from_str(
+        toml: &str,
+        kind: &str,
+    ) -> Result<Vec<Self>, toml::de::Error> {
         let inst: Map<String, Vec<Self>> = toml::from_str(toml)?;
-        Ok(Self::from_map(inst))
+        Ok(Self::from_map(inst, kind))
     }
 
     pub fn len(&self) -> usize {
@@ -89,7 +95,7 @@ mod tests {
             Ok(())
         }
     }
-    
+
     mod test_wrapped_f64 {
         use super::*;
 
@@ -121,7 +127,7 @@ mod tests {
         lam = 1
         "#;
 
-        let tests = Instance::from_str(toml_str)?;
+        let tests = Instance::from_str(toml_str, "tree")?;
         assert!(tests.len() == 1);
         let test = &tests[0];
         assert_eq!(
@@ -158,8 +164,17 @@ mod tests {
     fn parse_tree0() -> Result<(), Box<dyn std::error::Error>> {
         let fname = data_dir()?.join("test").join("tree0.toml");
         assert!(fname.exists(), "fname = {:?}", fname);
-        let tests: Vec<Instance> = Instance::from_path(fname)?;
+        let tests: Vec<Instance> = Instance::from_path(fname, "tree")?;
         assert!(tests.len() == 1, "len = {len}", len = tests.len());
+        Ok(())
+    }
+
+    #[test]
+    fn parse_lines() -> Result<(), Box<dyn std::error::Error>> {
+        let fname = data_dir()?.join("test").join("lines.toml");
+        assert!(fname.exists(), "fname = {:?}", fname);
+        let tests: Vec<Instance> = Instance::from_path(fname, "test")?;
+        assert!(tests.len() >= 5, "len = {len}", len = tests.len());
         Ok(())
     }
 }
