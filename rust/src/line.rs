@@ -52,9 +52,9 @@ impl LineDP {
         for i in 0..n-1 {
             println!("i = {}", i);
             self.lb[i] =
-                self.clip::<True>(mu[i], -mu[i] * y[i] - lam[i] + lam0);
+                self.clip::<True>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
             self.ub[i] =
-                self.clip::<False>(-mu[i], mu[i] * y[i] - lam[i] + lam0);
+                self.clip::<False>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
             lam0 = if mu[i] > EPS {
                 lam[i]
             } else {
@@ -63,7 +63,9 @@ impl LineDP {
         }
         x[n - 1] =
             self.clip::<True>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
-        for i in (0..n - 2).rev() {
+        println!("set: i = {:?}", n-1);
+        for i in (0..n - 1).rev() {
+            println!("set: i = {:?}", i);
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
     }
