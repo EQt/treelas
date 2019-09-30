@@ -1,4 +1,5 @@
 use crate::generics::Bool;
+use std::f64;
 use std::ops::Range;
 
 #[derive(Debug, PartialEq)]
@@ -21,6 +22,8 @@ impl Event {
         -self.x / self.slope
     }
 }
+
+pub const EPS: f64 = 1e-9;
 
 pub fn clip<Forward: Bool>(
     elements: &mut [Event],
@@ -47,7 +50,28 @@ pub fn clip<Forward: Bool>(
         };
         e = &elements[next];
     }
-    return e.x;
+    if slope.abs() <= EPS {
+        if Forward::is_true() {
+            f64::NEG_INFINITY
+        } else {
+            f64::INFINITY
+        }
+    } else {
+        let x = -offset / slope;
+        let prev = if Forward::is_true() {
+            start -= 1;
+            start
+        } else {
+            stop += 1;
+            stop
+        };
+        elements[prev] = Event {
+            x: x,
+            slope: slope,
+        };
+        *pq = start..stop;
+        x
+    }
 }
 
 /// # Problem
