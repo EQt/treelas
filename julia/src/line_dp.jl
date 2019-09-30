@@ -10,8 +10,28 @@ include("queues.jl")
 include("clip.jl")
 
 
-line_las(y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
-    line_las!(similar(y), y, λ, µ)
+"""
+Contains all memory needed for `line_las!`.
+"""
+struct LineDPMem{F}
+    events::Vector{Event}
+    lb::Vector{F}
+end
+
+
+LineDPMem{F}() where {F} =
+    LineDPMem{F}([], [])
+
+LineDPMem{F}(n::Integer) where {F} =
+    reset!(LineDPMem{F}(), n)
+    
+
+function reset!(mem::LineDPMem{F}, n::Integer)::LineDPMem{F} where {F}
+    resize!(mem.events, 2n)
+    resize!(mem.lb, n-1)
+    mem
+end
+
 
 function line_las!(
     x::Array{F,N},
@@ -21,8 +41,9 @@ function line_las!(
 )::Array{F,N}  where {F, N, Lam, Mu}
     n = length(y)
     @assert n == length(x)
-    local events = Vector{Event}(undef, 2n)
-    local lb::Vector{F} = Vector{F}(undef, n-1)
+    local mem = LineDPMem{F}(n)
+    local events::Vector{Event} = mem.events
+    local lb::Vector{F} = mem.lb
     local ub::Vector{F} = x
     local pq = Ref(Range(n+1, n))
     local λ0::F = F(0.0)
@@ -41,5 +62,10 @@ function line_las!(
 
     return x
 end
+
+
+line_las(y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
+    line_las!(similar(y), y, λ, µ)
+
 
 end
