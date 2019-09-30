@@ -23,8 +23,8 @@ impl LineDP {
 
     pub fn solve<W1, W2>(&mut self, x: &mut [f64], y: &[f64], lam: W1, mu: W2)
     where
-        W1: graphidx::weights::Weights<f64>,
-        W2: graphidx::weights::Weights<f64>,
+        W1: graphidx::weights::Weighted<f64>,
+        W2: graphidx::weights::Weighted<f64>,
     {
         let n = y.len();
         assert!(n == x.len());
