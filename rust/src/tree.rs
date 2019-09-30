@@ -28,9 +28,7 @@ mod tests {
 
     #[test]
     fn test_treedp_empty() {
-        let t = TreeDP {
-            post_order: vec![],
-        };
+        let t = TreeDP { post_order: vec![] };
         let mut x = vec![];
         let y = vec![];
         let lam = graphidx::weights::ConstantWeights::new(1.0);

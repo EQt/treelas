@@ -10,10 +10,7 @@ pub struct Event {
 
 impl Default for Event {
     fn default() -> Self {
-        Event {
-            x: 0.0,
-            slope: 0.0,
-        }
+        Event { x: 0.0, slope: 0.0 }
     }
 }
 
@@ -31,14 +28,23 @@ pub fn clip<Forward: Bool>(
     mut slope: f64,
     mut offset: f64,
 ) -> f64 {
-    let mut start = pq.start;
-    let mut stop = pq.end - 1;
-    let mut e = &elements[if Forward::is_true() {
-        start
-    } else {
+    let mut start: usize = pq.start;
+    let mut stop: usize = pq.end - 1;
+    let mut e = &elements[if Forward::is_true() { start } else { stop }];
+    println!(
+        "clip_{:?}: start = {:?}, stop = {:?}",
+        Forward::is_true(),
+        start,
         stop
-    }];
+    );
     while start <= stop && slope * e.x + offset < 0.0 {
+        println!(
+            " lip_{:?}: start = {:?}, stop = {:?}: {:?}",
+            Forward::is_true(),
+            start,
+            stop,
+            &elements[start..stop+1],
+        );
         offset += e.offset();
         slope += e.slope;
         let next = if Forward::is_true() {
@@ -50,7 +56,7 @@ pub fn clip<Forward: Bool>(
         };
         e = &elements[next];
     }
-    if slope.abs() <= EPS {
+    let x = if slope.abs() <= EPS {
         if Forward::is_true() {
             f64::NEG_INFINITY
         } else {
@@ -65,11 +71,18 @@ pub fn clip<Forward: Bool>(
             stop += 1;
             stop
         };
-        elements[prev] = Event {
-            x: x,
-            slope: slope,
-        };
-        *pq = start..stop+1;
+        elements[prev] = Event { x: x, slope: slope };
         x
-    }
+    };
+    println!(
+        "  ip_{:?}: start = {:?}, stop = {:?}, slope = {:?}, offset = {:?}, {:?}",
+        Forward::is_true(),
+        start,
+        stop,
+        slope,
+        offset,
+        &elements[start..stop+1],
+    );
+    *pq = start..(stop + 1);
+    x
 }

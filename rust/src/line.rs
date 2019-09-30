@@ -5,8 +5,12 @@ use std::ops::Range;
 #[inline]
 fn clamp(x: f64, min: f64, max: f64) -> f64 {
     let mut x = x;
-    if x < min { x = min; }
-    if x > max { x = max; }
+    if x < min {
+        x = min;
+    }
+    if x > max {
+        x = max;
+    }
     x
 }
 
@@ -23,11 +27,11 @@ impl LineDP {
             event: Vec::with_capacity(2 * n),
             lb: Vec::with_capacity(n - 1),
             ub: Vec::with_capacity(n - 1),
-            pq: n..(n - 1),
+            pq: n..n,
         };
         dp.event.resize_with(2 * n, Default::default);
-        dp.lb.resize(n, std::f64::NAN);
-        dp.ub.resize(n, std::f64::NAN);
+        dp.lb.resize(n-1, std::f64::NAN);
+        dp.ub.resize(n-1, std::f64::NAN);
         return dp;
     }
 
@@ -45,7 +49,8 @@ impl LineDP {
         assert!(mu.len() >= n);
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: f64 = 0.0;
-        for i in 0..n {
+        for i in 0..n-1 {
+            println!("i = {}", i);
             self.lb[i] =
                 self.clip::<True>(mu[i], -mu[i] * y[i] - lam[i] + lam0);
             self.ub[i] =
@@ -56,9 +61,10 @@ impl LineDP {
                 lam0.min(lam[i])
             };
         }
-        x[n-1] = self.clip::<True>(mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0.0);
-        for i in (0..n-2).rev() {
-            x[i] = clamp(x[i+1], self.lb[i], self.ub[i]);
+        x[n - 1] =
+            self.clip::<True>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
+        for i in (0..n - 2).rev() {
+            x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
     }
 }
@@ -76,6 +82,12 @@ mod tests {
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
         solver.solve(&mut x, &y, lam, mu);
-        assert!(x == vec![1.1, 1.8, 1.1], "x = {:?}, lb = {:?}", x, solver.lb);
+        assert!(
+            x == vec![1.1, 1.8, 1.1],
+            "x = {:?}, lb = {:?}, ub = {:?}",
+            x,
+            solver.lb,
+            solver.ub
+        );
     }
 }
