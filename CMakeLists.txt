@@ -33,6 +33,7 @@ if (NOT EXISTS "${GRAPHIDX_DIR}/CMakeLists.txt")
 endif()
 
 include_directories(deps/graphidx/cxx)
+include_directories(deps/graphidx/cxx/include)
 include_directories(deps/argparser)
 
 add_subdirectory(deps/glmgen)

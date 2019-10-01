@@ -8,8 +8,9 @@
 #include <limits>
 
 #include "utils/timer.hpp"
-#include "bits/weights.hpp"
-#include "std/deque.hpp"
+#include <graphidx/bits/weights.hpp>
+#include <graphidx/std/deque.hpp>
+
 #include "event.hpp"
 
 
