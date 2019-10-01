@@ -2,7 +2,7 @@ import .QueueUnion: Range, Queues
 import Printf: @printf
 
 const EPS = 1e-10
-const DEBUG = true
+const DEBUG = false
 
 
 @deprecate(

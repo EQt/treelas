@@ -28,7 +28,7 @@ sources = [
 ]
 
 includes = [
-    path.join(graphidx_dir, "cxx"),
+    path.join(graphidx_dir, "cxx", "include"),
     path.join(graphidx_dir, "deps", "pybind11", "include"),
 ]
 
