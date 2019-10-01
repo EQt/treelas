@@ -1,0 +1,14 @@
+#!/bin/bash
+cxx_dir=$(realpath --relative-to=$PWD $(dirname $0)/../cxx)
+graphidx=$(dirname $0)/../deps/graphidx/cxx/
+graphidx_dirs=$((cd $graphidx && find -maxdepth 1 -type d)  \
+                    | tail +2 | awk -F/ '{print $2"/"}' |  paste -sd '|' | sed -e 's/|/\\|/g')
+sources=$(find $(realpath --relative-to=$PWD $(dirname $0)/../deps/glmgen) -name '*.[ch]pp') 
+sources="$sources $(find $cxx_dir -name '*.[ch]pp')"
+sources="$sources $(find $(dirname $0)/../python -name '*.[ch]pp')"
+echo $graphidx_dirs
+
+for f in $sources; do
+    echo $f;
+    sed -e 's$#\(\s*\)include "\(\('$graphidx_dirs'\).*\)"$#\1include <graphidx/\2>$g' -i $f 
+done

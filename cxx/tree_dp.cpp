@@ -5,10 +5,10 @@
 #include <stdexcept>
 #include <limits>
 
-#include "bits/finite.hpp"
-#include "bits/minmax.hpp"
-#include "std/stack.hpp"
-#include "utils/timer.hpp"
+#include <graphidx/bits/finite.hpp>
+#include <graphidx/bits/minmax.hpp>
+#include <graphidx/std/stack.hpp>
+#include <graphidx/utils/timer.hpp>
 
 // #include "tree_debug.hpp"
 #include "clip.hpp"

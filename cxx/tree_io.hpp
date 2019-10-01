@@ -1,7 +1,7 @@
 #pragma once
 #include <minih5.hpp>
 
-#include "tree/root.hpp"
+#include <graphidx/tree/root.hpp>
 #include "tree.hpp"
 
 

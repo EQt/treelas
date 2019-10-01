@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <cmath>
 
-#include "tree/root.hpp"
-#include "tree/postorder.hpp"
+#include <graphidx/tree/root.hpp>
+#include <graphidx/tree/postorder.hpp>
 
 
 double*

@@ -6,11 +6,11 @@
 #include <vector>
 #include <stdexcept>
 
-#include "utils/timer.hpp"
+#include <graphidx/utils/timer.hpp>
 #ifdef MALLOC
-#  include "utils/malloc.hpp"
+#  include <graphidx/utils/malloc.hpp>
 #endif
-#include "bits/minmax.hpp"
+#include <graphidx/bits/minmax.hpp>
 
 
 template <typename float_ = double>

@@ -6,10 +6,10 @@
 #include <vector>
 #include <cmath>
 
-#include "utils/timer.hpp"
-#include "utils/malloc.hpp"
-#include "utils/vecalloc.hpp"
-#include "bits/minmax.hpp"     // for clip(x, lb, ub)
+#include <graphidx/utils/timer.hpp>
+#include <graphidx/utils/malloc.hpp>
+#include <graphidx/utils/vecalloc.hpp>
+#include <graphidx/bits/minmax.hpp>     // for clip(x, lb, ub)
 
 #include "../clip.hpp"
 

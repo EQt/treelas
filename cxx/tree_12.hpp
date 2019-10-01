@@ -6,14 +6,14 @@
 #include <vector>
 #include <array>
 
-#include "utils/perm.hpp"   // for iperm
-#include "utils/timer.hpp"
-#include "utils/viostream.hpp"
-#include "tree/bfs.hpp"
-#include "tree/postorder.hpp"
-#include "tree/root.hpp"
+#include <graphidx/utils/perm.hpp>   // for iperm
+#include <graphidx/utils/timer.hpp>
+#include <graphidx/utils/viostream.hpp>
+#include <graphidx/tree/bfs.hpp>
+#include <graphidx/tree/postorder.hpp>
+#include <graphidx/tree/root.hpp>
 
-#include "bits/minmax.hpp"
+#include <graphidx/bits/minmax.hpp>
 #include "tree.hpp"
 
 

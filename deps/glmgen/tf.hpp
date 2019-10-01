@@ -6,7 +6,7 @@
 #ifdef HAVE_GLMGEN
 #  include <cstdlib>
 #  ifdef HAVE_TIMER
-#     include "utils/timer.hpp"
+#     include <graphidx/utils/timer.hpp>
 #  endif
 #  ifdef __cplusplus
 namespace glmgen {

@@ -1,7 +1,7 @@
 #include <cstdint>
 #include <pybind11/pybind11.h>
 
-#include "utils/compiler.hpp"
+#include <graphidx/utils/compiler.hpp>
 #include "py_np.hpp"
 
 namespace py = pybind11;

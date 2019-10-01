@@ -8,10 +8,10 @@
 #include <argparser.hpp>
 #include <minih5.hpp>
 
-#include "utils/timer.hpp"
-#include "idx/biadjacent.hpp"
-// #include "spanning/kruskal_mst.hpp"
-#include "spanning/prim_mst.hpp"
+#include <graphidx/utils/timer.hpp>
+#include <graphidx/idx/biadjacent.hpp>
+// #include <graphidx/spanning/kruskal_mst.hpp>
+#include <graphidx/spanning/prim_mst.hpp>
 
 #include "thousand.hpp"
 

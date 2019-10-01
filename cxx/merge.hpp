@@ -4,11 +4,11 @@
 #include <algorithm>        // for std::sort
 #include <cstring>          // for std::memmove
 
-#include "utils/timer.hpp"
-#include "std/stack.hpp"
+#include <graphidx/utils/timer.hpp>
+#include <graphidx/std/stack.hpp>
 
 #include "range.hpp"
-#include "idx/children.hpp"
+#include <graphidx/idx/children.hpp>
 
 
 /**

@@ -7,9 +7,9 @@
 #include <minih5.hpp>
 #include <argparser.hpp>
 
-#include "tree/root.hpp"
-#include "utils/timer.hpp"
-#include "utils/viostream.hpp"      // std::cout << std::vector<..>
+#include <graphidx/tree/root.hpp>
+#include <graphidx/utils/timer.hpp>
+#include <graphidx/utils/viostream.hpp>      // std::cout << std::vector<..>
 
 #include "../tree_dp.hpp"
 

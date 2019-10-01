@@ -32,7 +32,6 @@ if (NOT EXISTS "${GRAPHIDX_DIR}/CMakeLists.txt")
     execute_process(COMMAND git submodule update --init ${GRAPHIDX_DIR})
 endif()
 
-include_directories(deps/graphidx/cxx)
 include_directories(deps/graphidx/cxx/include)
 include_directories(deps/argparser)
 

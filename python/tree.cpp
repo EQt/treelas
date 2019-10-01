@@ -1,7 +1,7 @@
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
 
-#include "../cxx/utils/timer.hpp"       // for TimerQuiet
+#include <graphidx/utils/timer.hpp>       // for TimerQuiet
 
 #include "../cxx/tree_12x.hpp"
 #include "../cxx/tree_dp.hpp"

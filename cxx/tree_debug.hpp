@@ -31,7 +31,7 @@
 
 #include "event.hpp"
 #include "range.hpp"
-#include "bits/hex.hpp"
+#include <graphidx/bits/hex.hpp>
 
 
 #ifdef DEBUG

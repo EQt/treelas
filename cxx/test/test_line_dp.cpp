@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "../line_dp.hpp"
-#include "utils/timer.hpp"
+#include <graphidx/utils/timer.hpp>
 
 
 TEST_CASE("line_dp: line00")

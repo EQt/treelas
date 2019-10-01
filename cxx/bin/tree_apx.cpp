@@ -10,7 +10,7 @@
 #include <argparser.hpp>
 #include <minih5.hpp>
 
-#include "utils/timer.hpp"
+#include <graphidx/utils/timer.hpp>
 #include "thousand.hpp"
 
 #include "../tree_io.hpp"

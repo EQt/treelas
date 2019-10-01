@@ -4,8 +4,8 @@
 #include <vector>
 #include <thread>
 
-#include "bits/minmax.hpp"          // for clip(x, lb, ub)
-#include "utils/timer.hpp"
+#include <graphidx/bits/minmax.hpp>          // for clip(x, lb, ub)
+#include <graphidx/utils/timer.hpp>
 
 #include "../clip.hpp"
 #include "../merge.hpp"

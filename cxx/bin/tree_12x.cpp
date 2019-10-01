@@ -11,8 +11,8 @@
 #include <argparser.hpp>
 #include <minih5.hpp>
 
-#include "utils/viostream.hpp"
-#include "utils/timer.hpp"
+#include <graphidx/utils/viostream.hpp>
+#include <graphidx/utils/timer.hpp>
 
 #include "thousand.hpp"
 

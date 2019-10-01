@@ -1,8 +1,8 @@
 #include <doctest/doctest.h>
 
-#include "bits/minmax.hpp"      // find_minmax
-#include "std/stack.hpp"
-#include "utils/timer.hpp"          // TimerQuiet
+#include <graphidx/bits/minmax.hpp>      // find_minmax
+#include <graphidx/std/stack.hpp>
+#include <graphidx/utils/timer.hpp>          // TimerQuiet
 
 #include "../plotpwl.hpp"
 #include "../tree_dp.hpp"
