@@ -38,9 +38,9 @@ clip(DeQue<Event> &pq,
     if (DEBUG) {
         printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
         if (pq)
-            printf(" test: %f\n", slope * pq.peek<forward>().x + offset);
+            printf(" test: %f\n", slope * pq.front<forward>().x + offset);
     }
-    while (pq && slope * pq.peek<forward>().x + offset < 0) {
+    while (pq && slope * pq.front<forward>().x + offset < 0) {
         const Event e = pq.pop<forward>();
         offset += e.offset();
         slope += e.slope;
