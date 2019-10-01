@@ -47,7 +47,13 @@ impl LineDP {
     {
         let n = y.len();
         assert!(n == x.len());
-        assert!(mu.len() >= n, "mu.len() = {}, n = {}: {:?}", mu.len(), n, mu);
+        assert!(
+            mu.len() >= n,
+            "mu.len() = {}, n = {}: {:?}",
+            mu.len(),
+            n,
+            mu
+        );
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: f64 = 0.0;
         for i in 0..n - 1 {
