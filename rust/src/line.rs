@@ -1,5 +1,6 @@
 use crate::generics::{Bool, False, True};
 use crate::pwl::{clip, Event, EPS};
+use crate::instance::{Weights, Instance};
 use std::ops::Range;
 
 #[inline]
@@ -39,7 +40,7 @@ impl LineDP {
         clip::<F>(&mut self.event, &mut self.pq, slope, offset)
     }
 
-    pub fn solve<W1, W2>(&mut self, x: &mut [f64], y: &[f64], lam: W1, mu: W2)
+    pub fn solve<W1, W2>(&mut self, x: &mut [f64], y: &[f64], lam: &W1, mu: &W2)
     where
         W1: graphidx::weights::Weighted<f64>,
         W2: graphidx::weights::Weighted<f64>,
@@ -95,7 +96,7 @@ mod tests {
         let mut solver = LineDP::new(y.len());
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
-        solver.solve(&mut x, &y, lam, mu);
+        solver.solve(&mut x, &y, &lam, &mu);
         let diff: f64 = l1_norm(&x, &[1.1, 1.8, 1.1]);
         assert!(l1_norm(&x, &[0.0, 0.0, 1.0]) > 1.0);
         assert!(
