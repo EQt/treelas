@@ -31,24 +31,16 @@ pub fn clip<Forward: Bool>(
     let mut start: usize = pq.start;
     let mut stop: usize = pq.end - 1;
     let mut e = &elements[if Forward::is_true() { start } else { stop }];
+    let dir = if Forward::is_true() { "f" } else { "b" };
     println!(
-        "clip_{}: start = {}, stop = {}, slope = {}, offset = {}: {:.3?} {:.3?}",
-        Forward::is_true(),
-        start,
-        stop,
+        "clip_{}: ({:+}, {:+.3}): {:.3?}\n\t {:.3?}",
+        dir,
         slope,
         offset,
         e,
         &elements[start..stop+1],
     );
     while start <= stop && slope * e.x + offset < 0.0 {
-        println!(
-            " lip_{}: start = {}, stop = {}: {:.3?}",
-            Forward::is_true(),
-            start,
-            stop,
-            &elements[start..stop + 1],
-        );
         offset += e.offset();
         slope += e.slope;
         let next = if Forward::is_true() {
@@ -59,6 +51,13 @@ pub fn clip<Forward: Bool>(
             stop
         };
         e = &elements[next];
+        println!(
+            " lip_{}: ({:+}, {:+.3}):\n\t {:.3?}",
+            dir,
+            slope,
+            offset,
+            &elements[start..stop + 1],
+        );
     }
     let x = if slope.abs() <= EPS {
         if Forward::is_true() {
@@ -79,13 +78,11 @@ pub fn clip<Forward: Bool>(
         x
     };
     println!(
-        "  ip_{}: start = {}, stop = {}, slope = {}, offset = {:.3}, {:.3?}",
-        Forward::is_true(),
-        start,
-        stop,
+        "  ip_{}: ({:+}, {:+.3}):\n\t {:.3?}",
+        dir,
         slope,
         offset,
-        &elements[start..stop+1],
+        &elements[start..stop + 1],
     );
     *pq = start..(stop + 1);
     x

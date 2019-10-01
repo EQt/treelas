@@ -43,6 +43,7 @@ function line_las!(
     local pq = Ref(Range(n+1, n))
     local λ0::F = F(0.0)
 
+    DEBUG && @info y
     for i = 1:(n-1)
         lb[i] = clip(events, pq, +μ[i], -μ[i] * y[i] - λ0 + λ[i], Val(true))
         ub[i] = clip(events, pq, -μ[i], +μ[i] * y[i] - λ0 + λ[i], Val(false))

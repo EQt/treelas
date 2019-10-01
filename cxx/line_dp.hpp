@@ -14,7 +14,7 @@
 
 
 static const auto EPS = 1e-10;
-static const auto DEBUG = false;
+static const auto DEBUG = true;
 
 
 template<typename float_ = float>
@@ -33,8 +33,9 @@ clip(DeQue<Event> &pq,
      float_ slope,
      float_ offset)
 {
+    #define dir (forward ? "f" : "b")
     if (DEBUG) {
-        printf("clip_%s: (%+g, %+.2f)\n", forward ? "f" : "b", slope, offset);
+        printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
         if (pq)
             printf(" test: %f\n", slope * pq.peek<forward>().x + offset);
     }
@@ -42,14 +43,17 @@ clip(DeQue<Event> &pq,
         const Event e = pq.pop<forward>();
         offset += e.offset();
         slope += e.slope;
+        DEBUG && printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset);
     }
     if (need_check && std::abs(slope) <= EPS)
         return forward ?
             -std::numeric_limits<float_>::infinity() :
             +std::numeric_limits<float_>::infinity();
     const auto x = -offset/slope;
+    DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
     pq.push<forward>({x, slope});
     return x;
+    #undef dir
 }
 
 
@@ -89,6 +93,7 @@ line_las(
         lam0 = float_(0.0);
     {
         Timer _ ("forward");
+        DEBUG && printf("\n");
         for (size_t i = 0; i < n-1; i++) {
             lb[i] = clip<true , check>(pq, +mu[i], -mu[i] * y[i] - lam0 + lam[i]);
             ub[i] = clip<false, check>(pq, -mu[i], +mu[i] * y[i] - lam0 + lam[i]);
@@ -97,7 +102,8 @@ line_las(
     }
     {
         Timer _ ("backward");
-            x[n-1] = clip<true, check>(pq, mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0);
+        DEBUG && printf("\n");
+        x[n-1] = clip<true, check>(pq, mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0);
         for (size_t i = n-1; i >= 1; i--)
             x[i-1] = clamp(x[i], lb[i-1], ub[i-1]);
     }

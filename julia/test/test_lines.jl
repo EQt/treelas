@@ -8,12 +8,12 @@ import TreeLas
 import GraphIdx
 
 
-function instance(line)
+function instance(line; to_tree::Bool = false)
     y = Float64.(line["y"])
     n = length(y)
     mu = GraphIdx.create_weights(Float64.(get(line, "mu", 1.0)))
     lam = Float64.(line["lam"])
-    if lam isa Array
+    if to_tree && lam isa Array
         prepend!(lam, NaN)
     end
     lam = GraphIdx.create_weights(lam)
@@ -28,9 +28,10 @@ lines = TOML.parsefile(lines_toml)["test"]
 @testset "TreeLas LineLas                " begin
     @test length(lines) >= 5
     for (i, line) in enumerate(lines)
-        y, lam, mu = instance(line)
+        y, lam, mu = instance(line, to_tree=false)
         n = length(y)
         @testset "line_las[$i]: n = $n" begin
+            @info "\nLine[$i]"
             @test TreeLas.LineDP.line_las(y, lam, mu) ≈ line["x"]
         end
     end
@@ -39,7 +40,7 @@ end
 
 @testset "TreeLas line by trees          " begin
     for (i, line) in enumerate(lines)
-        y, lam, mu = instance(line)
+        y, lam, mu = instance(line, to_tree=true)
         n = length(y)
         @testset "Line[$i]: n = $n" begin
             parent = collect(0:n-1)
