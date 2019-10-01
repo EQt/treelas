@@ -2,6 +2,7 @@ module LineDP
 
 import Printf: @printf
 import ..Pwl: clip, Range, Event, EPS, DEBUG
+import GraphIdx: ConstantWeights
 
 """
 Contains all memory needed for `line_las!`.
@@ -61,8 +62,7 @@ end
 line_las!(x::Array{F,N}, y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
     line_las!(LineDPMem{F}(N), x, y, λ, µ)
 
-line_las(y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
+line_las(y::Array{F,N}, λ::Lam, µ::Mu = ConstantWeights(1.0)) where {F,N,Lam,Mu} =
     line_las!(similar(y), y, λ, µ)
-
 
 end
