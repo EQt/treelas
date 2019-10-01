@@ -1,6 +1,6 @@
 use crate::generics::{Bool, False, True};
+use crate::instance::{Instance, Weights};
 use crate::pwl::{clip, Event, EPS};
-use crate::instance::{Weights, Instance};
 use std::ops::Range;
 
 #[inline]
@@ -31,8 +31,8 @@ impl LineDP {
             pq: n..n,
         };
         dp.event.resize_with(2 * n, Default::default);
-        dp.lb.resize(n-1, std::f64::NAN);
-        dp.ub.resize(n-1, std::f64::NAN);
+        dp.lb.resize(n - 1, std::f64::NAN);
+        dp.ub.resize(n - 1, std::f64::NAN);
         return dp;
     }
 
@@ -50,7 +50,7 @@ impl LineDP {
         assert!(mu.len() >= n);
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: f64 = 0.0;
-        for i in 0..n-1 {
+        for i in 0..n - 1 {
             println!("i = {}", i);
             self.lb[i] =
                 self.clip::<True>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
@@ -64,7 +64,7 @@ impl LineDP {
         }
         x[n - 1] =
             self.clip::<True>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
-        println!("set: i = {:?}", n-1);
+        println!("set: i = {:?}", n - 1);
         for i in (0..n - 1).rev() {
             println!("set: i = {:?}", i);
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
@@ -79,7 +79,7 @@ impl LineDP {
                 let mu = graphidx::weights::ConstantWeights::new(*cmu);
                 let lam = graphidx::weights::ConstantWeights::new(*clam);
                 self.solve(&mut x, &inst.y, &mu, &lam);
-            },
+            }
             _ => unimplemented!("not implemented!"),
         };
     }
@@ -89,12 +89,12 @@ pub fn l1_norm(x: &[f64], y: &[f64]) -> f64 {
     if x.len() != y.len() {
         std::f64::NAN
     } else {
-        x.iter().zip(y)
+        x.iter()
+            .zip(y)
             .map(|(x, y)| (x - y).abs())
             .fold(std::f64::NEG_INFINITY, |acc, a| acc.max(a))
     }
 }
-
 
 #[cfg(test)]
 mod tests {

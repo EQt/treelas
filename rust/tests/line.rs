@@ -1,6 +1,5 @@
-use treelas::instance::{Instance, data_dir};
+use treelas::instance::{data_dir, Instance};
 use treelas::line::LineDP;
-
 
 #[test]
 fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {

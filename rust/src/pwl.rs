@@ -47,7 +47,7 @@ pub fn clip<Forward: Bool>(
             Forward::is_true(),
             start,
             stop,
-            &elements[start..stop+1],
+            &elements[start..stop + 1],
         );
         offset += e.offset();
         slope += e.slope;
