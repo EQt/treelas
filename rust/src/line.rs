@@ -51,8 +51,10 @@ impl LineDP {
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: f64 = 0.0;
         for i in 0..n - 1 {
-            self.lb[i] = self.clip::<True>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-            self.ub[i] = self.clip::<False>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+            self.lb[i] =
+                self.clip::<True>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+            self.ub[i] =
+                self.clip::<False>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
             lam0 = if mu[i] > EPS {
                 lam[i]
             } else {
@@ -70,17 +72,26 @@ impl LineDP {
         let mu_def: Weights<f64> = Weights::Const(1.0);
         let mu: Weights<f64> = inst.mu.unwrap_or(mu_def);
         match (mu, inst.lam) {
-            (Weights::Const(cmu), Weights::Const(clam)) => {
-                let mu = graphidx::weights::ConstantWeights::new(cmu);
-                let lam = graphidx::weights::ConstantWeights::new(clam);
+            (Weights::Const(mu), Weights::Const(lam)) => {
+                let mu = graphidx::weights::ConstantWeights::new(mu);
+                let lam = graphidx::weights::ConstantWeights::new(lam);
                 self.solve(&mut x, &inst.y, &mu, &lam);
-            },
-            (Weights::Const(cmu), Weights::Array(alam)) => {
-                let mu = graphidx::weights::ConstantWeights::new(cmu);
-                let lam = graphidx::weights::ArrayWeights::new(alam);
+            }
+            (Weights::Const(mu), Weights::Array(lam)) => {
+                let mu = graphidx::weights::ConstantWeights::new(mu);
+                let lam = graphidx::weights::ArrayWeights::new(lam);
                 self.solve(&mut x, &inst.y, &mu, &lam);
-            },
-            _ => unimplemented!("not implemented!"),
+            }
+            (Weights::Array(mu), Weights::Const(lam)) => {
+                let mu = graphidx::weights::ArrayWeights::new(mu);
+                let lam = graphidx::weights::ConstantWeights::new(lam);
+                self.solve(&mut x, &inst.y, &mu, &lam);
+            }
+            (Weights::Array(mu), Weights::Array(lam)) => {
+                let mu = graphidx::weights::ArrayWeights::new(mu);
+                let lam = graphidx::weights::ArrayWeights::new(lam);
+                self.solve(&mut x, &inst.y, &mu, &lam);
+            }
         };
     }
 }
