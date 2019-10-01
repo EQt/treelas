@@ -48,8 +48,7 @@ inline std::ostream&
 operator<<(std::ostream &o, const Event &e)
 {
     o << "Event("
-      << std::setw(Event::_w) << std::setprecision(Event::_p) << e.x << ", "
-      << std::setw(Event::_w) << std::setprecision(Event::_p) << e.slope << ", "
-      << std::endl;
+      << std::setprecision(Event::_p) << e.x << ", "
+      << std::setprecision(Event::_p) << e.slope << ")";
     return o;
 }

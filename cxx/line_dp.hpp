@@ -7,15 +7,16 @@
 #include <cmath>            // std::abs
 #include <limits>
 
-#include "utils/timer.hpp"
+#include <graphidx/utils/timer.hpp>
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/std/deque.hpp>
+#include <graphidx/utils/viostream.hpp>
 
 #include "event.hpp"
 
 
 static const auto EPS = 1e-10;
-static const auto DEBUG = true;
+static const auto DEBUG = false;
 
 
 template<typename float_ = float>
@@ -37,7 +38,8 @@ clip(DeQue<Event> &pq,
     #define dir (forward ? "f" : "b")
     if (DEBUG) {
         printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-        if (pq)
+        std::cout << "\t " << printer(pq) << std::endl;
+        if (pq && false)
             printf(" test: %f\n", slope * pq.front<forward>().x + offset);
     }
     while (pq && slope * pq.front<forward>().x + offset < 0) {
@@ -45,14 +47,16 @@ clip(DeQue<Event> &pq,
         offset += e.offset();
         slope += e.slope;
         DEBUG && printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset);
+        DEBUG && std::cout << "\t " << printer(pq) << std::endl;
     }
     if (need_check && std::abs(slope) <= EPS)
         return forward ?
             -std::numeric_limits<float_>::infinity() :
             +std::numeric_limits<float_>::infinity();
     const auto x = -offset/slope;
-    DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
     pq.push<forward>({x, slope});
+    DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
+    DEBUG && std::cout << "\t " << printer(pq) << std::endl;
     return x;
     #undef dir
 }

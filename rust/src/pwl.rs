@@ -16,7 +16,7 @@ impl Default for Event {
 
 impl Event {
     fn offset(&self) -> f64 {
-        -self.x / self.slope
+        -self.x * self.slope
     }
 }
 
@@ -52,10 +52,12 @@ pub fn clip<Forward: Bool>(
         };
         e = &elements[next];
         println!(
-            " lip_{}: ({:+}, {:+.3}):\n\t {:.3?}",
+            " lip_{}: ({:+}, {:+.3}): {:.3?} offset: {:.3}\n\t {:.3?}",
             dir,
             slope,
             offset,
+            e,
+            e.offset(),
             &elements[start..stop + 1],
         );
     }
@@ -86,4 +88,16 @@ pub fn clip<Forward: Bool>(
     );
     *pq = start..(stop + 1);
     x
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_event_offset() {
+        let e = Event { x: -0.15, slope: 2.0 };
+        assert_eq!(e.offset(), 0.3);
+    }
 }
