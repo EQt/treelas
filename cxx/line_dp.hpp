@@ -21,7 +21,9 @@ template<typename float_ = float>
 inline float_
 clap(float_ x, float_ a, float_ b)
 {
-    return x >= b ? b : (x <= a ? a : x);
+    x = x > b ? b : x;
+    x = x < a ? a : x; 
+    return x;
 }
 
 
