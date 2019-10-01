@@ -19,7 +19,7 @@ static const auto DEBUG = false;
 
 template<typename float_ = float>
 inline float_
-clap(float_ x, float_ a, float_ b)
+clamp(float_ x, float_ a, float_ b)
 {
     x = x > b ? b : x;
     x = x < a ? a : x; 
@@ -99,6 +99,6 @@ line_las(
         Timer _ ("backward");
             x[n-1] = clip<true, check>(pq, mu[n-1], -mu[n-1] * y[n-1] - lam0 + 0);
         for (size_t i = n-1; i >= 1; i--)
-            x[i-1] = clap(x[i], lb[i-1], ub[i-1]);
+            x[i-1] = clamp(x[i], lb[i-1], ub[i-1]);
     }
 }
