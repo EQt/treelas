@@ -70,8 +70,20 @@ impl LineDP {
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
     }
-}
 
+    pub fn solve_instance(&mut self, mut x: &mut [f64], inst: &Instance) {
+        let mu_def: Weights<f64> = Weights::Const(1.0);
+        let mu: &Weights<f64> = inst.mu.as_ref().unwrap_or(&mu_def);
+        match (mu, &inst.lam) {
+            (Weights::Const(cmu), Weights::Const(clam)) => {
+                let mu = graphidx::weights::ConstantWeights::new(*cmu);
+                let lam = graphidx::weights::ConstantWeights::new(*clam);
+                self.solve(&mut x, &inst.y, &mu, &lam);
+            },
+            _ => unimplemented!("not implemented!"),
+        };
+    }
+}
 
 pub fn l1_norm(x: &[f64], y: &[f64]) -> f64 {
     if x.len() != y.len() {

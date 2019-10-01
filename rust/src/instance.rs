@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use std::path::Path;
+use std::path::PathBuf;
 
 type Map<K, V> = std::collections::BTreeMap<K, V>;
 
@@ -22,13 +23,13 @@ pub enum Weights<T> {
 #[derive(Debug, Deserialize, PartialEq)]
 pub struct Instance {
     name: Option<String>,
-    y: Vec<f64>,
-    lam: Weights<f64>,
-    x: Option<Vec<f64>>,
+    pub y: Vec<f64>,
+    pub lam: Weights<f64>,
+    pub x: Option<Vec<f64>>,
     nr: Option<u32>,
-    mu: Option<Weights<f64>>,
-    parent: Option<Vec<i64>>,
-    root: Option<i64>,
+    pub mu: Option<Weights<f64>>,
+    pub parent: Option<Vec<i64>>,
+    pub root: Option<i64>,
 }
 
 impl Instance {
@@ -70,15 +71,14 @@ impl Instance {
     }
 }
 
+/// Directory of the test data.
+pub fn data_dir() -> std::io::Result<PathBuf> {
+    Ok(std::env::current_dir()?.join("..").join("data"))
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::path::PathBuf;
-
-    /// Directory of the test data.
-    fn data_dir() -> std::io::Result<PathBuf> {
-        Ok(std::env::current_dir()?.join("..").join("data"))
-    }
 
     mod test_f64 {
         use super::*;
