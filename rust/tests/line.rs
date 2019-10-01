@@ -17,7 +17,7 @@ fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
         let diff = l1_norm(&x, &x_correct);
         assert!(
             diff <= 1e-10,
-            "err: diff = {}, x = {:?}, expected = {:?}",
+            "err: diff = {:.3}, x = {:.3?}, expected = {:?}",
             diff,
             x,
             x_correct
