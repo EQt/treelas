@@ -3,6 +3,12 @@ import pytest
 from treelas import line_dp
 from line import insts
 
+@pytest.mark.parametrize("i", insts)
+def test_dual(i):
+    res = np.cumsum(i.mu * (i.x - i.y))
+    assert np.isclose(res[-1], 0)
+    assert all(np.abs(res[:-1]) <= (1 + 1e-9) * i.lam)
+
 
 @pytest.mark.parametrize("i", insts)
 def test_lines(i):
