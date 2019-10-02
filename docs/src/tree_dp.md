@@ -1,10 +1,5 @@
 # Dynamic Programming Tree Solver
 
-```@meta
-DocTestSetup  = quote
-    import TreeLas.TreeDP: Event
-end
-```
 ```@docs
 TreeLas.TreeDP
 TreeLas.TreeDP.tree_dp
@@ -24,6 +19,5 @@ Modules = [TreeLas.Dual]
 The main component is a set of double-ended, mergable priority queues (also called *heaps*).
 
 ```@autodocs
-Modules = [TreeLas.TreeDP.QueueUnion]
+Modules = [TreeLas.Pwl.QueueUnion]
 ```
-

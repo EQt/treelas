@@ -6,9 +6,10 @@ Therefore it suffices to store the kinks.
 
 Passing over a kink is called an event; the information that defines it is stored in
 ```@docs
-TreeLas.TreeDP.Event
+TreeLas.Pwl
+TreeLas.Pwl.Event
 ```
 The change (Delta) in the intercept is given by
 ```@docs
-TreeLas.TreeDP.intercept
+TreeLas.Pwl.intercept
 ```

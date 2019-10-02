@@ -23,11 +23,6 @@ Modules = [TreeLas.MGT]
 Utility Functions
 ----------------
 
-```@meta
-DocTestSetup  = quote
-    import TreeLas.Utils: sum2, primal_objective
-end
-```
 ```@autodocs
 Modules = [TreeLas.Utils]
 ```
