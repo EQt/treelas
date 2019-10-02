@@ -102,17 +102,6 @@ impl LineDP {
     }
 }
 
-pub fn l1_norm(x: &[f64], y: &[f64]) -> f64 {
-    if x.len() != y.len() {
-        std::f64::NAN
-    } else {
-        x.iter()
-            .zip(y)
-            .map(|(x, y)| (x - y).abs())
-            .fold(std::f64::NEG_INFINITY, |acc, a| acc.max(a))
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -126,8 +115,8 @@ mod tests {
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
         solver.solve(&mut x, &y, &lam, &mu);
-        let diff: f64 = l1_norm(&x, &[1.1, 1.8, 1.1]);
-        assert!(l1_norm(&x, &[0.0, 0.0, 1.0]) > 1.0);
+        assert!(graphidx::lina::l1_diff(&x, &[0.0, 0.0, 1.0]) > 1.0);
+        let diff: f64 = graphidx::lina::l1_diff(&x, &[1.1, 1.8, 1.1]);
         assert!(
             diff <= 1e-8,
             "diff = {}, x = {:?}, lb = {:?}, ub = {:?}",

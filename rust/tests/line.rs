@@ -1,5 +1,6 @@
+use graphidx::lina::l1_diff;
 use treelas::instance::{data_dir, Instance};
-use treelas::line::{l1_norm, LineDP};
+use treelas::line::LineDP;
 
 #[test]
 fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
@@ -14,7 +15,7 @@ fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
         let mut x = Vec::new();
         x.resize(n, std::f64::NAN);
         solver.solve_instance(&mut x, inst);
-        let diff = l1_norm(&x, &x_correct);
+        let diff = l1_diff(&x, &x_correct);
         assert!(
             diff <= 1e-10,
             "err: diff = {:.3}, x = {:.3?}, expected = {:?}",
