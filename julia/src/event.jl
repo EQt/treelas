@@ -17,7 +17,7 @@ end
 
 Intercept (also called *offset*); implicitly encoded in the [`Event`](@ref).
 """
-intercept(e::Event)::Float64 = -e.x * e.slope
+@inline intercept(e::Event)::Float64 = -e.x * e.slope
 
 Base.isless(e1::Event, e2::Event) = isless(e1.x, e2.x)
 
