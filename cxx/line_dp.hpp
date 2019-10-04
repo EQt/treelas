@@ -5,52 +5,13 @@
 #include <stdexcept>        // std::invalid_argument
 #include <vector>
 #include <cmath>            // std::abs
-#include <limits>
 
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/weights.hpp>
-#include <graphidx/std/deque.hpp>
-#include <graphidx/utils/viostream.hpp>
 
 #include "event.hpp"
-
-
-static const auto EPS = 1e-10;
-static const auto DEBUG = false;
-
-
-template<bool forward, bool need_check = false, typename float_ = double>
-inline float_
-clip(DeQue<Event> &pq,
-     float_ slope,
-     float_ offset)
-{
-    #define dir (forward ? "f" : "b")
-    if (DEBUG) {
-        printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-        std::cout << "\t " << printer(pq) << std::endl;
-        if (pq && false)
-            printf(" test: %f\n", slope * pq.front<forward>().x + offset);
-    }
-    while (pq && slope * pq.front<forward>().x + offset < 0) {
-        const Event e = pq.pop<forward>();
-        offset += e.offset();
-        slope += e.slope;
-        DEBUG && printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-        DEBUG && std::cout << "\t " << printer(pq) << std::endl;
-    }
-    if (need_check && std::abs(slope) <= EPS)
-        return forward ?
-            -std::numeric_limits<float_>::infinity() :
-            +std::numeric_limits<float_>::infinity();
-    const auto x = -offset/slope;
-    pq.push<forward>({x, slope});
-    DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-    DEBUG && std::cout << "\t " << printer(pq) << std::endl;
-    return x;
-    #undef dir
-}
+#include "clip.hpp"
 
 
 template<typename float_, typename Wlam>
