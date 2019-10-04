@@ -56,7 +56,7 @@ line_las(
         for (size_t i = 0; i < n-1; i++) {
             lb[i] = clip<+1, check>(el, pq, +mu[i], -mu[i]*y[i] - lam0 + lam[i]);
             ub[i] = clip<-1, check>(el, pq, -mu[i], +mu[i]*y[i] - lam0 + lam[i]);
-            lam0 = mu[i] > EPS ? lam[i] : std::min(lam0, lam[i]);
+            lam0 = (check && mu[i] > EPS) ? lam[i] : std::min(lam0, lam[i]);
         }
     }
     {
