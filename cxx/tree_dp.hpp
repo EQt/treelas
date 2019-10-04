@@ -50,6 +50,7 @@ tree_dp<false, true>(
 
 
 template <bool lazy_sort>
+[[deprecated]]
 const double*
 tree_dp_w(
     const size_t n,

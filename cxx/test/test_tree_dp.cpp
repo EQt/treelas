@@ -169,13 +169,15 @@ TEST_CASE("dptree0: proc_order")
         REQUIRE(std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 1.99}) == sig);
         REQUIRE(2.0 - 0.01 == Approx(lb[i]));
         REQUIRE(Range({3, 3}) == pq[i]);
-        REQUIRE(elements[3] == Event({.x = lb[i], .slope = mu[i], ._offset = -mu[i]*y[i] + lam[i]}));
+        REQUIRE(elements[3] ==  Event({lb[i], mu[i]}));
+        REQUIRE(elements[3].offset() == -mu[i]*y[i] + lam[i]);
 
         ub[i] = clip_back  (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         REQUIRE(std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 1.99}) == sig);
         REQUIRE(2.0 + 0.01 == Approx(ub[i]));
         REQUIRE(Range({3, 4}) == pq[i]);
-        REQUIRE(Event({.x = ub[i], .slope = -mu[i], ._offset = +mu[i]*y[i] + lam[i]}) == elements[4]);
+        REQUIRE(Event({ub[i], -mu[i],}) == elements[4]);
+        REQUIRE(elements[4].offset() == mu[i]*y[i] + lam[i]);
 
         REQUIRE(Range({7, 6}) == pq[parent[i]]);
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
@@ -199,12 +201,12 @@ TEST_CASE("dptree0: proc_order")
         REQUIRE(0.0 - 0.01 == Approx(lb[i]));
         REQUIRE(std::vector<double>({0.0, 0, 0.02, 0, 0, -0.01, 1.99}) == sig);
         REQUIRE(Range({5, 5}) == pq[i]);
-        REQUIRE(Event({.x = lb[i], .slope = mu[i], ._offset = -mu[i]*y[i] + lam[i]}) == elements[5]);
+        REQUIRE(Event({lb[i], mu[i]}) == elements[5]);
 
         ub[i] = clip_back (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
         REQUIRE(0.0 + 0.01 == Approx(ub[i]));
         REQUIRE(Range({5, 6}) == pq[i]);
-        REQUIRE(Event({.x = ub[i], .slope = -mu[i], ._offset = +mu[i]*y[i] + lam[i]}) == elements[6]);
+        REQUIRE(Event({ub[i], -mu[i]}) == elements[6]);
 
         REQUIRE(Range({3, 4}) == pq[parent[i]]);
         pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
@@ -234,7 +236,7 @@ TEST_CASE("dptree0: proc_order")
             auto &e = elements[q.start];
             REQUIRE(-0.02 == offset);
             REQUIRE(0.0 == slope);
-            REQUIRE(Event({.x = -0.01, .slope = 1, ._offset=+0.01}) == e);
+            REQUIRE(Event({-0.01, 1}) == e);
             REQUIRE(-0.02 == slope * e.x + offset);
             REQUIRE(-0.02 == t);
             REQUIRE(t == slope * e.x + offset);
