@@ -1,7 +1,6 @@
 #include <cmath>            // std::abs(double) -> double
 #include <limits>           // infinity
 
-#include <graphidx/std/deque.hpp>
 #include <graphidx/utils/viostream.hpp>
 
 #include "event.hpp"
@@ -17,34 +16,29 @@ static const auto DEBUG = false;
 
 template<bool forward, bool need_check = false, typename float_ = double>
 inline float_
-clip(DeQue<Event> &pq,
+clip(Event *elem,
+     Range &pq,
      float_ slope,
      float_ offset)
 {
-    #define dir (forward ? "f" : "b")
+    constexpr auto dir  = forward ? "f" : "b";
     if (DEBUG) {
         printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-        std::cout << "\t " << printer(pq) << std::endl;
-        if (pq && false)
-            printf(" test: %f\n", slope * pq.front<forward>().x + offset);
     }
-    while (pq && slope * pq.front<forward>().x + offset < 0) {
-        const Event e = pq.pop<forward>();
+    while (pq && slope * elem[forward ? pq.start : pq.stop].x + offset < 0) {
+        const Event &e = elem[forward ? pq.start++ : pq.stop--];
         offset += e.offset();
         slope += e.slope;
         DEBUG && printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-        DEBUG && std::cout << "\t " << printer(pq) << std::endl;
     }
     if (need_check && std::abs(slope) <= EPS)
         return forward ?
             -std::numeric_limits<float_>::infinity() :
             +std::numeric_limits<float_>::infinity();
     const auto x = -offset/slope;
-    pq.push<forward>({x, slope});
+    elem[forward ? --pq.start : ++pq.stop] = Event({x, slope});
     DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-    DEBUG && std::cout << "\t " << printer(pq) << std::endl;
     return x;
-    #undef dir
 }
 
 
