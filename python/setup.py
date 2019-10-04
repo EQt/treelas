@@ -17,7 +17,6 @@ sources = [
     "../cxx/tree_12x.cpp",
     "../deps/condat/condat_tv_v2.cpp",
     "../deps/glmgen/tf_dp.cpp",
-    "../cxx/line/line.cpp",
     "../cxx/line_dp.cpp",
     "../cxx/line/line_para.cpp",
     "../cxx/line/line_c.cpp",
