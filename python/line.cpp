@@ -13,13 +13,13 @@
 
 namespace py = pybind11;
 
+
 inline void
 check_len(const ssize_t /* n */,
           const double & /* a */,
           const std::string &)
 {
 }
-
 
 
 inline ArrayWeights<double>
