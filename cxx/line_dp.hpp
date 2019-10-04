@@ -8,6 +8,7 @@
 #include <limits>
 
 #include <graphidx/utils/timer.hpp>
+#include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/std/deque.hpp>
 #include <graphidx/utils/viostream.hpp>
@@ -17,16 +18,6 @@
 
 static const auto EPS = 1e-10;
 static const auto DEBUG = false;
-
-
-template<typename float_ = float>
-inline float_
-clamp(float_ x, float_ a, float_ b)
-{
-    x = x > b ? b : x;
-    x = x < a ? a : x; 
-    return x;
-}
 
 
 template<bool forward, bool need_check = false, typename float_ = double>
