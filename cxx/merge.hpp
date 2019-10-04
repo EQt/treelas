@@ -101,7 +101,7 @@ merge2(const Range &parent, const Range &child, E *elements)
         */
         std::memmove(buf.data(), elements + parent.start,
                      parent.length() * sizeof(E));
-        const auto buf_end = parent.length();
+        const int buf_end = (int) parent.length();
         int
             l = 0,
             r = child.start;

@@ -10,11 +10,13 @@ struct Range
     int start;      // first element's index (inclusive)
     int stop;       // last  element's index (inclusive! unlike Python)
 
-    int length() const { return stop - start + 1; }
+    size_t length() const { return stop - start + 1; }
 
     bool operator==(const Range &other) const {
         return this->start == other.start && this->stop == other.stop;
     }
+
+    operator bool() const { return start <= stop; }
 };
 
 
