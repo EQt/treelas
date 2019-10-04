@@ -78,7 +78,7 @@ tree_dp(
                 sort_events(pq[i], elements);
             lb[i] = clip<+1, check>(elements, pq[i], +mu[i], -mu[i]*y[i] - sig_i + lam[i]);
             ub[i] = clip<-1, check>(elements, pq[i], -mu[i], +mu[i]*y[i] - sig_i + lam[i]);
-            sig[parent[i]] += (!check || mu[i] > EPS) ? lam[i] : std::min(lam[i], sig_i);
+            sig[parent[i]] += (check && mu[i] <= EPS) ? std::min(lam[i], sig_i) : lam[i];
             if (merge_sort)
                 pq[parent[i]] = merge2(pq[parent[i]], pq[i], elements);
             else {
