@@ -73,12 +73,12 @@ tree_dp(
 
     {   Timer _ ("forward");
         for (auto i : proc_order) {
-            sig[parent[i]] += lam[i];
             const auto sig_i = sig[i];  // backup before it is set in next line
             if (!merge_sort && lazy_sort)
                 sort_events(pq[i], elements);
             lb[i] = clip<+1, check>(elements, pq[i], +mu[i], -mu[i]*y[i] - sig_i + lam[i]);
             ub[i] = clip<-1, check>(elements, pq[i], -mu[i], +mu[i]*y[i] - sig_i + lam[i]);
+            sig[parent[i]] += (!check || mu[i] > EPS) ? lam[i] : std::min(lam[i], sig_i);
             if (merge_sort)
                 pq[parent[i]] = merge2(pq[parent[i]], pq[i], elements);
             else {
@@ -127,7 +127,7 @@ tree_dp(
     timer.stop();
     ConstantWeights<double> _lam (lam);
     ConstantWeights<double> _mu (mu);
-    return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, _lam, _mu, root, s);
+    return tree_dp<merge_sort, lazy_sort, false>(n, x, y, parent, _lam, _mu, root, s);
 }
 
 
