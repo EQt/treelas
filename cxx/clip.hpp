@@ -107,9 +107,8 @@ clip(Event *elem,
 }
 
 
-template<typename E = Event>
 inline double
-clip_front(E *elements,
+clip_front(Event *elements,
            Range &pq,
            double slope,
            double offset)
@@ -118,9 +117,8 @@ clip_front(E *elements,
 }
 
 
-template<typename E = Event>
 inline double
-clip_back(E *elements,
+clip_back(Event *elements,
           Range &pq,
           double slope,
           double offset,
