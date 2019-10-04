@@ -38,7 +38,7 @@ struct TreeDPStatus
 };
 
 
-template <bool merge_sort, bool lazy_sort, typename E>
+template <bool merge_sort, bool lazy_sort>
 inline const double*
 tree_dp(
     const size_t n,
@@ -48,7 +48,7 @@ tree_dp(
     const double lam,
     const double mu,
     const int root,
-    TreeDPStatus<E> &s)
+    TreeDPStatus<Event> &s)
 {
     auto *elements = s.elements_.data();
     auto &pq = s.pq;
