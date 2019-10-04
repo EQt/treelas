@@ -1,5 +1,5 @@
 /*
-  New implementation
+  Dynamic programming solver for line graphs
 */
 #pragma once
 #include <stdexcept>        // std::invalid_argument
