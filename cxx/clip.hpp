@@ -79,29 +79,29 @@ static const auto DEBUG = false;
   V: non-latent
   ```
 */
-template<bool forward, bool need_check = false, typename float_ = double>
+template<int step, bool need_check = false, typename float_ = double>
 inline float_
 clip(Event *elem,
      Range &pq,
      float_ slope,
      float_ offset)
 {
-    constexpr auto dir  = forward ? "f" : "b";
+    constexpr auto dir = step > 0 ? "f" : "b";
     if (DEBUG) {
         printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
     }
-    while (pq && slope * elem[forward ? pq.start : pq.stop].x + offset < 0) {
-        const Event &e = elem[forward ? pq.start++ : pq.stop--];
+    while (pq && slope * elem[step > 0 ? pq.start : pq.stop].x + offset < 0) {
+        const Event &e = elem[step > 0 ? pq.start++ : pq.stop--];
         offset += e.offset();
         slope += e.slope;
         DEBUG && printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset);
     }
     if (need_check && std::abs(slope) <= EPS)
-        return forward ?
+        return step > 0 ?
             -std::numeric_limits<float_>::infinity() :
             +std::numeric_limits<float_>::infinity();
     const auto x = -offset/slope;
-    elem[forward ? --pq.start : ++pq.stop] = Event({x, slope});
+    elem[step > 0 ? --pq.start : ++pq.stop] = Event({x, slope});
     DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
     return x;
 }
@@ -113,7 +113,7 @@ clip_front(Event *elements,
            double slope,
            double offset)
 {
-    return clip<true, false>(elements, pq, slope, offset);
+    return clip<+1, false>(elements, pq, slope, offset);
 }
 
 
@@ -124,7 +124,7 @@ clip_back(Event *elements,
           double offset,
           const double t)
 {
-    return clip<false, false>(elements, pq, -slope, -offset + t);
+    return clip<-1, false>(elements, pq, -slope, -offset + t);
 }
 
 
@@ -138,7 +138,7 @@ clip_fronw(
     const double t,
     const double /* lower_bound */)
 {
-    return clip<true, true>(elements, pq, slope, offset - t);
+    return clip<+1, true>(elements, pq, slope, offset - t);
 }
 
 
@@ -152,5 +152,5 @@ clip_backw(
     const double t,
     const double /* upper_bound */)
 {
-    return clip<false, true>(elements, pq, -slope, -offset + t);
+    return clip<-1, true>(elements, pq, -slope, -offset + t);
 }
