@@ -128,7 +128,7 @@ clip_back(Event *elements,
 }
 
 
-[[deprecated]]
+// [[deprecated]]
 inline double
 clip_fronw(
     Event *elements,
@@ -142,7 +142,7 @@ clip_fronw(
 }
 
 
-[[deprecated]]
+// [[deprecated]]
 inline double
 clip_backw(
     Event *elements,
