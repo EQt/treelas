@@ -131,7 +131,8 @@ tree_dp(
 }
 
 
-template <bool lazy_sort>
+template <bool lazy_sort,
+          bool merge_sort>
 const double*
 tree_dp_w(
     const size_t n,
@@ -159,80 +160,41 @@ tree_dp_w(
                                     std::to_string(parent[root]) + " != root");
     }
 
-    const double
-        min_y = -std::numeric_limits<double>::infinity(),
-        max_y = +std::numeric_limits<double>::infinity();
-
     Timer timer ("memory alloc");
-    if (x == nullptr) {
-        x = new double[n];
-    }
-    std::vector<Event> elements_ (2*n);
-    std::vector<int> proc_order;
-    ChildrenIndex childs (n);
-    std::vector<Range> pq (n);
-    stack<int> stack;
-    std::vector<double>
-        lb (n, 0.0),
-        ub (n);
-    std::vector<double>
-        &sig = lb;
+    TreeDPStatus s(n);
     timer.stop();
 
-    {   Timer _ ("children index");
-        childs.reset(n, parent, root);
-    }
-
-    init_queues(n, pq, proc_order, childs, stack, root);
-
-    auto *elements = elements_.data();
-    {   Timer _ ("forward");
-        for (auto i : proc_order) {
-            if (parent[i] == i)
-                throw std::runtime_error(
-                    std::string("tree_dp_w(): FATAL ERROR: ") +
-                    "parent[" + std::to_string(i) + "] = " +
-                    std::to_string(parent[i]));
-
-            const auto lami = lam[i];
-            const auto sigi = sig[i];  // backup before it is set in next line
-            if (lazy_sort)
-                sort_events(pq[i], elements);
-            lb[i] = clip_fronw(elements, pq[i],
-                               /* slope  */ +mu[i],
-                               /* offset */ -mu[i]*y[i] -sigi,
-                               /* t      */ -lami,
-                               /* lower_bound */ min_y);
-            ub[i] = clip_backw(elements, pq[i], mu[i], -
-                               mu[i]*y[i] +sigi, +lami, max_y);
-            pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
-            sig[parent[i]] += mu[i] > 1e-10 ? lami : std::min(lami, sigi);
-            if (!lazy_sort)
-                sort_events(pq[parent[i]], elements);
-        }
-    }
-
-    {   Timer _ ("backtrace");
-        const auto r = root;
-        if (lazy_sort)
-            sort_events(pq[r], elements);
-        x[r] = clip_fronw(elements, pq[r], mu[r], -mu[r]*y[r] -sig[r], 0., min_y);
-        if (x[r] > 1e10) {
-            fprintf(stdout,
-                    "processing %d (parent=%d): sigi = %.3f, (lam[r] = %.3f)\n",
-                    r, parent[r], sig[r], lam[r]);
-            throw std::runtime_error(std::string("x[r] = ") +
-                                     std::to_string(x[r]));
-        }
-        for (long int j = (long int)(n-2); j >= 0; j--) {
-            const auto v = proc_order[j];
-            x[v] = clamp(x[parent[v]], lb[v], ub[v]);
-        }
-    }
+    ArrayWeights<double> _lam(lam);
+    ArrayWeights<double> _mu(mu);
+    return tree_dp<merge_sort, lazy_sort, true>(n, x, y, parent, _lam, _mu, root, s);
 
     Timer::startit("free");
     return x;
 }
+
+
+template
+double const*
+tree_dp_w<true, true>(
+    size_t,
+    double*,
+    double const*,
+    int const*,
+    double const*,
+    double const*,
+    int);
+
+
+template
+double const*
+tree_dp_w<false, true>(
+    size_t,
+    double*,
+    double const*,
+    int const*,
+    double const*,
+    double const*,
+    int);
 
 
 // template instantiation
@@ -269,28 +231,4 @@ tree_dp<false, false>(
     const int *parent,
     const double lam,
     const double mu,
-    const int root);
-
-
-template
-const double*
-tree_dp_w<true>(
-    const size_t n,
-    double *x,
-    const double *y,
-    const int *parent,
-    const double *lam,
-    const double *mu,
-    const int root);
-
-
-template
-const double*
-tree_dp_w<false>(
-    const size_t n,
-    double *x,
-    const double *y,
-    const int *parent,
-    const double *lam,
-    const double *mu,
     const int root);
