@@ -1,5 +1,6 @@
 #include "tree_12x.hpp"
 
+#include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/minmax.hpp>
 #include <graphidx/utils/perm.hpp>
 #include <graphidx/utils/timer.hpp>
@@ -62,7 +63,7 @@ tree_12x_iter(
             const auto v = s.forder[i];
             if (s.same(v)) {
                 const auto p = s.parent(v);
-                s.deriv[p] += clip(s.deriv[v], -lam, +lam);
+                s.deriv[p] += clamp(s.deriv[v], -lam, +lam);
             }
         }
     }

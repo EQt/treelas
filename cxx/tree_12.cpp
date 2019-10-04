@@ -1,6 +1,7 @@
 #include "tree_12.hpp"
 
-#include <algorithm>        // for std::sort
+#include <graphidx/bits/clamp.hpp>
+#include <graphidx/bits/minmax.hpp>
 
 
 namespace approx {
@@ -23,7 +24,7 @@ tree12_iter(Nodes<float_, int_> &nodes,
         for (const auto &v : nodes) {
             auto &p = nodes[v.parent()];
             if (v.same())
-                p.deriv += clip(v.deriv, -lam, +lam);
+                p.deriv += clamp(v.deriv, -lam, +lam);
         }
     }
  

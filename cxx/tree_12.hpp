@@ -13,7 +13,6 @@
 #include <graphidx/tree/postorder.hpp>
 #include <graphidx/tree/root.hpp>
 
-#include <graphidx/bits/minmax.hpp>
 #include "tree.hpp"
 
 

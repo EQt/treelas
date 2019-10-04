@@ -6,10 +6,10 @@
 #include <vector>
 #include <cmath>
 
+#include <graphidx/bits/clamp.hpp>     // for clamp(x, lb, ub)
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/utils/malloc.hpp>
 #include <graphidx/utils/vecalloc.hpp>
-#include <graphidx/bits/minmax.hpp>     // for clip(x, lb, ub)
 
 #include "../clip.hpp"
 
@@ -121,7 +121,7 @@ line_dp(const size_t n,
         {   Timer _ ("backward");
             x[n-1] = clip_front(event, pq, mu, -mu*y[n-1] -lam + 0.0);
             for (int i = int(n-2); i >= 0; i--)
-                x[i] = clip(x[i+1], lb[i], ub[i]);
+                x[i] = clamp(x[i+1], lb[i], ub[i]);
         }
     } else {
         float_ *lb = x+1;
@@ -132,7 +132,7 @@ line_dp(const size_t n,
         {   Timer _ ("backward");
             x[0] = clip_front(event, pq, mu, -mu*y[0] -lam + 0.0);
             for (size_t i = 1; i < n; i++)
-                x[i] = clip(x[i-1], lb[i-1], ub[i-1]);
+                x[i] = clamp(x[i-1], lb[i-1], ub[i-1]);
         }
     }
 }

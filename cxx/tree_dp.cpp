@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <limits>
 
+#include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/finite.hpp>
 #include <graphidx/bits/minmax.hpp>
 #include <graphidx/std/stack.hpp>
@@ -92,7 +93,7 @@ _tree_dp(
         x[r] = clip_front(elements, pq[r], mu, -mu*y[r] -sig[r] + 0.0);
         for (long int j = (long int)(n-2); j >= 0; j--) {
             const auto v = proc_order[j];
-            x[v] = clip(x[parent[v]], lb[v], ub[v]);
+            x[v] = clamp(x[parent[v]], lb[v], ub[v]);
         }
     }
 
@@ -227,7 +228,7 @@ tree_dp_w(
         }
         for (long int j = (long int)(n-2); j >= 0; j--) {
             const auto v = proc_order[j];
-            x[v] = clip(x[parent[v]], lb[v], ub[v]);
+            x[v] = clamp(x[parent[v]], lb[v], ub[v]);
         }
     }
 

@@ -4,7 +4,7 @@
 #include <vector>
 #include <thread>
 
-#include <graphidx/bits/minmax.hpp>          // for clip(x, lb, ub)
+#include <graphidx/bits/clamp.hpp>          // for clip(x, lb, ub)
 #include <graphidx/utils/timer.hpp>
 
 #include "../clip.hpp"
@@ -63,9 +63,9 @@ line_para(const size_t n,
 
     {   Timer _ ("backward");
         for (size_t i = n0+1; i < n; i++)
-            x[i] = clip(x[i-1], lb[i], ub[i]);
+            x[i] = clamp(x[i-1], lb[i], ub[i]);
         for (int i = int(n0-1); i >= 0; i--)
-            x[i] = clip(x[i+1], lb[i], ub[i]);
+            x[i] = clamp(x[i+1], lb[i], ub[i]);
     }
 }
 
