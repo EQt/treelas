@@ -5,7 +5,6 @@
 #include "../deps/condat/condat_tv_v2.hpp"
 
 #include "../cxx/line_dp.hpp"
-#include "../cxx/line/line.hpp"
 #include "../cxx/line/line_para.hpp"
 #include "../cxx/line/line_c.hpp"
 #include "../cxx/line/line_c2.hpp"

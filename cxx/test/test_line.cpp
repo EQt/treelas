@@ -1,7 +1,6 @@
 #include <doctest/doctest.h>
 #include <vector>
 
-#include "../line/line.hpp"
 #include "../clip.hpp"
 
 

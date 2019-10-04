@@ -42,7 +42,6 @@ add_subdirectory(deps/minih5)
 add_subdirectory(ci)
 
 add_object(line_dp    cxx/line_dp.cpp)
-add_object(line       cxx/line/line.cpp)
 add_object(line_para  cxx/line/line_para.cpp)
 add_object(line_c     cxx/line/line_c.cpp)
 add_object(line_c2    cxx/line/line_c2.cpp)
@@ -67,7 +66,6 @@ if (BUILD_PYEXT)
         cxx/tree_12x.cpp
         $<TARGET_OBJECTS:condat_tv>
         $<TARGET_OBJECTS:tf_dp>
-        $<TARGET_OBJECTS:line>
         $<TARGET_OBJECTS:line_dp>
         $<TARGET_OBJECTS:line_para>
         $<TARGET_OBJECTS:line_c>
