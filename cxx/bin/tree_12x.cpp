@@ -15,7 +15,6 @@
 #include <graphidx/utils/timer.hpp>
 
 #include "thousand.hpp"
-
 #include "../tree_12x.hpp"
 
 
@@ -65,10 +64,10 @@ process_file(
 
     if (n <= PRINT_MAX) {
         fprintf(stdout, " x: ");
-        print(x, 5, stdout);
+        print_double_list(x, 5, stdout);
         if (xt.size() == n) {
             fprintf(stdout, "xt: ");
-            print(xt, 5, stdout);
+            print_double_list(xt, 5, stdout);
         }
     }
 

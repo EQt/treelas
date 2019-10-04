@@ -41,13 +41,13 @@ compute_orders(TreeLasso<float_, int_> &tree,
     }
     if (n <= PRINT_MAX) {
         printf("   parent: ");
-        print(tree.parent, 0);
+        print_double_list(tree.parent, 0);
         printf(" preorder: ");
-        print(tree.preorder, 0);
+        print_double_list(tree.preorder, 0);
         printf("postorder: ");
-        print(tree.postorder, 0);
+        print_double_list(tree.postorder, 0);
         printf(" ipostord: ");
-        print(ipostord, 0);
+        print_double_list(ipostord, 0);
     }
 }
 
@@ -105,10 +105,10 @@ process_tree(const char *fname,
     }
     if (n <= PRINT_MAX) {
         fprintf(stdout, " x: ");
-        print(x, 5, stdout);
+        print_double_list(x, 5, stdout);
         if (xt.size() == n) {
             fprintf(stdout, "xt: ");
-            print(xt, 5, stdout);
+            print_double_list(xt, 5, stdout);
         }
     }
 
