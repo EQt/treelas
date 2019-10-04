@@ -117,19 +117,7 @@ clip_front(E *elements,
            double slope,
            double offset)
 {
-    const E *e = &elements[pq.start];
-    while (pq.start <= pq.stop && slope * e->x + offset < 0) {
-        offset += e->offset();
-        slope += e->slope;
-        e = &elements[++pq.start];
-    }
-    double x = -offset/slope;
-    /* -t because the next time this event will be triggered,
-       it will have included t in the offset */
-    elements[--pq.start] = E({x, slope, offset});
-    // e = elements[pq.start];
-    // assert (e->x * e->slope + e->offset() == t)
-    return x;
+    return clip<true, false>(elements, pq, slope, offset);
 }
 
 
@@ -141,16 +129,7 @@ clip_back(E *elements,
           double offset,
           const double t)
 {
-    const E *e = &elements[pq.stop];
-    while (pq.start <= pq.stop && slope * e->x + offset > t) {
-        offset -= e->offset();
-        slope -= e->slope;
-        e = &elements[--pq.stop];
-    }
-
-    double x = (t - offset)/slope;
-    elements[++pq.stop] = E({x, -slope, -offset + t});
-    return x;
+    return clip<false, false>(elements, pq, -slope, -offset + t);
 }
 
 
