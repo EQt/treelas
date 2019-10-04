@@ -11,7 +11,6 @@
 #include <graphidx/std/stack.hpp>
 #include <graphidx/utils/timer.hpp>
 
-// #include "tree_debug.hpp"
 #include "clip.hpp"
 #include "merge.hpp"
 
