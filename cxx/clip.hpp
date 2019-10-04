@@ -13,35 +13,6 @@
 static const auto EPS = 1e-10;
 static const auto DEBUG = false;
 
-
-template<bool forward, bool need_check = false, typename float_ = double>
-inline float_
-clip(Event *elem,
-     Range &pq,
-     float_ slope,
-     float_ offset)
-{
-    constexpr auto dir  = forward ? "f" : "b";
-    if (DEBUG) {
-        printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-    }
-    while (pq && slope * elem[forward ? pq.start : pq.stop].x + offset < 0) {
-        const Event &e = elem[forward ? pq.start++ : pq.stop--];
-        offset += e.offset();
-        slope += e.slope;
-        DEBUG && printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-    }
-    if (need_check && std::abs(slope) <= EPS)
-        return forward ?
-            -std::numeric_limits<float_>::infinity() :
-            +std::numeric_limits<float_>::infinity();
-    const auto x = -offset/slope;
-    elem[forward ? --pq.start : ++pq.stop] = Event({x, slope});
-    DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
-    return x;
-}
-
-
 /** Cut all knots until the PWL is at least `t`.
 
   The reason why there are two versions, `clip_front` and `clip_fronw`:
@@ -107,9 +78,35 @@ clip(Event *elem,
   L: latent
   V: non-latent
   ```
-
-  @see `clip_fronw`
 */
+template<bool forward, bool need_check = false, typename float_ = double>
+inline float_
+clip(Event *elem,
+     Range &pq,
+     float_ slope,
+     float_ offset)
+{
+    constexpr auto dir  = forward ? "f" : "b";
+    if (DEBUG) {
+        printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset);
+    }
+    while (pq && slope * elem[forward ? pq.start : pq.stop].x + offset < 0) {
+        const Event &e = elem[forward ? pq.start++ : pq.stop--];
+        offset += e.offset();
+        slope += e.slope;
+        DEBUG && printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset);
+    }
+    if (need_check && std::abs(slope) <= EPS)
+        return forward ?
+            -std::numeric_limits<float_>::infinity() :
+            +std::numeric_limits<float_>::infinity();
+    const auto x = -offset/slope;
+    elem[forward ? --pq.start : ++pq.stop] = Event({x, slope});
+    DEBUG && printf("  ip_%s: (%+g, %+.2f)\n", dir, slope, offset);
+    return x;
+}
+
+
 template<typename E = Event>
 inline double
 clip_front(E *elements,
