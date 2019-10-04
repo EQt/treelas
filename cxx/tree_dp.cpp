@@ -40,7 +40,7 @@ struct TreeDPStatus
 
 template <bool merge_sort, bool lazy_sort, typename E>
 inline const double*
-_tree_dp(
+tree_dp(
     const size_t n,
     double *x,
     const double *y,
@@ -122,7 +122,7 @@ tree_dp(
         x = new double[n];
     TreeDPStatus<Event> s(n);
     timer.stop();
-    return _tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, root, s);
+    return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, root, s);
 }
 
 
@@ -193,21 +193,14 @@ tree_dp_w(
             const auto sigi = sig[i];  // backup before it is set in next line
             if (lazy_sort)
                 sort_events(pq[i], elements);
-            {   // EVENT_REC(decltype(elements[0]));
-                lb[i] = clip_fronw(elements, pq[i],
-                                   /* slope  */ +mu[i],
-                                   /* offset */ -mu[i]*y[i] -sigi,
-                                   /* t      */ -lami,
-                                   /* lower_bound */ min_y);
-                // EVENT_CHECK(pq[i].start, lb[i]);
-            }
-            {   // EVENT_REC(decltype(elements[0]));
-                ub[i] = clip_backw(elements, pq[i], mu[i], -
-                                   mu[i]*y[i] +sigi, +lami, max_y);
-                // EVENT_CHECK(pq[i].stop, ub[i]);
-                sig[parent[i]] += mu[i] > 1e-10 ? lami : std::min(lami, sigi);
-
-            }
+            lb[i] = clip_fronw(elements, pq[i],
+                               /* slope  */ +mu[i],
+                               /* offset */ -mu[i]*y[i] -sigi,
+                               /* t      */ -lami,
+                               /* lower_bound */ min_y);
+            ub[i] = clip_backw(elements, pq[i], mu[i], -
+                               mu[i]*y[i] +sigi, +lami, max_y);
+            sig[parent[i]] += mu[i] > 1e-10 ? lami : std::min(lami, sigi);
             pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
             if (!lazy_sort)
                 sort_events(pq[parent[i]], elements);
