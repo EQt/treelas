@@ -1,6 +1,6 @@
 import numpy as np
 from numba import njit
-from ._treelas import line_las
+from ._treelas import line_dp as line_las
 
 
 def line_segments(x, eps=1e-10):

@@ -7,6 +7,7 @@
 
 
 template<typename float_ = double>
+[[deprecated]]
 void
 line_dp(
     const size_t n,

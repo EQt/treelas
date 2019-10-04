@@ -39,7 +39,6 @@ from ._treelas import (
     __author__,
     line_condat,
     line_glmgen,
-    line_las,
     line_dp,
     line_para,
     line_lasc,
@@ -49,5 +48,10 @@ from ._treelas import (
     tree_12x,
     tree_dual,
     tree_dual_gap,
-    # dp_forward, dp_reverse,
 )
+
+
+def line_las(y, lam, mu=1.0, x=None, increasing=True):
+    if not increasing:
+        raise NotImplementedError("")
+    return line_dp(y=y, lam=lam, mu=mu, x=x)

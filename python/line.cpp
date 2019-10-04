@@ -68,7 +68,7 @@ reg_line_las(py::module &m, const char *doc = "")
           doc,
           py::arg("y"),
           py::arg("lam"),
-          py::arg("mu"),
+          py::arg("mu") = 1.0,
           py::arg("x") = py::none()
         );
 }
@@ -132,35 +132,6 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false);
-
-    m.def("line_las", [](const py::array_f64 &y,
-                         const double lam,
-                         py::array_f64 out,
-                         const bool increasing,
-                         const bool verbose) -> py::array_t<double>
-          {
-              TimerQuiet _ (verbose);
-              const size_t n = check_1d_len(y, "y");
-              if (is_empty(out))
-                  out = py::array_t<double>({n}, {sizeof(double)});
-              check_len(n, out, "out");
-              line_dp(n,
-                      out.mutable_data(),
-                      y.data(),
-                      lam,
-                      increasing);
-              return out;
-          },
-          R"pbdoc(
-            Line solver (own implementation by Event2).
-
-            Memory: ??*len(y)*sizeof(uint32_t)
-          )pbdoc",
-          py::arg("y"),
-          py::arg("lam"),
-          py::arg("out") = py::none(),
-          py::arg("increasing") = false,
           py::arg("verbose") = false);
 
     m.def("line_lasc",
@@ -277,9 +248,6 @@ reg_line(py::module &m)
 
     reg_line_las<py::array_f64&, ArrayWeights<double>,
                  double, ConstantWeights<double>>(m);
-
-    reg_line_las<double, ConstantWeights<double>,
-                 py::array_f64&, ArrayWeights<double>>(m);
 
     reg_line_las<double, ConstantWeights<double>,
                  py::array_f64&, ArrayWeights<double>>(m);

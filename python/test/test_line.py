@@ -14,7 +14,7 @@ def test_line2():
     y = np.array([1, 0, 0.5])
     lam = 0.5
     x = y.copy()
-    line_las(y, lam, x)
+    line_las(y, lam, x=x)
     assert (x == 0.5).all()
 
 
@@ -23,7 +23,7 @@ def test_line3():
     y = np.array([1, 0, 0.5])
     lam = 0.1
     x = y.copy()
-    line_las(y, lam, x)
+    line_las(y, lam, x=x)
     expected = np.array([0.9, 0.2, 0.4])
     assert (np.abs(x - expected) < 1e-15).all()
 
@@ -40,7 +40,7 @@ def test_line2_rev():
     y = np.array([1, 0, 0.5])
     lam = 0.5
     x = y.copy()
-    line_las(y, lam, x, increasing=True)
+    line_las(y, lam, x=x, increasing=True)
     assert (x == 0.5).all()
 
 
@@ -49,6 +49,6 @@ def test_line3_rev():
     y = np.array([1, 0, 0.5])
     lam = 0.1
     x = y.copy()
-    line_las(y, lam, x, increasing=True)
+    line_las(y, lam, x=x, increasing=True)
     expected = np.array([0.9, 0.2, 0.4])
     assert (np.abs(x - expected) < 1e-15).all(), x
