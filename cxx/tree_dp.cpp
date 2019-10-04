@@ -8,6 +8,7 @@
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/finite.hpp>
 #include <graphidx/bits/minmax.hpp>
+#include <graphidx/bits/weights.hpp>
 #include <graphidx/std/stack.hpp>
 #include <graphidx/utils/timer.hpp>
 
@@ -36,15 +37,19 @@ struct TreeDPStatus
 };
 
 
-template <bool merge_sort, bool lazy_sort>
+template <bool merge_sort,
+          bool lazy_sort,
+          bool check = true,
+          typename Wlam,
+          typename Wmu>
 inline const double*
 tree_dp(
     const size_t n,
     double *x,
     const double *y,
     const int *parent,
-    const double lam,
-    const double mu,
+    const Wlam &lam,
+    const Wmu &mu,
     const int root,
     TreeDPStatus &s)
 {
@@ -68,12 +73,12 @@ tree_dp(
 
     {   Timer _ ("forward");
         for (auto i : proc_order) {
-            sig[parent[i]] += lam;
+            sig[parent[i]] += lam[i];
             const auto sig_i = sig[i];  // backup before it is set in next line
             if (!merge_sort && lazy_sort)
                 sort_events(pq[i], elements);
-            lb[i] = clip_front(elements, pq[i], mu, -mu*y[i] -sig_i + lam);
-            ub[i] = clip_back(elements, pq[i], mu, -mu*y[i] +sig_i, +lam);
+            lb[i] = clip<+1, check>(elements, pq[i], +mu[i], -mu[i]*y[i] - sig_i + lam[i]);
+            ub[i] = clip<-1, check>(elements, pq[i], -mu[i], +mu[i]*y[i] - sig_i + lam[i]);
             if (merge_sort)
                 pq[parent[i]] = merge2(pq[parent[i]], pq[i], elements);
             else {
@@ -88,7 +93,7 @@ tree_dp(
         const auto r = root;
         if (!merge_sort && lazy_sort)
             sort_events(pq[r], elements);
-        x[r] = clip_front(elements, pq[r], mu, -mu*y[r] -sig[r] + 0.0);
+        x[r] = clip<+1, check>(elements, pq[r], mu[r], -mu[r]*y[r] -sig[r] + 0.0);
         for (long int j = (long int)(n-2); j >= 0; j--) {
             const auto v = proc_order[j];
             x[v] = clamp(x[parent[v]], lb[v], ub[v]);
@@ -120,7 +125,9 @@ tree_dp(
         x = new double[n];
     TreeDPStatus s(n);
     timer.stop();
-    return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, root, s);
+    ConstantWeights<double> _lam (lam);
+    ConstantWeights<double> _mu (mu);
+    return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, _lam, _mu, root, s);
 }
 
 
@@ -198,8 +205,8 @@ tree_dp_w(
                                /* lower_bound */ min_y);
             ub[i] = clip_backw(elements, pq[i], mu[i], -
                                mu[i]*y[i] +sigi, +lami, max_y);
-            sig[parent[i]] += mu[i] > 1e-10 ? lami : std::min(lami, sigi);
             pq[parent[i]] = merge(pq[parent[i]], pq[i], elements);
+            sig[parent[i]] += mu[i] > 1e-10 ? lami : std::min(lami, sigi);
             if (!lazy_sort)
                 sort_events(pq[parent[i]], elements);
         }
