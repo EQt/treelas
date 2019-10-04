@@ -16,7 +16,6 @@
 #include "merge.hpp"
 
 
-template<typename E = Event>
 struct TreeDPStatus
 {
     TreeDPStatus(const size_t n) :
@@ -32,7 +31,7 @@ struct TreeDPStatus
     stack<int> dfs_stack;
 
     std::vector<int> proc_order;
-    std::vector<E> elements_;
+    std::vector<Event> elements_;
     std::vector<Range> pq;
     std::vector<double> lb;
 };
@@ -48,7 +47,7 @@ tree_dp(
     const double lam,
     const double mu,
     const int root,
-    TreeDPStatus<Event> &s)
+    TreeDPStatus &s)
 {
     auto *elements = s.elements_.data();
     auto &pq = s.pq;
@@ -120,7 +119,7 @@ tree_dp(
     Timer timer ("memory alloc");
     if (x == nullptr)
         x = new double[n];
-    TreeDPStatus<Event> s(n);
+    TreeDPStatus s(n);
     timer.stop();
     return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, root, s);
 }
