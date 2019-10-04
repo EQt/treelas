@@ -107,6 +107,7 @@ clip(Event *elem,
 }
 
 
+[[deprecated]]
 inline double
 clip_front(Event *elements,
            Range &pq,
@@ -117,6 +118,7 @@ clip_front(Event *elements,
 }
 
 
+[[deprecated]]
 inline double
 clip_back(Event *elements,
           Range &pq,
@@ -128,7 +130,7 @@ clip_back(Event *elements,
 }
 
 
-// [[deprecated]]
+[[deprecated]]
 inline double
 clip_fronw(
     Event *elements,
@@ -142,7 +144,7 @@ clip_fronw(
 }
 
 
-// [[deprecated]]
+[[deprecated]]
 inline double
 clip_backw(
     Event *elements,

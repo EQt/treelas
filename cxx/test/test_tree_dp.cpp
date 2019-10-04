@@ -162,7 +162,7 @@ TEST_CASE("dptree0: proc_order")
         REQUIRE(0.01 == Approx(sig[parent[i]]));
         REQUIRE(std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 0}) == sig);
         const auto sig_i = sig[i];
-        lb[i] = clip_front(elements, pq[i],
+        lb[i] = clip<+1, false>(elements, pq[i],
                            /* slope  */ +mu[i],
                            /* offset */ -mu[i]*y[i] -sig_i
                            /* t      */ +lam_i);
@@ -172,7 +172,7 @@ TEST_CASE("dptree0: proc_order")
         REQUIRE(elements[3] ==  Event({lb[i], mu[i]}));
         REQUIRE(elements[3].offset() == -mu[i]*y[i] + lam[i]);
 
-        ub[i] = clip_back  (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
+        ub[i] = clip<-1, false>(elements, pq[i], -mu[i], +mu[i]*y[i] -sig_i +lam_i);
         REQUIRE(std::vector<double>({0.0, 0, 0.01, 0, 0, 0, 1.99}) == sig);
         REQUIRE(2.0 + 0.01 == Approx(ub[i]));
         REQUIRE(Range({3, 4}) == pq[i]);
@@ -194,7 +194,7 @@ TEST_CASE("dptree0: proc_order")
         REQUIRE(0.02 == Approx(sig[parent[i]]));
         REQUIRE(std::vector<double>({0.0, 0, 0.02, 0, 0, 0, 1.99}) == sig);
         REQUIRE(0.0 == Approx(sig_i));
-        lb[i] = clip_front(elements, pq[i],
+        lb[i] = clip<+1, false>(elements, pq[i],
                            /* slope  */ +mu[i],
                            /* offset */ -mu[i]*y[i] -sig_i
                            /* t      */ +lam_i);
@@ -203,7 +203,7 @@ TEST_CASE("dptree0: proc_order")
         REQUIRE(Range({5, 5}) == pq[i]);
         REQUIRE(Event({lb[i], mu[i]}) == elements[5]);
 
-        ub[i] = clip_back (elements, pq[i], mu[i], -mu[i]*y[i] +sig_i, +lam_i);
+        ub[i] = clip<-1, false>(elements, pq[i], -mu[i], +mu[i]*y[i] -sig_i +lam_i);
         REQUIRE(0.0 + 0.01 == Approx(ub[i]));
         REQUIRE(Range({5, 6}) == pq[i]);
         REQUIRE(Event({ub[i], -mu[i]}) == elements[6]);
@@ -241,7 +241,7 @@ TEST_CASE("dptree0: proc_order")
             REQUIRE(-0.02 == t);
             REQUIRE(t == slope * e.x + offset);
             REQUIRE(q.stop >= q.start);
-            lb[i] = clip_front(elements, pq[i],
+            lb[i] = clip<+1, false>(elements, pq[i],
                                /* slope  */ slope,
                                /* offset */ offset +
                                /* t      */ t);

@@ -26,12 +26,12 @@ dp_forward(
     const float_ mu = 1.0;
     { // i = 0
         const auto i = begin;
-        lb[i] = clip_front(event, pq, mu, -mu*y[i] -0.0 + lam);
-        ub[i] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
+        lb[i] = clip<+1, false>(event, pq, +mu, -mu*y[i] - 0.0 + lam);
+        ub[i] = clip<-1, false>(event, pq, -mu, +mu*y[i] - 0.0 + lam);
     }
     for (size_t i = 1; i < end-1; i++) {
-        lb[i] = clip_front(event, pq, mu, -mu*y[i] -lam + lam);
-        ub[i] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
+        lb[i] = clip<+1, false>(event, pq, +mu, -mu*y[i] - lam + lam);
+        ub[i] = clip<-1, false>(event, pq, -mu, +mu*y[i] + lam - lam);
     }
 }
 
@@ -51,12 +51,12 @@ dp_reverse(
     const float_ mu = 1.0;
     { // i = n-1
         const auto i = end-1;
-        lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -0.0 + lam);
-        ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +0.0, +lam);
+        lb[i-1] = clip<+1, false>(event, pq, +mu, -mu*y[i] - 0.0 + lam);
+        ub[i-1] = clip<-1, false>(event, pq, -mu, +mu*y[i] - 0.0 + lam);
     }
     for (size_t i = end-2; i > begin; i--) {
-        lb[i-1] = clip_front(event, pq, mu, -mu*y[i] -lam + lam);
-        ub[i-1] = clip_back (event, pq, mu, -mu*y[i] +lam, +lam);
+        lb[i-1] = clip<+1, false>(event, pq, +mu, -mu*y[i] - lam + lam);
+        ub[i-1] = clip<-1, false>(event, pq, -mu, +mu*y[i] + lam - lam);
     }
  }
 
@@ -108,7 +108,7 @@ line_para(const size_t n,
 
     {   Timer _ ("root value");
         const float_ mu = 1.0;
-        x[n0] = clip_back(event, pq, mu, -mu*y[n0] +2*lam, 0.0);
+        x[n0] = clip<-1, false>(event, pq, -mu, +mu*y[n0] -2*lam + 0.0);
     }
 
     {   Timer _ ("backward");

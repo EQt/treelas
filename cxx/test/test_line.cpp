@@ -23,11 +23,11 @@ TEST_CASE("Line: line_las3")
                 const size_t i = n-1;
                 REQUIRE(2 == i);
                 REQUIRE(0.5 == y[i]);
-                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off + lam);
+                lb[i-1] = clip<+1, false>(event, pq, mu, -mu*y[i]-off + lam);
                 REQUIRE(0.0 == lb[i-1]);
                 REQUIRE(Range({int(n-1), int(n-1)}) == pq);
                 REQUIRE(Event({0.0, 1.0}) == event[pq.start]);
-                ub[i-1] = clip_back (event, pq, mu, -mu*y[i]+off, +lam);
+                ub[i-1] = clip<-1, false>(event, pq, -mu, +mu*y[i] -off + lam);
                 REQUIRE(1.0 == ub[i-1]);
                 REQUIRE(Range({int(n-1), int(n)}) == pq);
                 REQUIRE(Event({1.0, -1.0}) == event[pq.stop]);
@@ -37,10 +37,10 @@ TEST_CASE("Line: line_las3")
                 const size_t i = n-2;
                 REQUIRE(1 == i);
                 REQUIRE(0.0 == y[i]);
-                lb[i-1] = clip_front(event, pq, mu, -mu*y[i]-off + lam);
+                lb[i-1] = clip<+1, false>(event, pq, mu, -mu*y[i]-off + lam);
                 REQUIRE(Range({int(n-2), int(n)}) == pq);
                 REQUIRE(0.0 == lb[i-1]);
-                ub[i-1] = clip_back (event, pq, mu, -mu*y[i]+off, +lam);
+                ub[i-1] = clip<-1, false>(event, pq, -mu, +mu*y[i]-off + lam);
             }
     }
 }
