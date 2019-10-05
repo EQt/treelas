@@ -2,13 +2,13 @@
   Dynamic programming solver for line graphs
 */
 #pragma once
+#include <cmath>            // std::abs
 #include <stdexcept>        // std::invalid_argument
 #include <vector>
-#include <cmath>            // std::abs
 
-#include <graphidx/utils/timer.hpp>
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/weights.hpp>
+#include <graphidx/utils/timer.hpp>
 
 #include "event.hpp"
 #include "clip.hpp"
@@ -39,17 +39,17 @@ line_las(
         throw std::invalid_argument("End node must not be latent");
 
     std::vector<Event> elem;
-    Range pq {int(n), int(n-1)};
     std::vector<float_> ub;
+    Range pq {int(n), int(n-1)};
     {
         Timer _ ("alloc");
         elem.resize(2*n);
         ub.reserve(n-1);
     }
+    auto *el = elem.data();
     float_
         *lb = x,
         lam0 = float_(0.0);
-    auto *el = elem.data();
     {
         Timer _ ("forward");
         DEBUG && printf("\n");
