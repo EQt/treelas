@@ -17,11 +17,12 @@ def test_demo_3x7():
                       "-0.48 0.95 1.08 0.02 0.4", sep=" ")
     parent = np.array([0, 4, 5, 0, 3, 4, 7, 8, 5, 6, 7, 8,
                        9, 14, 17, 12, 15, 16, 19, 16, 17])
-    prob = TreeInstance(y, parent, lam=1.0)
+    lam = 1.0
+    prob = TreeInstance(y, parent, lam=lam)
     assert prob.root == 0
     assert prob.parent.dtype == np.int32
     prob.solve()
     assert abs(prob.x.mean() - prob.y.mean()) < 1e-15
     assert len(np.unique(prob.x)) == 2
-    assert sum(np.abs(prob.dual[2:]) >= 1) == 1
+    assert all(np.abs(prob.dual[2:]) <= lam)
     assert max(np.abs(prob.gamma)) < 1e-15
