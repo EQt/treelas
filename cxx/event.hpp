@@ -2,7 +2,6 @@
 #include <iostream>         // std::ostream
 #include <iomanip>          // std::setw
 
-#include "event3.hpp"
 
 /**
    Record the changes of a piecewise-linear function.

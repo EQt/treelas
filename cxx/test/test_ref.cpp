@@ -7,7 +7,7 @@
 
 TEST_CASE("reference: problem_clip_front")
 {
-    std::vector<Event3> elements =
+    std::vector<Event> elements =
         {{9, -99, 9},
          {4,  -8, 0},
          {3, -16, 0},
@@ -27,14 +27,14 @@ TEST_CASE("reference: problem_clip_front")
     }
     REQUIRE(4 == pq.start);
     REQUIRE(ecopy != elements);
-    REQUIRE(elements == std::vector<Event3> (
+    REQUIRE(elements == std::vector<Event> (
                 {ecopy[0], ecopy[4], ecopy[2], ecopy[3], ecopy[4]}));
 }
 
 
 TEST_CASE("reference: solved_clip_front")
 {
-    std::vector<Event3> elements =
+    std::vector<Event> elements =
         {{9, -99, 9},
          {4,  -8, 0},
          {3, -16, 0},

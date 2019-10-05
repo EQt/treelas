@@ -7,6 +7,7 @@
    Like Event but store the offset explicitly.
    May lead to more numerical precision in some situations.
 */
+[[deprecated]]
 struct Event3
 {
     double x;
