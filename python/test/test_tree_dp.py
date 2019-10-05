@@ -24,5 +24,5 @@ def test_demo_3x7():
     prob.solve()
     assert abs(prob.x.mean() - prob.y.mean()) < 1e-15
     assert len(np.unique(prob.x)) == 2
-    assert all(np.abs(prob.dual[2:]) <= lam)
+    assert max(np.abs(prob.dual[2:]) - lam) < 1e-12
     assert max(np.abs(prob.gamma)) < 1e-15
