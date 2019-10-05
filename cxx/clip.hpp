@@ -1,3 +1,4 @@
+#pragma once
 #include <cmath>            // std::abs(double) -> double
 #include <limits>           // infinity
 

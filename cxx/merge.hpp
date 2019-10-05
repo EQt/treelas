@@ -1,6 +1,7 @@
 /*
   All stuff related to queue, i.e. init (correct order) and merge.
  */
+#pragma once
 #include <algorithm>        // for std::sort
 #include <cstring>          // for std::memmove
 
