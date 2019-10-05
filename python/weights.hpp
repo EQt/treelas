@@ -13,7 +13,7 @@ check_len(const ssize_t /* n */,
 
 
 inline ArrayWeights<double>
-convert(py::array_f64 &a)
+convert(const py::array_f64 &a)
 {
     return ArrayWeights<double>(a.data());
 }
