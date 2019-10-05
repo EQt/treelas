@@ -52,6 +52,7 @@ tree_dp(
     const Wmu &mu,
     const int root,
     TreeDPStatus &s)
+
 {
     auto *elements = s.elements_.data();
     auto &pq = s.pq;
@@ -113,6 +114,31 @@ tree_dp(
    Paramters:
     x   Output solution (if NULL, allocate it); x == y possible.
  */
+template <bool merge_sort,
+          bool lazy_sort,
+          bool check = true,
+          typename Wlam,
+          typename Wmu>
+inline const double*
+tree_dp(
+    const size_t n,
+    double *x,
+    const double *y,
+    const int *parent,
+    const Wlam &lam,
+    const Wmu &mu,
+    const int root)
+{
+    Timer timer ("memory alloc");
+    if (x == nullptr)
+        x = new double[n];
+    TreeDPStatus s(n);
+    timer.stop();
+    return tree_dp<merge_sort, lazy_sort, check, Wlam, Wmu>(
+        n, x, y, parent, lam, mu, root, s);
+}
+
+
 template <bool merge_sort, bool lazy_sort>
 const double*
 tree_dp(
@@ -124,15 +150,10 @@ tree_dp(
     const double mu,
     const int root)
 {
-    Timer timer ("memory alloc");
-    if (x == nullptr)
-        x = new double[n];
-    TreeDPStatus s(n);
-    timer.stop();
     ConstantWeights<double> _lam (lam);
     ConstantWeights<double> _mu (mu);
     return tree_dp<merge_sort, lazy_sort, false>(n, x, y, parent,
-                                                 _lam, _mu, root, s);
+                                                 _lam, _mu, root);
 }
 
 
@@ -165,14 +186,10 @@ tree_dp_w(
                                     std::to_string(parent[root]) + " != root");
     }
 
-    Timer timer ("memory alloc");
-    TreeDPStatus s(n);
-    timer.stop();
-
     ArrayWeights<double> _lam(lam);
     ArrayWeights<double> _mu(mu);
     return tree_dp<merge_sort, lazy_sort, true>(n, x, y, parent,
-                                                _lam, _mu, root, s);
+                                                _lam, _mu, root);
 
     Timer::startit("free");
     return x;
