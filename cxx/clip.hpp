@@ -114,7 +114,7 @@ clip(std::vector<Event> &elem,
      float_ slope,
      float_ offset)
 {
-    return clip<step, need_check, float_>(elem.data(), pg, slope, offset);
+    return clip<step, need_check, float_>(elem.data(), pq, slope, offset);
 }
 
 
