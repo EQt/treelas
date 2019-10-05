@@ -107,6 +107,17 @@ clip(Event *elem,
 }
 
 
+template<int step, bool need_check = false, typename float_ = double>
+inline float_
+clip(std::vector<Event> &elem,
+     Range &pq,
+     float_ slope,
+     float_ offset)
+{
+    return clip<step, need_check, float_>(elem.data(), pg, slope, offset);
+}
+
+
 [[deprecated]]
 inline double
 clip_front(Event *elements,
