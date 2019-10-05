@@ -1,3 +1,5 @@
+import Libdl
+
 const build_dir = joinpath(dirname(@__FILE__), "build")
 const root_dir = joinpath(dirname(@__FILE__), "..", "..")
 const target = "treelas"
@@ -15,4 +17,5 @@ end
 cd(build_dir) do
     run(`cmake $root_dir $cmake_opts`)
     run(`cmake --build . --target $target`)
+    @assert isfile("libtreelas.$(Libdl.dlext)")
 end
