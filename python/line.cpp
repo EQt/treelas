@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
+#include "weights.hpp"
 
 #include "../deps/glmgen/tf.hpp"
 #include "../deps/condat/condat_tv_v2.hpp"
@@ -12,28 +13,6 @@
 
 
 namespace py = pybind11;
-
-
-inline void
-check_len(const ssize_t /* n */,
-          const double & /* a */,
-          const std::string &)
-{
-}
-
-
-inline ArrayWeights<double>
-convert(py::array_f64 &a)
-{
-    return ArrayWeights<double>(a.data());
-}
-
-
-inline ConstantWeights<double>
-convert(double a)
-{
-    return ConstantWeights<double>(a);
-}
 
 
 template <typename LamFrom = py::array_f64&,
