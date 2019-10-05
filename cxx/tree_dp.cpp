@@ -76,9 +76,12 @@ tree_dp(
             const auto sig_i = sig[i];  // backup before it is set in next line
             if (!merge_sort && lazy_sort)
                 sort_events(pq[i], elements);
-            lb[i] = clip<+1, check>(elements, pq[i], +mu[i], -mu[i]*y[i] - sig_i + lam[i]);
-            ub[i] = clip<-1, check>(elements, pq[i], -mu[i], +mu[i]*y[i] - sig_i + lam[i]);
-            sig[parent[i]] += (check && mu[i] <= EPS) ? std::min(lam[i], sig_i) : lam[i];
+            lb[i] = clip<+1, check>(elements, pq[i],
+                                    +mu[i], -mu[i]*y[i] - sig_i + lam[i]);
+            ub[i] = clip<-1, check>(elements, pq[i],
+                                    -mu[i], +mu[i]*y[i] - sig_i + lam[i]);
+            sig[parent[i]] +=
+                (check && mu[i] <= EPS) ? std::min(lam[i], sig_i) : lam[i];
             if (merge_sort)
                 pq[parent[i]] = merge2(pq[parent[i]], pq[i], elements);
             else {
@@ -93,7 +96,8 @@ tree_dp(
         const auto r = root;
         if (!merge_sort && lazy_sort)
             sort_events(pq[r], elements);
-        x[r] = clip<+1, check>(elements, pq[r], mu[r], -mu[r]*y[r] -sig[r] + 0.0);
+        x[r] = clip<+1, check>(elements, pq[r],
+                               +mu[r], -mu[r]*y[r] -sig[r] + 0.0);
         for (long int j = (long int)(n-2); j >= 0; j--) {
             const auto v = proc_order[j];
             x[v] = clamp(x[parent[v]], lb[v], ub[v]);
@@ -127,7 +131,8 @@ tree_dp(
     timer.stop();
     ConstantWeights<double> _lam (lam);
     ConstantWeights<double> _mu (mu);
-    return tree_dp<merge_sort, lazy_sort, false>(n, x, y, parent, _lam, _mu, root, s);
+    return tree_dp<merge_sort, lazy_sort, false>(n, x, y, parent,
+                                                 _lam, _mu, root, s);
 }
 
 
@@ -166,7 +171,8 @@ tree_dp_w(
 
     ArrayWeights<double> _lam(lam);
     ArrayWeights<double> _mu(mu);
-    return tree_dp<merge_sort, lazy_sort, true>(n, x, y, parent, _lam, _mu, root, s);
+    return tree_dp<merge_sort, lazy_sort, true>(n, x, y, parent,
+                                                _lam, _mu, root, s);
 
     Timer::startit("free");
     return x;
