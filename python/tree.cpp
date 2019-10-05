@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include "py_np.hpp"
+#include "weights.hpp"
 
 #include <graphidx/utils/timer.hpp>       // for TimerQuiet
 
@@ -162,22 +163,38 @@ reg_tree(py::module &m)
               if (is_empty(x))
                   x = py::array_f64({n}, {sizeof(double)});
               check_len(n, x, "x");
+              {   Timer _ ("check finite");
+                  check_all_finite(y.data(),  n, "y");
+                  check_all_finite(mu.data(), n, "mu");
+                  const size_t i = find_non_finite(lam.data(), n);
+                  if (i < n && int(i) != root) {
+                      throw std::runtime_error(
+                          std::string("lam[") + std::to_string(i) +
+                          "] = " + std::to_string(lam.unchecked<1>()(i)) +
+                          " ; root = " + std::to_string(root));
+                  }
+              }
+
+              constexpr auto merge_sort = true;
+              constexpr auto check_zero = true;
               if (lazy_sort)
-                  tree_dp_w<true>(n,
-                                  x.mutable_data(),
-                                  y.data(),
-                                  parent.data(),
-                                  lam.data(),
-                                  mu.data(),
-                                  root);
+                  tree_dp<merge_sort, true, check_zero>(
+                      n,
+                      x.mutable_data(),
+                      y.data(),
+                      parent.data(),
+                      convert(lam),
+                      convert(mu),
+                      root);
               else
-                  tree_dp_w<false>(n,
-                                   x.mutable_data(),
-                                   y.data(),
-                                   parent.data(),
-                                   lam.data(),
-                                   mu.data(),
-                                   root);
+                  tree_dp<merge_sort, false, check_zero>(
+                      n,
+                      x.mutable_data(),
+                      y.data(),
+                      parent.data(),
+                      convert(lam),
+                      convert(mu),
+                      root);
               Timer::stopit();
               return x;
           },
