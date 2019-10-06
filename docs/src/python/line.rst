@@ -4,7 +4,7 @@ Line Algorithms
 .. currentmodule:: treelas
 
 .. autofunction:: line_las
-.. autofunction:: line_w
+.. autofunction:: line_dp
 
 
 For Comparison
