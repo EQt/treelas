@@ -17,7 +17,6 @@ Dynamic Programming Solvers
 ---------------------------
 
 .. autofunction:: tree_dp
-.. autofunction:: tree_dp_w
 
 
 Duality
