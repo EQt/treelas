@@ -9,9 +9,14 @@ Tree Related Algorithms
 .. autofunction:: random_spanning_tree
 
 .. autofunction:: post_order
+
+.. currentmodule:: treelas.tree
 .. autofunction:: find_root
+
+.. currentmodule:: treelas.graphidx
 .. autofunction:: graphviz
 
+.. currentmodule:: treelas
 
 Dynamic Programming Solvers
 ---------------------------
