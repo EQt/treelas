@@ -2,8 +2,6 @@
 #include <cmath>            // std::abs(double) -> double
 #include <limits>           // infinity
 
-#include <graphidx/utils/viostream.hpp>
-
 #include "event.hpp"
 #include "range.hpp"
 
