@@ -1,0 +1,303 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Tree Related Algorithms &mdash; TreeLas  documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Line Algorithms" href="line.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> TreeLas
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="line.html">Line Algorithms</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tree Related Algorithms</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#dynamic-programming-solvers">Dynamic Programming Solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#duality">Duality</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">TreeLas</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Tree Related Algorithms</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/tree.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tree-related-algorithms">
+<h1>Tree Related Algorithms<a class="headerlink" href="#tree-related-algorithms" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="treelas.Tree">
+<em class="property">class </em><code class="descclassname">treelas.</code><code class="descname">Tree</code><span class="sig-paren">(</span><em>parent</em>, <em>root=-1</em>, <em>n=None</em><span class="sig-paren">)</span><a class="headerlink" href="#treelas.Tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Rooted tree, stored as a parent np.array</p>
+<dl class="staticmethod">
+<dt id="treelas.Tree.from_prufer">
+<em class="property">static </em><code class="descname">from_prufer</code><span class="sig-paren">(</span><em>prufer</em><span class="sig-paren">)</span><a class="headerlink" href="#treelas.Tree.from_prufer" title="Permalink to this definition">¶</a></dt>
+<dd><p>If choose root by the Prüfer sequence</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="treelas.Tree.n">
+<code class="descname">n</code><a class="headerlink" href="#treelas.Tree.n" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of nodes</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="treelas.Tree.show">
+<code class="descname">show</code><span class="sig-paren">(</span><em>wait=True</em><span class="sig-paren">)</span><a class="headerlink" href="#treelas.Tree.show" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the tree using graphviz’ dot</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="treelas.random_spanning_tree">
+<code class="descclassname">treelas.</code><code class="descname">random_spanning_tree</code><span class="sig-paren">(</span><em>index: treelas.graphidx._graphidx.BiAdjacent</em>, <em>seed: int = 2018</em>, <em>parent: numpy.ndarray[int32] = array([]</em>, <em>dtype=int32)</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[int32]<a class="headerlink" href="#treelas.random_spanning_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a random spanning tree (similar to Prim’s algorithm)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="treelas.post_order">
+<code class="descclassname">treelas.</code><code class="descname">post_order</code><span class="sig-paren">(</span><em>parent: numpy.ndarray[int32], root: int = -1, include_root: bool = False, verbose: bool = False</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[int32]<a class="headerlink" href="#treelas.post_order" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute a post order (DFS finish time) starting at root
+on the tree given by parent</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="treelas.tree.find_root">
+<code class="descclassname">treelas.tree.</code><code class="descname">find_root</code><span class="sig-paren">(</span><em>parent: numpy.ndarray[int32]</em><span class="sig-paren">)</span> &#x2192; int<a class="headerlink" href="#treelas.tree.find_root" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find smallest i such that parent[i] == i</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="treelas.graphidx.graphviz">
+<code class="descclassname">treelas.graphidx.</code><code class="descname">graphviz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#treelas.graphidx.graphviz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load edges/{head,tail} and show the graph structure
+using the <cite>dot</cite> (<a class="reference external" href="https://www.graphviz.org/">https://www.graphviz.org/</a>) program</p>
+</dd></dl>
+
+<div class="section" id="dynamic-programming-solvers">
+<h2>Dynamic Programming Solvers<a class="headerlink" href="#dynamic-programming-solvers" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="treelas.tree_dp">
+<code class="descclassname">treelas.</code><code class="descname">tree_dp</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#treelas.tree_dp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Overloaded function.</p>
+<ol class="arabic">
+<li><p class="first">tree_dp(y: numpy.ndarray[float64], parent: numpy.ndarray[int32], lam: float, root: int = 0, mu: float = 1.0, x: numpy.ndarray[float64] = None, verbose: bool = False, merge_sort: bool = False, lazy_sort: bool = False) -&gt; numpy.ndarray[float64]</p>
+<blockquote>
+<div><p>Dynamic programming algorithm for trees (uniform weighting)</p>
+</div></blockquote>
+</li>
+<li><p class="first">tree_dp(y: numpy.ndarray[float64], parent: numpy.ndarray[int32], lam: numpy.ndarray[float64], mu: numpy.ndarray[float64], root: int = 0, verbose: bool = False, lazy_sort: bool = False, x: numpy.ndarray[float64] = None) -&gt; numpy.ndarray[float64]</p>
+<blockquote>
+<div><p>Dynamic programming algorithm for trees (node and edge weighting)</p>
+</div></blockquote>
+</li>
+</ol>
+</dd></dl>
+
+</div>
+<div class="section" id="duality">
+<h2>Duality<a class="headerlink" href="#duality" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="treelas.tree_dual">
+<code class="descclassname">treelas.</code><code class="descname">tree_dual</code><span class="sig-paren">(</span><em>parent: numpy.ndarray[int32], z: numpy.ndarray[float64], root: int = 0, alpha: numpy.ndarray[float64] = None, post_ord: numpy.ndarray[int32] = array([], dtype=int32), tree_orientation: bool = True, verbose: bool = False</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64]<a class="headerlink" href="#treelas.tree_dual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute dual solution along tree.
+Be aware that <cite>z</cite> is supposed to be <cite>mu*(x - y)</cite> and will be changed.
+After the computation, <cite>z[root]</cite> will contain <cite>z.sum()</cite>
+(from before the computation).</p>
+<p>If <cite>tree_orientation</cite>, every tree edge is directed from <cite>i</cite> to <cite>parent[i]</cite>;
+otherwise it goes from <cite>min(i, parent[i])</cite> to <cite>max(i, parent[i])</cite>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="treelas.tree_dual_gap">
+<code class="descclassname">treelas.</code><code class="descname">tree_dual_gap</code><span class="sig-paren">(</span><em>x: numpy.ndarray[float64], alpha: numpy.ndarray[float64], lam: numpy.ndarray[float64], parent: numpy.ndarray[int32], root_val: float = 0.0, gamma: numpy.ndarray[float64] = None</em><span class="sig-paren">)</span> &#x2192; numpy.ndarray[float64]<a class="headerlink" href="#treelas.tree_dual_gap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the duality gap vector</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="line.html" class="btn btn-neutral" title="Line Algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, Elias Kuthe
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
