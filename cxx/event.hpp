@@ -6,8 +6,8 @@
 /**
    Record the changes of a piecewise-linear function.
 
-   The offset is calculated implicitly as we assume that the postion
-   `e.x` of the event `e` is the root of the linear function, i.e.
+   The offset is calculated implicitly as we assume that for any `Event e`
+   the postion `e.x` of the event `e` is the root of the linear function, i.e.
 
         e.x * e.slope + e.offset() == 0
 */

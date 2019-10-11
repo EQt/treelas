@@ -12,71 +12,17 @@ static const auto EPS = 1e-10;
 static const auto DEBUG = false;
 
 
-/** Cut all knots until the PWL is at least `t`.
+/** Cut all knots until the PWL is at least zero.
 
-  The reason why there are two versions, `clip_front` and `clip_fronw`:
+    Hereby, start with initial `slope` and `offset`.
+    To achieve a value of `t`, subtract it from `offset`.
 
-  In the end we usually divide by slope to obtain a position x, which
-  might be problematic in case that slope is (almost) zero.
-  Setting the position `x` to \f$-\infty\f$ will result in the problem that
-  `x` times `slope` is not exactly `t`.
+    If `step` is positive, go from `pq.start` till `pq.stop` (inclusive);
+    otherwise go the other direction, i.e. from `pq.stop` down to `pq.start` (inclusive).
 
-  Hence we agree that we will never insert an Event with zero slope.
-  Zero-slope Events can occur only at the beginning or the end of a queue.
-  That is way they can be merged into the adjoining events.
-  Just bear in mind that the initial offset might change by this change.
-  That is way I started two different implementations.
-
-  In case I favor a solution that returns the initial `offset` and the
-  position `x` the method
-  <a href="http://www.cplusplus.com/reference/tuple/tie/">std::tie</a>
-  might be helpful.
-
-  ## Usage
-
-  This methods returns the position where the event will happen next time.
-  Furthermore, a corresponding event is prepended to `elements`.
-
-  ## Why do we need the position `x` at all?
-
-  There are mainly to occasions: We need it to
-   1. order the events
-   2. have a proper bound in case slope is not zero
-
-  Regarding the first point, the ordering: In principle it is possible
-  to avoid the division and store `(offset, slope)` instead of `(x, slope)`.
-  However, to compare two Event s we would need to do a multiplication
-  each time.
-
-  Also for the second point we could avoid the division if we store
-  the slope and offset instead of the position `x`.
-
-  All in all I realized that events with zero-slope can be avoided:
-  they simple don't have an effect on further processing.
-
-  The only that can happen is that the associated edge edge might shrink
-  the possible flow (or overtake the effect of the proceeding other edges).
-  That is why I would like to return both, x and initial offset while
-  the zero slope should not go into the queue.
-
-
-  # Checking `abs(slope) > eps`
-
-  When is this really necessary?
-
-  It cannot happen if we never insert a line with `slope == 0`.
-  But can it happen at other places after some events have been processed?
-
-  What does it mean?
-  The implication is that a node's value is not unique.
-  Of course that can also happen for "inner nodes" with non-latent children, e.g.
-
-  ```
-  (V) -- (L) -- (V)
-
-  L: latent
-  V: non-latent
-  ```
+    If `need_check` is set, ensure that in the end `std::abs(slope) > EPS`;
+    if `slope` is too close to zero (i.e. `EPS`) the division by `slope` might result in strange behavior.
+    That is why a new `Event` is only added if `std::abs(slope) > EPS`.
 */
 template<int step, bool need_check = false, typename float_ = double>
 inline float_
