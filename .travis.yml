@@ -72,3 +72,14 @@ matrix:
     - <<: *cmake
       os: osx
       env: cmake_opts="-DASAN=OFF"
+
+    - language: python
+      python: "3.7"
+      name: "Doxygen"
+      os: linux
+      sudo: true
+      script:
+        - sudo apt-get install -y doxygen
+        - pip install -r docs/requirements.txt
+        - cd $TRAVIS_BUILD_DIR && make -C docs cxx
+
