@@ -6,11 +6,11 @@
 #include "range.hpp"
 
 /** Minimal slope after which the PWL is treated as having zero slope. */
-#define SLOPE_EPS (1e-8)
-
-
 static const auto EPS = 1e-10;
+
+/** Printout debugging information? */
 static const auto DEBUG = false;
+
 
 /** Cut all knots until the PWL is at least `t`.
 
