@@ -2,7 +2,7 @@ from __future__ import annotations
 import numpy as np
 from typing import Dict, Any
 
-from .graphidx.tree import find_root, Tree
+from graphidx.tree import find_root, Tree
 from . import _treelas as _tl
 
 

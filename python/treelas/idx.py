@@ -1,1 +1,1 @@
-from .graphidx.idx import BiAdjacent, ChildrenIndex, PartitionIndex, cluster
+from graphidx.idx import BiAdjacent, ChildrenIndex, PartitionIndex, cluster

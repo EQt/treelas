@@ -13,8 +13,8 @@ import numba
 import multiprocessing
 
 from .graphio import load_tree
-from .graphidx.timer import Timer
-from .graphidx.graphviz import show_tree
+from graphidx.timer import Timer
+from graphidx.graphviz import show_tree
 from .bfs import bfs_order, compute_children, compute_levels, reverse_levels
 
 

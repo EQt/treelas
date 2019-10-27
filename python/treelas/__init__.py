@@ -30,7 +30,7 @@ See https://github.com/eqt/treelas
 """
 from .tree import Tree, TreeInstance
 from .segment import line_mean
-from .graphidx._graphidx import (
+from graphidx._graphidx import (
     random_spanning_tree,
     post_order,
 )

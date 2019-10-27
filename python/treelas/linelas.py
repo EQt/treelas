@@ -7,7 +7,7 @@ import numpy as np
 from dataclasses import dataclass
 from pprint import pformat as _fmt
 from typing import Optional
-from .graphidx.weights import ConstantWeights, Weights
+from graphidx.weights import ConstantWeights, Weights
 from .rounder import _fround, _int_or_round
 
 
