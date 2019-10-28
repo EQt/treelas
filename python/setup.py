@@ -47,7 +47,7 @@ if __name__ == '__main__':
     gs = spec.loader.load_module()
 
     _graphidx = Extension(
-        "treelas.graphidx._graphidx",
+        "graphidx._graphidx",
         language='c++',
         sources=[path.join(path.dirname(graphidx_setup), s)
                  for s in gs.sources],
@@ -66,8 +66,10 @@ if __name__ == '__main__':
           author="Elias Kuthe",
           author_email="elias.kuthe@tu-dortmund.de",
           license="MIT",
-          packages=['treelas', *('treelas.' + p for p in gs.packages)],
+          packages=['treelas'],
           install_requires=['pybind11>=2.2'],
           ext_modules=[_treelas, _graphidx],
           cmdclass={'build_ext': gs.BuildExt},
     )
+
+    gs.graphidx_setup(_graphidx)
