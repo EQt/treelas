@@ -72,5 +72,4 @@ if __name__ == '__main__':
           cmdclass={'build_ext': gs.BuildExt},
     )
 
-    gs.graphidx_setup(_graphidx, '../deps/graphidx/python')
-
+    gs.graphidx_setup(_graphidx)
