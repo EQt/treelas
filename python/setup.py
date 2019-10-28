@@ -61,8 +61,6 @@ if __name__ == '__main__':
         include_dirs=includes,
     )
 
-    gs.graphidx_setup(_graphidx, '../deps/graphidx/python')
-
     setup(name="treelas",
           version=describe_tag(default="0.12.9"),
           author="Elias Kuthe",
@@ -73,3 +71,6 @@ if __name__ == '__main__':
           ext_modules=[_treelas, _graphidx],
           cmdclass={'build_ext': gs.BuildExt},
     )
+
+    gs.graphidx_setup(_graphidx, '../deps/graphidx/python')
+
