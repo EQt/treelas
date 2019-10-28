@@ -61,12 +61,14 @@ if __name__ == '__main__':
         include_dirs=includes,
     )
 
+    gs.graphidx_setup(_graphidx, '../deps/graphidx/python')
+
     setup(name="treelas",
           version=describe_tag(default="0.12.9"),
           author="Elias Kuthe",
           author_email="elias.kuthe@tu-dortmund.de",
           license="MIT",
-          packages=['treelas', *('treelas.' + p for p in gs.packages)],
+          packages=['treelas'],
           install_requires=['pybind11>=2.2'],
           ext_modules=[_treelas, _graphidx],
           cmdclass={'build_ext': gs.BuildExt},
