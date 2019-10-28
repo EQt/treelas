@@ -46,15 +46,23 @@ import ..Utils: sum2, primal_objective
 import ..Dual: dual!, gap_vec!, primal_from_dual!
 
 
-function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
+"""
+    extract_non_tree!(y, λt, edges, π, α, λ)
+
+Iterate over all `edges` (weighted by `λ`) and do the following:
+If the edge `e` is a tree edge, store the corresponding `λ[e]` in tree order.
+If the edge `e` is not part of the tree, compute the flow `α[e]` into the
+node input `y`.
+"""
+function extract_non_tree!(y, tlam, edges, parent, alpha, lambda)
     for (i, (u, v)) in enumerate(edges)
         if parent[v] == u
             tlam[v] = lambda[i]
         elseif parent[u] == v
             tlam[u] = lambda[i]
         else
-            z[u] += alpha[i]
-            z[v] -= alpha[i]
+            y[u] += alpha[i]
+            y[v] -= alpha[i]
         end
     end
 end
@@ -73,14 +81,14 @@ function gaplas(
     edges::Vector{E},
     lambda::Vector{Float64};
     root_node::Int = 1,
-    mu::Float64 = 1.0,
+    mu::Wmu = ConstantWeights(1.0),
     max_iter::Integer = 3,
     verbose::Bool = true,
     process::Fu1 = x->nothing,
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
     learn::Float64 = 1.0,
-)::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function}
+)::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function,Wmu}
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
@@ -135,7 +143,7 @@ function gaplas(
         z .= y
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
         x_new .= x
-        tree_dp!(x_new, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
+        tree_dp!(x_new, z, tree, ArrayWeights(tlam), mu, dp_mem)
         if !(x === x_new)
             x .= (1 - learn) .* x .+ learn .* x_new
         end
