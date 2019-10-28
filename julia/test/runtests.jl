@@ -1,6 +1,7 @@
 #!/usr/bin/env julia
 using Test
 
+include("test_rotate.jl")
 include("test_demo3x7.jl")
 include("test_lines.jl")
 include("test_cxx.jl")
