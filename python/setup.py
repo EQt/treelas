@@ -47,7 +47,7 @@ if __name__ == '__main__':
     gs = spec.loader.load_module()
 
     _graphidx = Extension(
-        "treelas.graphidx._graphidx",
+        "graphidx._graphidx",
         language='c++',
         sources=[path.join(path.dirname(graphidx_setup), s)
                  for s in gs.sources],
