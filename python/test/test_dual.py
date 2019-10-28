@@ -1,6 +1,6 @@
 import numpy as np
 from pytest import approx
-from treelas.graphidx import find_root
+from graphidx import find_root
 import treelas as tl
 
 
