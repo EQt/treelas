@@ -81,14 +81,14 @@ function gaplas(
     edges::Vector{E},
     lambda::Vector{Float64};
     root_node::Int = 1,
-    mu::Float64 = 1.0,
+    mu::Wmu = ConstantWeights(1.0),
     max_iter::Integer = 3,
     verbose::Bool = true,
     process::Fu1 = x->nothing,
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
     learn::Float64 = 1.0,
-)::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function}
+)::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function,Wmu}
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
@@ -143,7 +143,7 @@ function gaplas(
         z .= y
         extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
         x_new .= x
-        tree_dp!(x_new, z, tree, ArrayWeights(tlam), ConstantWeights(mu), dp_mem)
+        tree_dp!(x_new, z, tree, ArrayWeights(tlam), mu, dp_mem)
         if !(x === x_new)
             x .= (1 - learn) .* x .+ learn .* x_new
         end
