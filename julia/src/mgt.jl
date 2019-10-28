@@ -46,15 +46,23 @@ import ..Utils: sum2, primal_objective
 import ..Dual: dual!, gap_vec!, primal_from_dual!
 
 
-function extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
+"""
+    extract_non_tree!(y, λt, edges, π, α, λ)
+
+Iterate over all `edges` (weighted by `λ`) and do the following:
+If the edge `e` is a tree edge, store the corresponding `λ[e]` in tree order.
+If the edge `e` is not part of the tree, compute the flow `α[e]` into the
+node input `y`.
+"""
+function extract_non_tree!(y, tlam, edges, parent, alpha, lambda)
     for (i, (u, v)) in enumerate(edges)
         if parent[v] == u
             tlam[v] = lambda[i]
         elseif parent[u] == v
             tlam[u] = lambda[i]
         else
-            z[u] += alpha[i]
-            z[v] -= alpha[i]
+            y[u] += alpha[i]
+            y[v] -= alpha[i]
         end
     end
 end
