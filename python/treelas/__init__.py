@@ -51,7 +51,7 @@ from ._treelas import (
 )
 
 
-def line_las(y, lam, x=None, mu=1.0, increasing=True):
+def line_las(y, lam, x=None, mu=1.0, increasing=True, verbose=False):
     if not increasing:
         raise NotImplementedError("")
-    return line_dp(y=y, lam=lam, mu=mu, x=x)
+    return line_dp(y=y, lam=lam, mu=mu, x=x, verbose=False)

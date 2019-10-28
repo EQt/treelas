@@ -26,8 +26,10 @@ reg_line_las(py::module &m, const char *doc = "")
           [](const py::array_f64 &y,
              const LamFrom lam,
              const MuFrom mu,
-             py::array_f64 &x) -> py::array_t<double>
+             py::array_f64 &x,
+             const bool verbose) -> py::array_t<double>
           {
+              TimerQuiet _ (verbose);
               const auto n = check_1d_len(y);
               check_len(n-0, mu, "mu1");
               check_len(n-1, lam, "lam");
@@ -47,7 +49,8 @@ reg_line_las(py::module &m, const char *doc = "")
           py::arg("y"),
           py::arg("lam"),
           py::arg("mu") = 1.0,
-          py::arg("x") = py::none()
+          py::arg("x") = py::none(),
+          py::arg("verbose") = false
         );
 }
 
