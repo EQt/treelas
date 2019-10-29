@@ -224,6 +224,33 @@ reg_line(py::module &m)
           py::arg("parallel") = false);
 
 
+    m.def("line_dp",
+          [](const py::array_f64 &y,
+             const double lam,
+             py::array_f64 &x,
+             const bool verbose) -> py::array_t<double>
+          {
+              TimerQuiet _ (verbose);
+              const auto n = check_1d_len(y);
+              check_len(n-1, lam, "lam");
+              if (is_empty(x))
+                  x = py::array_f64({n}, {sizeof(double)});
+              check_len(n, x, "x");
+              {
+                  line_las(n,
+                           x.mutable_data(),
+                           y.data(),
+                           convert(lam));
+              }
+              return x;
+          },
+          "",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("x") = py::none(),
+          py::arg("verbose") = false
+        );
+
     reg_line_las<double, ConstantWeights<double>,
                  double, ConstantWeights<double>>(m);
 

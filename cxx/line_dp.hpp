@@ -33,7 +33,7 @@ line_las(
     float_ *x,
     const float_ *y,
     const Wlam &lam,
-    const Wmu &mu)
+    const Wmu &mu = UnitWeights<double>())
 {
     if ((mu[n-1]) <= 0)
         throw std::invalid_argument("End node must not be latent");
