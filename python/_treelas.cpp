@@ -9,6 +9,7 @@ namespace py = pybind11;
 
 void reg_line(py::module &m);
 void reg_tree(py::module &m);
+void reg_timer(py::module &m);
 
 /**
    For testing: create an array with 3 elements
@@ -59,4 +60,5 @@ PYBIND11_MODULE(_treelas, m)
 
     reg_line(m);
     reg_tree(m);
+    reg_timer(m);
 }
