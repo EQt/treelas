@@ -48,7 +48,7 @@ reg_line_las(py::module &m, const char *doc = "")
           doc,
           py::arg("y"),
           py::arg("lam"),
-          py::arg("mu") = 1.0,
+          py::arg("mu") = 1,
           py::arg("x") = py::none(),
           py::arg("verbose") = false
         );

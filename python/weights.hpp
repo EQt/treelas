@@ -24,3 +24,10 @@ convert(double a)
 {
     return ConstantWeights<double>(a);
 }
+
+
+inline UnitWeights<double>
+convert()
+{
+    return UnitWeights<double>();
+}
