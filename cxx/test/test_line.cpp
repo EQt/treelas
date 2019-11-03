@@ -1,8 +1,9 @@
 #include <doctest/doctest.h>
 #include <vector>
 #include <graphidx/bits/weights.hpp>
+#include <graphidx/utils/timer.hpp>
 
-#define DEBUG_CLIP true
+#define DEBUG_CLIP false
 #include "../clip.hpp"
 #include "../line_dp.hpp"
 
@@ -10,6 +11,7 @@
 TEST_CASE("line_las")
 {
     using doctest::Approx;
+    TimerQuiet _;
 
     SUBCASE("test_line.py: line1 with checks")
     {
@@ -21,7 +23,6 @@ TEST_CASE("line_las")
             INFO(i);
             CHECK(Approx(0.5) == x[i]);
         }
-        CHECK(false);
     }
 
 
