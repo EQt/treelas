@@ -14,6 +14,7 @@
 #include "clip.hpp"
 
 
+
 template<typename float_, typename Wlam>
 inline void
 line_las(
@@ -23,6 +24,31 @@ line_las(
     const Wlam &lam)
 {
     line_las(n, x, y, lam, UnitWeights<float_>());
+}
+
+
+template<typename float_, typename Wlam>
+std::vector<float_>
+line_las(
+    const size_t n,
+    const float_ *y,
+    const Wlam &lam)
+{
+    std::vector<float_> x;
+    x.resize(n);
+    line_las(n, x.data(), y, lam, UnitWeights<float_>());
+    return x;
+}
+
+
+template<typename float_, typename Wlam>
+std::vector<float_>
+line_las(
+    const std::vector<float_> &y,
+    const Wlam &lam)
+{
+
+    return line_las(y.size(), y.data(), lam);
 }
 
 
