@@ -4,16 +4,18 @@
 #include "../clip.hpp"
 
 
-TEST_CASE("Line: line_las3")
+TEST_CASE("line_las")
 {
-    std::vector<double> y {1.0, 0.0, 0.5};
-    const size_t n = y.size();
-    REQUIRE(3 == n);
-
-    const double lam = 0.5;
-    std::vector<Event> event_ (2*n);
-    std::vector<double> lb_ (n-1), ub_ (n-1);
+    SUBCASE("line_las3")
     {
+        std::vector<double> y {1.0, 0.0, 0.5};
+        const size_t n = y.size();
+        REQUIRE(3 == n);
+
+        const double lam = 0.5;
+        std::vector<Event> event_ (2*n);
+        std::vector<double> lb_ (n-1), ub_ (n-1);
+        {
             const double mu = 1.0;
             Event *event = event_.data();
             double *lb = lb_.data(), *ub = ub_.data();
@@ -42,5 +44,6 @@ TEST_CASE("Line: line_las3")
                 REQUIRE(0.0 == lb[i-1]);
                 ub[i-1] = clip<-1, false>(event, pq, -mu, +mu*y[i]-off + lam);
             }
+        }
     }
 }
