@@ -9,7 +9,7 @@
 static const auto EPS = 1e-10;
 
 /** Printout debugging information? */
-static const auto DEBUG = false;
+static const auto DEBUG = true;
 
 
 /** Cut all knots until the PWL is at least zero.

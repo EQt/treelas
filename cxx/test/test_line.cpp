@@ -61,6 +61,7 @@ TEST_CASE("line_las")
             INFO(i);
             CHECK(Approx(0.5) == x[i]);
         }
+        CHECK(false);
     }
 
 
