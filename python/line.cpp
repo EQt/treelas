@@ -18,7 +18,8 @@ namespace py = pybind11;
 template <typename LamFrom = py::array_f64&,
           typename LamTo = ArrayWeights<double>,
           typename MuFrom = py::array_f64&,
-          typename MuTo = ArrayWeights<double>>
+          typename MuTo = ArrayWeights<double>,
+          bool CHECK = true>
 void
 reg_line_las(py::module &m, const char *doc = "")
 {
@@ -37,11 +38,13 @@ reg_line_las(py::module &m, const char *doc = "")
                   x = py::array_f64({n}, {sizeof(double)});
               check_len(n, x, "x");
               {
-                  line_las(n,
-                           x.mutable_data(),
-                           y.data(),
-                           convert(lam),
-                           convert(mu));
+                  line_las<double, LamTo, MuTo, CHECK>(
+                      n,
+                      x.mutable_data(),
+                      y.data(),
+                      convert(lam),
+                      convert(mu)
+                  );
               }
               return x;
           },
