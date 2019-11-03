@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <typeinfo>
 #include "py_np.hpp"
 #include "weights.hpp"
 
@@ -30,6 +31,10 @@ reg_line_las(py::module &m, const char *doc = "")
              py::array_f64 &x,
              const bool verbose) -> py::array_t<double>
           {
+              printf("check = %s: %s %f\n", CHECK ? "true" : "false",
+                     typeid(MuTo).name(),
+                     convert(mu)[0]);
+              fflush(stdout);
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y);
               check_len(n-0, mu, "mu1");
@@ -255,16 +260,16 @@ reg_line(py::module &m)
         );
 
     reg_line_las<double, ConstantWeights<double>,
-                 double, ConstantWeights<double>>(m);
+                 double, ConstantWeights<double>, false>(m);
 
     reg_line_las<py::array_f64&, ArrayWeights<double>,
-                 double, ConstantWeights<double>>(m);
+                 double, ConstantWeights<double>, false>(m);
 
     reg_line_las<double, ConstantWeights<double>,
-                 py::array_f64&, ArrayWeights<double>>(m);
+                 py::array_f64&, ArrayWeights<double>, true>(m);
 
     reg_line_las<py::array_f64&, ArrayWeights<double>,
-                 py::array_f64&, ArrayWeights<double>>(m,
+                 py::array_f64&, ArrayWeights<double>, true>(m,
             R"pbdoc(
                 Line solver (weights).
 
