@@ -5,11 +5,15 @@
 #include "event.hpp"
 #include "range.hpp"
 
+#ifndef DEBUG_CLIP
+#  define DEBUG_CLIP true
+#endif
+
 /** Minimal slope after which the PWL is treated as having zero slope. */
-static const auto EPS = 1e-10;
+static const double EPS = 1e-10;
 
 /** Printout debugging information? */
-static const auto DEBUG = true;
+static const bool DEBUG = DEBUG_CLIP;
 
 
 /** Cut all knots until the PWL is at least zero.
@@ -114,3 +118,6 @@ clip_backw(
 {
     return clip<-1, true>(elements, pq, -slope, -offset + t);
 }
+
+
+#undef DEBUG_CLIP

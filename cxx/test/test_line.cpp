@@ -2,6 +2,7 @@
 #include <vector>
 #include <graphidx/bits/weights.hpp>
 
+#define DEBUG_CLIP true
 #include "../clip.hpp"
 #include "../line_dp.hpp"
 
@@ -61,7 +62,6 @@ TEST_CASE("line_las")
             INFO(i);
             CHECK(Approx(0.5) == x[i]);
         }
-        CHECK(false);
     }
 
 
