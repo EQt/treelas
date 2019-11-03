@@ -64,6 +64,7 @@ if (BUILD_PYEXT)
         python/line.cpp
         python/tree.cpp
         cxx/tree_12x.cpp
+        deps/graphidx/python/timer.cpp
         $<TARGET_OBJECTS:condat_tv>
         $<TARGET_OBJECTS:tf_dp>
         $<TARGET_OBJECTS:line_dp>
