@@ -245,10 +245,13 @@ reg_line(py::module &m)
                   x = py::array_f64({n}, {sizeof(double)});
               check_len(n, x, "x");
               {
-                  line_las(n,
-                           x.mutable_data(),
-                           y.data(),
-                           convert(lam));
+                  line_las<double, ConstantWeights<double>, UnitWeights<double>, false>(
+                      n,
+                      x.mutable_data(),
+                      y.data(),
+                      convert(lam),
+                      convert()
+                  );
               }
               return x;
           },
