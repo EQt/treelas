@@ -52,7 +52,7 @@ line_las(
 }
 
 
-template<typename float_, typename Wlam, typename Wmu, bool check = true>
+template<typename float_, typename Wlam, typename Wmu, bool CHECK = true>
 void
 line_las(
     const size_t n,
@@ -80,15 +80,16 @@ line_las(
         Timer _ ("forward");
         DEBUG && printf("\n");
         for (size_t i = 0; i < n-1; i++) {
-            lb[i] = clip<+1, check>(el, pq, +mu[i], -mu[i]*y[i] - lam0 + lam[i]);
-            ub[i] = clip<-1, check>(el, pq, -mu[i], +mu[i]*y[i] - lam0 + lam[i]);
-            lam0 = (check && mu[i] > EPS) ? lam[i] : std::min(lam0, lam[i]);
+            DEBUG && printf("mu[%d] = %f, y[i] = %f, lam0 = %f, lam[i] = %f\n", int(i), mu[i], y[i], lam0, lam[i]);
+            lb[i] = clip<+1, CHECK>(el, pq, +mu[i], -mu[i]*y[i] - lam0 + lam[i]);
+            ub[i] = clip<-1, CHECK>(el, pq, -mu[i], +mu[i]*y[i] - lam0 + lam[i]);
+            lam0 = (CHECK && mu[i] > EPS) ? lam[i] : std::min(lam0, lam[i]);
         }
     }
     {
         Timer _ ("backward");
         DEBUG && printf("\n");
-        x[n-1] = clip<+1, check>(el, pq, mu[n-1], -mu[n-1]*y[n-1] - lam0 + 0);
+        x[n-1] = clip<+1, CHECK>(el, pq, mu[n-1], -mu[n-1]*y[n-1] - lam0 + 0);
         for (size_t i = n-1; i >= 1; i--)
             x[i-1] = clamp(x[i], lb[i-1], ub[i-1]);
     }
