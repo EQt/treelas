@@ -1,7 +1,9 @@
 #include <doctest/doctest.h>
 #include <vector>
+#include <graphidx/bits/weights.hpp>
 
 #include "../clip.hpp"
+#include "../line_dp.hpp"
 
 
 TEST_CASE("line_las")
@@ -44,6 +46,20 @@ TEST_CASE("line_las")
                 REQUIRE(0.0 == lb[i-1]);
                 ub[i-1] = clip<-1, false>(event, pq, -mu, +mu*y[i]-off + lam);
             }
+        }
+    }
+
+
+    SUBCASE("test_line.py: line1")
+    {
+        using doctest::Approx;
+
+        std::vector<double> y {1.0, 0.0, 0.5};
+        ConstantWeights<double> lam (0.5);
+        auto x = line_las(y, lam);
+        for (size_t i = 0; i < y.size(); i++) {
+            INFO(i);
+            CHECK(Approx(0.5) == x[i]);
         }
     }
 }
