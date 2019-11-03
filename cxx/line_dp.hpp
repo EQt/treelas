@@ -22,7 +22,7 @@ line_las(
     const float_ *y,
     const Wlam &lam)
 {
-    line_las(n, x, y, lam, ConstantWeights<float_>(float_(1.0)));
+    line_las(n, x, y, lam, UnitWeights<float_>());
 }
 
 
@@ -33,7 +33,7 @@ line_las(
     float_ *x,
     const float_ *y,
     const Wlam &lam,
-    const Wmu &mu = UnitWeights<double>())
+    const Wmu &mu = UnitWeights<float_>())
 {
     if ((mu[n-1]) <= 0)
         throw std::invalid_argument("End node must not be latent");
