@@ -83,8 +83,7 @@ line_las(
             DEBUG && printf("mu[%d] = %f, y[i] = %f, lam0 = %f, lam[i] = %f\n", int(i), mu[i], y[i], lam0, lam[i]);
             lb[i] = clip<+1, CHECK>(el, pq, +mu[i], -mu[i]*y[i] - lam0 + lam[i]);
             ub[i] = clip<-1, CHECK>(el, pq, -mu[i], +mu[i]*y[i] - lam0 + lam[i]);
-            const auto is_latent = (CHECK && mu[i] < EPS);
-            lam0 = is_latent ? std::min(lam0, lam[i]) : lam[i];
+            lam0 = (CHECK && mu[i] < EPS) ? std::min(lam0, lam[i]) : lam[i];
         }
     }
     {

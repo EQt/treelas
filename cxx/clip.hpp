@@ -6,7 +6,7 @@
 #include "range.hpp"
 
 #ifndef DEBUG_CLIP
-#  define DEBUG_CLIP true
+#  define DEBUG_CLIP false
 #endif
 
 /** Minimal slope after which the PWL is treated as having zero slope. */
