@@ -18,10 +18,12 @@ static const auto DEBUG = false;
     To achieve a value of `t`, subtract it from `offset`.
 
     If `step` is positive, go from `pq.start` till `pq.stop` (inclusive);
-    otherwise go the other direction, i.e. from `pq.stop` down to `pq.start` (inclusive).
+    otherwise go the other direction, i.e.
+    from `pq.stop` down to `pq.start` (inclusive).
 
     If `need_check` is set, ensure that in the end `std::abs(slope) > EPS`;
-    if `slope` is too close to zero (i.e. `EPS`) the division by `slope` might result in strange behavior.
+    if `slope` is too close to zero (i.e. `EPS`) the division by `slope`
+    might result in strange behavior.
     That is why a new `Event` is only added if `std::abs(slope) > EPS`.
 */
 template<int step, bool need_check = false, typename float_ = double>
