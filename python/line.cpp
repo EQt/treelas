@@ -76,7 +76,7 @@ reg_line(py::module &m)
                   out = py::array_t<double>({{n}}, {{sizeof(double)}});
               check_len(n, out, "out");
               {
-                  Timer _ ("line_condat\n");
+                  Timer _ ("line_condat");
                   TV1D_denoise_v2(
                       y.data(),
                       out.mutable_data(),
@@ -108,7 +108,7 @@ reg_line(py::module &m)
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
               {
-                  Timer _ ("line_glmgen\n");
+                  Timer _ ("line_glmgen");
                   glmgen::tf_dp(int(n),
                                 y.data(),
                                 lam,
