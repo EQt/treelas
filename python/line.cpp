@@ -205,46 +205,6 @@ reg_line(py::module &m)
           py::arg("out") = py::none(),
           py::arg("verbose") = false);
 
-    m.def("line_las3",
-          [](const py::array_f64 &y,
-             const double lam,
-             py::array_f64 &out,
-             const bool verbose) -> py::array_t<double>
-          {
-              TimerQuiet _ (verbose);
-              Timer t1 ("check_1d_len");
-              const int n = int(check_1d_len(y, "y"));
-              t1.stop();
-              t1.start("is_empty");
-              const bool isempt = is_empty(out);
-              t1.stop();
-              if (isempt) {
-                  Timer _ ("alloc out");
-                  out = py::array_t<double>({n}, {sizeof(double)});
-              }
-              {
-                  Timer _ ("check_len(out)");
-                  check_len(n, out, "out");
-              }
-              {
-                  Timer _ ("line_las3\n");
-                  dp_line_c3(
-                      n,
-                      y.data(),
-                      lam,
-                      out.mutable_data());
-              }
-              return out;
-          },
-          R"pbdoc(
-                  Line solver (own implementation, save more memory compared to line_lasc).
-
-                  Memory: ??*len(y)*sizeof(uint32_t)
-              )pbdoc",
-          py::arg("y"),
-          py::arg("lam"),
-          py::arg("out") = py::none(),
-          py::arg("verbose") = false);
 
     m.def("line_para",
           [](const py::array_f64 &y,
@@ -322,4 +282,46 @@ reg_line(py::module &m)
 
                 Memory: ??*len(y)*sizeof(uint32_t)
             )pbdoc");
+
+
+    m.def("line_las3",
+          [](const py::array_f64 &y,
+             const double lam,
+             py::array_f64 &out,
+             const bool verbose) -> py::array_t<double>
+          {
+              TimerQuiet _ (verbose);
+              Timer t1 ("check_1d_len");
+              const int n = int(check_1d_len(y, "y"));
+              t1.stop();
+              t1.start("is_empty");
+              const bool isempt = is_empty(out);
+              t1.stop();
+              if (isempt) {
+                  Timer _ ("alloc out");
+                  out = py::array_t<double>({n}, {sizeof(double)});
+              }
+              {
+                  Timer _ ("check_len(out)");
+                  check_len(n, out, "out");
+              }
+              {
+                  Timer _ ("line_las3\n");
+                  dp_line_c3(
+                      n,
+                      y.data(),
+                      lam,
+                      out.mutable_data());
+              }
+              return out;
+          },
+          R"pbdoc(
+                  Line solver (own implementation, save more memory compared to line_lasc).
+
+                  Memory: ??*len(y)*sizeof(uint32_t)
+              )pbdoc",
+          py::arg("y"),
+          py::arg("lam"),
+          py::arg("out") = py::none(),
+          py::arg("verbose") = false);
 }
