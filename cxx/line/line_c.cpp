@@ -109,11 +109,11 @@ dp_line_c(const int n,
     float_ *b = buf.data() + p; p += 2*n;
     float_ *lb = buf.data() + p; p += n;
     float_ *ub = buf.data() + p; p += n;
-    if (p != buf.size())
+    if (p > buf.capacity())
         throw std::runtime_error(
-            std::string("dp_line_c(): ERROR during allocation") +
+            std::string("dp_line_c(): ERROR during allocation: ") +
             "p = " + std::to_string(p) + " != " +
-            std::to_string(buf.size()) + " = buf.size()");
+            std::to_string(buf.capacity()) + " = buf.capacity()");
     dp_line_c(n, y, lam, beta, x, a, b, lb, ub);
 
 #if false
