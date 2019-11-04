@@ -43,6 +43,7 @@ reg_line_las(py::module &m, const char *doc = "")
                   x = py::array_f64({n}, {sizeof(double)});
               check_len(n, x, "x");
               {
+                  Timer _ ("line_dp\n");
                   line_las<double, LamTo, MuTo, CHECK>(
                       n,
                       x.mutable_data(),
@@ -74,10 +75,14 @@ reg_line(py::module &m)
               if (is_empty(out))
                   out = py::array_t<double>({{n}}, {{sizeof(double)}});
               check_len(n, out, "out");
-              TV1D_denoise_v2(y.data(),
-                              out.mutable_data(),
-                              (unsigned int)n,
-                              lam);
+              {
+                  Timer _ ("line_condat\n");
+                  TV1D_denoise_v2(
+                      y.data(),
+                      out.mutable_data(),
+                      (unsigned int)n,
+                      lam);
+              }
               return out;
           },
           R"pbdoc(
@@ -102,10 +107,13 @@ reg_line(py::module &m)
               if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
-              glmgen::tf_dp(int(n),
-                            y.data(),
-                            lam,
-                            out.mutable_data());
+              {
+                  Timer _ ("line_glmgen\n");
+                  glmgen::tf_dp(int(n),
+                                y.data(),
+                                lam,
+                                out.mutable_data());
+              }
               return out;
 #else
               PyErr_SetString(PyExc_NotImplementedError,
@@ -165,10 +173,14 @@ reg_line(py::module &m)
               if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
-              dp_line_c2(n,
-                         y.data(),
-                         lam,
-                         out.mutable_data());
+              {
+                  Timer _ ("line_las2\n");
+                  dp_line_c2(
+                      n,
+                      y.data(),
+                      lam,
+                      out.mutable_data());
+              }
               return out;
           },
           R"pbdoc(
@@ -253,6 +265,7 @@ reg_line(py::module &m)
                   x = py::array_f64({n}, {sizeof(double)});
               check_len(n, x, "x");
               {
+                  Timer _ ("line_dp(unit)\n");
                   line_las<double, ConstantWeights<double>, UnitWeights<double>, false>(
                       n,
                       x.mutable_data(),
