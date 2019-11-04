@@ -7,9 +7,6 @@
 #include <stdexcept>
 
 #include <graphidx/utils/timer.hpp>
-#ifdef MALLOC
-#  include <graphidx/utils/malloc.hpp>
-#endif
 #include <graphidx/bits/minmax.hpp>
 
 
@@ -100,27 +97,25 @@ dp_line_c(const int n,
           const float_ lam,
           float_ *beta)
 {
-#ifdef BLOCK_ALLOC
-    Timer t ("alloc");
-#  ifdef MALLOC
-    Malloc<float_> buf (2*n + 2*n + 2*n + n + n);
-#  else
     std::vector<float_> buf;
-    buf.reserve(2*n + 2*n + 2*n + n + n);
-#  endif
+    {
+        Timer _ ("alloc");
+        buf.reserve(2*n + 2*n + 2*n + n + n);
+    }
     size_t p = 0;
     float_ *x = buf.data() + p; p += 2*n;
     float_ *a = buf.data() + p; p += 2*n;
     float_ *b = buf.data() + p; p += 2*n;
     float_ *lb = buf.data() + p; p += n;
     float_ *ub = buf.data() + p; p += n;
-    t.stop();
     if (p != buf.size())
-        throw std::runtime_error(std::string("dp_line_c(): ERROR during allocation") +
-                                 "p = " + std::to_string(p) + " != " +
-                                 std::to_string(buf.size()) + " = buf.size()");
+        throw std::runtime_error(
+            std::string("dp_line_c(): ERROR during allocation") +
+            "p = " + std::to_string(p) + " != " +
+            std::to_string(buf.size()) + " = buf.size()");
     _dp_line_c(n, y, lam, beta, x, a, b, lb, ub);
-#else
+
+#if false
     std::vector<float_> x, a, b, lb, ub;
     {   Timer _ ("alloc");
         x.reserve(2*n);
@@ -129,7 +124,8 @@ dp_line_c(const int n,
         lb.reserve(n);
         ub.reserve(n);
     }
-    _dp_line_c(n, y, lam, beta, x.data(), a.data(), b.data(), lb.data(), ub.data());
+    _dp_line_c(n, y, lam, beta, x.data(),
+               a.data(), b.data(), lb.data(), ub.data());
 #endif
 }
 
