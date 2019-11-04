@@ -36,14 +36,15 @@ impl LineDP {
         return dp;
     }
 
-    pub fn clip<F: Bool>(&mut self, slope: f64, offset: f64) -> f64 {
-        clip::<F>(&mut self.event, &mut self.pq, slope, offset)
+    pub fn clip<F: Bool, C: Bool >(&mut self, slope: f64, offset: f64) -> f64 {
+        clip::<F, C>(&mut self.event, &mut self.pq, slope, offset)
     }
 
-    pub fn solve<W1, W2>(&mut self, x: &mut [f64], y: &[f64], lam: &W1, mu: &W2)
+    pub fn solve<W1, W2, B>(&mut self, x: &mut [f64], y: &[f64], lam: &W1, mu: &W2)
     where
         W1: graphidx::weights::Weighted<f64>,
         W2: graphidx::weights::Weighted<f64> + std::fmt::Debug,
+        B: Bool
     {
         let n = y.len();
         assert!(n == x.len());
@@ -58,9 +59,9 @@ impl LineDP {
         let mut lam0: f64 = 0.0;
         for i in 0..n - 1 {
             self.lb[i] =
-                self.clip::<True>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+                self.clip::<True, B>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
             self.ub[i] =
-                self.clip::<False>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+                self.clip::<False, B>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
             lam0 = if mu[i] > EPS {
                 lam[i]
             } else {
@@ -68,7 +69,7 @@ impl LineDP {
             };
         }
         x[n - 1] =
-            self.clip::<True>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
+            self.clip::<True, B>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
         for i in (0..n - 1).rev() {
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
@@ -81,22 +82,22 @@ impl LineDP {
             (Weights::Const(lam), Weights::Const(mu)) => {
                 let lam = graphidx::weights::ConstantWeights::new(lam);
                 let mu = graphidx::weights::ConstantWeights::new(mu);
-                self.solve(&mut x, &inst.y, &lam, &mu);
+                self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Weights::Const(mu)) => {
                 let lam = graphidx::weights::ArrayWeights::new(lam);
                 let mu = graphidx::weights::ConstantWeights::new(mu);
-                self.solve(&mut x, &inst.y, &lam, &mu);
+                self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Const(lam), Weights::Array(mu)) => {
                 let lam = graphidx::weights::ConstantWeights::new(lam);
                 let mu = graphidx::weights::ArrayWeights::new(mu);
-                self.solve(&mut x, &inst.y, &lam, &mu);
+                self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Weights::Array(mu)) => {
                 let mu = graphidx::weights::ArrayWeights::new(mu);
                 let lam = graphidx::weights::ArrayWeights::new(lam);
-                self.solve(&mut x, &inst.y, &lam, &mu);
+                self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
         };
     }
@@ -114,7 +115,7 @@ mod tests {
         let mut solver = LineDP::new(y.len());
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
-        solver.solve(&mut x, &y, &lam, &mu);
+        solver.solve::<_, _, False>(&mut x, &y, &lam, &mu);
         assert!(graphidx::lina::l1_diff(&x, &[0.0, 0.0, 1.0]) > 1.0);
         let diff: f64 = graphidx::lina::l1_diff(&x, &[1.1, 1.8, 1.1]);
         assert!(

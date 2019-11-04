@@ -22,7 +22,7 @@ impl Event {
 
 pub const EPS: f64 = 1e-9;
 
-pub fn clip<Forward: Bool>(
+pub fn clip<Forward: Bool, Check: Bool>(
     elements: &mut [Event],
     pq: &mut Range<usize>,
     mut slope: f64,
@@ -61,7 +61,7 @@ pub fn clip<Forward: Bool>(
             &elements[start..stop + 1],
         );
     }
-    let x = if slope.abs() <= EPS {
+    let x = if Check::is_true() && slope.abs() <= EPS {
         if Forward::is_true() {
             f64::NEG_INFINITY
         } else {
