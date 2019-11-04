@@ -36,15 +36,20 @@ impl LineDP {
         return dp;
     }
 
-    pub fn clip<F: Bool, C: Bool >(&mut self, slope: f64, offset: f64) -> f64 {
+    pub fn clip<F: Bool, C: Bool>(&mut self, slope: f64, offset: f64) -> f64 {
         clip::<F, C>(&mut self.event, &mut self.pq, slope, offset)
     }
 
-    pub fn solve<W1, W2, B>(&mut self, x: &mut [f64], y: &[f64], lam: &W1, mu: &W2)
-    where
+    pub fn solve<W1, W2, B>(
+        &mut self,
+        x: &mut [f64],
+        y: &[f64],
+        lam: &W1,
+        mu: &W2,
+    ) where
         W1: graphidx::weights::Weighted<f64>,
         W2: graphidx::weights::Weighted<f64> + std::fmt::Debug,
-        B: Bool
+        B: Bool,
     {
         let n = y.len();
         assert!(n == x.len());

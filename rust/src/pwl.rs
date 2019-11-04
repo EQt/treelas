@@ -38,7 +38,7 @@ pub fn clip<Forward: Bool, Check: Bool>(
         slope,
         offset,
         e,
-        &elements[start..stop+1],
+        &elements[start..stop + 1],
     );
     while start <= stop && slope * e.x + offset < 0.0 {
         offset += e.offset();
@@ -90,14 +90,16 @@ pub fn clip<Forward: Bool, Check: Bool>(
     x
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn test_event_offset() {
-        let e = Event { x: -0.15, slope: 2.0 };
+        let e = Event {
+            x: -0.15,
+            slope: 2.0,
+        };
         assert_eq!(e.offset(), 0.3);
     }
 }
