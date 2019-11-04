@@ -10,24 +10,24 @@
 #include <graphidx/bits/minmax.hpp>
 
 
-template <int step, typename T = double>
+template <int step, int size, typename T = double>
 struct Slice
 {
     T *const elem;
 
-    inline T& operator[](size_t i) const { return elem[step*i]; }
+    inline T& operator[](size_t i) const { return elem[size*i + step]; }
 };
 
 
 template <typename float_ = double>
 struct PackedBuf
 {
-    Slice<0, float_> beta;
-    Slice<1, float_> x;
-    Slice<3, float_> a;
-    Slice<5, float_> b;
-    Slice<7, float_> lb;
-    Slice<8, float_> ub;
+    float_ *const beta;
+    Slice<0, 3, float_> x;
+    Slice<1, 3, float_> a;
+    Slice<2, 3, float_> b;
+    Slice<0, 2, float_> lb;
+    Slice<1, 2, float_> ub;
 };
 
 
@@ -126,6 +126,8 @@ dp_line_c(const int n,
           const float_ lam,
           float_ *beta)
 {
+
+#if false
     std::vector<float_> buf;
     {
         Timer _ ("alloc");
@@ -151,6 +153,22 @@ dp_line_c(const int n,
         ub
     };
     dp_line_c(n, y, lam, mem);
+#else
+    std::vector<float_> buf;
+    {
+        Timer _ ("alloc");
+        buf.reserve(2*n + 2*n + 2*n + n + n);
+    }
+    PackedBuf<float_> mem {
+        beta,
+        {buf.data()},
+        {buf.data()},
+        {buf.data()},
+        {buf.data() + 6*n},
+        {buf.data() + 6*n},
+    };
+    dp_line_c(n, y, lam, mem);
+#endif
 
 #if false
     std::vector<float_> x, a, b, lb, ub;
