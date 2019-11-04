@@ -23,11 +23,11 @@ template <typename float_ = double>
 struct PackedBuf
 {
     float_ *const beta;
-    Slice<0, 3, float_> x;
-    Slice<1, 3, float_> a;
-    Slice<2, 3, float_> b;
-    Slice<0, 2, float_> lb;
-    Slice<1, 2, float_> ub;
+    const Slice<0, 2, float_> x;
+    const Slice<1, 2, float_> a;
+    const Slice<0, 2, float_> lb;
+    const Slice<1, 2, float_> ub;
+    inline float_ b(size_t i) const { return -a[i] * x[i]; }
 };
 
 
@@ -37,9 +37,10 @@ struct SeqBuf
     float_ *const beta;
     float_ *const x;
     float_ *const a;
-    float_ *const b;
     float_ *const lb;
     float_ *const ub;
+
+    inline float_ b(size_t i) const { return -a[i] * x[i]; }
 };
 
 
@@ -67,8 +68,8 @@ dp_line_c (
         mem.x[r] = mem.ub[0] = +lam/mu + y[0];
         mem.a[l] = +mu;
         mem.a[r] = -mu;
-        mem.b[l] = -mu*y[0] + lam;
-        mem.b[r] = +mu*y[0] + lam;
+        // mem.b[l] = -mu*y[0] + lam;
+        // mem.b[r] = +mu*y[0] + lam;
 
         for (i = 1; i < n-1; i++) {
             // clip from lower
@@ -76,26 +77,26 @@ dp_line_c (
             b_ = -mu*y[i] - lam;
             while (l <= r && a_ * mem.x[l] + b_ <= -lam) {
                 a_ += mem.a[l];
-                b_ += mem.b[l];
+                b_ += mem.b(l);
                 l += 1;
             }
             l -= 1;
             mem.lb[i] = mem.x[l] = (-lam - b_) / a_;
             mem.a[l] = a_;
-            mem.b[l] = b_ + lam;
+            // mem.b[l] = b_ + lam;
 
             // clip from upper: a_ and b_ are negated (direction)
             a_ = -mu;               // negated!
             b_ = +mu * y[i] - lam;  // negated!
             while (l <= r && -(a_ * mem.x[r] + b_) >= lam) {
                 a_ += mem.a[r];
-                b_ += mem.b[r];
+                b_ += mem.b(r);
                 r -= 1;
             }
             r += 1;
             mem.ub[i] = mem.x[r] = - (lam + b_) / a_;        // a_ and b_ negated!
             mem.a[r] = a_;
-            mem.b[r] = b_ + lam;
+            // mem.b[r] = b_ + lam;
         }
     }
     {   Timer _ ("backward");
@@ -104,7 +105,7 @@ dp_line_c (
         b_ = -mu * y[n-1] - lam;
         while (l <= r && a_ * mem.x[l] + b_ <= 0) {
             a_ += mem.a[l];
-            b_ += mem.b[l];
+            b_ += mem.b(l);
             l += 1;
         }
         mem.beta[n-1] = -b_ / a_;
@@ -126,17 +127,15 @@ dp_line_c(const int n,
           const float_ lam,
           float_ *beta)
 {
-
 #if false
     std::vector<float_> buf;
     {
         Timer _ ("alloc");
-        buf.reserve(2*n + 2*n + 2*n + n + n);
+        buf.reserve(2*n + 2*n + n + n);
     }
     size_t p = 0;
     auto x = buf.data() + p; p += 2*n;
     auto a = buf.data() + p; p += 2*n;
-    auto b = buf.data() + p; p += 2*n;
     auto lb = buf.data() + p; p += n;
     auto ub = buf.data() + p; p += n;
     if (p > buf.capacity())
@@ -148,7 +147,6 @@ dp_line_c(const int n,
         beta,
         x,
         a,
-        b,
         lb,
         ub
     };
@@ -157,15 +155,14 @@ dp_line_c(const int n,
     std::vector<float_> buf;
     {
         Timer _ ("alloc");
-        buf.reserve(2*n + 2*n + 2*n + n + n);
+        buf.reserve(2*n + 2*n + n + n);
     }
     PackedBuf<float_> mem {
         beta,
         {buf.data()},
         {buf.data()},
-        {buf.data()},
-        {buf.data() + 6*n},
-        {buf.data() + 6*n},
+        {buf.data() + 4*n},
+        {buf.data() + 4*n},
     };
     dp_line_c(n, y, lam, mem);
 #endif
