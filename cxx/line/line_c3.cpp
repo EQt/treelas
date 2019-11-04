@@ -64,7 +64,6 @@ dp_line_c3(
             l -= 1;
             bounds[i].l = deriv[l].x = (-lam - b_) / a_;
             deriv[l].a = a_;
-            // b[l] = b_ + lam;
 
             // clip from upper: a_ and b_ are negated (direction)
             a_ = -mu;               // negated!
