@@ -27,12 +27,13 @@ struct pair2a
 
 template <typename float_ = double>
 void
-_dp_line_c3(const int n,
-            const float_ *y,
-            const float_ lam,
-            float_ *beta,
-            pair2a<float_> *deriv,
-            pair2<float_>  *bounds)
+dp_line_c3(
+    const int n,
+    const float_ *y,
+    const float_ lam,
+    float_ *beta,
+    pair2a<float_> *deriv,
+    pair2<float_>  *bounds)
 {
     const float_ mu = float_(1.0);
     int l, r, i;
@@ -112,7 +113,7 @@ dp_line_c3(const int n,
         deriv.reserve(2*n);
         bounds.reserve(n);
     }
-    _dp_line_c3(n, y, lam, beta, deriv.data(), bounds.data());
+    dp_line_c3(n, y, lam, beta, deriv.data(), bounds.data());
 }
 
 
