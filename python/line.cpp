@@ -108,11 +108,12 @@ reg_line(py::module &m)
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
               {
-                  Timer _ ("line_glmgen");
-                  glmgen::tf_dp(int(n),
-                                y.data(),
-                                lam,
-                                out.mutable_data());
+                  Timer _ ("line_glmgen\n");
+                  glmgen::tf_dp(
+                      int(n),
+                      y.data(),
+                      lam,
+                      out.mutable_data());
               }
               return out;
 #else
