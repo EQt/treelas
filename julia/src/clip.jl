@@ -38,19 +38,20 @@ function clip(
     slope::F,
     offset::F,
     ::Val{forward},
-)::F where {F,forward}
+    ::Val{check} = Val(true),
+)::F where {F,forward,check}
     local start::Int = pq[].start
     local stop::Int = pq[].stop
     local e::Event = elements[forward ? start : stop]::Event
-    DEBUG && local dir::String = forward ? "f" : "b"
-    DEBUG && @printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset)
+    @static DEBUG && local dir::String = forward ? "f" : "b"
+    @static DEBUG && @printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset)
     while start <= stop && slope * e.x + offset < 0
         offset += intercept(e)
         slope += e.slope
-        DEBUG && @printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset)
+        @static DEBUG && @printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset)
         e = elements[forward ? start += 1 : stop -= 1]
     end
-    local x::F = if abs(slope) <= EPS
+    local x::F = check && if abs(slope) <= EPS
         forward ? -Inf : +Inf
     else
         let x::F = -offset/slope
@@ -58,7 +59,7 @@ function clip(
             x
         end
     end
-    DEBUG && @printf("  ip_%s:  --> %g\n", dir, x)
+    @static DEBUG && @printf("  ip_%s:  --> %g\n", dir, x)
     pq[] = Range(start, stop)
     return x
 end
