@@ -47,7 +47,7 @@ struct SeqBuf
 template <typename Mem, typename float_ = double>
 void
 dp_line_c(
-    const int n,
+    const size_t n,
     const float_ *y,
     const float_ lam,
     Mem mem)
@@ -71,7 +71,7 @@ dp_line_c(
         // mem.b[l] = -mu*y[0] + lam;
         // mem.b[r] = +mu*y[0] + lam;
 
-        for (i = 1; i < n-1; i++) {
+        for (i = 1; i < int(n-1); i++) {
             // clip from lower
             a_ = +mu;
             b_ = -mu*y[i] - lam;
@@ -111,7 +111,7 @@ dp_line_c(
         mem.beta[n-1] = -b_ / a_;
         b_ = mem.beta[n-1];
         // back-pointers
-        for (i = n-2; i >= 0; i--) {
+        for (i = int(n-2); i >= 0; i--) {
             b_ = min(b_, mem.ub[i]);
             b_ = max(b_, mem.lb[i]);
             mem.beta[i] = b_;
@@ -123,7 +123,7 @@ dp_line_c(
 template <typename float_>
 void
 dp_line_c(
-    const int n,
+    const size_t n,
     const float_ *y,
     const float_ lam,
     float_ *beta)
@@ -172,7 +172,7 @@ dp_line_c(
 
 template
 void
-dp_line_c(const int n,
+dp_line_c(const size_t n,
           const double *y,
           const double lam,
           double *beta);
