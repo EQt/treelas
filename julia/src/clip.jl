@@ -51,7 +51,7 @@ function clip(
         @static DEBUG && @printf(" lip_%s: (%+g, %+.2f)\n", dir, slope, offset)
         e = elements[forward ? start += 1 : stop -= 1]
     end
-    local x::F = check && if abs(slope) <= EPS
+    local x::F = if check && abs(slope) <= EPS
         forward ? -Inf : +Inf
     else
         let x::F = -offset/slope

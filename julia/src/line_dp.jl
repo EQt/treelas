@@ -2,7 +2,7 @@ module LineDP
 
 import Printf: @printf
 import ..Pwl: clip, Range, Event, EPS, DEBUG
-import GraphIdx: ConstantWeights
+import GraphIdx: ConstantWeights, ArrayWeights
 
 """
 Contains all memory needed for `line_las!`.
@@ -33,7 +33,8 @@ function line_las!(
     y::Array{F,N},
     λ::Lam,
     µ::Mu,
-)::Array{F,N}  where {F, N, Lam, Mu}
+    C::Val{check} = Val(true),
+)::Array{F,N}  where {F, N, Lam, Mu, check}
     n = length(y)
     @assert n == length(x)
     resize!(mem, n)
@@ -43,15 +44,15 @@ function line_las!(
     local pq = Ref(Range(n+1, n))
     local λ0::F = F(0.0)
 
-    DEBUG && @info y
+    @static DEBUG && @info y
     for i = 1:(n-1)
-        lb[i] = clip(events, pq, +μ[i], -μ[i] * y[i] - λ0 + λ[i], Val(true))
-        ub[i] = clip(events, pq, -μ[i], +μ[i] * y[i] - λ0 + λ[i], Val(false))
-        λ0 = μ[i] > EPS ? λ[i] : min(λ0, λ[i])
+        lb[i] = clip(events, pq, +μ[i], -μ[i] * y[i] - λ0 + λ[i], Val(true), C)
+        ub[i] = clip(events, pq, -μ[i], +μ[i] * y[i] - λ0 + λ[i], Val(false), C)
+        λ0 = (!check || μ[i] > EPS) ? λ[i] : min(λ0, λ[i])
     end
 
-    x[n] = clip(events, pq, +μ[n], -μ[n] * y[n] - λ0 + 0, Val(true))
-    DEBUG && @printf("x[%d] = %g\n", n, x[n])
+    x[n] = clip(events, pq, +μ[n], -μ[n] * y[n] - λ0 + 0, Val(true), C)
+    @static DEBUG && @printf("x[%d] = %g\n", n, x[n])
     for i = n-1:-1:1
         x[i] = clamp(x[i+1], lb[i], ub[i])
     end
@@ -61,7 +62,7 @@ end
 
 
 line_las!(x::Array{F,N}, y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
-    line_las!(LineDPMem{F}(N), x, y, λ, µ)
+    line_las!(LineDPMem{F}(N), x, y, λ, µ, Val(μ isa ArrayWeights))
 
 line_las(y::Array{F,N}, λ::Lam, µ::Mu = ConstantWeights(1.0)) where {F,N,Lam,Mu} =
     line_las!(similar(y), y, λ, µ)
