@@ -1,8 +1,5 @@
 #pragma once
 
-#undef BLOCK_ALLOC
-#undef MALLOC
-
 
 template <typename float_ = double>
 void
