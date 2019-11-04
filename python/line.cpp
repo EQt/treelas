@@ -69,10 +69,13 @@ reg_line_las(py::module &m, const char *doc = "")
 void
 reg_line(py::module &m)
 {
-    m.def("line_condat", [](const py::array_f64 &y,
-                            const double lam,
-                            py::array_f64 out)
+    m.def("line_condat",
+          [](const py::array_f64 &y,
+             const double lam,
+             py::array_f64 &out,
+             const bool verbose)
           -> py::array_t<double> {
+              TimerQuiet _ (verbose);
               const auto n = check_1d_len(y, "y");
               if (is_empty(out))
                   out = py::array_t<double>({{n}}, {{sizeof(double)}});
@@ -96,12 +99,14 @@ reg_line(py::module &m)
           )pbdoc",
           py::arg("y"),
           py::arg("lam"),
-          py::arg("out") = py::none());
+          py::arg("out") = py::none(),
+          py::arg("verbose") = false);
 
-    m.def("line_glmgen", [](const py::array_f64 &y,
-                            const double lam,
-                            py::array_f64 out,
-                            const bool verbose) -> py::array_t<double>
+    m.def("line_glmgen",
+          [](const py::array_f64 &y,
+             const double lam,
+             py::array_f64 &out,
+             const bool verbose) -> py::array_t<double>
           {
 #ifdef HAVE_GLMGEN
               TimerQuiet _ (verbose);
@@ -139,13 +144,15 @@ reg_line(py::module &m)
     m.def("line_lasc",
           [](const py::array_f64 &y,
              const double lam,
-             py::array_f64 out,
+             py::array_f64 &out,
              const bool verbose) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
-              const int n = int(check_1d_len(y, "y"));
-              if (is_empty(out))
+              const auto n = check_1d_len(y, "y");
+              if (is_empty(out)) {
+                  Timer _ ("alloc out");
                   out = py::array_t<double>({n}, {sizeof(double)});
+              }
               check_len(n, out, "out");
               {
                   Timer _ ("line_lasc\n");
@@ -170,7 +177,7 @@ reg_line(py::module &m)
     m.def("line_las2",
           [](const py::array_f64 &y,
              const double lam,
-             py::array_f64 out,
+             py::array_f64 &out,
              const bool verbose) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
@@ -201,14 +208,24 @@ reg_line(py::module &m)
     m.def("line_las3",
           [](const py::array_f64 &y,
              const double lam,
-             py::array_f64 out,
+             py::array_f64 &out,
              const bool verbose) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
+              Timer t1 ("check_1d_len");
               const int n = int(check_1d_len(y, "y"));
-              if (is_empty(out))
+              t1.stop();
+              t1.start("is_empty");
+              const bool isempt = is_empty(out);
+              t1.stop();
+              if (isempt) {
+                  Timer _ ("alloc out");
                   out = py::array_t<double>({n}, {sizeof(double)});
-              check_len(n, out, "out");
+              }
+              {
+                  Timer _ ("check_len(out)");
+                  check_len(n, out, "out");
+              }
               {
                   Timer _ ("line_las3\n");
                   dp_line_c3(
@@ -265,7 +282,6 @@ reg_line(py::module &m)
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y);
-              check_len(n-1, lam, "lam");
               if (is_empty(out)) {
                   Timer _ ("alloc out");
                   out = py::array_f64({n}, {sizeof(double)});
