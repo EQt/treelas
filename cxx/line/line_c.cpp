@@ -23,7 +23,7 @@ dp_line_c (
     float_ *lb,
     float_ *ub)
 {
-    const float_ mu = float_(1.0);
+    constexpr float_ mu = float_(1.0);
     int l, r, i;
     float_ a_, b_;
 
