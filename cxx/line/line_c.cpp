@@ -13,12 +13,12 @@
 template <typename float_ = double>
 struct SeqBuf
 {
-    float_ *beta;
-    float_ *x;
-    float_ *a;
-    float_ *b;
-    float_ *lb;
-    float_ *ub;
+    float_ *const beta;
+    float_ *const x;
+    float_ *const a;
+    float_ *const b;
+    float_ *const lb;
+    float_ *const ub;
 };
 
 
@@ -106,23 +106,29 @@ dp_line_c(const int n,
           float_ *beta)
 {
     std::vector<float_> buf;
-    SeqBuf<float_> mem;
     {
         Timer _ ("alloc");
         buf.reserve(2*n + 2*n + 2*n + n + n);
     }
     size_t p = 0;
-    mem.beta = beta;
-    mem.x = buf.data() + p; p += 2*n;
-    mem.a = buf.data() + p; p += 2*n;
-    mem.b = buf.data() + p; p += 2*n;
-    mem.lb = buf.data() + p; p += n;
-    mem.ub = buf.data() + p; p += n;
+    auto x = buf.data() + p; p += 2*n;
+    auto a = buf.data() + p; p += 2*n;
+    auto b = buf.data() + p; p += 2*n;
+    auto lb = buf.data() + p; p += n;
+    auto ub = buf.data() + p; p += n;
     if (p > buf.capacity())
         throw std::runtime_error(
             std::string("dp_line_c(): ERROR during allocation: ") +
             "p = " + std::to_string(p) + " != " +
             std::to_string(buf.capacity()) + " = buf.capacity()");
+    SeqBuf<float_> mem {
+        beta,
+        x,
+        a,
+        b,
+        lb,
+        ub
+    };
     dp_line_c(n, y, lam, mem);
 
 #if false
