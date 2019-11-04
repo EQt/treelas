@@ -46,7 +46,7 @@ struct SeqBuf
 
 template <typename Mem, typename float_ = double>
 void
-dp_line_c (
+dp_line_c(
     const int n,
     const float_ *y,
     const float_ lam,
@@ -122,10 +122,11 @@ dp_line_c (
 
 template <typename float_>
 void
-dp_line_c(const int n,
-          const float_ *y,
-          const float_ lam,
-          float_ *beta)
+dp_line_c(
+    const int n,
+    const float_ *y,
+    const float_ lam,
+    float_ *beta)
 {
 #if false
     std::vector<float_> buf;
