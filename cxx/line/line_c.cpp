@@ -166,19 +166,6 @@ dp_line_c(const int n,
     };
     dp_line_c(n, y, lam, mem);
 #endif
-
-#if false
-    std::vector<float_> x, a, b, lb, ub;
-    {   Timer _ ("alloc");
-        x.reserve(2*n);
-        a.reserve(2*n);
-        b.reserve(2*n);
-        lb.reserve(n);
-        ub.reserve(n);
-    }
-    dp_line_c(n, y, lam, beta, x.data(),
-               a.data(), b.data(), lb.data(), ub.data());
-#endif
 }
 
 
