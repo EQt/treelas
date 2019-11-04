@@ -134,10 +134,14 @@ reg_line(py::module &m)
               if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
-              dp_line_c(n,
-                        y.data(),
-                        lam,
-                        out.mutable_data());
+              {
+                  Timer _ ("line_lasc\n");
+                  dp_line_c(
+                      n,
+                      y.data(),
+                      lam,
+                      out.mutable_data());
+              }
               return out;
           },
           R"pbdoc(
@@ -188,10 +192,14 @@ reg_line(py::module &m)
               if (is_empty(out))
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
-              dp_line_c3(n,
-                         y.data(),
-                         lam,
-                         out.mutable_data());
+              {
+                  Timer _ ("line_las3\n");
+                  dp_line_c3(
+                      n,
+                      y.data(),
+                      lam,
+                      out.mutable_data());
+              }
               return out;
           },
           R"pbdoc(
