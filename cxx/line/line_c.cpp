@@ -10,6 +10,27 @@
 #include <graphidx/bits/minmax.hpp>
 
 
+template <int step, typename T = double>
+struct Slice
+{
+    T *const elem;
+
+    inline T& operator[](size_t i) const { return elem[step*i]; }
+};
+
+
+template <typename float_ = double>
+struct PackedBuf
+{
+    Slice<0, float_> beta;
+    Slice<1, float_> x;
+    Slice<3, float_> a;
+    Slice<5, float_> b;
+    Slice<7, float_> lb;
+    Slice<8, float_> ub;
+};
+
+
 template <typename float_ = double>
 struct SeqBuf
 {
@@ -22,13 +43,13 @@ struct SeqBuf
 };
 
 
-template <typename float_ = double>
+template <typename Mem, typename float_ = double>
 void
 dp_line_c (
     const int n,
     const float_ *y,
     const float_ lam,
-    SeqBuf<float_> mem)
+    Mem mem)
 {
     constexpr float_ mu = float_(1.0);
     int l, r, i;
