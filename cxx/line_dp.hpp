@@ -69,7 +69,7 @@ line_las(
     Range pq {int(n), int(n-1)};
     {
         Timer _ ("alloc");
-        elem.resize(2*n);
+        elem.reserve(2*n);
         ub.reserve(n-1);
     }
     auto *el = elem.data();
