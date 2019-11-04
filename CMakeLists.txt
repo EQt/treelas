@@ -3,6 +3,7 @@ project(treelas)
 
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
+option(FAST_MATH   "Use -ffast-math"                   OFF)
 option(ASAN        "Use Address SANitizer"             OFF)
 set(GRAPHIDX_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx"
     CACHE STRING   "Which graphidx to be used")
@@ -20,9 +21,13 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
         set(CMAKE_CXX_FLAGS
             "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=leak")
     endif()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mlzcnt")
     set(CMAKE_CXX_FLAGS_RELEASE
         "${CMAKE_CXX_FLAGS_RELEASE} -O3 -mtune=native -march=native")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -mlzcnt")
+    if (FAST_MATH)
+        set(CMAKE_CXX_FLAGS_RELEASE
+            "${CMAKE_CXX_FLAGS_RELEASE} -ffast-math")
+    endif()
     if (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
         add_definitions(-Wno-sign-conversion)
     endif()
