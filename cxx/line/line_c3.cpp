@@ -35,7 +35,7 @@ dp_line_c3(
     pair2a<float_> *deriv,
     pair2<float_>  *bounds)
 {
-    const float_ mu = float_(1.0);
+    constexpr float_ mu = float_(1.0);
     int l, r, i;
     float_ a_, b_;
 
