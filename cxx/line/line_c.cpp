@@ -12,15 +12,16 @@
 
 template <typename float_ = double>
 void
-_dp_line_c (const int n,
-            const float_ *y,
-            const float_ lam,
-            float_ *beta,
-            float_ *x,
-            float_ *a,
-            float_ *b,
-            float_ *lb,
-            float_ *ub)
+dp_line_c (
+    const int n,
+    const float_ *y,
+    const float_ lam,
+    float_ *beta,
+    float_ *x,
+    float_ *a,
+    float_ *b,
+    float_ *lb,
+    float_ *ub)
 {
     const float_ mu = float_(1.0);
     int l, r, i;
@@ -113,7 +114,7 @@ dp_line_c(const int n,
             std::string("dp_line_c(): ERROR during allocation") +
             "p = " + std::to_string(p) + " != " +
             std::to_string(buf.size()) + " = buf.size()");
-    _dp_line_c(n, y, lam, beta, x, a, b, lb, ub);
+    dp_line_c(n, y, lam, beta, x, a, b, lb, ub);
 
 #if false
     std::vector<float_> x, a, b, lb, ub;
@@ -124,7 +125,7 @@ dp_line_c(const int n,
         lb.reserve(n);
         ub.reserve(n);
     }
-    _dp_line_c(n, y, lam, beta, x.data(),
+    dp_line_c(n, y, lam, beta, x.data(),
                a.data(), b.data(), lb.data(), ub.data());
 #endif
 }
