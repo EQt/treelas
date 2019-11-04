@@ -4,7 +4,6 @@
 #include "line_c3.hpp"
 
 #include <vector>
-#include <stdexcept>
 
 #include <graphidx/bits/minmax.hpp>
 #include <graphidx/utils/timer.hpp>
