@@ -44,7 +44,8 @@ function clip(
     local stop::Int = pq[].stop
     local e::Event = elements[forward ? start : stop]::Event
     @static DEBUG && local dir::String = forward ? "f" : "b"
-    @static DEBUG && @printf("clip_%s: (%+g, %+.2f)\n", dir, slope, offset)
+    @static DEBUG && @printf("clip_%s: (%+g, %+.2f) [%d] %s\n",
+                             dir, slope, offset, check, string(elements[start:stop]))
     while start <= stop && slope * e.x + offset < 0
         offset += intercept(e)
         slope += e.slope
