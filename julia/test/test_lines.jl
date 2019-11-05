@@ -35,7 +35,7 @@ lines = TOML.parsefile(lines_toml)["test"]
         y, lam, mu = instance(line, to_tree=false)
         n = length(y)
         @testset "line_las[$i]: n = $n" begin
-            @info "\nLine[$i]"
+            # @info "\nLine[$i]"
             @test TreeLas.LineDP.line_las(y, lam, mu) ≈ line["x"]
         end
     end
