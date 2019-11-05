@@ -39,7 +39,7 @@ if path.exists(_libfname):
             lam
         )
         if verbose:
-            print(duration/len(y))
+            print(f"{duration*1000:.3f}ms")
         return out
 
     

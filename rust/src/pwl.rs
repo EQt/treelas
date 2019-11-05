@@ -21,6 +21,7 @@ impl Event {
 }
 
 pub const EPS: f64 = 1e-9;
+const DEBUG: bool = false;
 
 pub fn clip<Forward: Bool, Check: Bool>(
     elements: &mut [Event],
@@ -32,14 +33,16 @@ pub fn clip<Forward: Bool, Check: Bool>(
     let mut stop: usize = pq.end - 1;
     let mut e = &elements[if Forward::is_true() { start } else { stop }];
     let dir = if Forward::is_true() { "f" } else { "b" };
-    println!(
-        "clip_{}: ({:+}, {:+.3}): {:.3?}\n\t {:.3?}",
-        dir,
-        slope,
-        offset,
-        e,
-        &elements[start..stop + 1],
-    );
+    if DEBUG {
+        println!(
+            "clip_{}: ({:+}, {:+.3}): {:.3?}\n\t {:.3?}",
+            dir,
+            slope,
+            offset,
+            e,
+            &elements[start..stop + 1],
+        );
+    }
     while start <= stop && slope * e.x + offset < 0.0 {
         offset += e.offset();
         slope += e.slope;
@@ -51,15 +54,17 @@ pub fn clip<Forward: Bool, Check: Bool>(
             stop
         };
         e = &elements[next];
-        println!(
-            " lip_{}: ({:+}, {:+.3}): {:.3?} offset: {:.3}\n\t {:.3?}",
-            dir,
-            slope,
-            offset,
-            e,
-            e.offset(),
-            &elements[start..stop + 1],
-        );
+        if DEBUG {
+            println!(
+                " lip_{}: ({:+}, {:+.3}): {:.3?} offset: {:.3}\n\t {:.3?}",
+                dir,
+                slope,
+                offset,
+                e,
+                e.offset(),
+                &elements[start..stop + 1],
+            );
+        }
     }
     let x = if Check::is_true() && slope.abs() <= EPS {
         if Forward::is_true() {
@@ -79,13 +84,15 @@ pub fn clip<Forward: Bool, Check: Bool>(
         elements[prev] = Event { x: x, slope: slope };
         x
     };
-    println!(
-        "  ip_{}: ({:+}, {:+.3}):\n\t {:.3?}",
-        dir,
-        slope,
-        offset,
-        &elements[start..stop + 1],
-    );
+    if DEBUG {
+        println!(
+            "  ip_{}: ({:+}, {:+.3}):\n\t {:.3?}",
+            dir,
+            slope,
+            offset,
+            &elements[start..stop + 1],
+        );
+    }
     *pq = start..(stop + 1);
     x
 }
