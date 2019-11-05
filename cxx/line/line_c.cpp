@@ -53,7 +53,8 @@ dp_line_c(
     Mem mem)
 {
     constexpr float_ mu = float_(1.0);
-    int l, r, i;
+    int i;
+    size_t l, r;
     float_ a_, b_;
 
     if (n <= 1) {
