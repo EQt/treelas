@@ -18,7 +18,7 @@ LineDPMem{F}() where {F} =
 
 LineDPMem{F}(n::Integer) where {F} =
     resize!(LineDPMem{F}(), n)
-    
+
 
 function Base.resize!(mem::LineDPMem{F}, n::Integer)::LineDPMem{F} where {F}
     resize!(mem.events, 2n)
