@@ -1,6 +1,6 @@
 [package]
 name = "treelas"
-version = "0.1.0"
+version = "0.12.9"
 authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 edition = "2018"
 
