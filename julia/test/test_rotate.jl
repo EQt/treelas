@@ -55,7 +55,7 @@ function extract_rotate(
 end
 
 
-@testset "Rotate Grid(2, 3)               " begin
+@testset "Rotate Grid(2, 3)              " begin
     g = GraphIdx.Grid.GridGraph(2, 3)
     if false
         GraphIdx.enumerate_edges(g) do i, u, v, _
@@ -85,7 +85,7 @@ end
 end
 
 
-@testset "Rotate Grid(2, 3) 2             " begin
+@testset "Rotate Grid(2, 3) 2            " begin
     g = GraphIdx.Grid.GridGraph(2, 3)
     pi = [1, 1, 1, 6, 3, 5]
     cidx = ChildrenIndex(pi)

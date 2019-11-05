@@ -9,7 +9,7 @@ include("data.jl")
 
 const fname = data_dir("test", "tree_demo3x7.toml")
 
-@testset "Demo 3x7               " begin
+@testset "Demo 3x7                       " begin
     tree = TOML.parsefile(fname)["tree"][1]
     pi = tree["parent"] .+ 1
     cidx = GraphIdx.Tree.ChildrenIndex(pi)
