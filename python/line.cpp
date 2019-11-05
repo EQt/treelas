@@ -29,7 +29,8 @@ reg_line_las(py::module &m, const char *doc = "")
              const LamFrom lam,
              const MuFrom mu,
              py::array_f64 &out,
-             const bool verbose) -> py::array_t<double>
+             const bool verbose,
+             Timer *timer) -> py::array_t<double>
           {
               printf("check = %s: %s %f\n", CHECK ? "true" : "false",
                      typeid(MuTo).name(),
@@ -45,7 +46,7 @@ reg_line_las(py::module &m, const char *doc = "")
               }
               check_len(n, out, "out");
               {
-                  Timer _ ("line_dp\n");
+                  if (timer) timer->start("line_dp\n");
                   line_las<double, LamTo, MuTo, CHECK>(
                       n,
                       out.mutable_data(),
@@ -53,6 +54,7 @@ reg_line_las(py::module &m, const char *doc = "")
                       convert(lam),
                       convert(mu)
                   );
+                  if (timer) timer->stop();
               }
               return out;
           },
@@ -61,8 +63,8 @@ reg_line_las(py::module &m, const char *doc = "")
           py::arg("lam"),
           py::arg("mu") = 1,
           py::arg("out") = py::none(),
-          py::arg("verbose") = false
-        );
+          py::arg("verbose") = false,
+          py::arg("timer").none(true) = py::none());
 }
 
 
@@ -73,20 +75,22 @@ reg_line(py::module &m)
           [](const py::array_f64 &y,
              const double lam,
              py::array_f64 &out,
-             const bool verbose)
-          -> py::array_t<double> {
+             const bool verbose,
+             Timer *timer) -> py::array_t<double>
+          {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y, "y");
               if (is_empty(out))
                   out = py::array_t<double>({{n}}, {{sizeof(double)}});
               check_len(n, out, "out");
               {
-                  Timer _ ("line_condat");
+                  if (timer) timer->start("line_condat");
                   TV1D_denoise_v2(
                       y.data(),
                       out.mutable_data(),
                       (unsigned int)n,
                       lam);
+                  if (timer) timer->stop();
               }
               return out;
           },
@@ -100,13 +104,15 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+          py::arg("verbose") = false,
+          py::arg("timer") = nullptr);
 
     m.def("line_glmgen",
           [](const py::array_f64 &y,
              const double lam,
              py::array_f64 &out,
-             const bool verbose) -> py::array_t<double>
+             const bool verbose,
+             Timer *timer) -> py::array_t<double>
           {
 #ifdef HAVE_GLMGEN
               TimerQuiet _ (verbose);
@@ -117,12 +123,13 @@ reg_line(py::module &m)
               }
               check_len(n, out, "out");
               {
-                  Timer _ ("line_glmgen\n");
+                  if (timer) timer->start("line_glmgen\n");
                   glmgen::tf_dp(
                       int(n),
                       y.data(),
                       lam,
                       out.mutable_data());
+                  if (timer) timer->stop();
               }
               return out;
 #else
@@ -139,13 +146,15 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+          py::arg("verbose") = false,
+          py::arg("timer") = nullptr);
 
     m.def("line_lasc",
           [](const py::array_f64 &y,
              const double lam,
              py::array_f64 &out,
-             const bool verbose) -> py::array_t<double>
+             const bool verbose,
+             Timer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y, "y");
@@ -155,12 +164,13 @@ reg_line(py::module &m)
               }
               check_len(n, out, "out");
               {
-                  Timer _ ("line_lasc\n");
+                  if (timer) timer->start("line_lasc\n");
                   dp_line_c(
                       n,
                       y.data(),
                       lam,
                       out.mutable_data());
+                  if (timer) timer->stop();
               }
               return out;
           },
@@ -172,13 +182,15 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+          py::arg("verbose") = false,
+          py::arg("timer").none(true) = py::none());
 
     m.def("line_las2",
           [](const py::array_f64 &y,
              const double lam,
              py::array_f64 &out,
-             const bool verbose) -> py::array_t<double>
+             const bool verbose,
+             Timer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const int n = int(check_1d_len(y, "y"));
@@ -186,12 +198,13 @@ reg_line(py::module &m)
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
               {
-                  Timer _ ("line_las2\n");
+                  if (timer) timer->start("line_las2\n");
                   dp_line_c2(
                       n,
                       y.data(),
                       lam,
                       out.mutable_data());
+                  if (timer) timer->stop();
               }
               return out;
           },
@@ -203,7 +216,8 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+          py::arg("verbose") = false,
+          py::arg("timer") = nullptr);
 
 
     m.def("line_para",
@@ -238,7 +252,8 @@ reg_line(py::module &m)
           [](const py::array_f64 &y,
              const double lam,
              py::array_f64 &out,
-             const bool verbose) -> py::array_t<double>
+             const bool verbose,
+             Timer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y);
@@ -248,7 +263,7 @@ reg_line(py::module &m)
               }
               check_len(n, out, "out");
               {
-                  Timer _ ("line_dp(unit)\n");
+                  if (timer) timer->start("line_dp(unit)\n");
                   line_las<double, ConstantWeights<double>, UnitWeights<double>, false>(
                       n,
                       out.mutable_data(),
@@ -256,6 +271,7 @@ reg_line(py::module &m)
                       convert(lam),
                       convert()
                   );
+                  if (timer) timer->stop();
               }
               return out;
           },
@@ -263,8 +279,8 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false
-        );
+          py::arg("verbose") = false,
+          py::arg("timer").none(true) = py::none());
 
     reg_line_las<double, ConstantWeights<double>,
                  double, ConstantWeights<double>, false>(m);
@@ -288,7 +304,8 @@ reg_line(py::module &m)
           [](const py::array_f64 &y,
              const double lam,
              py::array_f64 &out,
-             const bool verbose) -> py::array_t<double>
+             const bool verbose,
+             Timer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               Timer t1 ("check_1d_len");
@@ -306,12 +323,13 @@ reg_line(py::module &m)
                   check_len(n, out, "out");
               }
               {
-                  Timer _ ("line_las3\n");
+                  if (timer) timer->start("line_las3\n");
                   dp_line_c3(
                       n,
                       y.data(),
                       lam,
                       out.mutable_data());
+                  if (timer) timer->stop();
               }
               return out;
           },
@@ -323,5 +341,6 @@ reg_line(py::module &m)
           py::arg("y"),
           py::arg("lam"),
           py::arg("out") = py::none(),
-          py::arg("verbose") = false);
+          py::arg("verbose") = false,
+          py::arg("timer").none(true) = py::none());
 }
