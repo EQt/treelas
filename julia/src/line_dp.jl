@@ -41,7 +41,7 @@ function line_las!(
     local events::Vector{Event} = mem.events
     local lb::Vector{F} = mem.lb
     local ub::Vector{F} = x
-    local pq = Ref(Range(n+1n, n))
+    local pq = Ref(Range(n+1, n))
     local λ0::F = F(0.0)
 
     @static DEBUG && @info y
