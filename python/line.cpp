@@ -3,6 +3,8 @@
 #include "py_np.hpp"
 #include "weights.hpp"
 
+#include <graphidx/utils/perftimer.hpp>
+
 #include "../deps/glmgen/tf.hpp"
 #include "../deps/condat/condat_tv_v2.hpp"
 
@@ -30,7 +32,7 @@ reg_line_las(py::module &m, const char *doc = "")
              const MuFrom mu,
              py::array_f64 &out,
              const bool verbose,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
               printf("check = %s: %s %f\n", CHECK ? "true" : "false",
                      typeid(MuTo).name(),
@@ -46,7 +48,7 @@ reg_line_las(py::module &m, const char *doc = "")
               }
               check_len(n, out, "out");
               {
-                  if (timer) timer->start("line_dp\n");
+                  if (timer) timer->start();
                   line_las<double, LamTo, MuTo, CHECK>(
                       n,
                       out.mutable_data(),
@@ -76,7 +78,7 @@ reg_line(py::module &m)
              const double lam,
              py::array_f64 &out,
              const bool verbose,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y, "y");
@@ -84,7 +86,7 @@ reg_line(py::module &m)
                   out = py::array_t<double>({{n}}, {{sizeof(double)}});
               check_len(n, out, "out");
               {
-                  if (timer) timer->start("line_condat");
+                  if (timer) timer->start();
                   TV1D_denoise_v2(
                       y.data(),
                       out.mutable_data(),
@@ -112,7 +114,7 @@ reg_line(py::module &m)
              const double lam,
              py::array_f64 &out,
              const bool verbose,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
 #ifdef HAVE_GLMGEN
               TimerQuiet _ (verbose);
@@ -123,7 +125,7 @@ reg_line(py::module &m)
               }
               check_len(n, out, "out");
               {
-                  if (timer) timer->start("line_glmgen\n");
+                  if (timer) timer->start();
                   glmgen::tf_dp(
                       int(n),
                       y.data(),
@@ -154,7 +156,7 @@ reg_line(py::module &m)
              const double lam,
              py::array_f64 &out,
              const bool verbose,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y, "y");
@@ -164,7 +166,7 @@ reg_line(py::module &m)
               }
               check_len(n, out, "out");
               {
-                  if (timer) timer->start("line_lasc\n");
+                  if (timer) timer->start();
                   dp_line_c(
                       n,
                       y.data(),
@@ -190,7 +192,7 @@ reg_line(py::module &m)
              const double lam,
              py::array_f64 &out,
              const bool verbose,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const int n = int(check_1d_len(y, "y"));
@@ -198,7 +200,7 @@ reg_line(py::module &m)
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
               {
-                  if (timer) timer->start("line_las2\n");
+                  if (timer) timer->start();
                   dp_line_c2(
                       n,
                       y.data(),
@@ -226,7 +228,7 @@ reg_line(py::module &m)
              py::array_f64 out,
              const bool verbose,
              const bool parallel,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const int n = int(check_1d_len(y, "y"));
@@ -234,7 +236,7 @@ reg_line(py::module &m)
                   out = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, out, "out");
 
-              if (timer) timer->start("line_para\n");
+              if (timer) timer->start();
               line_para(n, y.data(), lam, out.mutable_data(), parallel);
               if (timer) timer->stop();
               return out;
@@ -257,7 +259,7 @@ reg_line(py::module &m)
              const double lam,
              py::array_f64 &out,
              const bool verbose,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y);
@@ -267,7 +269,7 @@ reg_line(py::module &m)
               }
               check_len(n, out, "out");
               {
-                  if (timer) timer->start("line_dp(unit)\n");
+                  if (timer) timer->start();
                   line_las<double, ConstantWeights<double>, UnitWeights<double>, false>(
                       n,
                       out.mutable_data(),
@@ -309,7 +311,7 @@ reg_line(py::module &m)
              const double lam,
              py::array_f64 &out,
              const bool verbose,
-             Timer *timer) -> py::array_t<double>
+             PerfTimer *timer) -> py::array_t<double>
           {
               TimerQuiet _ (verbose);
               Timer t1 ("check_1d_len");
@@ -327,19 +329,13 @@ reg_line(py::module &m)
                   check_len(n, out, "out");
               }
               {
-                  {
-                      TimerQuiet _ (true);
-                      if (timer) timer->start("line_las3\n");
-                  }
+                  if (timer) timer->start();
                   dp_line_c3(
                       n,
                       y.data(),
                       lam,
                       out.mutable_data());
-                  {
-                      TimerQuiet _ (true);
-                      if (timer) timer->stop();
-                  }
+                  if (timer) timer->stop();
               }
               return out;
           },
