@@ -1,9 +1,9 @@
+use std::time::Instant;
 pub mod generics;
 pub mod instance;
 pub mod line;
 pub mod pwl;
 pub mod tree;
-
 
 #[no_mangle]
 pub extern "C" fn line_las(
@@ -17,8 +17,9 @@ pub extern "C" fn line_las(
     let lam = graphidx::weights::ConstantWeights::new(lam);
     let mu = graphidx::weights::ConstantWeights::new(1.0);
     let mut solver = line::LineDP::new(y.len());
+    let start_time = Instant::now();
     solver.solve::<_, _, generics::False>(&mut x, &y, &lam, &mu);
-    0.1
+    start_time.elapsed().as_secs_f64()
 }
 
 
