@@ -8,3 +8,7 @@ edition = "2018"
 graphidx = { path = "../deps/graphidx/rust" }
 toml = "0.5"
 serde = { version = "1.0", features = ["derive"] }
+
+[lib]
+name = "treelars"
+crate-type = ["cdylib"]
