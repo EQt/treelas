@@ -1,5 +1,5 @@
 #include <pybind11/pybind11.h>
-#include <typeinfo>
+// #include <typeinfo>
 #include "py_np.hpp"
 #include "weights.hpp"
 
@@ -34,10 +34,10 @@ reg_line_las(py::module &m, const char *doc = "")
              const bool verbose,
              PerfTimer *timer) -> py::array_t<double>
           {
-              printf("check = %s: %s %f\n", CHECK ? "true" : "false",
-                     typeid(MuTo).name(),
-                     convert(mu)[0]);
-              fflush(stdout);
+              // printf("check = %s: %s %f\n", CHECK ? "true" : "false",
+              //        typeid(MuTo).name(),
+              //        convert(mu)[0]);
+              // fflush(stdout);
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(y);
               check_len(n-0, mu, "mu1");
