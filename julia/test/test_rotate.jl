@@ -2,33 +2,41 @@ module TestRotate
 
 import GraphIdx
 import GraphIdx: IncidenceIndex
-import GraphIdx.Tree: ChildrenIndex, hierarchy_string, lowest_common_ancestors
+import GraphIdx.Tree: ChildrenIndex, hierarchy_string, lowest_common_ancestors, root_node
 import GraphIdx.Tree: dfs_finish
 using Test
 
-"""
-    extract_rotate(graph, lam, pi, cidx)
+
+struct CycleBasis
+    non_tree_edges::Vector{Pair{Int,Int}}
+    non_tree_enum::Vector{Int}
+    tree_enum::Vector{Int}
+    non_tree_idx::IncidenceIndex
+    lca::Vector{Int}
+end
 
 
 """
-function extract_rotate(
+    extract_cyclebasis(graph, pi, cidx)
+"""
+function extract_cyclebasis(
     g::Graph,
-    lam::Wlam,
     pi::Vector{Int},
     cidx::ChildrenIndex,
-) where {Graph,Wlam}
+)::CycleBasis where {Graph}
     n = GraphIdx.num_nodes(g)
     m = GraphIdx.num_edges(g)
     non_tree = Vector{Pair{Int,Int}}()
     non_tree_enum = Vector{Int}()
     sizehint!(non_tree, m - n + 1)
     sizehint!(non_tree_enum, m - n + 1)
-    tlam = fill(NaN, n)
+    tree_enum = Vector{Int}(undef, n)
+    tree_enum[root_node(cidx)] = 0
     GraphIdx.enumerate_edges(g) do i, u, v, _
         if pi[u] == v
-            tlam[u] = lam[i]
+            tree_enum[u] = i
         elseif pi[v] == u
-            tlam[v] = lam[i]
+            tree_enum[v] = i
         else
             push!(non_tree, u => v)
             push!(non_tree_enum, i)
@@ -36,12 +44,40 @@ function extract_rotate(
     end
     nidx = IncidenceIndex(n, non_tree)
     lca = lowest_common_ancestors(cidx, pi, nidx)
+    CycleBasis(
+        non_tree,
+        non_tree_enum,
+        tree_enum,
+        nidx,
+        lca,
+    )
+end    
+
+
+"""
+    extract_rotate(graph, lam, pi, cidx)
+
+
+"""
+function extract_rotate(
+    graph::Graph,
+    lam::Wlam,
+    pi::Vector{Int},
+    cidx::ChildrenIndex,
+) where {Graph,Wlam}
+    n = GraphIdx.num_nodes(graph)
+    m = GraphIdx.num_edges(graph)
+    cb = extract_cyclebasis(graph, pi, cidx)
+    tlam = Vector{Float64}(undef, n)
+    for (i, ei) in enumerate(cb.tree_enum)
+        tlam[i] = ei > 0 ? lam[ei] : NaN
+    end
     ldiff = zeros(Float64, n)
     for v = 1:n
-        for (_, i) in nidx[v]
-            let lami = lam[non_tree_enum[i]]
+        for (_, i) in cb.non_tree_idx[v]
+            let lami = lam[cb.non_tree_enum[i]]
                 ldiff[v] += lami
-                ldiff[lca[i]] -= lami
+                ldiff[cb.lca[i]] -= lami
             end
         end
     end
@@ -51,7 +87,7 @@ function extract_rotate(
         ldiff[pi[v]] += ldiff[v]
         ldiff[v] = 0
     end
-    return tlam0, tlam, non_tree, lca
+    return tlam0, tlam, cb.non_tree_edges, cb.lca
 end
 
 
