@@ -63,16 +63,17 @@ end
 
 
 """
-    enumerate_cycles(func, cb)
+    enumerate_non_tree(func, cb)
 
-For every cycle Call function `func(ei, u, v, r)` whereby
-- `ei` is the index of the corresponding edge `(u, v)`
-- `r` is the root of the cycle, i.e. the lowest common ancestor of `u` and `v`
+For every cycle call function `func(ei, u, v, r)` whereby
+- `ei` is the index of the corresponding non-tree edge `(u, v)`
+- `r` is the root of the cycle, i.e. the lowest common
+  ancestor of `u` and `v` within the tree
 
 Notice that for every edge `(u, v)` the function is called twice:
 With `(u, v)` and `(v, u)`.
 """
-function enumerate_cycles(func::F, cb::CycleBasis) where {F<:Function}
+function enumerate_non_tree(func::F, cb::CycleBasis) where {F<:Function}
     n = GraphIdx.num_nodes(cb)
     for v = 1:n
         for (u, i) in cb.non_tree_idx[v]
@@ -81,7 +82,6 @@ function enumerate_cycles(func::F, cb::CycleBasis) where {F<:Function}
         end
     end
 end
-
 
 
 """
@@ -103,7 +103,7 @@ function extract_rotate(
         tlam[i] = ei > 0 ? lam[ei] : NaN
     end
     ldiff = zeros(Float64, n)
-    enumerate_cycles(cb) do i, _, v, r
+    enumerate_non_tree(cb) do i, _, v, r
         let lami = lam[cb.non_tree_enum[i]]
             ldiff[v] += lami
             ldiff[r] -= lami
