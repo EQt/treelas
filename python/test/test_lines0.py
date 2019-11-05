@@ -3,6 +3,7 @@ import pytest
 from treelas import line_dp
 from line import insts
 
+
 @pytest.mark.parametrize("i", insts)
 def test_dual(i):
     res = np.cumsum(i.mu * (i.x - i.y))
