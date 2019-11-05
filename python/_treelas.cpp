@@ -1,7 +1,10 @@
 #include <cstdint>
+#include <chrono>
+#include <thread>
 #include <pybind11/pybind11.h>
 
 #include <graphidx/utils/compiler.hpp>
+#include <graphidx/utils/timer.hpp>
 #include "py_np.hpp"
 
 namespace py = pybind11;
@@ -57,6 +60,39 @@ PYBIND11_MODULE(_treelas, m)
     m.def("_is_empty", &is_empty, R"pbdoc(
         Tell whether an np.ndarray is empty
     )pbdoc");
+
+    m.def("_pointer",
+          [](py::object v) {
+              if (v) {
+                  v = py::float_(42.0);
+                  return 1;
+              }
+              return 0;
+          },
+          R"pbdoc(
+            Experiments on hot to pass by reference.
+          )pbdoc",
+          py::arg("v").none(true) = py::none()
+        );
+
+    m.def("_pass_timer_ref",
+          [](Timer *timer = nullptr) -> double
+          {
+              TimerQuiet _ (true);
+              if (timer) {
+                  py::print("start\n");
+                  timer->start("sleep(50msec)");
+                  std::this_thread::sleep_for (std::chrono::milliseconds(50));
+                  timer->stop();
+                  return double(*timer);
+              } else {
+                  py::print("no timer");
+              }
+              return -1.0;
+          },
+          "TODO",
+          py::arg("timer").none(true) = py::none())
+        ;
 
     reg_line(m);
     reg_tree(m);
