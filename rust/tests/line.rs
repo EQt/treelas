@@ -1,6 +1,6 @@
 use graphidx::lina::l1_diff;
-use treelas::instance::{data_dir, Instance};
-use treelas::line::LineDP;
+use treelars::instance::{data_dir, Instance};
+use treelars::line::LineDP;
 
 #[test]
 fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {

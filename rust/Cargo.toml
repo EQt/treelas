@@ -11,4 +11,4 @@ serde = { version = "1.0", features = ["derive"] }
 
 [lib]
 name = "treelars"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "rlib"]
