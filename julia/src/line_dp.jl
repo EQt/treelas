@@ -45,7 +45,7 @@ function line_las!(
     local λ0::F = F(0.0)
 
     @static DEBUG && @info y
-    for i = 1:(n-1)
+    @inbounds for i = 1:(n-1)
         lb[i] = clip(events, pq, +μ[i], -μ[i] * y[i] - λ0 + λ[i], Val(true), C)
         ub[i] = clip(events, pq, -μ[i], +μ[i] * y[i] - λ0 + λ[i], Val(false), C)
         λ0 = (!check || μ[i] > EPS) ? λ[i] : min(λ0, λ[i])
@@ -53,7 +53,7 @@ function line_las!(
 
     x[n] = clip(events, pq, +μ[n], -μ[n] * y[n] - λ0 + 0, Val(true), C)
     @static DEBUG && @printf("x[%d] = %g\n", n, x[n])
-    for i = n-1:-1:1
+    @inbounds for i = n-1:-1:1
         x[i] = clamp(x[i+1], lb[i], ub[i])
     end
 
