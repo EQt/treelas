@@ -11,7 +11,11 @@ import GraphIdx
 function instance(line; to_tree::Bool = false)
     y = Float64.(line["y"])
     n = length(y)
-    mu = GraphIdx.create_weights(Float64.(get(line, "mu", 1.0)))
+    mu = if haskey(line, "mu")
+        GraphIdx.create_weights(Float64.(line["mu"]))
+    else
+        GraphIdx.create_weights(Float64)
+    end
     lam = Float64.(line["lam"])
     if to_tree && lam isa Array
         prepend!(lam, NaN)
