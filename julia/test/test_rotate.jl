@@ -2,7 +2,8 @@ module TestRotate
 
 import GraphIdx
 import GraphIdx: IncidenceIndex
-import GraphIdx.Tree: ChildrenIndex, hierarchy_string, lowest_common_ancestors, root_node
+import GraphIdx.Tree: ChildrenIndex, hierarchy_string
+import GraphIdx.Tree: lowest_common_ancestors, root_node
 import GraphIdx.Tree: dfs_finish
 using Test
 
@@ -16,8 +17,15 @@ struct CycleBasis
 end
 
 
+GraphIdx.num_nodes(cb::CycleBasis) =
+    length(cb.tree_enum)
+
+
 """
     extract_cyclebasis(graph, pi, cidx)
+
+Construct a cycle basis given a tree with parents `pi`
+and `cidx::ChildrenIndex`.
 """
 function extract_cyclebasis(
     g::Graph,
@@ -55,6 +63,28 @@ end
 
 
 """
+    enumerate_cycles(func, cb)
+
+For every cycle Call function `func(ei, u, v, r)` whereby
+- `ei` is the index of the corresponding edge `(u, v)`
+- `r` is the root of the cycle, i.e. the lowest common ancestor of `u` and `v`
+
+Notice that for every edge `(u, v)` the function is called twice:
+With `(u, v)` and `(v, u)`.
+"""
+function enumerate_cycles(func::F, cb::CycleBasis) where {F<:Function}
+    n = GraphIdx.num_nodes(cb)
+    for v = 1:n
+        for (u, i) in cb.non_tree_idx[v]
+            r = cb.lca[i]
+            func(i, u, v, r)
+        end
+    end
+end
+
+
+
+"""
     extract_rotate(graph, lam, pi, cidx)
 
 
@@ -73,12 +103,10 @@ function extract_rotate(
         tlam[i] = ei > 0 ? lam[ei] : NaN
     end
     ldiff = zeros(Float64, n)
-    for v = 1:n
-        for (_, i) in cb.non_tree_idx[v]
-            let lami = lam[cb.non_tree_enum[i]]
-                ldiff[v] += lami
-                ldiff[cb.lca[i]] -= lami
-            end
+    enumerate_cycles(cb) do i, _, v, r
+        let lami = lam[cb.non_tree_enum[i]]
+            ldiff[v] += lami
+            ldiff[r] -= lami
         end
     end
     tlam0 = copy(tlam)
