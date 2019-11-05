@@ -6,7 +6,11 @@ import GraphIdx.Tree: ChildrenIndex, hierarchy_string, lowest_common_ancestors
 import GraphIdx.Tree: dfs_finish
 using Test
 
+"""
+    extract_rotate(graph, lam, pi, cidx)
 
+
+"""
 function extract_rotate(
     g::Graph,
     lam::Wlam,
