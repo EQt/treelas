@@ -327,13 +327,19 @@ reg_line(py::module &m)
                   check_len(n, out, "out");
               }
               {
-                  if (timer) timer->start("line_las3\n");
+                  {
+                      TimerQuiet _ (true);
+                      if (timer) timer->start("line_las3\n");
+                  }
                   dp_line_c3(
                       n,
                       y.data(),
                       lam,
                       out.mutable_data());
-                  if (timer) timer->stop();
+                  {
+                      TimerQuiet _ (true);
+                      if (timer) timer->stop();
+                  }
               }
               return out;
           },
