@@ -2,7 +2,7 @@ module LineDP
 
 import Printf: @printf
 import ..Pwl: clip, Range, Event, EPS, DEBUG
-import GraphIdx: ConstantWeights, ArrayWeights
+import GraphIdx: UnitWeights, ArrayWeights
 
 """
 Contains all memory needed for `line_las!`.
@@ -41,7 +41,7 @@ function line_las!(
     local events::Vector{Event} = mem.events
     local lb::Vector{F} = mem.lb
     local ub::Vector{F} = x
-    local pq = Ref(Range(n+1, n))
+    local pq = Ref(Range(n+1n, n))
     local λ0::F = F(0.0)
 
     @static DEBUG && @info y
@@ -64,7 +64,7 @@ end
 line_las!(x::Array{F,N}, y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
     line_las!(LineDPMem{F}(N), x, y, λ, µ, Val(μ isa ArrayWeights))
 
-line_las(y::Array{F,N}, λ::Lam, µ::Mu = ConstantWeights(1.0)) where {F,N,Lam,Mu} =
+line_las(y::Array{F,N}, λ::Lam, µ::Mu = UnitWeights{F}()) where {F,N,Lam,Mu} =
     line_las!(similar(y), y, λ, µ)
 
 end
