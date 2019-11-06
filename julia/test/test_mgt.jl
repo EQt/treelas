@@ -100,7 +100,7 @@ end
         lambda = ones(Float64, length(edges))
         tlam = fill(NaN, length(y))
         alpha = zeros(length(edges))
-        MGT.extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
+        MGT.extract_non_tree!(edges, parent, z, tlam, alpha, lambda)
         @test z ≈ y
         @test all(tlam[1:end .!= root] .≈ 1.0)
     end

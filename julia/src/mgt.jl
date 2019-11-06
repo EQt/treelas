@@ -54,7 +54,7 @@ If the edge `e` is a tree edge, store the corresponding `λ[e]` in tree order.
 If the edge `e` is not part of the tree, compute the flow `α[e]` into the
 node input `y`.
 """
-function extract_non_tree!(y, tlam, edges, parent, alpha, lambda)
+function extract_non_tree!(edges, parent, y, tlam, alpha, lambda)
     for (i, (u, v)) in enumerate(edges)
         if parent[v] == u
             tlam[v] = lambda[i]
@@ -141,7 +141,7 @@ function gaplas(
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         z .= y
-        extract_non_tree!(z, tlam, edges, parent, alpha, lambda)
+        extract_non_tree!(edges, parent, z, tlam, alpha, lambda)
         x_new .= x
         tree_dp!(x_new, z, tree, ArrayWeights(tlam), mu, dp_mem)
         if !(x === x_new)
