@@ -136,7 +136,7 @@ function gaplas(
             local dual_obj = 0.5*sum2(x)
             local prim_obj = primal_objective(x, y, wgraph)
             primal_from_dual!(x2 .= y, alpha, wgraph)
-            @assert x ≈ x2 "‖x - x2‖_∞ = $(maximum(abs.(x - x2)))"
+            # @assert x ≈ x2 "‖x - x2‖_∞ = $(maximum(abs.(x - x2)))"
             @assert prim_obj + dual_obj - gap ≈ 0.5sum2(y)
 
             print(@sprintf("%4d %12.4f %12.4f %12.4f",
