@@ -5,6 +5,7 @@ include("square.jl")
 using Test
 import TreeLas.MGT
 import GraphIdx
+import GraphIdx: EdgeGraph
 
 
 @testset "MGT     : Square               " begin if true
@@ -46,7 +47,7 @@ end
 
     @test size(y) == (n1,n2)
 
-    edges = Tuple{Int64,Int64}[
+    edges = GraphIdx.Edge{Int}[
         (1,  2),  (4,  5),  (7, 8), (10, 11), (13, 14), (16, 17),
         (19, 20), (2,  3),  (5, 6), (8,   9), (11, 12), (14, 15),
         (17, 18), (20, 21), (1, 4), (4,   7), (7,  10), (10, 13),
@@ -107,7 +108,7 @@ end
         lambda = ones(Float64, length(edges))
         tlam = fill(NaN, length(y))
         alpha = zeros(length(edges))
-        MGT.extract_non_tree!(edges, parent, z, tlam, alpha, lambda)
+        MGT.extract_non_tree!(EdgeGraph(n, edges), parent, z, tlam, alpha, lambda)
         @test z ≈ y
         @test all(tlam[1:end .!= root] .≈ 1.0)
     end

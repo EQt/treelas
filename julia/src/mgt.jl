@@ -38,8 +38,8 @@ module MGT
 import Statistics
 import Printf: @sprintf
 import GraphIdx.Tree: RootedTree
-import GraphIdx: PrimMstMem, prim_mst_edges
-import GraphIdx: WeightedGraph, enumerate_edges
+import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
+import GraphIdx: WeightedGraph, enumerate_edges, num_edges, num_nodes
 import GraphIdx: ConstantWeights, ArrayWeights
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
@@ -54,8 +54,8 @@ If the edge `e` is a tree edge, store the corresponding `λ[e]` in tree order.
 If the edge `e` is not part of the tree, compute the flow `α[e]` into the
 node input `y`.
 """
-function extract_non_tree!(edges, parent, y, tlam, alpha, lambda)
-    enumerate_typed_edges(edges, parent) do istree::Bool, i::Int, u::Int, v::Int
+function extract_non_tree!(graph::Graph, parent, y, tlam, alpha, lambda)
+    enumerate_typed_edges(graph, parent) do istree::Bool, i::Int, u::Int, v::Int
         if istree
             tlam[u] = lambda[i]
         else
@@ -77,8 +77,8 @@ func(istree, i, u, v)
 whereby `istree` tells whether the edge is a tree edge.
 If it is a tree edge, `u` is the child of `v`.
 """
-function enumerate_typed_edges(func::Function, edges, parent::Vector{Int})
-    for (i, (u, v)) in enumerate(edges)
+function enumerate_typed_edges(func::Function, graph::Graph, parent::Vector{Int})
+    enumerate_edges(graph) do i::Int, u::Int, v::Int
         if parent[v] == u
             func(true, i, v, u)
         elseif parent[u] == v
@@ -91,7 +91,7 @@ end
 
 
 """
-    gaplas(y, edges, λ; learn=1.0, max_iter=3, ...)
+    gaplas(y, graph, λ; learn=1.0, max_iter=3, ...)
 
 Optimize in each iteration along a tree.
 
@@ -100,7 +100,7 @@ solution should be taken (should be between ``0`` and ``1.0``).
 """
 function gaplas(
     y::Array{Float64,N},
-    edges::Vector{E},
+    graph::EdgeGraph,
     lambda::Vector{Float64};
     root_node::Int = 1,
     mu::Wmu = ConstantWeights(1.0),
@@ -110,20 +110,21 @@ function gaplas(
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
     learn::Float64 = 1.0,
-)::Array{Float64,N} where {E, N, Fu1<:Function, Fu2<:Function, Fu3<:Function, Wmu}
-    local m = length(edges)
+)::Array{Float64,N} where {N, Fu1<:Function, Fu2<:Function, Fu3<:Function, Wmu}
+    local m = num_edges(graph)
     local n = length(y)
+    @assert n == num_nodes(graph)
     local alpha = zeros(m)
     local γ = zeros(m)
     local x = copy(y)
     local z = similar(y)
     local tlam = Vector{Float64}(undef, n)
     local dp_mem = TreeDPMem(n)
-    local mst_mem = PrimMstMem(edges, n)
+    local mst_mem = PrimMstMem(graph)
     local selected = mst_mem.selected
     local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
-    local graph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
+    local wgraph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
     local x_new::Array{Float64,N} = learn >= 1.0 ? x : copy(x)
     local alpha_new::Array{Float64} = learn >= 1.0 ? alpha : copy(alpha)
     if verbose
@@ -132,7 +133,7 @@ function gaplas(
     end
 
     for it in 1:max_iter
-        gap_vec!(γ, x, alpha, graph, -1.0)
+        gap_vec!(γ, x, alpha, wgraph, -1.0)
         if verbose
             if n < 30 && it > 1 && false
                 tree_gamma_check(γ, alpha, tlam, selected,
@@ -142,8 +143,8 @@ function gaplas(
                                                [0.90, 0.95, 0.98])
             local gap = -sum(γ)
             local dual_obj = 0.5*sum2(x)
-            local prim_obj = primal_objective(x, y, graph)
-            primal_from_dual!(x2 .= y, alpha, graph)
+            local prim_obj = primal_objective(x, y, wgraph)
+            primal_from_dual!(x2 .= y, alpha, wgraph)
             @assert x ≈ x2 "‖x - x2‖_∞ = $(maximum(abs.(x - x2)))"
             @assert prim_obj + dual_obj - gap ≈ 0.5sum2(y)
 
@@ -163,7 +164,7 @@ function gaplas(
         prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         z .= y
-        extract_non_tree!(edges, parent, z, tlam, alpha, lambda)
+        extract_non_tree!(graph, parent, z, tlam, alpha, lambda)
         x_new .= x
         tree_dp!(x_new, z, tree, ArrayWeights(tlam), mu, dp_mem)
         if !(x === x_new)
@@ -174,7 +175,7 @@ function gaplas(
             tree_alpha .= vec(x_new) .- vec(z)
             dual!(tree_alpha, dp_mem.proc_order, parent)
             alpha_new .= alpha
-            update_tree!(alpha_new, tree_alpha, selected, edges, parent)
+            update_tree!(alpha_new, tree_alpha, selected, graph, parent)
             if !(alpha === alpha_new)
                 alpha .= (1 - learn) .* alpha .+ learn .* alpha_new
             end
@@ -186,6 +187,9 @@ function gaplas(
     return x
 end
 
+gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Vector{Float64}; args...) where {E} =
+    gaplas(y, EdgeGraph(length(y), edges), λ; args...)
+
 
 """
     gaplas(...)
@@ -194,7 +198,7 @@ Graph has to implement several methods:
 - `iter_edges(::Function, ::Graph)`
 - `IncidenceIndex(::Graph)`
 """
-function gaplas(y::Array{Float64}, g::Graph) where {Graph}
+function gaplas(y::Array{Float64}, g::Graph)
     x = copy(y)
     α = zeros(num_edges(g))
     error("notimplemented")
@@ -215,14 +219,14 @@ end
 
 
 """
-    update_tree!(α, αt, selected, edges, parent)
+    update_tree!(α, αt, selected, graph, parent)
 
 Update the global dual `α` by a tree dual `αt`.
 """
-function update_tree!(alpha, tree_alpha, selected, edges, parent)
+function update_tree!(alpha, tree_alpha, selected, graph::EdgeGraph, parent)
     @assert selected[1] < 0
     for i in @view selected[2:end]
-        local u::Int, v::Int = edges[i]
+        local u::Int, v::Int = graph.edges[i]
         alpha[i] = if parent[v] == u
             -tree_alpha[v]
         elseif parent[u] == v
@@ -247,7 +251,7 @@ function duality_check(alpha, lambda)
 end
 
 
-function tree_gamma_check(γ, alpha, tlam, selected, x, z, proc_order, parent)
+function tree_gamma_check(γ, alpha, tlam, selected, x, z, proc_order, parent, edges)
     let γ = round.(-γ, digits=2)
         # @show γ
     end
