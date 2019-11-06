@@ -178,6 +178,9 @@ function gaplas(
     return x
 end
 
+gaplas(y::Array, edges, λ::Float64; args...) =
+    gaplas(y, edges, fill(λ, length(edges)); args...)
+
 gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Vector{Float64}; args...) where {E} =
     gaplas(y, EdgeGraph(length(y), edges), λ; args...)
 
