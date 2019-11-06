@@ -47,7 +47,7 @@ import ..Dual: dual!, gap_vec!, primal_from_dual!
 
 
 """
-    extract_non_tree!(y, λt, edges, π, α, λ)
+    extract_non_tree!(edges, y, λt, π, α, λ)
 
 Iterate over all `edges` (weighted by `λ`) and do the following:
 If the edge `e` is a tree edge, store the corresponding `λ[e]` in tree order.
@@ -55,14 +55,36 @@ If the edge `e` is not part of the tree, compute the flow `α[e]` into the
 node input `y`.
 """
 function extract_non_tree!(edges, parent, y, tlam, alpha, lambda)
-    for (i, (u, v)) in enumerate(edges)
-        if parent[v] == u
-            tlam[v] = lambda[i]
-        elseif parent[u] == v
+    enumerate_typed_edges(edges, parent) do istree::Bool, i::Int, u::Int, v::Int
+        if istree
             tlam[u] = lambda[i]
         else
             y[u] += alpha[i]
             y[v] -= alpha[i]
+        end
+    end
+end
+
+
+"""
+    traverse_edges(func, edges, π)
+
+Call for every edge `(u, v)` enumerated by `i` the function
+```julia
+func(istree, i, u, v)
+```
+
+whereby `istree` tells whether the edge is a tree edge.
+If it is a tree edge, `u` is the child of `v`.
+"""
+function enumerate_typed_edges(func::Function, edges, parent::Vector{Int})
+    for (i, (u, v)) in enumerate(edges)
+        if parent[v] == u
+            func(true, i, v, u)
+        elseif parent[u] == v
+            func(true, i, u, v)
+        else
+            func(false, i, u, v)
         end
     end
 end
