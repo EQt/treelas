@@ -12,7 +12,7 @@ rest.
 module TreeDP
 
 import GraphIdx
-import GraphIdx: ConstantWeights, ArrayWeights
+import GraphIdx: UnitWeights, ConstantWeights, ArrayWeights
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
 import ..Pwl: clip, Range, Event, EPS, DEBUG
 import ..Pwl: clip_front, clip_back
@@ -67,9 +67,11 @@ The edge weighting λ should be either a constant (e.g. `Float64`) or a
 callable such that `λ(i)` returns the weight of the edge `(i, t.parent[i])`;
 for `λ(t.root)` it might return anything but not causean error.
 """
-tree_dp(y::Array{F,N}, t::Tree, λ::F, µ::F = F(1.0))  where {F,N} =
-    tree_dp!(similar(y), y, t, ConstantWeights{F}(λ), ConstantWeights{F}(µ))
+tree_dp(y::Array{F,N}, t::Tree, λ::F)  where {F,N} =
+    tree_dp!(similar(y), y, t, ConstantWeights{F}(λ), UnitWeights{F}())
 
+tree_dp(y::Array{F,N}, t::Tree, λ::F, µ::F)  where {F,N} =
+    tree_dp!(similar(y), y, t, ConstantWeights{F}(λ), ConstantWeights{F}(µ))
 
 tree_dp(y::Array{F,N}, t::Tree, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
     tree_dp!(similar(y), y, t, λ, µ)
