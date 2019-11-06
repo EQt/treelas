@@ -23,15 +23,6 @@ For the different steps, several indexes are necessary
    from the `parent` (e.g. for `dfs_walk`); also needed for computing
    the `Queues` layout (parenthesis tree representation) and the
    processing order.
-
-
-Refactoring
------------
-
-In principle, it is not necessary to actually compute and store the
-edges (and weights); it suffices to have access via `enumerate_edges`
-or alike.
-
 """
 module MGT
 
