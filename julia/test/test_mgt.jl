@@ -20,18 +20,25 @@ end
 end
 
 
+function prettyarr(s::Array)
+    buf = IOBuffer()
+    show(buf, MIME("text/plain"), s)    
+    read(seekstart(buf), String)
+end
+
+
 @testset "MGT     : demo 3x7             " begin
     n1, n2 = 3, 7
     n = n1 * n2
     m = 32
     root = 1
     s = collect(1:n) |> x -> reshape(x, n1, n2)
-    """
+    @test prettyarr(s) == """
     3×7 Array{Int64,2}:
      1  4  7  10  13  16  19
      2  5  8  11  14  17  20
      3  6  9  12  15  18  21
-    """
+    """ |> chomp
 
     y = [0.62 0.73 0.71 1.5 1.17 0.43 1.08
          0.62 1.73 0.95 1.46 1.6 1.16 0.38
