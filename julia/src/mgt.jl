@@ -88,7 +88,7 @@ function gaplas(
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
     learn::Float64 = 1.0,
-)::Array{Float64,N} where {E,N,Fu1<:Function,Fu2<:Function,Fu3<:Function,Wmu}
+)::Array{Float64,N} where {E, N, Fu1<:Function, Fu2<:Function, Fu3<:Function, Wmu}
     local m = length(edges)
     local n = length(y)
     local alpha = zeros(m)
