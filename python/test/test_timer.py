@@ -8,5 +8,5 @@ def test_timer():
         tim = timer.Timer()
         d = tl._pass_timer_ref(tim)
         assert d >= 0.05
-        assert d <= 0.05 * 1.01
+        assert d <= 0.05 * 3
         assert d == float(tim)
