@@ -10,6 +10,17 @@ _libname = "libtreelars.so"
 _libfname = path.join(path.dirname(__file__),
                      "..", "..", "rust", "target", "release", _libname)
 
+class Float:
+    """
+    Be able to pass a float by reference
+    """
+    def __init__(self):
+        self.f = float('nan')
+
+    def __float__(self):
+        return float(self.f)
+
+
 if path.exists(_libfname):
     _lib = ctypes.CDLL(_libfname)
     _lib.line_las.restype = ctypes.c_double
@@ -25,6 +36,7 @@ if path.exists(_libfname):
             lam: float,
             out: np.ndarray = None,
             verbose: bool = False,
+            timer: Float = Float(),
     ) -> np.ndarray:
         y = y.reshape(-1).astype(float)
         if out is None:
@@ -38,8 +50,7 @@ if path.exists(_libfname):
             y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),
             lam
         )
-        if verbose:
-            print(f"{duration*1000:.3f}ms")
+        timer.f = duration
         return out
 
     
