@@ -97,23 +97,26 @@ PYBIND11_MODULE(_treelas, m)
 
     struct Double
     {
-        double *d;
-
-        Double() : d(new double()) { }
-        ~Double() { if (d) delete[] d; }
+        double d;
+        Double() : d(0.0) { }
     };
 
+    py::class_<Double>(m, "Double", py::module_local())
+        .def(py::init([]() { return Double(); }))
+        .def("__float__", [](const Double d) { return d.d; })
+        ;
+
     m.def("_pass_double_pointer",
-          [](Double ptr) -> bool
+          [](Double *ptr) -> bool
           {
-              if (ptr.d) {
-                  *ptr.d = 123.4;
+              if (ptr) {
+                  ptr->d = 123.4;
                   return true;
               }
               return false;
           },
           "For tessting purposes only!: Receive a double pointer",
-          py::arg("ptr").noconvert())
+          py::arg("ptr") = nullptr)
         ;
 
     reg_line(m);
