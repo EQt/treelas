@@ -95,17 +95,25 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("timer").none(true) = py::none())
         ;
 
+    struct Double
+    {
+        double *d;
+
+        Double() : d(new double()) { }
+        ~Double() { if (d) delete[] d; }
+    };
+
     m.def("_pass_double_pointer",
-          [](double *ptr) -> bool
+          [](Double ptr) -> bool
           {
-              if (ptr) {
-                  *ptr = 123.4;
+              if (ptr.d) {
+                  *ptr.d = 123.4;
                   return true;
               }
               return false;
           },
           "For tessting purposes only!: Receive a double pointer",
-          py::arg("ptr").noconvert() = nullptr)
+          py::arg("ptr").noconvert())
         ;
 
     reg_line(m);
