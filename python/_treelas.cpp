@@ -5,6 +5,7 @@
 
 #include <graphidx/utils/compiler.hpp>
 #include <graphidx/utils/timer.hpp>
+#include <graphidx/utils/perftimer.hpp>
 #include "py_np.hpp"
 
 namespace py = pybind11;
@@ -92,6 +93,19 @@ PYBIND11_MODULE(_treelas, m)
           },
           "For testing purposes only!: Obtain a Timer object as pointer argument",
           py::arg("timer").none(true) = py::none())
+        ;
+
+    m.def("_pass_double_pointer",
+          [](double *ptr) -> bool
+          {
+              if (ptr) {
+                  *ptr = 123.4;
+                  return true;
+              }
+              return false;
+          },
+          "For tessting purposes only!: Receive a double pointer",
+          py::arg("ptr").noconvert() = nullptr)
         ;
 
     reg_line(m);
