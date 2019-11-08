@@ -90,7 +90,7 @@ PYBIND11_MODULE(_treelas, m)
               }
               return -1.0;
           },
-          "TODO",
+          "For testing purposes only!: Obtain a Timer object as pointer argument",
           py::arg("timer").none(true) = py::none())
         ;
 
