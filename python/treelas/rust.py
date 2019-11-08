@@ -4,22 +4,12 @@ Wrapper to the Rust library
 import ctypes
 from os import path
 import numpy as np
+from ._treelas import Float
 
 
 _libname = "libtreelars.so"
 _libfname = path.join(path.dirname(__file__),
                      "..", "..", "rust", "target", "release", _libname)
-
-class Float:
-    """
-    Be able to pass a float by reference
-    """
-    def __init__(self):
-        self.f = float('nan')
-
-    def __float__(self):
-        return float(self.f)
-
 
 if path.exists(_libfname):
     _lib = ctypes.CDLL(_libfname)
@@ -50,7 +40,5 @@ if path.exists(_libfname):
             y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),
             lam
         )
-        timer.f = duration
+        timer.value = duration
         return out
-
-    

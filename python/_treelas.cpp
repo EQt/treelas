@@ -95,19 +95,20 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("timer").none(true) = py::none())
         ;
 
-    struct Double
+    struct Float
     {
         double d;
-        Double() : d(0.0) { }
+        Float() : d(0.0) { }
     };
 
-    py::class_<Double>(m, "Double", py::module_local())
-        .def(py::init([]() { return Double(); }))
-        .def("__float__", [](const Double d) { return d.d; })
+    py::class_<Float>(m, "Float", py::module_local())
+        .def(py::init([]() { return Float(); }))
+        .def("__float__", [](const Float d) { return d.d; })
+        .def_readwrite("value", &Float::d)
         ;
 
     m.def("_pass_double_pointer",
-          [](Double *ptr) -> bool
+          [](Float *ptr) -> bool
           {
               if (ptr) {
                   ptr->d = 123.4;
