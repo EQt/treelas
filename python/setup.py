@@ -63,7 +63,7 @@ if __name__ == '__main__':
     )
 
     setup(name="treelas",
-          version=describe_tag(default="0.12.9"),
+          version=describe_tag(default="0.14.0"),
           author="Elias Kuthe",
           author_email="elias.kuthe@tu-dortmund.de",
           license="MIT",
