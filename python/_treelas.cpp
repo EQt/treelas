@@ -1,3 +1,4 @@
+#include <cmath>        // std::nan
 #include <cstdint>
 #include <chrono>
 #include <thread>
@@ -98,7 +99,7 @@ PYBIND11_MODULE(_treelas, m)
     struct Seconds
     {
         double d;
-        Seconds() : d(0.0) { }
+        Seconds() : d(std::nan("")) { }
     };
 
     py::class_<Seconds>(m, "Seconds", py::module_local())
