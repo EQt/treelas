@@ -12,7 +12,7 @@ rest.
 module TreeDP
 
 import GraphIdx
-import GraphIdx: UnitWeights, ConstantWeights, ArrayWeights
+import GraphIdx: UnitWeights, ConstantWeights, ArrayWeights, Weights
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
 import ..Pwl: clip, Range, Event, EPS, DEBUG
 import ..Pwl: clip_front, clip_back
@@ -96,7 +96,7 @@ function tree_dp!(
     λ::Lam,
     µ::Mu,
     mem::TreeDPMem{F,I},
-)::Array{F,N} where {F,I,N,Lam,Mu}
+)::Array{F,N} where {F, I, N, Lam<:Weights, Mu<:Weights}
     reset!(mem, t)
     local lb::Vector{F} = mem.lb
     local ub::Vector{F} = vec(x)
