@@ -6,6 +6,7 @@ using Test
 import TreeLas.MGT
 import GraphIdx
 import GraphIdx: EdgeGraph
+import GraphIdx.Io: prettyarr
 
 
 @testset "MGT     : Square               " begin if true
@@ -18,13 +19,6 @@ import GraphIdx: EdgeGraph
     @test sum(x) ≈ sum(y)
     @test x ≈ mean(y) * ones(size(y)...)
 end
-end
-
-
-function prettyarr(s::Array)
-    buf = IOBuffer()
-    show(buf, MIME("text/plain"), s)    
-    read(seekstart(buf), String)
 end
 
 
