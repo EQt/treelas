@@ -1,9 +1,9 @@
-from treelas._treelas import _pass_double_pointer as f, Float
+from treelas._treelas import _pass_double_pointer as f, Seconds
 
 
 def test_pass_pointer():
     assert f() == False
-    ptr = Float()
+    ptr = Seconds()
     assert float(ptr) == 0.0
     assert f(ptr) == True
     assert float(ptr) == 123.4

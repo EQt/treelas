@@ -4,7 +4,7 @@ Wrapper to the Rust library
 import ctypes
 from os import path
 import numpy as np
-from ._treelas import Float
+from ._treelas import Seconds
 
 
 _libname = "libtreelars.so"
@@ -26,7 +26,7 @@ if path.exists(_libfname):
             lam: float,
             out: np.ndarray = None,
             verbose: bool = False,
-            timer: Float = Float(),
+            timer: Seconds = Seconds(),
     ) -> np.ndarray:
         y = y.reshape(-1).astype(float)
         if out is None:
