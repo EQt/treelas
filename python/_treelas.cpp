@@ -96,13 +96,18 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("timer").none(true) = py::none())
         ;
 
+    /**
+       As we cannot parse a pointer via pybind11, we create a wrapper class for it
+    */
     struct Seconds
     {
         double d;
         Seconds() : d(std::nan("")) { }
     };
 
-    py::class_<Seconds>(m, "Seconds", py::module_local())
+    py::class_<Seconds>(m, "Seconds", py::module_local(),
+            "Represent a time intervall in seconds."
+        )
         .def(py::init([]() { return Seconds(); }))
         .def("__float__", [](const Seconds d) { return d.d; })
         .def_readwrite("value", &Seconds::d)
