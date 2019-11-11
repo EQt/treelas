@@ -31,8 +31,8 @@ mod tests {
         let t = TreeDP { post_order: vec![] };
         let mut x = vec![];
         let y = vec![];
-        let lam = graphidx::weights::ConstantWeights::new(1.0);
-        let mu = graphidx::weights::ConstantWeights::new(0.5);
+        let lam = graphidx::weights::Const::new(1.0);
+        let mu = graphidx::weights::Const::new(0.5);
         t.solve(&mut x, &y, lam, mu);
         assert!(true);
     }

@@ -10,7 +10,7 @@ TEST_CASE("line_dp: line00")
     using doctest::Approx;
 
     const std::vector<double> y {1, 2, 1};
-    const auto lam = ConstantWeights<>(0.1);
+    const auto lam = Const<>(0.1);
     std::vector<double> x;
     x.resize(y.size());
 

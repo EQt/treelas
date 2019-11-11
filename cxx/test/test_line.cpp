@@ -16,7 +16,7 @@ TEST_CASE("line_las")
     SUBCASE("test_line.py: line1 with checks")
     {
         const std::vector<double> y {1.0, 0.0, 0.5};
-        ConstantWeights<double> lam (0.5);
+        Const<double> lam (0.5);
         REQUIRE(y.size() == 3);
         auto x = line_las(y, lam);
         for (size_t i = 0; i < y.size(); i++) {
@@ -29,11 +29,11 @@ TEST_CASE("line_las")
     SUBCASE("test_line.py: line1 without checks")
     {
         const std::vector<double> y {1.0, 0.0, 0.5};
-        ConstantWeights<double> lam (0.5);
+        Const<double> lam (0.5);
         std::vector<double> x;
         x.resize(y.size());
-        line_las<double, ConstantWeights<double>, UnitWeights<double>, false>(
-            y.size(), x.data(), y.data(), lam, UnitWeights<double>()
+        line_las<double, Const<double>, Ones<double>, false>(
+            y.size(), x.data(), y.data(), lam, Ones<double>()
         );
         for (size_t i = 0; i < y.size(); i++) {
             INFO(i);

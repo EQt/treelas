@@ -31,7 +31,7 @@ import Printf: @sprintf
 import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 import GraphIdx: WeightedGraph, enumerate_edges, num_edges, num_nodes
-import GraphIdx: ConstantWeights, ArrayWeights
+import GraphIdx: Const, Vec, Ones, Weights
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
 import ..Dual: dual!, gap_vec!, primal_from_dual!
@@ -101,7 +101,7 @@ function gaplas(
     graph::EdgeGraph,
     lambda::Vector{Float64};
     root_node::Int = 1,
-    mu::Wmu = ConstantWeights(1.0),
+    mu::Wmu = Ones{Float64}(),
     max_iter::Integer = 3,
     verbose::Bool = true,
     process::Fu1 = x->nothing,
@@ -164,7 +164,7 @@ function gaplas(
         z .= y
         extract_non_tree!(graph, parent, z, alpha, tlam, lambda)
         x_new .= x
-        tree_dp!(x_new, z, tree, ArrayWeights(tlam), mu, dp_mem)
+        tree_dp!(x_new, z, tree, Vec(tlam), mu, dp_mem)
         if !(x === x_new)
             x .= (1 - learn) .* x .+ learn .* x_new
         end
@@ -199,7 +199,12 @@ Graph has to implement several methods:
 - `iter_edges(::Function, ::Graph)`
 - `IncidenceIndex(::Graph)`
 """
-function gaplas(y::Array{Float64}, g::Graph)
+function gaplas(
+    y::Array{F,N},
+    g::Graph,
+    λ::Weights,
+    μ::Weights = Ones{F}(),
+)::Array{F,N} where {F, N}
     x = copy(y)
     α = zeros(num_edges(g))
     error("notimplemented")
@@ -214,7 +219,7 @@ Perform one iteration. Premises:
 2. `α` dually feasible, `abs(α[e]) ≤ λ[e]` for all edges `e`.
 """
 function gaplas!(x::Array{Float64}, α::Vector{Float64}, γ::Vector{Float64},
-                 y::Array{Float64}, g::Graph) where {Graph}
+                 y::Array{Float64}, g::Graph)
     error("notimplemented")
 end
 

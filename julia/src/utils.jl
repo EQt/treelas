@@ -1,6 +1,6 @@
 module Utils
 
-import GraphIdx: ConstantWeights, enumerate_edges
+import GraphIdx: Const, enumerate_edges
 
 
 """
@@ -36,11 +36,11 @@ function primal_objective(
     x::Array{F,N},
     y::Array{F,N},
     graph::G,
-    mu::F2 = ConstantWeights(1.0),
+    mu::F2 = Const(1.0),
 )::F where {F,N,G,F1,F2}
     @assert length(y) == length(x)
     local n = length(x)
-    local obj::Ref{F} = Ref{F}(0.5 * sum(mu(i) * (x[i] - y[i])^2 for i = 1:n))
+    local obj::Ref{F} = Ref{F}(0.5 * sum(mu[i] * (x[i] - y[i])^2 for i = 1:n))
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
         obj[] += lam * abs(x[u] - x[v])
     end

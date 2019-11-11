@@ -81,12 +81,12 @@ end
     local dp_mem = TreeDP.TreeDPMem(n)
     local x = fill(NaN, size(y)...)
     local tree_alpha = fill(NaN, n)
-    let mu = 1.0, tlam = ones(Float64, n), z = copy(y)
+    let mu = TreeDP.Ones{Float64}(), z = copy(y)
         TreeDP.tree_dp!(x,
                         z,
                         tree,
-                        TreeDP.ArrayWeights(tlam),
-                        TreeDP.ConstantWeights(mu),
+                        TreeDP.Ones{Float64}(),
+                        mu,
                         dp_mem)
         @test !any(isnan.(x))
     end
@@ -134,7 +134,7 @@ end
         @test tree_alpha[2:end] ≈ cxx_alpha[2:end]
     end
 
-    local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.ConstantWeights(1.0))
+    local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.Ones{Float64}())
     let gam = fill(NaN, n)
         TreeLas.MGT.gap_vec!(gam, x, tree_alpha, wtree)
         @test isnan(gam[root])

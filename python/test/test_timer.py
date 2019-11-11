@@ -1,4 +1,4 @@
-from treelas._treelas import timer
+from treelas import timer
 import treelas._treelas as tl
 
 

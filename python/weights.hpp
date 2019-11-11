@@ -12,22 +12,22 @@ check_len(const ssize_t /* n */,
 }
 
 
-inline ArrayWeights<double>
+inline Array<const double>
 convert(const py::array_f64 &a)
 {
-    return ArrayWeights<double>(a.data());
+    return Array<const double>(a.data());
 }
 
 
-inline ConstantWeights<double>
+inline Const<double>
 convert(double a)
 {
-    return ConstantWeights<double>(a);
+    return Const<double>(a);
 }
 
 
-inline UnitWeights<double>
+inline Ones<double>
 convert()
 {
-    return UnitWeights<double>();
+    return Ones<double>();
 }

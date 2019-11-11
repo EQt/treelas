@@ -2,6 +2,8 @@
   Dynamic programming solver for tree graphs.
  */
 #include "tree_dp.hpp"
+#include <graphidx/bits/weights.hpp>
+
 
 template <bool merge_sort, bool lazy_sort>
 const double*
@@ -14,8 +16,8 @@ tree_dp(
     const double mu,
     const int root)
 {
-    ConstantWeights<double> _lam (lam);
-    ConstantWeights<double> _mu (mu);
+    const Const<double> _lam (lam);
+    const Const<double> _mu (mu);
     return tree_dp<merge_sort, lazy_sort, false>(n, x, y, parent,
                                                  _lam, _mu, root);
 }
@@ -39,8 +41,8 @@ tree_dp_w(
                                     std::to_string(parent[root]) + " != root");
     }
 
-    ArrayWeights<double> _lam(lam);
-    ArrayWeights<double> _mu(mu);
+    const Array<const double> _lam(lam);
+    const Array<const double> _mu(mu);
     return tree_dp<merge_sort, lazy_sort, true>(n, x, y, parent,
                                                 _lam, _mu, root);
 

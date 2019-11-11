@@ -7,7 +7,7 @@ import numpy as np
 from dataclasses import dataclass
 from pprint import pformat as _fmt
 from typing import Optional
-from graphidx.weights import ConstantWeights, Weights
+from graphidx.weights import Ones, Weights
 from .rounder import _fround, _int_or_round
 
 
@@ -108,7 +108,7 @@ def clip(elem: DeQue[Event], slope: float, offset: float, forward: bool) -> floa
 def line_lasso(
     y: np.ndarray,
     lam: Weights,
-    mu: Weights = ConstantWeights(1.0),
+    mu: Weights = Ones(),
 ) -> np.ndarray:
     """
     Return an minimizer `x` of the fused lasso problem on line graph

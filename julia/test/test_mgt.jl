@@ -9,7 +9,11 @@ import GraphIdx: EdgeGraph
 import GraphIdx.Io: prettyarr
 
 
-@testset "MGT     : Square               " begin if true
+Base.sort(i::T, j::T) where {T} =
+    i < j ? (i, j) : (j, i)
+
+
+@testset "MGT     : Square               " begin
     edges, n = square_edges()
     m = length(edges)
     lambda = fill(0.5, length(edges))
@@ -19,10 +23,10 @@ import GraphIdx.Io: prettyarr
     @test sum(x) ≈ sum(y)
     @test x ≈ mean(y) * ones(size(y)...)
 end
-end
 
 
 @testset "MGT     : demo 3x7             " begin
+    include("demo3x7.jl")
     n1, n2 = 3, 7
     n = n1 * n2
     m = 32
@@ -34,11 +38,6 @@ end
      2  5  8  11  14  17  20
      3  6  9  12  15  18  21
     """ |> chomp
-
-    y = [0.62 0.73 0.71 1.5 1.17 0.43 1.08
-         0.62 1.73 0.95 1.46 1.6 1.16 0.38
-         0.9 0.32 -0.48 0.95 1.08 0.02 0.4]
-
     @test size(y) == (n1,n2)
 
     edges = GraphIdx.Edge{Int}[
@@ -78,8 +77,7 @@ end
         [1, 5, 6, 1, 4, 5, 8, 9, 6, 7, 8, 9, 10, 15, 18, 13, 16, 17, 20, 17, 18]
     @test -sum(tree_cost) ≈ 15.79
 
-    prim_edges = [if i < j; (i, j) else (j, i) end
-                  for (i, j) in enumerate(parent) if i != j]
+    prim_edges = [sort(i, j) for (i, j) in enumerate(parent) if i != j]
     @test length(prim_edges) == n-1
     s_prim, s_kruskal = Set(prim_edges), Set(tree_edges)
     prim_mask = [e ∈ s_prim for e in edges]

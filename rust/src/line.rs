@@ -85,23 +85,23 @@ impl LineDP {
         let mu: Weights<f64> = inst.mu.unwrap_or(mu_def);
         match (inst.lam, mu) {
             (Weights::Const(lam), Weights::Const(mu)) => {
-                let lam = graphidx::weights::ConstantWeights::new(lam);
-                let mu = graphidx::weights::ConstantWeights::new(mu);
+                let lam = graphidx::weights::Const::new(lam);
+                let mu = graphidx::weights::Const::new(mu);
                 self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Weights::Const(mu)) => {
-                let lam = graphidx::weights::ArrayWeights::new(lam);
-                let mu = graphidx::weights::ConstantWeights::new(mu);
+                let lam = graphidx::weights::Array::new(lam);
+                let mu = graphidx::weights::Const::new(mu);
                 self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Const(lam), Weights::Array(mu)) => {
-                let lam = graphidx::weights::ConstantWeights::new(lam);
-                let mu = graphidx::weights::ArrayWeights::new(mu);
+                let lam = graphidx::weights::Const::new(lam);
+                let mu = graphidx::weights::Array::new(mu);
                 self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Weights::Array(mu)) => {
-                let mu = graphidx::weights::ArrayWeights::new(mu);
-                let lam = graphidx::weights::ArrayWeights::new(lam);
+                let mu = graphidx::weights::Array::new(mu);
+                let lam = graphidx::weights::Array::new(lam);
                 self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
         };
@@ -115,8 +115,8 @@ mod tests {
     #[test]
     fn test_line_3() {
         let y = vec![1., 2., 1.];
-        let lam = graphidx::weights::ConstantWeights::new(0.1);
-        let mu = graphidx::weights::ConstantWeights::new(1.0);
+        let lam = graphidx::weights::Const::new(0.1);
+        let mu = graphidx::weights::Const::new(1.0);
         let mut solver = LineDP::new(y.len());
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);

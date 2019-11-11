@@ -19,9 +19,9 @@ namespace py = pybind11;
 
 
 template <typename LamFrom = py::array_f64&,
-          typename LamTo = ArrayWeights<double>,
+          typename LamTo = Array<const double>,
           typename MuFrom = py::array_f64&,
-          typename MuTo = ArrayWeights<double>,
+          typename MuTo = Array<const double>,
           bool CHECK = true>
 void
 reg_line_las(py::module &m, const char *doc = "")
@@ -270,7 +270,7 @@ reg_line(py::module &m)
               check_len(n, out, "out");
               {
                   if (timer) timer->start();
-                  line_las<double, ConstantWeights<double>, UnitWeights<double>, false>(
+                  line_las<double, Const<double>, Ones<double>, false>(
                       n,
                       out.mutable_data(),
                       y.data(),
@@ -288,17 +288,17 @@ reg_line(py::module &m)
           py::arg("verbose") = false,
           py::arg("timer").none(true) = py::none());
 
-    reg_line_las<double, ConstantWeights<double>,
-                 double, ConstantWeights<double>, false>(m);
+    reg_line_las<double, Const<double>,
+                 double, Const<double>, false>(m);
 
-    reg_line_las<py::array_f64&, ArrayWeights<double>,
-                 double, ConstantWeights<double>, false>(m);
+    reg_line_las<py::array_f64&, Array<const double>,
+                 double, Const<double>, false>(m);
 
-    reg_line_las<double, ConstantWeights<double>,
-                 py::array_f64&, ArrayWeights<double>, true>(m);
+    reg_line_las<double, Const<double>,
+                 py::array_f64&, Array<const double>, true>(m);
 
-    reg_line_las<py::array_f64&, ArrayWeights<double>,
-                 py::array_f64&, ArrayWeights<double>, true>(m,
+    reg_line_las<py::array_f64&, Array<const double>,
+                 py::array_f64&, Array<const double>, true>(m,
             R"pbdoc(
                 Line solver (weights).
 
