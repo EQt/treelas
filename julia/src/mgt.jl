@@ -38,9 +38,9 @@ import ..Dual: dual!, gap_vec!, primal_from_dual!
 
 
 """
-    extract_non_tree!(edges, y, λt, π, α, λ)
+    extract_non_tree!(graph, y, λt, π, α, λ)
 
-Iterate over all `edges` (weighted by `λ`) and do the following:
+Iterate over all edges of `grapy` (weighted by `λ`) and do the following:
 If the edge `e` is a tree edge, store the corresponding `λ[e]` in tree order.
 If the edge `e` is not part of the tree, compute the flow `α[e]` into the
 node input `y`.
