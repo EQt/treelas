@@ -1,4 +1,5 @@
-from treelas._treelas import _pass_double_pointer as f, Seconds
+from treelas._treelas import _pass_double_pointer as f
+from treelas.timer import Seconds
 import math
 
 

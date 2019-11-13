@@ -96,36 +96,6 @@ PYBIND11_MODULE(_treelas, m)
           py::arg("timer").none(true) = py::none())
         ;
 
-    /**
-       As we cannot parse a pointer via pybind11, we create a wrapper class for it
-    */
-    struct Seconds
-    {
-        double d;
-        Seconds() : d(std::nan("")) { }
-    };
-
-    py::class_<Seconds>(m, "Seconds", py::module_local(),
-            "Represent a time intervall in seconds."
-        )
-        .def(py::init([]() { return Seconds(); }))
-        .def("__float__", [](const Seconds d) { return d.d; })
-        .def_readwrite("value", &Seconds::d)
-        ;
-
-    m.def("_pass_double_pointer",
-          [](Seconds *ptr) -> bool
-          {
-              if (ptr) {
-                  ptr->d = 123.4;
-                  return true;
-              }
-              return false;
-          },
-          "For tessting purposes only!: Receive a double pointer",
-          py::arg("ptr") = nullptr)
-        ;
-
     reg_line(m);
     reg_tree(m);
     reg_timer(m);

@@ -1,17 +1,12 @@
 # https://www.cc.gatech.edu/dimacs10/archive/streets.shtml
-import h5py
-import numpy as np
-from numba import njit
-from pandas import read_csv
 from six.moves.urllib.request import urlretrieve
 
 URL = "https://www.cc.gatech.edu/dimacs10/archive/data/streets"
-
-names = ["asia", "belgium", "europe"]
+NAMES = ["asia", "belgium", "europe"]
 
 
 rule all:
-    input: expand("{name}.h5", name=names)
+    input: expand("{name}.h5", name=NAMES)
 
 
 rule download:
@@ -21,28 +16,32 @@ rule download:
         urlretrieve(f"{URL}/{params.name}.osm.graph.bz2", filename=output[0])
 
 
-@njit(cache=True)
-def transform(vals, head, tail, m):
-    e = 0
-    for i in range(vals.shape[0]):
-        for j in range(vals.shape[1]):
-            if vals[i,j] < 0:
-                break
-            if vals[i, j]-1 < i:
-                continue
-            else:
-                if e >= m:
-                    return i
-                head[e] = i
-                tail[e] = vals[i, j] -1
-                e += 1
-    return -1
-
-
 rule to_hdf5:
     input: "{name}.bz2"
     output: "{name}.h5"
     run:
+        import numpy as np
+        import h5py
+        from pandas import read_csv
+        from numba import njit
+
+        @njit(cache=True)
+        def transform(vals, head, tail, m):
+            e = 0
+            for i in range(vals.shape[0]):
+                for j in range(vals.shape[1]):
+                    if vals[i,j] < 0:
+                        break
+                    if vals[i, j]-1 < i:
+                        continue
+                    else:
+                        if e >= m:
+                            return i
+                        head[e] = i
+                        tail[e] = vals[i, j] -1
+                        e += 1
+                        return -1
+
         n, m = read_csv(input[0], sep=' ', skiprows=14, nrows=1, header=None).values[0]
         assert n < m, n
         assert m < np.iinfo(np.int32).max, f'{m:,}'
