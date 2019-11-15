@@ -1,6 +1,6 @@
 import GraphIdx.Io: parse_uints
 import GraphIdx: BiAdjacentIndex, num_edges, num_nodes
-import HDF5: h5write
+import HDF5: h5open, attrs
 
 
 function parse_dimacs10(fname::String, f = parse_dimacs10)
@@ -46,21 +46,21 @@ end
 
 function parse_dimacs10_ht(io::IO)
     n, m = parse_dimacs10_header(io)
-    head = Vector{Int}()
-    tail = Vector{Int}()
+    head = Vector{Int32}()
+    tail = Vector{Int32}()
     sizehint!(head, m)
     sizehint!(tail, m)
-    local i::Ref{Int} = Ref{Int}(0)
+    local i::Ref{Int32} = Ref{Int32}(0)
     parse_uints(io) do u::UInt, last::Bool
         if i[] < u
-            push!(head, i[])
-            push!(tail, u)
+            push!(head, Int32(i[]))
+            push!(tail, Int32(u) - 1)
         end
         if last
             i[] += 1
         end
     end
-    return head, tail
+    return n, m, head, tail
 end
 
 
@@ -81,16 +81,25 @@ function transform(fname::String)
             end
         end
     end
-    head, tail
+    n, m, head, tail
 end
 
 
 fname = get(ARGS, 1, "belgium.bz2")
-out = "out.h5"
-head, tail = parse_dimacs10(fname, parse_dimacs10_ht)
-h5write(out, "head", head)
-h5write(out, "tail", tail)
-open("bin", "w") do io
+out = get(ARGS, 2, "out.h5")
+output_bin = false
+
+@time n, m, head, tail = parse_dimacs10(fname, parse_dimacs10_ht)
+isfile(out) && rm(out)
+
+h5open(out, "w") do io
+    attrs(io)["n"] = n
+    attrs(io)["m"] = m
+    write(io, "head", head)
+    write(io, "tail", tail)
+end
+
+output_bin && open("bin", "w") do io
     write(io, head);
     write(io, tail)
 end
