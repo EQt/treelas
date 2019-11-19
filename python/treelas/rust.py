@@ -4,7 +4,7 @@ Wrapper to the Rust library
 import ctypes
 from os import path
 import numpy as np
-from ._treelas import Seconds
+from ._treelas.timer import Seconds
 
 
 _libname = "libtreelars.so"
