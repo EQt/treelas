@@ -7,4 +7,4 @@ unbz2: unbz2.cpp makefile
 	snakemake $<
 
 %.h5: %.bz2
-	bzcat $< | julia convert.jl - $@
+	julia convert.jl $< $@
