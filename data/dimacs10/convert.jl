@@ -1,12 +1,20 @@
 import GraphIdx.Io: parse_uints
 import GraphIdx: BiAdjacentIndex, num_edges, num_nodes
 import HDF5: h5open, attrs
+import CodecBzip2
 
 
-function parse_dimacs10(fname::String, f = parse_dimacs10)
+function parse_dimacs10(fname::String, f = parse_dimacs10; as_process=false)
     if endswith(fname, ".bz2")
-        open(`bzip2 -d -c $fname`) do io
-            return f(io)
+        if as_process
+            open(`bzip2 -d -c $fname`) do io
+                return f(io)
+            end
+        else
+            open(fname) do bz2
+                io = CodecBzip2.Bzip2DecompressorStream(bz2)
+                return f(io)
+            end
         end
     else
         if fname == "-"
