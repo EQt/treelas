@@ -6,8 +6,9 @@ import HDF5: h5open, attrs
 function parse_dimacs10(fname::String, f = parse_dimacs10)
     if endswith(fname, ".bz2")
         io = open(`bzip2 -d -c $fname`)
-        f(io)
+        r = f(io)
         close(io)
+        return r
     else
         if fname == "-"
             f(stdin)
