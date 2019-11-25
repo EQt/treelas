@@ -7,6 +7,7 @@
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/finite.hpp>
 #include <graphidx/bits/minmax.hpp>
+#include <graphidx/bits/weights.hpp>
 #include <graphidx/std/stack.hpp>
 #include <graphidx/utils/timer.hpp>
 
@@ -134,6 +135,30 @@ tree_dp(
     timer.stop();
     return tree_dp<merge_sort, lazy_sort, check, Wlam, Wmu>(
         n, x, y, parent, lam, mu, root, s);
+}
+
+
+template <bool merge_sort = true, bool lazy_sort = false>
+inline
+std::vector<double>
+tree_dp(
+    const std::vector<double> &y,
+    const std::vector<int> &parent,
+    const double lam,
+    const int root = 0)
+{
+    std::vector<double> x;
+    const size_t n = y.size();
+    x.resize(n);
+    tree_dp<merge_sort, lazy_sort, false>(
+        n,
+        x.data(),
+        y.data(),
+        parent.data(),
+        Const<double>(lam),
+        Ones<double>(),
+        root);
+    return x;
 }
 
 
