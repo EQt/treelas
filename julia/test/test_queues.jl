@@ -2,8 +2,26 @@ module TestQueues
 
 using Test
 import TreeLas.Pwl.QueueUnion: Queues, Range, reset!
-import TreeLas.TreeDP: Tree
-import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
+import TreeLas.TreeDP: Tree, TreeDPMem
+import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string, root_node
+import GraphIdx.Tree: dfs_walk_rev
+
+
+@testset "Queus: init 2 nodes            " begin
+    tree = Tree([1, 1])
+    n = length(tree)
+    @test n == 2
+    mem = TreeDPMem(n)
+    cidx = ChildrenIndex(tree.parent)
+    @test root_node(cidx) == 1
+    @test collect(cidx[1]) == [2]
+    @test collect(cidx[2]) == []
+    vs = Int[]
+    reset!(mem, tree)
+    dfs_walk_rev(cidx) do v; push!(vs, v); end
+    @test vs == [-1, -2, 2, 1]
+    @test mem.queues.pq == Range[4:3, 3:2]
+end
 
 
 @testset "Queus: init 9 nodes            " begin
@@ -43,5 +61,6 @@ import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string
       └─6
     """
 end
+
 
 end
