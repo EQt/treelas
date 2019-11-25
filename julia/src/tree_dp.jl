@@ -13,6 +13,7 @@ module TreeDP
 
 import GraphIdx
 import GraphIdx: Ones, Const, Vec, Weights
+import GraphIdx.Utils: MutRef
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
 import ..Pwl: clip, Range, Event, EPS, DEBUG
 import ..Pwl: clip_front, clip_back
@@ -89,16 +90,6 @@ tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::La, µ::Mu) where {F,N,La,Mu
     tree_dp!(x, y, t, λ, µ, TreeDPMem(length(y)))
 
 
-mutable struct ArrayRef{T} <: Ref{T}
-    x::Vector{T}
-    i::Int
-end
-
-
-Base.getindex(b::ArrayRef) = b.x[b.i]
-Base.setindex!(b::ArrayRef, x) = (b.x[b.i] = x; b)
-
-
 function tree_dp!(
     x::Array{F,N},
     y::Array{F,N},
@@ -113,7 +104,7 @@ function tree_dp!(
     local sig::Vector{F} = mem.lb
     local ev::Vector{Event} = mem.queues.events
     local pq::Vector{Range} = mem.queues.pq
-    local ref::ArrayRef{Range} = ArrayRef(pq, 1)
+    local ref::MutRef{Range} = MutRef(pq, 1)
 
     sig .= 0
     for i in @view mem.proc_order[1:end-1]
