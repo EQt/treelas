@@ -57,6 +57,10 @@ Directory Structure
 ChangeLog
 ---------
 
+### v0.14.1
+Released 2019-11-25
+- Fixed Bug in Julia: index shift
+
 ### v0.14.0
 Released 2019-11-11
 - Guiding ideas: Unify all kind of `clip_{front,back,fronw,backw}` type of methods
