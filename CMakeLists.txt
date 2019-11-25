@@ -127,6 +127,7 @@ if (BUILD_TESTS)
         cxx/test/test_clip.cpp
         cxx/test/test_line_dp.cpp
         cxx/test/test_tree_dp.cpp
+        cxx/test/test_tree_dp_2.cpp
         cxx/test/test_tree_12.cpp
     )
     target_link_libraries(doctests PRIVATE doctest::doctest graphidx)
