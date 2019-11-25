@@ -25,6 +25,7 @@ tree_dp(
 
 template <bool lazy_sort,
           bool merge_sort>
+[[deprecated]]
 const double*
 tree_dp_w(
     const size_t n,
