@@ -89,6 +89,16 @@ tree_dp!(x::Array{F,N}, y::Array{F,N}, t::Tree, λ::La, µ::Mu) where {F,N,La,Mu
     tree_dp!(x, y, t, λ, µ, TreeDPMem(length(y)))
 
 
+mutable struct ArrayRef{T} <: Ref{T}
+    x::Vector{T}
+    i::Int
+end
+
+
+Base.getindex(b::ArrayRef) = b.x[b.i]
+Base.setindex!(b::ArrayRef, x) = (b.x[b.i] = x; b)
+
+
 function tree_dp!(
     x::Array{F,N},
     y::Array{F,N},
@@ -101,12 +111,16 @@ function tree_dp!(
     local lb::Vector{F} = mem.lb
     local ub::Vector{F} = vec(x)
     local sig::Vector{F} = mem.lb
+    local ev::Vector{Event} = mem.queues.events
+    local pq::Vector{Range} = mem.queues.pq
+    local ref::ArrayRef{Range} = ArrayRef(pq, 1)
 
     sig .= 0
     for i in @view mem.proc_order[1:end-1]
         local sig_i::F = sig[i]
-        lb[i] = clip(mem.queues, i, +µ[i], -µ[i]*y[i] - sig_i + λ[i], Val(true))
-        ub[i] = clip(mem.queues, i, -µ[i], +µ[i]*y[i] - sig_i + λ[i], Val(false))
+        ref.i = i
+        lb[i] = clip(ev, ref, +µ[i], -µ[i]*y[i] - sig_i + λ[i], Val(true))
+        ub[i] = clip(ev, ref, -µ[i], +µ[i]*y[i] - sig_i + λ[i], Val(false))
         merge(mem.queues.events::Vector{Event},
               mem.queues.pq::Vector{Range},
               t.parent[i]::Int, i::Int)
@@ -114,7 +128,8 @@ function tree_dp!(
     end
 
     let r = t.root
-        x[r] = clip(mem.queues, r,  +µ[r], -µ[r]*y[r] -sig[r] + 0.0, Val(true))
+        ref.i = r
+        x[r] = clip(ev, ref,  +µ[r], -µ[r]*y[r] -sig[r] + 0.0, Val(true))
     end
     for v in @view mem.proc_order[end-1:-1:1]
         x[v] = clamp(x[t.parent[v]], lb[v], ub[v])
