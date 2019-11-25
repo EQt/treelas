@@ -32,9 +32,12 @@ end
 
 
 @testset "tree0.toml                     " begin
-    ti = readtoml(data_dir("test", "tree0.toml"))["tree"][1]
-    y, t, lam, mu = instance(ti)
-    @test TreeLas.TreeDP.tree_dp(y, t, lam, mu) ≈ ti["x"]
+    for (i, ti) in enumerate(readtoml(data_dir("test", "tree0.toml"))["tree"])
+        @testset "tree0.toml[$i]" begin
+            y, t, lam, mu = instance(ti)
+            @test TreeLas.TreeDP.tree_dp(y, t, lam, mu) ≈ ti["x"]
+        end
+    end
 end
 
 
