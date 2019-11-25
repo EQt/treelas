@@ -24,7 +24,7 @@ import GraphIdx.Tree: dfs_walk_rev
 end
 
 
-@testset "Queus: init 9 nodes            " begin
+@testset "Queus: init 10 nodes           " begin
     """
     Compare to cxx/test/test_tree_dp.cpp: TEST(dptree, init_queues)
     """
@@ -46,7 +46,8 @@ end
     pq = Vector{Range}(undef, n)
     proc_order = reset!(pq, cidx, Int[])
     @test proc_order == [6, 10, 7, 8, 9, 5, 4, 3, 2, 1]
-    rr = Range[21:20, 20:19, 19:18, 18:17, 17:16, 4:3, 13:12, 14:13, 15:14, 10:9]
+    @test n == 10
+    rr = Range[20:19, 19:18, 18:17, 17:16, 16:15, 3:2, 12:11, 13:12, 14:13, 9:8]
     @test pq == rr
     """
       1

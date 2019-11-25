@@ -103,7 +103,7 @@ function reset!(
     @assert isempty(proc_order)
     empty!(stack)
 
-    local t::Ref{Int} = Ref{Int}(1)
+    local t::Ref{Int} = Ref{Int}(0)
     dfs_walk_rev(childs, stack) do v::Int
         t[] += 1
         if v >= 0
