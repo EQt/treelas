@@ -165,7 +165,7 @@ mod tests {
         let fname = data_dir()?.join("test").join("tree0.toml");
         assert!(fname.exists(), "fname = {:?}", fname);
         let tests: Vec<Instance> = Instance::from_path(fname, "tree")?;
-        assert!(tests.len() == 1, "len = {len}", len = tests.len());
+        assert!(tests.len() >= 1, "len = {len}", len = tests.len());
         Ok(())
     }
 

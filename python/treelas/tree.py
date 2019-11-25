@@ -172,13 +172,14 @@ parent = {repr(self.parent)})"""
             return TreeInstance._load_h5(fname, **kwargs)
 
     @staticmethod
-    def _load_toml(fname: str) -> TreeInstance:
+    def _load_toml(fname: str, which: int = -1) -> TreeInstance:
         import toml
 
         io = toml.load(fname)
-        for name, [val] in io.items():
+        for name, val in io.items():
             break
 
+        val = val[which]
         for n in ["lam", "mu"]:
             if n in val and isinstance(val[n], list):
                 if len(val[n]) == 1:
