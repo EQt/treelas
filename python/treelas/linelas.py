@@ -44,6 +44,7 @@ class DeQue:
     def __init__(self, n=None):
         from collections import deque
         from collections.abc import Iterable
+
         self._e = deque(n) if isinstance(n, Iterable) else deque() 
 
     def pop(self, forward: bool = True):
