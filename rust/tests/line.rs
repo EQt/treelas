@@ -8,20 +8,20 @@ fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
     let instances = Instance::from_path(fname, "test")?;
     assert!(instances.len() >= 5);
     for inst in instances {
-        let x_correct = &inst.x.as_ref().unwrap().clone();
+        let x_correct = &inst.x.as_ref().unwrap();
         let n = x_correct.len();
         println!("\nsolving: {:?}\n", &inst);
         let mut solver = LineDP::new(n);
         let mut x = Vec::new();
         x.resize(n, std::f64::NAN);
-        solver.solve_instance(&mut x, inst);
+        solver.solve_instance(&mut x, &inst);
         let diff = l1_diff(&x, &x_correct);
         assert!(
             diff <= 1e-10,
             "err: diff = {:.3}, x = {:.3?}, expected = {:?}",
             diff,
             x,
-            x_correct
+            &x_correct,
         );
     }
     Ok(())
