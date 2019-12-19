@@ -21,6 +21,3 @@ pub extern "C" fn line_las(
     solver.solve::<_, _, generics::False>(&mut x, &y, &lam, &mu);
     start_time.elapsed().as_secs_f64()
 }
-
-
-

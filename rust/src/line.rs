@@ -83,7 +83,8 @@ impl LineDP {
     pub fn solve_instance(&mut self, mut x: &mut [f64], inst: &Instance) {
         let mu_def: Weights<f64> = Weights::Const(1.0);
         let mu: &Weights<f64> = inst.mu.as_ref().unwrap_or(&mu_def);
-        match (&inst.lam, mu) {
+        let lam: &Weights<f64> = &inst.lam;
+        match (lam, mu) {
             (Weights::Const(lam), Weights::Const(mu)) => {
                 let lam = graphidx::weights::Const::new(*lam);
                 let mu = graphidx::weights::Const::new(*mu);
