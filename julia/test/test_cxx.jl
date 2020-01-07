@@ -12,8 +12,8 @@ const cxx_jl = joinpath(dirname(pathof(TreeLas)), "cxx.jl")
     include(cxx_jl)
     @test isfile(Cxx.lib)
 
-    cxx_txt = read(open(cxx_jl), String)
-    syms = Set((String(m.captures[1]) for m in eachmatch(r"(_Z\w+)", cxx_txt)))
+    syms = Set((String(m.captures[1])
+                for m in eachmatch(r"(_Z\w+)", read(open(cxx_jl), String))))
 
     tl = Libdl.dlopen(Cxx.lib)
     @testset "Check DLL symbols" begin
