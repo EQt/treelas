@@ -24,7 +24,7 @@ Python Interface
 [`pybind11`](https://github.com/pybind/pybind11).
 For compiling, add the Git submodule
 ```bash
-git submodule update --init extern/pybind11
+git submodule update --init --recursive deps/graphidx
 ```
 Afterwards, you can build the library using CMake
 ```bash
@@ -35,8 +35,7 @@ cmake --build . --target pysetup
 ```
 or using `setup.py`:
 ```bash
-cd python
-python setup.py develop
+cd python && python setup.py develop
 ```
 
 
