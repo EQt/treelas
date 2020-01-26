@@ -637,7 +637,7 @@ std::vector<T>
 HDF5::read(const char *data_name, Dims *dims)
 {
     if (!has(data_name))
-        throw std::runtime_error(std::string("Does not exists \"") +
+        throw std::runtime_error(std::string("Does not exist \"") +
                                  data_name + "\"");
 
     Dims _dims;
