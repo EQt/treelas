@@ -3,6 +3,7 @@
    If it is not a tree, sample a random spanning tree.
    Traverse the graph and print timings.
 */
+#include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <argparser.hpp>
@@ -33,11 +34,26 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     Timer tim ("compute edgxe index");
     BiAdjacent index (head, tail);
     tim.stop();
+    {
+        Timer _ ("min nodes\n");
+        std::cout << "min(head) = "
+                  << *std::min_element(head.begin(), head.end())
+                  << std::endl;
+        std::cout << "min(tail) = "
+                  << *std::min_element(tail.begin(), tail.end())
+                  << std::endl;
+    }
     const size_t n = index.num_nodes();
 
     std::vector<int> parent;
     {   Timer _ ("random span");
         parent = random_spanning_tree(index, seed);
+    }
+    {
+        Timer _ ("min parent:\n");
+        std::cout << "min(parent) = "
+                  << *std::min_element(parent.begin(), parent.end())
+                  << std::endl;
     }
 
     {   Timer _ ("store parent");
