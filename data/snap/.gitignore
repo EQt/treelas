@@ -1,2 +1,5 @@
 *.txt.gz
 *.h5
+*.tree
+*.treelas
+__pycache__/

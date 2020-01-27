@@ -3,7 +3,6 @@ from six.moves.urllib.request import urlretrieve
 
 URL = "https://www.cc.gatech.edu/dimacs10/archive/data/streets"
 NAMES = ["asia", "belgium", "europe"]
-CMAKE_BUILD = "../../build"
 
 
 rule all:
@@ -38,23 +37,4 @@ rule julia_to_hdf5:
     shell: "julia convert.jl {input} {output}"
 
 
-rule spanning_tree:
-    input: "{name}.h5"
-    output: "{name}.tree"
-    shell: "cp {input} {output} && {CMAKE_BUILD}/traverse {output}"
-
-
-rule noisy_input:
-    input: "{name}.tree"
-    output: "{name}.treelas"
-    run:
-        import numpy as np
-        import h5py
-        from shutil import copyfile
-
-        np.random.seed(2020)
-        copyfile(input[0], output[0])
-        with h5py.File(output[0], "r+") as io:
-            n = len(io["parent"])
-            io.create_dataset("y", data=np.random.randn(n))
-            io.create_dataset("lam", data=[0.1])
+include: "../Snakefile"

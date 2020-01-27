@@ -44,3 +44,6 @@ rule download_orkut:
     run:
         urlretrieve(snap_url + "/bigdata/communities/com-orkut.ungraph.txt.gz",
                     filename=output[0])
+
+
+include: "../Snakefile"
