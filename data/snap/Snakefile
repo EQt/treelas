@@ -4,7 +4,6 @@ from six.moves.urllib.request import urlretrieve
 
 snap_url = "https://snap.stanford.edu/data"
 
-
 rule all:
     input: "com-youtube.h5", "roadnet-ca.h5"
 
@@ -32,3 +31,10 @@ rule download_road_ca:
     output: "roadnet-ca.txt.gz"
     run:
         urlretrieve(snap_url + "/roadNet-CA.txt.gz", filename=output[0])
+
+
+rule download_orkut:
+    output: "com-orkut.txt.gz"
+    run:
+        urlretrieve(snap_url + "/bigdata/communities/com-orkut.ungraph.txt.gz",
+                    filename=output[0])
