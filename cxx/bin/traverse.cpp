@@ -11,8 +11,9 @@
 
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/idx/biadjacent.hpp>
-// #include <graphidx/spanning/kruskal_mst.hpp>
+#include <graphidx/spanning/connected.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
+// #include <graphidx/spanning/kruskal_mst.hpp>
 
 #include "thousand.hpp"
 
@@ -34,6 +35,7 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     Timer tim ("compute edgxe index");
     BiAdjacent index (head, tail);
     tim.stop();
+    const size_t n = index.num_nodes();
     {
         Timer _ ("min nodes\n");
         std::cout << "min(head) = "
@@ -42,8 +44,25 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
         std::cout << "min(tail) = "
                   << *std::min_element(tail.begin(), tail.end())
                   << std::endl;
+        std::cout << "m = " << m << std::endl
+                  << "n = " << n << std::endl;
     }
-    const size_t n = index.num_nodes();
+    std::vector<int> largest_cc;
+    {
+        Timer _ ("largest cc\n");
+        largest_cc = connected_components(index).largest().sorted();
+        std::cout << "size(cc) = " << largest_cc.size() << std::endl;
+        if (largest_cc.size() != n) {
+            Timer _ ("store cc");
+            HDF5 io (fname, "r+");
+            io.group(group);
+            io.owrite("largest_cc", largest_cc);
+        }
+    }
+    {
+        Timer _ ("induced subgraph");
+        index.induced_subgraph(largest_cc);
+    }
 
     std::vector<int> parent;
     {   Timer _ ("random span");
@@ -61,10 +80,6 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
         io.group(group);
         io.owrite("parent", parent);
     }
-
-    std::cout << "m = " << m << std::endl
-              << "n = " << n << std::endl;
-
 }
 
 
@@ -100,5 +115,5 @@ main(int argc, char *argv[])
 
 
 // Local Variables:
-// compile-command: "cd ../build/ && make traverse && ./traverse ../data/snap/com-youtube.h5"
+// compile-command: "cd ../../build/ && make traverse && ./traverse ../data/snap/com-youtube.h5"
 // End:
