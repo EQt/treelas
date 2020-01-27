@@ -3,6 +3,7 @@ from six.moves.urllib.request import urlretrieve
 
 URL = "https://www.cc.gatech.edu/dimacs10/archive/data/streets"
 NAMES = ["asia", "belgium", "europe"]
+CMAKE_BUILD = "../../build"
 
 
 rule all:
@@ -40,7 +41,7 @@ rule julia_to_hdf5:
 rule spanning_tree:
     input: "{name}.h5"
     output: "{name}.tree"
-    shell: "cp {input} {output} && ../../build/traverse {output}"
+    shell: "cp {input} {output} && {CMAKE_BUILD}/traverse {output}"
 
 
 rule noisy_input:
