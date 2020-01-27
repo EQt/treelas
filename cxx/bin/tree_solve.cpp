@@ -7,9 +7,11 @@
 #include <minih5.hpp>
 #include <argparser.hpp>
 
+#include <graphidx/bits/weights.hpp>
 #include <graphidx/tree/root.hpp>
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/utils/viostream.hpp>      // std::cout << std::vector<..>
+
 
 #include "../tree_dp.hpp"
 
@@ -28,8 +30,8 @@ process_tree(const char *fname,
 
     std::vector<double> y, lams, xt, x;
     std::vector<int> parent;
-    int root = -1;
-    double lam, mu = float_(1.0);
+    double lam;
+    Ones<float_> mu;
     HDF5::Dims ydims;
     {   Timer _ ("Loading Tree");
         HDF5 io (fname, "r+");
@@ -38,15 +40,18 @@ process_tree(const char *fname,
         parent = io.read<decltype(parent)::value_type>("parent");
         assert(lams.size() >= 1);
         lam = float_(lams[0]);
-        if (root == 1) {
-            root--;
-            for (auto &i : parent)
-                i--;
-        }
         if (io.has("xt")) {
             xt = io.read<double>("xt");
         }
     }
+    {
+        Timer _ ("min parent\n");
+        auto min_parent = parent[0];
+        for (auto p : parent)
+            min_parent = std::min(min_parent, p);
+        verbose && printf("min(parent) = %d\n", min_parent);
+    }
+    int root = -1;
     {   Timer _ ("find root");
         root = find_root(parent);
     }
@@ -59,12 +64,29 @@ process_tree(const char *fname,
         }
         for (int r = 0; r < repeat; r++) {
             Timer _ ("tree_dp:\n");
+            Const<double> clam (lam);
+            constexpr bool lazy_sort = true;
+            constexpr bool check = false;
             if (merge_sort)
-                tree_dp<true>(y.size(), x.data(), y.data(), parent.data(),
-                              lam, mu, root);
+                tree_dp<true, lazy_sort, check>(
+                    y.size(),
+                    x.data(),
+                    y.data(),
+                    parent.data(),
+                    clam,
+                    mu,
+                    root
+                );
             else
-                tree_dp<false>(y.size(), x.data(), y.data(), parent.data(),
-                               lam, mu, root);
+                tree_dp<false, lazy_sort, check>(
+                    y.size(),
+                    x.data(),
+                    y.data(),
+                    parent.data(),
+                    clam,
+                    mu,
+                    root
+                );
             Timer::stopit();
         }
     }
