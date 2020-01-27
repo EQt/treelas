@@ -2,8 +2,9 @@
   Read tree instance from HDF5 file, solve it and write the solution
   to the input.
  */
-#include <vector>
+#include <algorithm>
 #include <iostream>
+#include <vector>
 #include <minih5.hpp>
 #include <argparser.hpp>
 
@@ -46,10 +47,9 @@ process_tree(const char *fname,
     }
     {
         Timer _ ("min parent\n");
-        auto min_parent = parent[0];
-        for (auto p : parent)
-            min_parent = std::min(min_parent, p);
-        verbose && printf("min(parent) = %d\n", min_parent);
+        verbose && printf("min(parent) = %d\n",
+                          *std::min_element(parent.begin(), parent.end()));
+
     }
     int root = -1;
     {   Timer _ ("find root");
