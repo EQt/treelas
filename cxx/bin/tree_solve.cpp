@@ -12,7 +12,7 @@
 #include <graphidx/tree/root.hpp>
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/utils/viostream.hpp>      // std::cout << std::vector<..>
-
+#include <graphidx/utils/thousand.hpp>
 
 #include "../tree_dp.hpp"
 
@@ -45,8 +45,8 @@ process_tree(const char *fname,
     }
     {
         Timer _ ("min parent\n");
-        verbose && printf("min(parent) = %d\n",
-                          *std::min_element(parent.begin(), parent.end()));
+        Timer::log("  min(parent) = %d\n",
+                   *std::min_element(parent.begin(), parent.end()));
 
     }
     int root = -1;
@@ -54,7 +54,8 @@ process_tree(const char *fname,
         root = find_root(parent);
     }
 
-    Timer::log("%'d nodes\n", y.size());
+    if (verbose)
+        std::cout << "  n = " << y.size() << std::endl;
 
     {
         {   Timer _ ("resize x");
@@ -119,6 +120,7 @@ main(int argc, char *argv[])
         }
         const char *fname = argv[1];
         setlocale(LC_ALL, "");
+        set_thousand_sep(std::cout);
         const int repeat = std::atoi(ap.get_option("repeat"));
         process_tree(fname,
                      ap.has_option("merge"),
