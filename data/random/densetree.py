@@ -39,11 +39,16 @@ if __name__ == '__main__':
     p.add_argument('-s', '--seed', type=int, default=2020)
     p.add_argument('-5', '--out-h5', type=str, default=None,
                    help='Store Tree in HDF5 and exit')
+    p.add_argument('-f', '--factor', type=float, default=1e-5,
+                   help='Scaling factor')
 
     args = p.parse_args()
 
     if args.out_h5:
-        t = generate(args.num_nodes, seed=args.seed, dist=args.distribution)
+        t = generate(args.num_nodes,
+                     seed=args.seed,
+                     dist=args.distribution,
+                     factor=args.factor)
         t.save(args.out_h5)
 
     if args.plot_deg:
