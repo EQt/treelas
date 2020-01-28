@@ -17,8 +17,6 @@
 #include "../tree_dp.hpp"
 
 
-// #define DEBUG
-
 template<typename float_ = double>
 void
 process_tree(const char *fname,
@@ -104,8 +102,6 @@ process_tree(const char *fname,
 int
 main(int argc, char *argv[])
 {
-    // test_init_queues();
-    // test_merge();
     try {
         ArgParser ap (
             "treesolve [file]\n"
