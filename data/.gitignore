@@ -1,1 +1,6 @@
 .snakemake/
+*.h5
+*.tree
+*.treelas
+__pycache__/
+

@@ -1,6 +1,2 @@
 *.bz2
-*.h5
-__pycache__/
 unbz2
-*.tree
-*.treelas
