@@ -14,7 +14,7 @@ struct space_out : std::numpunct<char>
 
 inline
 void
-set_thousand_sep(std::ostream &s, const char sep = '\'')
+set_thousand_sep(std::ostream &s, const char sep = '_')
 {
     s.imbue(std::locale(std::cout.getloc(), new space_out(sep)));
 }

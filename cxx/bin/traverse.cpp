@@ -13,7 +13,6 @@
 #include <graphidx/idx/biadjacent.hpp>
 #include <graphidx/spanning/connected.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
-// #include <graphidx/spanning/kruskal_mst.hpp>
 
 #include "thousand.hpp"
 
@@ -38,20 +37,20 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     const size_t n = index.num_nodes();
     {
         Timer _ ("min nodes\n");
-        std::cout << "min(head) = "
+        std::cout << "  min(head) = "
                   << *std::min_element(head.begin(), head.end())
                   << std::endl;
-        std::cout << "min(tail) = "
+        std::cout << "  min(tail) = "
                   << *std::min_element(tail.begin(), tail.end())
                   << std::endl;
-        std::cout << "m = " << m << std::endl
-                  << "n = " << n << std::endl;
+        std::cout << "  m = " << m << std::endl
+                  << "  n = " << n << std::endl;
     }
     std::vector<int> largest_cc;
     {
         Timer _ ("largest cc\n");
         largest_cc = connected_components(index).largest().sorted();
-        std::cout << "size(cc) = " << largest_cc.size() << std::endl;
+        std::cout << " n' = " << largest_cc.size() << std::endl;
         if (largest_cc.size() != n) {
             Timer _ ("store cc");
             HDF5 io (fname, "r+");
@@ -70,7 +69,7 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     }
     {
         Timer _ ("min parent:\n");
-        std::cout << "min(parent) = "
+        std::cout << "  min(parent) = "
                   << *std::min_element(parent.begin(), parent.end())
                   << std::endl;
     }
@@ -102,7 +101,7 @@ main(int argc, char *argv[])
         }
         const int seed = atoi(ap.get_option("srand"));
         const char *fname = argv[1];
-        set_thousand_sep(std::cout, '\'');
+        set_thousand_sep(std::cout);
         traverse(fname, ap.get_option("group"), seed);
     } catch (std::runtime_error &e) {
         fprintf(stderr, "EXCEPTION: %s\n", e.what());
