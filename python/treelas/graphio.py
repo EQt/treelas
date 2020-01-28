@@ -38,7 +38,3 @@ def load_edges(io):
         head -= 1
         tail -= 1
     return head, tail
-
-
-# Mini test instance
-TREE_MINI = njoin(*('../data/tree/tree.mini.h5'.split('/')))
