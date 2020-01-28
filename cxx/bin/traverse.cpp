@@ -23,10 +23,8 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     {   Timer _ ("load hdf5");
         HDF5 io (fname, "r+");
         io.group(group);
-        if (io.has("head"))
-            head = io.read<decltype(head)::value_type>("head");
-        if (io.has("tail"))
-            tail = io.read<decltype(tail)::value_type>("tail");
+        head = io.read<decltype(head)::value_type>("head");
+        tail = io.read<decltype(tail)::value_type>("tail");
     }
 
     const size_t m = head.size();

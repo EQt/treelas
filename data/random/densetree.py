@@ -22,6 +22,7 @@ def generate(n, factor=1e-5, seed=2020, dist="normal"):
     deg = t.degree
     nchild = deg[deg >= 2] - 1
     assert abs(deg.mean() - 2*(n-1)/n) < 1e-12, f'deg={deg.mean()}'
+    print(f"n = {n:,d}".replace(",", "_"))
     print(f"#child: mean={nchild.mean():.3} #std={nchild.std():.5}", end=' ')
     print(f"deg.std={deg.std():.5}")
     return t
@@ -33,8 +34,17 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('-p', '--plot-deg', action='store_true',
                    help='Plot degree distribution')
+    p.add_argument('-n', '--num-nodes', type=int, default=2**20)
     p.add_argument('-d', '--distribution', type=str, default='normal')
+    p.add_argument('-s', '--seed', type=int, default=2020)
+    p.add_argument('-5', '--out-h5', type=str, default=None,
+                   help='Store Tree in HDF5 and exit')
+
     args = p.parse_args()
+
+    if args.out_h5:
+        t = generate(args.num_nodes, seed=args.seed, dist=args.distribution)
+        t.save(args.out_h5)
 
     if args.plot_deg:
         import matplotlib.pyplot as plt
