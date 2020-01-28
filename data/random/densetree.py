@@ -49,7 +49,7 @@ if __name__ == '__main__':
                      seed=args.seed,
                      dist=args.distribution,
                      factor=args.factor)
-        t.save(args.out_h5)
+        t.save_h5(args.out_h5)
 
     if args.plot_deg:
         import matplotlib.pyplot as plt
