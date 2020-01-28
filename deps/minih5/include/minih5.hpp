@@ -658,8 +658,7 @@ HDF5::read(const char *data_name, Dims *dims)
 int
 HDF5::ndims(const char *data_name)
 {
-    // printf("data_name --> %s\n", data_name);
-    int ndims;
+    int ndims = -1;
     status = _get_dataset_ndims(file_id, data_name, &ndims);
     check_error("_get_dataset_ndims");
     return ndims;

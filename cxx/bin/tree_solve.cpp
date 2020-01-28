@@ -113,6 +113,7 @@ main(int argc, char *argv[])
         ap.add_option('m', "merge",     "Use merging (instead of std::sort)");
         ap.add_option('O', "no-output", "Do not write output");
         ap.add_option('r', "repeat",    "Repeat execution", "num", "1");
+        ap.add_option('l', "lam",       "Tuning parameter λ", "num");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No tree file!\n");
