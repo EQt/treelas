@@ -2,5 +2,5 @@
 *.h5
 *.tree
 *.treelas
+*.tree_solve
 __pycache__/
-

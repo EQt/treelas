@@ -48,8 +48,9 @@ process_tree(const char *fname,
     }
     {
         Timer _ ("min parent\n");
-        Timer::log("  min(parent) = %d\n",
-                   *std::min_element(parent.begin(), parent.end()));
+        std::cout << "  min(parent) = " 
+                  << *std::min_element(parent.begin(), parent.end())
+                  << std::endl;
 
     }
     int root = -1;

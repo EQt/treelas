@@ -1,4 +1,9 @@
-CMAKE_BUILD = "../../build"
+CMAKE_BUILD = "../../build.rel"
+
+rule run_treelas:
+    input: "{name}.treelas"
+    output: "{name}.tree_solve"
+    shell: "{CMAKE_BUILD}/tree_solve {input} | tee {output}"
 
 
 rule spanning_tree:

@@ -1,10 +1,17 @@
 include: "../Snakefile"
 
 
+rule all:
+    input: "randnorm_n1e7_f1e-7.treelas"
+
+
 rule random_tree:
-    output: "rand_{n}_f{f}.tree"
+    output: "rand{dist,norm|exp|mix}_n{n}_f{f}.tree"
     run:
         from densetree import generate
+
+        dist = {'norm': 'normal',
+                'exp': 'exponential'}.get(wildcards.dist, wildcards.dist)
 
         t = generate(int(float(wildcards.n)),
                      seed=2020,
