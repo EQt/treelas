@@ -6,6 +6,12 @@ rule run_treelas:
     shell: "{CMAKE_BUILD}/tree_solve {input} | tee {output}"
 
 
+rule run_treeapx:
+    input: "{name}.treelas"
+    output: "{name}.tree_apx"
+    shell: "{CMAKE_BUILD}/tree_apx {input} | tee {output}"
+
+
 rule spanning_tree:
     input: "{name}.h5"
     output: "{name}.tree"

@@ -12,12 +12,18 @@ def plot_degrees(degs, exclude_leafs=True):
     plt.hist(degs, bins=bins, log=True, density=True)
 
 
-def generate(n, factor=1e-5, seed=2020, dist="normal"):
+DISTS = {
+    "norm": lambda n: np.random.normal(scale=factor*n, loc=0.5*n, size=n-2),
+    "exp": lambda n: np.random.exponential(scale=factor*n, size=n-2),
+    "mix": lambda n: np.random.randint(0, n, size=n-2) + \
+                     np.abs(np.random.normal(size=n-2, scale=0.01*n)),
+}
+
+
+
+def generate(n, factor=1e-5, seed=2020, dist="norm"):
     np.random.seed(seed)
-    if dist == "normal":
-        p = np.random.normal(scale=factor*n, loc=0.5*n, size=n-2)
-    else:
-        p = np.random.exponential(scale=factor*n, size=n-2)
+    p = DISTS[dist](n)
     t = tl.Tree.from_prufer(p.astype(int).clip(0, n-1))
     deg = t.degree
     nchild = deg[deg >= 2] - 1
@@ -35,7 +41,7 @@ if __name__ == '__main__':
     p.add_argument('-p', '--plot-deg', action='store_true',
                    help='Plot degree distribution')
     p.add_argument('-n', '--num-nodes', type=int, default=2**20)
-    p.add_argument('-d', '--distribution', type=str, default='normal')
+    p.add_argument('-d', '--distribution', type=str, default='norm')
     p.add_argument('-s', '--seed', type=int, default=2020)
     p.add_argument('-5', '--out-h5', type=str, default=None,
                    help='Store Tree in HDF5 and exit')
