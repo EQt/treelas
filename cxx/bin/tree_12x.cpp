@@ -13,8 +13,8 @@
 
 #include <graphidx/utils/viostream.hpp>
 #include <graphidx/utils/timer.hpp>
+#include <graphidx/utils/thousand.hpp>
 
-#include "thousand.hpp"
 #include "../tree_12x.hpp"
 
 

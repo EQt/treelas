@@ -11,7 +11,7 @@
 #include <minih5.hpp>
 
 #include <graphidx/utils/timer.hpp>
-#include "thousand.hpp"
+#include <graphidx/utils/thousand.hpp>
 
 #include "../tree_io.hpp"
 #include "../tree_12.hpp"

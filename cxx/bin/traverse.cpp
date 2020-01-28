@@ -13,8 +13,7 @@
 #include <graphidx/idx/biadjacent.hpp>
 #include <graphidx/spanning/connected.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
-
-#include "thousand.hpp"
+#include <graphidx/utils/thousand.hpp>
 
 
 void
