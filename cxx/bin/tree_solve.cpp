@@ -4,7 +4,9 @@
  */
 #include <algorithm>
 #include <iostream>
+#include <numeric>
 #include <vector>
+
 #include <minih5.hpp>
 #include <argparser.hpp>
 
@@ -22,6 +24,7 @@ void
 process_tree(const char *fname,
              const bool merge_sort,
              const bool output,
+             const double lam_override,
              const int repeat = 5,
              const bool verbose = true)
 {
@@ -36,9 +39,9 @@ process_tree(const char *fname,
         HDF5 io (fname, "r+");
         y = io.read<double>("y", &ydims);
         lams = io.read<double>("lam");
-        parent = io.read<decltype(parent)::value_type>("parent");
         assert(lams.size() >= 1);
-        lam = float_(lams[0]);
+        lam = std::isnan(lam_override) ? float_(lams[0]) : lam_override;
+        parent = io.read<decltype(parent)::value_type>("parent");
         if (io.has("xt")) {
             xt = io.read<double>("xt");
         }
@@ -54,8 +57,10 @@ process_tree(const char *fname,
         root = find_root(parent);
     }
 
-    if (verbose)
-        std::cout << "  n = " << y.size() << std::endl;
+    if (verbose) {
+        std::cout << "   n = " << y.size() << std::endl;
+        std::cout << " lam = " << lam << std::endl;
+    }
 
     {
         {   Timer _ ("resize x");
@@ -113,7 +118,7 @@ main(int argc, char *argv[])
         ap.add_option('m', "merge",     "Use merging (instead of std::sort)");
         ap.add_option('O', "no-output", "Do not write output");
         ap.add_option('r', "repeat",    "Repeat execution", "num", "1");
-        ap.add_option('l', "lam",       "Tuning parameter λ", "num");
+        ap.add_option('l', "lam",       "Tuning parameter λ", "num", "nan");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No tree file!\n");
@@ -126,6 +131,7 @@ main(int argc, char *argv[])
         process_tree(fname,
                      ap.has_option("merge"),
                      !ap.has_option("no-output"),
+                     std::atof(ap.get_option("lam")),
                      repeat);
     } catch (const char *msg) {
         fprintf(stderr, "EXCEPTION: %s\n", msg);
