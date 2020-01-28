@@ -1,1 +1,13 @@
 include: "../Snakefile"
+
+
+rule random_tree:
+    output: "rand_{n}_f{f}.tree"
+    run:
+        from densetree import generate
+
+        t = generate(int(float(wildcards.n)),
+                     seed=2020,
+                     dist="normal",
+                     factor=float(wildcards.f))
+        t.save_h5(output[0])
