@@ -181,20 +181,20 @@ def process_tree(treeh5, args=None):
                 io.create_dataset('bfs', data=bfs)
     preorder = bfs.copy()
     levels = None
-    if n <= PRINT_MAX:
-        print(" levels:", levels)
-        for i in range(len(levels)-1):
-            print("  %d:" % i, bfs[levels[i]:levels[i+1]])
-        print("\nrlevels:", levels[::-1])
-        nl = len(levels)
-        for i in range(len(levels)-1):
-            low = levels[nl-i-2]
-            upp = levels[nl-i-1]
-            print("  %d [%d:%d):" % (i, low, upp), bfs[low:upp])
-
     if args is not None and args.use_levels:
         with Timer("Computing Levels"):
             levels = compute_levels(bfs, parent)
+    if n <= PRINT_MAX:
+        if levels is not None:
+            print(" levels:", levels)
+            for i in range(len(levels)-1):
+                print("  %d:" % i, bfs[levels[i]:levels[i+1]])
+                print("\nrlevels:", levels[::-1])
+                nl = len(levels)
+            for i in range(len(levels)-1):
+                low = levels[nl-i-2]
+                upp = levels[nl-i-1]
+                print("  %d [%d:%d):" % (i, low, upp), bfs[low:upp])
 
     with Timer("Inverse Order"):
         if args is not None and args.use_levels:
@@ -216,7 +216,8 @@ def process_tree(treeh5, args=None):
         print("     rbfs:", rbfs)
         print(" preorder:", preorder)
         print("postorder:", postorder)
-        print(" levelord:", reverse_levels(levels, bfs))
+        if levels is not None:
+            print(" levelord:", reverse_levels(levels, bfs))
         print("  backord:", backord)
         print(" ipostord:", ipostord)
         print("   iorder:", ipostord[preorder])
