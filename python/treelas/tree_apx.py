@@ -305,3 +305,7 @@ if __name__ == '__main__':
         if args.verbose:
             PRINT_MAX = 20
         process_tree(t, args)
+
+# Local Variables:
+# compile-command: "python -m treelas.tree_apx ../../data/test/tree.mini.h5"
+# End:
