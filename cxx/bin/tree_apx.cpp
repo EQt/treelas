@@ -36,7 +36,7 @@ compute_orders(TreeLasso<float_, int_> &tree,
         // for testing:
         // preorder = {0, 2, 3, 4, 1, 5, 6, 7};
         tree.postorder = reverse(tree.preorder);
-        ipostord = iperm(tree.postorder);
+        ipostord = invperm(tree.postorder);
         iorder = concat(ipostord, tree.preorder);
     }
     if (n <= PRINT_MAX) {

@@ -98,7 +98,7 @@ tree_12(const size_t n,
         post_order(root, childs, stack, postord.data());
     }
     {   Timer _ ("iorder");
-        iperm(n, iorder.data(), postord.data());
+        invperm(n, iorder.data(), postord.data());
     }
 
     for (size_t it = 0; it < max_iter; it++) {

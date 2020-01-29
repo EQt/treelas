@@ -6,12 +6,12 @@
 #include <vector>
 #include <array>
 
-#include <graphidx/utils/perm.hpp>   // for iperm
-#include <graphidx/utils/timer.hpp>
-#include <graphidx/utils/viostream.hpp>
 #include <graphidx/tree/bfs.hpp>
 #include <graphidx/tree/postorder.hpp>
 #include <graphidx/tree/root.hpp>
+#include <graphidx/utils/perm.hpp>   // for invperm
+#include <graphidx/utils/timer.hpp>
+#include <graphidx/utils/viostream.hpp>
 
 #include "tree.hpp"
 

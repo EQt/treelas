@@ -2,10 +2,10 @@
 
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/minmax.hpp>
-#include <graphidx/utils/perm.hpp>
-#include <graphidx/utils/timer.hpp>
 #include <graphidx/tree/postorder.hpp>
 #include <graphidx/tree/root.hpp>
+#include <graphidx/utils/perm.hpp>
+#include <graphidx/utils/timer.hpp>
 
 
 template<typename float_ = float, typename int_ = int>
@@ -138,7 +138,7 @@ tree_12x(
     }
     if (reorder) {
         {   Timer _ ("inverse order");
-            iperm(n, iorder.data(), forder_.data());
+            invperm(n, iorder.data(), forder_.data());
         }
         {   Timer _ ("relabel");
             newp.reserve(n);
