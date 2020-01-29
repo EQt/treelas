@@ -174,10 +174,7 @@ tree_12x(
     {   Timer _ ("Iterations:\n");
         for (int k = 0; k < max_iter; k++) {
             size_t changed = 0;
-            if (print_timings)
-                Timer::log("%2ld ...\n", k+1);
-            else
-                Timer::log("%2ld ...", k+1);
+            Timer::log("%2ld ...%s", k+1, print_timings ? "\n" : "");
 
             delta = float_(0.5*delta);
             {
@@ -185,7 +182,7 @@ tree_12x(
                 changed = tree_12x_iter(s, lam, delta);
             }
             if (changed)
-                Timer::log("  %d", changed);
+                Timer::log("  %'d", changed);
             Timer::log("\n");
         }
     }

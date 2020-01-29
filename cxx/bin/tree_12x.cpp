@@ -5,6 +5,7 @@
   iteration, yielding the better option of two possible choices for
   each x[i] (hence the name `tree12x`).
 */
+#include <clocale>
 #include <cmath>        // for std::abs
 #include <vector>
 #include <algorithm>    // for std::min_element
@@ -86,6 +87,7 @@ main(int argc, char *argv[])
 {
     try {
         set_thousand_sep(std::cout, '\'');
+        setlocale(LC_NUMERIC, "");
 
         ArgParser ap ("tree_12x [file]\n");
         ap.add_option('i', "max-iter",
