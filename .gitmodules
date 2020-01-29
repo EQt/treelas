@@ -4,4 +4,4 @@
 	branch = gh-pages
 [submodule "graphidx"]
 	path = deps/graphidx
-	url = git@github.com:EQt/graphidx.git
+	url = https://github.com/EQt/graphidx.git
