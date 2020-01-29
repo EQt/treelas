@@ -52,26 +52,7 @@ class Queue(object):
         return x
 
 
-def compute_children(parent):
-    """Return V, I such that V[I[j]:I[j+1]] are the children of j"""
-    @njit(cache=True)
-    def _compute_children(sort, vc, n):
-        k = 0
-        for i in range(n-1):
-            while sort[i+1] >= k:
-                vc[k] = i+1
-                k += 1
-
-    n = len(parent)
-    ci = parent.argsort()
-    vc = n * np.ones(n+1, dtype=int)
-    sort = parent[ci]
-    assert np.all(np.diff(sort) >= 0)
-    _compute_children(sort, vc, n)
-    return vc, ci
-
-
-@njit(cache=False)
+@njit(cache=True)
 def compute_bfs(vc, ci, root=0):
     """
     Return bfs whereby bfs[i] is the BFS number of i.
@@ -89,6 +70,13 @@ def compute_bfs(vc, ci, root=0):
         for u in range(vc[v], vc[v+1]):
             q.put(ci[u])
     return bfs
+
+
+def compute_children(parent):
+    from graphidx.py.children import PyChildrenIndex as ChildrenIndex
+
+    cidx = ChildrenIndex.compute(parent)
+    return cidx.idx, cidx.pi
 
 
 def bfs_order(parent, root=0):

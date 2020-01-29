@@ -148,20 +148,21 @@ def process_tree(treeh5, args=None):
     """
     with Timer("Loading Tree"):
         tree = load_tree(treeh5)
-        parent = tree.parent
-        root = tree.root
         with h5py.File(treeh5, 'r') as io:
             y = io['y'][()]
             lam = io['lam'][()]
             if not isinstance(lam, float):
-                lam = lam[0]
+                lam = float(lam[0])
             xt = io['xt'][()] if 'xt' in io else \
                 io['x++'][()] if 'x++' in io else None
 
+    parent = tree.parent
+    root = tree.root
+    n = len(tree)
     y = y.flatten()
-    n = len(parent)
     nodes = np.zeros(n, dtype=Node)
     nodes = np.rec.array(nodes)
+    print(f"n={n:,d}, ({parent.max():,d})")
 
     if args is not None and args.scale_y:
         y_min, y_max = y.min(), y.max()
