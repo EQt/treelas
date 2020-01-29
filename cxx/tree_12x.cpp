@@ -67,8 +67,8 @@ TreeApx<float_, int_>::iter(
         for (size_t i = 0; i < n-1; i++) {
             const auto v = is_linear ? i : porder[i];
             n <= PRINT_MAX &&
-                printf("\ni = %d: id = %d, v = %d, p = %d",
-                       int(i), int(id[v]), int(v), parent(v));
+                printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d",
+                       int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
             if (same(v)) {
                 const auto p = parent(v);
                 deriv[p] += clamp(deriv[v], -lam, +lam);
@@ -83,7 +83,10 @@ TreeApx<float_, int_>::iter(
 
         for (size_t i = n-1; i > 0; i--) {
             const auto v = is_linear ? i-1 : porder[i-1];
-            n <= PRINT_MAX && printf("\nv = %d: id = %d", int(v), int(id[v]));
+            n <= PRINT_MAX &&
+                printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d",
+                       int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
+
             if (same(v)) {
                 if (deriv[v] > lam) {
                     x[v] -= delta;
@@ -135,6 +138,8 @@ tree_12x(
     std::vector<int_> iorder;    // inverse of porder
     ChildrenIndex cidx;
     int_ root = root_;
+
+    Timer::log("lam = %f\n", lam);
 
     if (root < 0) {
         Timer _ ("find_root");
@@ -208,7 +213,16 @@ tree_12x(
             }
         }
     }
-
+    if (n <= PRINT_MAX) {
+        printf("deriv: [");
+        for (size_t i = 0; i < n; i++)
+            printf("%.3f ", s.deriv[i]);
+        printf("]\n");
+        printf("    x: [");
+        for (size_t i = 0; i < n; i++)
+            printf("%.3f ", s.x[i]);
+        printf("]\n");
+    }
     {   Timer _ ("iterations:\n");
         for (int k = 0; k < max_iter; k++) {
             size_t changed = 0;
@@ -218,6 +232,16 @@ tree_12x(
             {
                 TimerQuiet _ (print_timings);
                 changed = s.iter(lam, delta);
+                if (n <= PRINT_MAX) {
+                    printf("deriv: [");
+                    for (size_t i = 0; i < n; i++)
+                        printf("%.3f ", s.deriv[i]);
+                    printf("]\n");
+                    printf("    x: [");
+                    for (size_t i = 0; i < n; i++)
+                        printf("%.3f ", s.x[i]);
+                    printf("]\n");
+                }
             }
             if (changed)
                 Timer::log("  %'d", changed);
