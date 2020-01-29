@@ -3,6 +3,7 @@
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/minmax.hpp>
 #include <graphidx/tree/postorder.hpp>
+#include <graphidx/tree/bfs.hpp>
 #include <graphidx/tree/root.hpp>
 #include <graphidx/utils/perm.hpp>
 #include <graphidx/utils/timer.hpp>
@@ -141,6 +142,11 @@ tree_12x(
     {
         Timer _ ("children idx");
         cidx.reset(n, parent, root);
+    }
+    {
+        Timer _ ("bfs");
+        std::vector<int_> bfs;
+        compute_bfs(bfs, cidx);
     }
     {   Timer _ ("dfs postorder\n");
         stack<int_> stack;
