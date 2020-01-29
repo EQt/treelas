@@ -189,10 +189,17 @@ tree_12x(
         const float_ x0 = float_(0.5 * (min_y + max_y));
         for (size_t i = 0; i < n; i++)
             s.x[i] = x0;
-        for (size_t i = 0; i < n; i++)
-            s.y[i] = y[i];
-        for (size_t i = 0; i < n; i++)
-            s.init_parent(i, pi[i]);
+        if (reorder) {
+            for (size_t i = 0; i < n; i++) {
+                s.y[i] = y[forder[i]];
+                s.init_parent(i, pi[i]);
+            }
+        } else {
+            for (size_t i = 0; i < n; i++) {
+                s.y[i] = y[i];
+                s.init_parent(i, pi[i]);
+            }
+        }
     }
 
     {   Timer _ ("iterations:\n");
