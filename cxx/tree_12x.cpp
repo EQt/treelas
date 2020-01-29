@@ -120,13 +120,13 @@ tree_12x(
     const bool print_timings,
     const bool reorder)
 {
-    std::vector<int> forder_;
+    std::vector<int> forder;
     std::vector<int> iorder;
     std::vector<int> newp;
     Timer _ ("tree_12x:\n");
     {
         Timer _ ("vector::reserve");
-        forder_.reserve(n);
+        forder.reserve(n);
         if (reorder)
             iorder.reserve(n);
     }
@@ -136,29 +136,29 @@ tree_12x(
         root = find_root(n, parent);
     }
     {   Timer _ ("dfs postorder\n");
-        post_order(n, parent, root, forder_.data());
-        if (forder_[n-1] != root)
+        post_order(n, parent, root, forder.data());
+        if (forder[n-1] != root)
             throw std::runtime_error(std::string("tree_12x(): FATAL: ") +
                                      "forder[" + std::to_string(n-1) + "] = " +
-                                     std::to_string(forder_[n-1]) + " != " +
+                                     std::to_string(forder[n-1]) + " != " +
                                      std::to_string(root) + " = root");
     }
     if (reorder) {
         {   Timer _ ("inverse order");
-            invperm(n, iorder.data(), forder_.data());
+            invperm(n, iorder.data(), forder.data());
         }
         {   Timer _ ("relabel");
             newp.reserve(n);
             for (size_t i = 0; i < n; i++)
-                newp[i] = iorder[parent[forder_[i]]];
+                newp[i] = iorder[parent[forder[i]]];
             for (int i = 0; i < int(n); i++)
-                forder_[i] = i;
+                forder[i] = i;
             // TODO: also relabel y!
         }
     }
 
     Timer tim ("alloc");
-    Tree12xStatus<float_, int_> s (n, forder_.data());
+    Tree12xStatus<float_, int_> s (n, forder.data());
     tim.stop();
 
     float_ min_y, max_y, delta;
