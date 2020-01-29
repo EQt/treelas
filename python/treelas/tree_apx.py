@@ -68,6 +68,7 @@ def clip(x, a, b):
 @njit(locals=dict(nodes=Node[:], preorder=int64[:], delta=double,
                   lam=double, mu=double, c=double, d=double))
 def discrete_flsa(nodes, preorder, delta, lam, mu=0.5):
+    n = len(nodes)
     for v in nodes:
         v.deriv = 2.0*mu * (v.x - v.y)
 
@@ -92,7 +93,7 @@ def discrete_flsa(nodes, preorder, delta, lam, mu=0.5):
     # print("r.i", r.i)
 
     # backtracing
-    for i in preorder[1:]:
+    for i in range(n-2, -1, -1):
         v = nodes[i]
         p = nodes[v.parent]
         if abs(p.x - v.x) <= delta:  # in same range?
@@ -203,7 +204,7 @@ def process_tree(treeh5, args=None):
         else:
             postorder = rbfs.copy()
             backord = np.arange(n)[::-1]
-        ipostord = iperm(int64(postorder))
+        ipostord = iperm(postorder)
 
     if 'i' in Node.fields:
         for i, ii in enumerate(postorder):

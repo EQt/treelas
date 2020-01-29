@@ -21,7 +21,7 @@ struct TreeApx
     float_ *x = nullptr;
     float_ *deriv = nullptr;
     int_ *parent_ = nullptr;
-    const int_ *porder;         // forward order
+    const int_ *porder;         // post-order (forward, i.e. upward)
 
     TreeApx(const size_t n, const int_ *porder) : n(n), porder(porder) {
         y = new float_[n];
@@ -222,11 +222,9 @@ tree_12x(
     }
 
     {   Timer _ ("extract x");
-        // TODO: take care of reorder
         if (reorder) {
             for (size_t i = 0; i < n; i++) {
-                const auto ii = porder[i];
-                x[ii] = s.x[i];
+                x[i] = s.x[iorder[i]];
             }
         } else {
             for (size_t i = 0; i < n; i++)
