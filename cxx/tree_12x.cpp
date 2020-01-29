@@ -123,11 +123,17 @@ tree_12x(
     std::vector<int> forder_;
     std::vector<int> iorder;
     std::vector<int> newp;
-    forder_.reserve(n);
-    if (reorder)
-        iorder.reserve(n);
-    int_ root = root_ < 0 ? find_root(n, parent) : root_;
-
+    {
+        Timer _ ("vector::reserve");
+        forder_.reserve(n);
+        if (reorder)
+            iorder.reserve(n);
+    }
+    int_ root = root_;
+    if (root < 0) {
+        Timer _ ("find_root");
+        root = find_root(n, parent);
+    }
     {   Timer _ ("dfs postorder\n");
         post_order(n, parent, root, forder_.data());
         if (forder_[n-1] != root)
