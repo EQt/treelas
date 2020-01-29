@@ -14,9 +14,16 @@
 template<typename float_ = float, typename int_ = int>
 struct TreeApx
 {
-    TreeApx(const size_t n, const int_ *forder)
-        : n(n),
-          forder(forder) {
+    const size_t n = 0;
+    const bool is_linear = false;
+    std::vector<int> id;
+    float_ *y = nullptr;
+    float_ *x = nullptr;
+    float_ *deriv = nullptr;
+    int_ *parent_ = nullptr;
+    const int_ *porder;         // forward order
+
+    TreeApx(const size_t n, const int_ *porder) : n(n), porder(porder) {
         y = new float_[n];
         x = new float_[n];
         deriv = new float_[n];
@@ -38,14 +45,6 @@ struct TreeApx
         if (parent_) delete[] parent_;
     }
 
-    const size_t n = 0;
-    const bool is_linear = false;
-    float_ *y = nullptr;
-    float_ *x = nullptr;
-    float_ *deriv = nullptr;
-    int_ *parent_ = nullptr;
-    const int_ *forder;         // forward order
-
     size_t iter(const float_ lam, const float_ delta);
 };
 
@@ -56,7 +55,7 @@ TreeApx<float_, int_>::iter(
     const float_ lam,
     const float_ delta)
 {
-    const auto root = forder[n-1];
+    const auto root = porder[n-1];
 
     {   // Timer _ ("deriv init");
         for (size_t i = 0; i < n; i++)
@@ -65,7 +64,9 @@ TreeApx<float_, int_>::iter(
 
     {   Timer _ (" forward");
         for (size_t i = 0; i < n-1; i++) {
-            const auto v = forder[i];
+            const auto v = porder[i];
+            n <= PRINT_MAX &&
+                printf("\ni = %d: id = %d, v = %d", int(i), int(id[v]), int(v));
             if (same(v)) {
                 const auto p = parent(v);
                 deriv[p] += clamp(deriv[v], -lam, +lam);
@@ -79,7 +80,8 @@ TreeApx<float_, int_>::iter(
         x[root] += xr;
 
         for (size_t i = n-1; i > 0; i--) {
-            const auto v = forder[i-1];
+            const auto v = porder[i-1];
+            n <= PRINT_MAX && printf("\nv = %d: id = %d", int(v), int(id[v]));
             if (same(v)) {
                 if (deriv[v] > lam) {
                     x[v] -= delta;
@@ -127,9 +129,8 @@ tree_12x(
 {
     Timer _ ("tree_12x:\n");
 
-    std::vector<int_> forder;    // forward order
-    std::vector<int_> iorder;    // inverse of forder
-    std::vector<int_> fparent;   // 
+    std::vector<int_> porder;    // post order (forward)
+    std::vector<int_> iorder;    // inverse of porder
     ChildrenIndex cidx;
     int_ root = root_;
 
@@ -139,7 +140,7 @@ tree_12x(
     }
     {
         Timer _ ("vector::resize");
-        forder.resize(n);
+        porder.resize(n);
         iorder.resize(n);
     }
     {
@@ -148,31 +149,25 @@ tree_12x(
     }
     if (reorder) {
         Timer _ ("bfs");
-        reversed_bfs(forder, cidx);
+        reversed_bfs(porder, cidx);
     } else {
         Timer _ ("dfs postorder\n");
         stack<int_> stack;
-        post_order(forder.data(), cidx, stack);
-        if (forder[n-1] != root)
-            throw std::runtime_error(std::string("tree_12x(): FATAL: ") +
-                                     "forder[" + std::to_string(n-1) + "] = " +
-                                     std::to_string(forder[n-1]) + " != " +
-                                     std::to_string(root) + " = root");
+        post_order(porder.data(), cidx, stack);
     }
+    if (porder[n-1] != root)
+        throw std::runtime_error(
+            std::string("tree_12x(): FATAL: ") +
+            "forder[" + std::to_string(n-1) + "] = " +
+            std::to_string(porder[n-1]) + " != " +
+            std::to_string(root) + " = root");
+
     {   Timer _ ("inverse order");
-        invperm(iorder, forder);
-    }
-    if (reorder) {
-        {   Timer _ ("relabel");
-            fparent.reserve(n);
-            for (size_t i = 0; i < n; i++)
-                fparent[i] = iorder[parent[forder[i]]];
-            // TODO: also relabel y!
-        }
+        invperm(iorder, porder);
     }
 
     Timer tim ("alloc");
-    TreeApx<float_, int_> s (n, forder.data());
+    TreeApx<float_, int_> s (n, porder.data());
     tim.stop();
 
     float_ min_y, max_y, delta;
@@ -185,25 +180,27 @@ tree_12x(
         printf("   parent: ");
         print_int_list(Vec(parent, n));
         printf("postorder: ");
-        print_int_list(forder);
+        print_int_list(porder);
         printf("   iorder: ");
         print_int_list(iorder);
     }
 
-    const auto *pi = reorder ? fparent.data() : parent;
     {   Timer _ ("init x,y,parent");
+        s.id.resize(n);
         const float_ x0 = float_(0.5 * (min_y + max_y));
         for (size_t i = 0; i < n; i++)
             s.x[i] = x0;
         if (reorder) {
             for (size_t i = 0; i < n; i++) {
-                s.y[i] = y[forder[i]];
-                s.init_parent(i, pi[i]);
+                const auto ii = porder[i];
+                s.id[i] = ii;
+                s.y[i] = y[ii];
+                s.init_parent(i, iorder[parent[ii]]);
             }
         } else {
             for (size_t i = 0; i < n; i++) {
                 s.y[i] = y[i];
-                s.init_parent(i, pi[i]);
+                s.init_parent(i, parent[i]);
             }
         }
     }
@@ -226,8 +223,15 @@ tree_12x(
 
     {   Timer _ ("extract x");
         // TODO: take care of reorder
-        for (size_t i = 0; i < n; i++)
-            x[i] = s.x[i];
+        if (reorder) {
+            for (size_t i = 0; i < n; i++) {
+                const auto ii = porder[i];
+                x[ii] = s.x[i];
+            }
+        } else {
+            for (size_t i = 0; i < n; i++)
+                x[i] = s.x[i];
+        }
     }
 }
 
