@@ -24,7 +24,7 @@ float_t = 'f4'
 int_t = 'i4'
 
 Node = numba.from_dtype(np.dtype([
-    ('id',     int_t),   # only for debugging
+    # ('id',     int_t),   # only for debugging
     ('y',      float_t),
     ('x',      float_t),
     ('deriv',  float_t),
@@ -57,7 +57,7 @@ def init(nodes, y_mid, y, parent, order, iorder):
     for i, ii in enumerate(order):
         nodes[i].y = y[ii]
         nodes[i].x = y_mid
-        nodes[i].id = ii
+        # nodes[i].id = ii
         nodes[i].parent = iorder[parent[ii]]
 
 
@@ -75,7 +75,6 @@ def discrete_flsa(nodes, delta, lam, mu=0.5):
 
     # compute derivative
     for v in nodes:
-        print(v.id, v.parent)
         p = nodes[v.parent]
         if abs(p.x - v.x) < delta:
             p.deriv += clip(v.deriv, -lam, +lam)

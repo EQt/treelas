@@ -56,8 +56,6 @@ TreeApx<float_, int_>::iter(
     const float_ lam,
     const float_ delta)
 {
-    const auto root = porder[n-1];
-
     {   // Timer _ ("deriv init");
         for (size_t i = 0; i < n; i++)
             deriv[i] = x[i] - y[i];
@@ -66,7 +64,7 @@ TreeApx<float_, int_>::iter(
     {   Timer _ (" forward");
         for (size_t i = 0; i < n-1; i++) {
             const auto v = is_linear ? i : porder[i];
-            n <= PRINT_MAX &&
+            if (n <= PRINT_MAX)
                 printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d",
                        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
             if (same(v)) {
@@ -78,24 +76,32 @@ TreeApx<float_, int_>::iter(
 
     size_t changed = 0;
     {   Timer _ (" backward");
+        const auto root = is_linear ? n-1 : porder[n-1];
         const auto xr = deriv[root] > 0 ? -delta : +delta;
         x[root] += xr;
+        if (n <= PRINT_MAX)
+            printf(" root deriv = %+.3f xr = %+.3f x[root] = %+.3f\n",
+                   deriv[root], xr, x[root]);
 
         for (size_t i = n-1; i > 0; i--) {
             const auto v = is_linear ? i-1 : porder[i-1];
-            n <= PRINT_MAX &&
-                printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d",
-                       int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
+            // printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d ",
+            //        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
 
             if (same(v)) {
+                // printf(" deriv = %+.3f", deriv[v]);
+
                 if (deriv[v] > lam) {
                     x[v] -= delta;
                 } else if (deriv[v] < -lam) {
                     x[v] += delta;
                 } else {
                     x[v] = x[parent(v)];
+                    // printf(" x = %+.3f parent", x[v]);
                     continue;
                 }
+
+                // printf(" x = %+.3f", x[v]);
 
                 const auto p = parent(v);
                 if (x[v] < x[p]) {
@@ -154,7 +160,7 @@ tree_12x(
         Timer _ ("children idx");
         cidx.reset(n, parent, root);
     }
-    //if (reorder)
+    //if (use_bfs)
     {
         Timer _ ("bfs");
         reversed_bfs(porder, cidx);
@@ -162,7 +168,7 @@ tree_12x(
         Timer _ ("dfs postorder\n");
         stack<int_> stack;
         post_order(porder.data(), cidx, stack);
-        }*/
+       }*/
     if (porder[n-1] != root)
         throw std::runtime_error(
             std::string("tree_12x(): FATAL: ") +
@@ -216,11 +222,11 @@ tree_12x(
     if (n <= PRINT_MAX) {
         printf("deriv: [");
         for (size_t i = 0; i < n; i++)
-            printf("%.3f ", s.deriv[i]);
+            printf("%.3f ", s.deriv[reorder ? iorder[i] : i]);
         printf("]\n");
         printf("    x: [");
         for (size_t i = 0; i < n; i++)
-            printf("%.3f ", s.x[i]);
+            printf("%.3f ", s.x[reorder ? iorder[i] : i]);
         printf("]\n");
     }
     {   Timer _ ("iterations:\n");
@@ -235,11 +241,11 @@ tree_12x(
                 if (n <= PRINT_MAX) {
                     printf("deriv: [");
                     for (size_t i = 0; i < n; i++)
-                        printf("%.3f ", s.deriv[i]);
+                        printf("%.3f ", s.deriv[reorder ? iorder[i] : i]);
                     printf("]\n");
                     printf("    x: [");
                     for (size_t i = 0; i < n; i++)
-                        printf("%.3f ", s.x[i]);
+                        printf("%.3f ", s.x[reorder ? iorder[i] : i]);
                     printf("]\n");
                 }
             }
