@@ -37,69 +37,71 @@ struct Tree12xStatus
     }
 
     const size_t n = 0;
+    const bool is_linear = false;
     float_ *y = nullptr;
     float_ *x = nullptr;
     float_ *deriv = nullptr;
     int_ *parent_ = nullptr;
-    const int_ *forder;
+    const int_ *forder;         // forward order
+
+    size_t iter(const float_ lam, const float_ delta);
 };
 
 
-template<typename float_ = float, typename int_ = int>
+template<typename float_, typename int_>
 size_t
-tree_12x_iter(
-    Tree12xStatus<float_, int_> &s,
+Tree12xStatus<float_, int_>::iter(
     const float_ lam,
     const float_ delta)
 {
-    const auto root = s.forder[s.n-1];
+    const auto root = forder[n-1];
 
     {   // Timer _ ("deriv init");
-        for (size_t i = 0; i < s.n; i++)
-            s.deriv[i] = s.x[i] - s.y[i];
+        for (size_t i = 0; i < n; i++)
+            deriv[i] = x[i] - y[i];
     }
 
     {   Timer _ (" forward");
-        for (size_t i = 0; i < s.n-1; i++) {
-            const auto v = s.forder[i];
-            if (s.same(v)) {
-                const auto p = s.parent(v);
-                s.deriv[p] += clamp(s.deriv[v], -lam, +lam);
+        for (size_t i = 0; i < n-1; i++) {
+            const auto v = forder[i];
+            if (same(v)) {
+                const auto p = parent(v);
+                deriv[p] += clamp(deriv[v], -lam, +lam);
             }
         }
     }
 
     size_t changed = 0;
     {   Timer _ (" backward");
-        const auto xr = s.deriv[root] > 0 ? -delta : +delta;
-        s.x[root] += xr;
+        const auto xr = deriv[root] > 0 ? -delta : +delta;
+        x[root] += xr;
 
-        for (size_t i = s.n-1; i > 0; i--) {
-            const auto v = s.forder[i-1];
-            if (s.same(v)) {
-                if (s.deriv[v] > lam) {
-                    s.x[v] -= delta;
-                } else if (s.deriv[v] < -lam) {
-                    s.x[v] += delta;
+        for (size_t i = n-1; i > 0; i--) {
+            const auto v = forder[i-1];
+            if (same(v)) {
+                if (deriv[v] > lam) {
+                    x[v] -= delta;
+                } else if (deriv[v] < -lam) {
+                    x[v] += delta;
                 } else {
-                    s.x[v] = s.x[s.parent(v)];
+                    x[v] = x[parent(v)];
                     continue;
                 }
 
-                const auto p = s.parent(v);
-                if (s.x[v] < s.x[p]) {
+                const auto p = parent(v);
+                if (x[v] < x[p]) {
                     changed++;
-                    s.divorce(v);
-                    s.y[v] += lam;
-                    s.y[p] -= lam;
-                } else if (s.x[v] > s.x[p]) {
+                    divorce(v);
+                    y[v] += lam;
+                    y[p] -= lam;
+                } else if (x[v] > x[p]) {
                     changed++;
-                    s.divorce(v);
-                    s.y[v] -= lam;
-                    s.y[p] += lam;
+                    divorce(v);
+                    y[v] -= lam;
+                    y[p] += lam;
                 }
             } else {
-                s.x[v] += s.deriv[v] < 0 ? +delta : -delta;
+                x[v] += deriv[v] < 0 ? +delta : -delta;
             }
         }
     }
@@ -167,6 +169,7 @@ tree_12x(
                 fparent[i] = iorder[parent[forder[i]]];
             for (int i = 0; i < int(n); i++)
                 forder[i] = i;
+            
             // TODO: also relabel y!
         }
     }
@@ -200,7 +203,7 @@ tree_12x(
             delta = float_(0.5*delta);
             {
                 TimerQuiet _ (print_timings);
-                changed = tree_12x_iter(s, lam, delta);
+                changed = s.iter(lam, delta);
             }
             if (changed)
                 Timer::log("  %'d", changed);
