@@ -3,6 +3,7 @@ Input and output of graph/tree instances.
 """
 import h5py
 from os import path
+from graphidx.tree import Tree
 
 
 def njoin(*pathel):
@@ -17,17 +18,9 @@ def njoin(*pathel):
 
 
 def load_tree(treeh5):
-    """Return root, dfs, parent from a tree instance stored in hdf5"""
+    """Return root, parent from a tree instance stored in hdf5"""
     with h5py.File(treeh5, 'r') as io:
-        dfs = io['dfs'].value
-        root = dfs[0]
-        parent = io['parent'].value
-        if dfs.min() >= 1:
-            parent -= 1
-            root -= 1
-            dfs -= 1
-            assert parent[root] == root
-        return root, dfs, parent
+        return Tree(io['parent'][()])
 
 
 def load_edges(io):
