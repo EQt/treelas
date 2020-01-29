@@ -10,9 +10,9 @@
 
 
 template<typename float_ = float, typename int_ = int>
-struct Tree12xStatus
+struct TreeApx
 {
-    Tree12xStatus(const size_t n, const int_ *forder)
+    TreeApx(const size_t n, const int_ *forder)
         : n(n),
           forder(forder) {
         y = new float_[n];
@@ -29,7 +29,7 @@ struct Tree12xStatus
     inline bool same(size_t i) { return (parent_[i] & one) != 0; }
     inline int_ parent(size_t i) { return parent_[i] & (~one); }
 
-    ~Tree12xStatus() {
+    ~TreeApx() {
         if (y) delete[] y;
         if (x) delete[] x;
         if (deriv) delete[] deriv;
@@ -50,7 +50,7 @@ struct Tree12xStatus
 
 template<typename float_, typename int_>
 size_t
-Tree12xStatus<float_, int_>::iter(
+TreeApx<float_, int_>::iter(
     const float_ lam,
     const float_ delta)
 {
@@ -175,7 +175,7 @@ tree_12x(
     }
 
     Timer tim ("alloc");
-    Tree12xStatus<float_, int_> s (n, forder.data());
+    TreeApx<float_, int_> s (n, forder.data());
     tim.stop();
 
     float_ min_y, max_y, delta;
