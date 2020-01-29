@@ -20,7 +20,10 @@ def njoin(*pathel):
 def load_tree(treeh5):
     """Return root, parent from a tree instance stored in hdf5"""
     with h5py.File(treeh5, 'r') as io:
-        return Tree(io['parent'][()])
+        parent = io['parent'][()]
+        if parent.max() >= len(parent):
+            parent -= 1
+        return Tree(parent)
 
 
 def load_edges(io):
