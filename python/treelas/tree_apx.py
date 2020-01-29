@@ -42,7 +42,7 @@ def njit(*argp, **args):
 def iperm(perm):
     """Return an inverse permutation"""
 
-    @njit(locals=dict(perm=int64[:], iperm=int64[:], n=int64))
+    @njit
     def iperm_(perm, iperm):
         """Inverse permuation: Implementation"""
         for i, j in enumerate(perm):
@@ -175,21 +175,16 @@ def process_tree(treeh5, args=None):
     delta = 0.5 * (y_max - y_min)
     with Timer("Computing Children"):
         vc, ci = compute_children(parent)
-
     with Timer("Computing BFS"):
         bfs = compute_bfs(vc, ci, root=root)
     with Timer("Reverse BFS"):
         rbfs = bfs.copy()[::-1]
-
     with h5py.File(treeh5, 'r+') as io:
         if 'bfs' not in io:
-            with Timer("Write bfs"):
+            with Timer("Write BFS"):
                 io.create_dataset('bfs', data=bfs)
-
     preorder = bfs.copy()
-    with Timer("Computing Levels"):
-        levels = compute_levels(bfs, parent)
-
+    levels = None
     if n <= PRINT_MAX:
         print(" levels:", levels)
         for i in range(len(levels)-1):
@@ -200,6 +195,10 @@ def process_tree(treeh5, args=None):
             low = levels[nl-i-2]
             upp = levels[nl-i-1]
             print("  %d [%d:%d):" % (i, low, upp), bfs[low:upp])
+
+    if args is not None and args.use_levels:
+        with Timer("Computing Levels"):
+            levels = compute_levels(bfs, parent)
 
     with Timer("Inverse Order"):
         if args is not None and args.use_levels:
