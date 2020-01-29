@@ -9,7 +9,7 @@ def plot_degrees(degs, exclude_leafs=True):
     if exclude_leafs:
         degs = degs[degs > 1]
     bins = min(degs.max()+1, 100)
-    plt.hist(degs, bins=bins, log=True, density=True)
+    plt.hist(degs, bins=bins, log=True, density=False)
 
 
 DISTS = {
@@ -50,18 +50,23 @@ if __name__ == '__main__':
 
     args = p.parse_args()
 
-    if args.out_h5:
+    t = None
+    if args.out_h5 or args.plot_deg:
         t = generate(int(args.num_nodes),
                      seed=args.seed,
                      dist=args.distribution,
                      factor=args.factor)
+    if args.out_h5:
         t.save_h5(args.out_h5)
 
     if args.plot_deg:
         import matplotlib.pyplot as plt
 
-        for e in [19, 20, 21, 23]:
-            plt.figure(f'generate(n={2**e:,d})')
-            t = generate(2**e, dist=args.distribution)
+        if t:
             plot_degrees(t.degree)
+        else:
+            for e in [19, 20, 21, 23]:
+                plt.figure(f'generate(n={2**e:,d})')
+                t = generate(2**e, dist=args.distribution)
+                plot_degrees(t.degree)
         plt.show()
