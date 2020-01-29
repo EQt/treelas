@@ -15,7 +15,7 @@ import multiprocessing
 from graphidx.timer import Timer
 from graphidx.graphviz import show_tree
 from .graphio import load_tree
-from .bfs import bfs_order, compute_children, compute_levels, reverse_levels
+from .bfs import compute_bfs, compute_children, compute_levels, reverse_levels
 
 
 PRINT_MAX = 10
@@ -34,9 +34,9 @@ double = Node.fields['x'][0]
 int64 = Node.fields['parent'][0]
 
 
-def njit(**args):
+def njit(*argp, **args):
     """Enable/Disable caching for all JIT functions"""
-    return numba.njit(cache=True, **args)
+    return numba.njit(cache=True, *argp, **args)
 
 
 def iperm(perm):
@@ -52,8 +52,7 @@ def iperm(perm):
     return iperm_(perm, np.empty_like(perm))
 
 
-@njit(locals=dict(nodes=Node[:], y_mid=double, y=double[:], parent=int64[:],
-                  order=int64[:], iorder=int64[:], i=int64, ii=int64))
+@njit
 def init(nodes, y_mid, y, parent, order, iorder):
     for i, ii in enumerate(order):
         nodes[i].y = y[ii]
@@ -161,7 +160,7 @@ def process_tree(treeh5, args=None):
     y = y.flatten()
     nodes = np.zeros(n, dtype=Node)
     nodes = np.rec.array(nodes)
-    print(f"n={n:,d}, ({parent.max():,d})")
+    print(f" n={n:,d}".replace(",", "_"))
 
     if args is not None and args.scale_y:
         y_min, y_max = y.min(), y.max()
@@ -174,11 +173,17 @@ def process_tree(treeh5, args=None):
         y_min, y_max = 0.0, 1.0
     y_mid = 0.5 * (y_min + y_max)
     delta = 0.5 * (y_max - y_min)
+    with Timer("Computing Children"):
+        vc, ci = compute_children(parent)
+
     with Timer("Computing BFS"):
-        bfs = int64(bfs_order(parent, root))
+        bfs = compute_bfs(vc, ci, root=root)
+    with Timer("Reverse BFS"):
         rbfs = bfs.copy()[::-1]
-        with h5py.File(treeh5, 'r+') as io:
-            if 'bfs' not in io:
+
+    with h5py.File(treeh5, 'r+') as io:
+        if 'bfs' not in io:
+            with Timer("Write bfs"):
                 io.create_dataset('bfs', data=bfs)
 
     preorder = bfs.copy()
