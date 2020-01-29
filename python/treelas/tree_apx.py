@@ -24,7 +24,7 @@ float_t = 'f4'
 int_t = 'i4'
 
 Node = numba.from_dtype(np.dtype([
-    # ('i',    int_t),   # only for debugging
+    ('id',     int_t),   # only for debugging
     ('y',      float_t),
     ('x',      float_t),
     ('deriv',  float_t),
@@ -57,6 +57,7 @@ def init(nodes, y_mid, y, parent, order, iorder):
     for i, ii in enumerate(order):
         nodes[i].y = y[ii]
         nodes[i].x = y_mid
+        nodes[i].id = ii
         nodes[i].parent = iorder[parent[ii]]
 
 
@@ -65,15 +66,16 @@ def clip(x, a, b):
     return max(min(x, b), a)
 
 
-@njit(locals=dict(nodes=Node[:], preorder=int64[:], delta=double,
-                  lam=double, mu=double, c=double, d=double))
-def discrete_flsa(nodes, preorder, delta, lam, mu=0.5):
+# @njit(locals=dict(nodes=Node[:], preorder=int64[:], delta=double,
+#                   lam=double, mu=double, c=double, d=double))
+def discrete_flsa(nodes, delta, lam, mu=0.5):
     n = len(nodes)
     for v in nodes:
         v.deriv = 2.0*mu * (v.x - v.y)
 
     # compute derivative
     for v in nodes:
+        print(v.id, v.parent)
         p = nodes[v.parent]
         if abs(p.x - v.x) < delta:
             p.deriv += clip(v.deriv, -lam, +lam)
@@ -86,7 +88,7 @@ def discrete_flsa(nodes, preorder, delta, lam, mu=0.5):
         # print(' --> % .3f' % p.deriv)
 
     # optimize root node
-    r = nodes[preorder[0]]
+    r = nodes[-1]
     c = 0.5 * delta
     # print("c:", c)
     r.x += c if r.deriv < 0 else -c
@@ -246,7 +248,7 @@ def process_tree(treeh5, args=None):
                     print("nodes.i:", nodes.i)
                     print(" ident?:", nodes.i[ipostord])
                 xb = nodes.x[ipostord]
-            discrete_flsa(nodes, int64(backord), delta, lam)
+            discrete_flsa(nodes, delta, lam)
             if n <= PRINT_MAX:
                 if 'i' in Node.fields:
                     print("    i:", nodes.i[ipostord])
