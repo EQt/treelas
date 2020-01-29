@@ -138,10 +138,9 @@ tree_12x(
         root = find_root(n, parent);
     }
     {
-        Timer _ ("vector::reserve");
-        forder.reserve(n);
-        if (reorder)
-            iorder.reserve(n);
+        Timer _ ("vector::resize");
+        forder.resize(n);
+        iorder.resize(n);
     }
     {
         Timer _ ("children idx");
@@ -161,7 +160,7 @@ tree_12x(
                                      std::to_string(root) + " = root");
     }
     {   Timer _ ("inverse order");
-        invperm(n, iorder.data(), forder.data());
+        invperm(iorder, forder);
     }
     if (reorder) {
         {   Timer _ ("relabel");
