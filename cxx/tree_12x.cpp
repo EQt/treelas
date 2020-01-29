@@ -8,6 +8,8 @@
 #include <graphidx/utils/perm.hpp>
 #include <graphidx/utils/timer.hpp>
 
+#define PRINT_MAX 20
+
 
 template<typename float_ = float, typename int_ = int>
 struct TreeApx
@@ -125,9 +127,9 @@ tree_12x(
 {
     Timer _ ("tree_12x:\n");
 
-    std::vector<int> forder;    // forward order
-    std::vector<int> iorder;    // inverse of forder
-    std::vector<int> fparent;
+    std::vector<int_> forder;    // forward order
+    std::vector<int_> iorder;    // inverse of forder
+    std::vector<int_> fparent;   // 
     ChildrenIndex cidx;
     int_ root = root_;
 
@@ -145,12 +147,11 @@ tree_12x(
         Timer _ ("children idx");
         cidx.reset(n, parent, root);
     }
-    {
+    if (reorder) {
         Timer _ ("bfs");
-        std::vector<int_> bfs;
-        compute_bfs(bfs, cidx);
-    }
-    {   Timer _ ("dfs postorder\n");
+        reversed_bfs(forder, cidx);
+    } else {
+        Timer _ ("dfs postorder\n");
         stack<int_> stack;
         post_order(forder.data(), cidx, stack);
         if (forder[n-1] != root)
@@ -159,10 +160,10 @@ tree_12x(
                                      std::to_string(forder[n-1]) + " != " +
                                      std::to_string(root) + " = root");
     }
+    {   Timer _ ("inverse order");
+        invperm(n, iorder.data(), forder.data());
+    }
     if (reorder) {
-        {   Timer _ ("inverse order");
-            invperm(n, iorder.data(), forder.data());
-        }
         {   Timer _ ("relabel");
             fparent.reserve(n);
             for (size_t i = 0; i < n; i++)
@@ -182,6 +183,13 @@ tree_12x(
     {   Timer _ ("minmax y");
         find_minmax(y, n, min_y, max_y);
         delta = float_((max_y - min_y) * 0.5);
+    }
+
+    if (n <= PRINT_MAX) {
+        printf("   parent: ");
+        print_double_list(Vec(parent, n), 0);
+        printf("postorder: ");
+        print_double_list(forder, 0);
     }
 
     const auto *pi = reorder ? fparent.data() : parent;
