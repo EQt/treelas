@@ -58,7 +58,7 @@ tree_12x_iter(
             s.deriv[i] = s.x[i] - s.y[i];
     }
 
-    {   Timer _ ("forward");
+    {   Timer _ (" forward");
         for (size_t i = 0; i < s.n-1; i++) {
             const auto v = s.forder[i];
             if (s.same(v)) {
@@ -69,7 +69,7 @@ tree_12x_iter(
     }
 
     size_t changed = 0;
-    {   Timer _ ("backward");
+    {   Timer _ (" backward");
         const auto xr = s.deriv[root] > 0 ? -delta : +delta;
         s.x[root] += xr;
 
@@ -123,6 +123,7 @@ tree_12x(
     std::vector<int> forder_;
     std::vector<int> iorder;
     std::vector<int> newp;
+    Timer _ ("tree_12x:\n");
     {
         Timer _ ("vector::reserve");
         forder_.reserve(n);
@@ -177,7 +178,7 @@ tree_12x(
             s.init_parent(i, pi[i]);
     }
 
-    {   Timer _ ("Iterations:\n");
+    {   Timer _ ("iterations:\n");
         for (int k = 0; k < max_iter; k++) {
             size_t changed = 0;
             Timer::log("%2ld ...%s", k+1, print_timings ? "\n" : "");

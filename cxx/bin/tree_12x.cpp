@@ -108,14 +108,14 @@ main(int argc, char *argv[])
         printf("max_iter = %d\n", max_iter);
         {
             if (ap.has_option("float64")) {
-                printf("float64\n");
+                printf("float64\n\n");
                 process_file<double, int_>(fname, group,
                                            max_iter,
                                            ap.has_option("quiet"),
                                            ap.has_option("dfs"),
                                            reorder);
             } else {
-                printf("float32\n");
+                printf("float32\n\n");
                 process_file<float, int_>(fname, group,
                                           max_iter,
                                           ap.has_option("quiet"),
