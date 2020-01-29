@@ -167,9 +167,6 @@ tree_12x(
             fparent.reserve(n);
             for (size_t i = 0; i < n; i++)
                 fparent[i] = iorder[parent[forder[i]]];
-            for (int i = 0; i < int(n); i++)
-                forder[i] = i;
-            
             // TODO: also relabel y!
         }
     }
@@ -186,9 +183,11 @@ tree_12x(
 
     if (n <= PRINT_MAX) {
         printf("   parent: ");
-        print_double_list(Vec(parent, n), 0);
+        print_int_list(Vec(parent, n));
         printf("postorder: ");
-        print_double_list(forder, 0);
+        print_int_list(forder);
+        printf("   iorder: ");
+        print_int_list(iorder);
     }
 
     const auto *pi = reorder ? fparent.data() : parent;
