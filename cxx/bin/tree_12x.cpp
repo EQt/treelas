@@ -12,6 +12,7 @@
 #include <argparser.hpp>
 #include <minih5.hpp>
 
+#include <graphidx/lina.hpp>
 #include <graphidx/utils/viostream.hpp>
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/utils/thousand.hpp>
@@ -72,13 +73,8 @@ process_file(
         }
     }
 
-    if (xt.size() == n) {
-        double max_diff = 0.0;
-        for (unsigned i = 0; i < n; i++)
-            max_diff = std::max(max_diff, std::abs(double(x[i] - xt[i])));
-
-        fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_diff);
-    }
+    if (xt.size() == n)
+        fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_abs_diff(x, xt));
 }
 
 
