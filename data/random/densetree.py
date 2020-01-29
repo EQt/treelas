@@ -40,7 +40,7 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('-p', '--plot-deg', action='store_true',
                    help='Plot degree distribution')
-    p.add_argument('-n', '--num-nodes', type=int, default=2**20)
+    p.add_argument('-n', '--num-nodes', type=float, default=2**20)
     p.add_argument('-d', '--distribution', type=str, default='norm')
     p.add_argument('-s', '--seed', type=int, default=2020)
     p.add_argument('-5', '--out-h5', type=str, default=None,
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     args = p.parse_args()
 
     if args.out_h5:
-        t = generate(args.num_nodes,
+        t = generate(int(args.num_nodes),
                      seed=args.seed,
                      dist=args.distribution,
                      factor=args.factor)
