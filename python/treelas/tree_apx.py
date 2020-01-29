@@ -74,8 +74,6 @@ def discrete_flsa(nodes, preorder, delta, lam, mu=0.5):
     # compute derivative
     for v in nodes:
         p = nodes[v.parent]
-        # print("v.i", v.i, "p.i", p.i, end=': ')
-        # print("v.deriv % .3f" % v.deriv, "p.deriv % .3f" % p.deriv, end='')
         if abs(p.x - v.x) < delta:
             p.deriv += clip(v.deriv, -lam, +lam)
         elif v.x < p.x:
@@ -97,9 +95,6 @@ def discrete_flsa(nodes, preorder, delta, lam, mu=0.5):
     for i in preorder[1:]:
         v = nodes[i]
         p = nodes[v.parent]
-        # print("p.i", p.i, "v.i", v.i, end=': ')
-        # print("p.x % .3f" % p.x, "(v.deriv % .3f)" % v.deriv, end='')
-        # print("v.x % .3f" % v.x, end='')
         if abs(p.x - v.x) <= delta:  # in same range?
             if v.deriv > lam:        # usual clipping
                 v.x -= c
@@ -130,14 +125,15 @@ def discrete_solution(x_opt, x_base, delta):
 
 def extract_x(nodes, order):
     """Reorder the nodes.x values and return as numpy array"""
-    @njit()
+    @njit
     def _extract_x(x, nodes, order):
         for i, ii in enumerate(order):
             x[ii] = nodes[i].x
         return x
 
     return _extract_x(np.empty(len(nodes), dtype=Node.fields['x'][0].name),
-                      nodes, order)
+                      nodes,
+                      order)
 
 
 def process_tree(treeh5, args=None):
