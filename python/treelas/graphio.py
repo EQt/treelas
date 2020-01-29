@@ -28,8 +28,8 @@ def load_tree(treeh5):
 
 def load_edges(io):
     """Return head, tail from io['edges'] (index starts at zero)"""
-    head = io['edges']['head'].value
-    tail = io['edges']['tail'].value
+    head = io['edges']['head'][()]
+    tail = io['edges']['tail'][()]
     if min(head.min(), tail.min()) >= 1:
         head -= 1
         tail -= 1

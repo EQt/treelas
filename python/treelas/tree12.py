@@ -12,9 +12,9 @@ import numpy as np
 import numba
 import multiprocessing
 
-from .graphio import load_tree
 from graphidx.timer import Timer
 from graphidx.graphviz import show_tree
+from .graphio import load_tree
 from .bfs import bfs_order, compute_children, compute_levels, reverse_levels
 
 
@@ -147,14 +147,16 @@ def process_tree(treeh5, args=None):
     Load data from `treeh5`, optimize and print the difference to optimum.
     """
     with Timer("Loading Tree"):
-        root, dfs, parent = load_tree(treeh5)
+        tree = load_tree(treeh5)
+        parent = tree.parent
+        root = tree.root
         with h5py.File(treeh5, 'r') as io:
-            y = io['y'].value
-            lam = io['lam'].value
+            y = io['y'][()]
+            lam = io['lam'][()]
             if not isinstance(lam, float):
                 lam = lam[0]
-            xt = io['xt'][:] if 'xt' in io else \
-                io['x++'][:] if 'x++' in io else None
+            xt = io['xt'][()] if 'xt' in io else \
+                io['x++'][()] if 'x++' in io else None
 
     y = y.flatten()
     n = len(parent)

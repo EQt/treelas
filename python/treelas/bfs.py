@@ -136,11 +136,12 @@ def reverse_levels(levels, bfs):
 
 
 def process(treeh5, debug=False, plot_hist=False, args=None, dfs_order=True):
-    root, dfs, parent = load_tree(treeh5)
+    tree = load_tree(treeh5)
+    parent = tree.parent
+    n = len(tree)
     if args is not None and args.dot:
         print_tree(parent)
 
-    n = len(dfs)
     bfs = np.zeros(n, dtype=np.int64)
     vc, ci = compute_children(parent)
     bfs = compute_bfs(vc, ci, root=0)
@@ -184,7 +185,7 @@ if __name__ == '__main__':
                    help='Print tree in dot format')
     p.add_argument('-f', '--dfs-order', action='store_true',
                    help='Do the same but with DFS instead of BFS')
-    p.add_argument('treeh5', type=str, nargs='*',
+    p.add_argument('treeh5', type=str, nargs='+',
                    help='Tree(s) to process')
     args = p.parse_args()
     for t in args.treeh5:
