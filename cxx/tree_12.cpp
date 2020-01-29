@@ -1,5 +1,6 @@
 #include "tree_12.hpp"
 
+#include <cassert>
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/minmax.hpp>
 
@@ -94,10 +95,10 @@ tree_12(const size_t n,
         stack.reserve(2*n);
     }
     {   Timer _ ("postorder");
-        post_order(root, childs, stack, postord.data());
+        post_order(postord.data(), childs, stack);
     }
     {   Timer _ ("iorder");
-        iperm(n, iorder.data(), postord.data());
+        invperm(n, iorder.data(), postord.data());
     }
 
     for (size_t it = 0; it < max_iter; it++) {
@@ -121,6 +122,7 @@ tree_12(const size_t n,
         double *x,
         const size_t max_iter)
 {
+    assert(order);
     float_ y_min, y_max;
     {   Timer _ ("Analyze y");
         find_minmax(y, n, y_min, y_max);

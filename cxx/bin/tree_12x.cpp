@@ -5,16 +5,18 @@
   iteration, yielding the better option of two possible choices for
   each x[i] (hence the name `tree12x`).
 */
+#include <clocale>
 #include <cmath>        // for std::abs
 #include <vector>
 #include <algorithm>    // for std::min_element
 #include <argparser.hpp>
 #include <minih5.hpp>
 
+#include <graphidx/lina.hpp>
 #include <graphidx/utils/viostream.hpp>
 #include <graphidx/utils/timer.hpp>
+#include <graphidx/utils/thousand.hpp>
 
-#include "thousand.hpp"
 #include "../tree_12x.hpp"
 
 
@@ -71,13 +73,8 @@ process_file(
         }
     }
 
-    if (xt.size() == n) {
-        double max_diff = 0.0;
-        for (unsigned i = 0; i < n; i++)
-            max_diff = std::max(max_diff, std::abs(double(x[i] - xt[i])));
-
-        fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_diff);
-    }
+    if (xt.size() == n)
+        fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_abs_diff(x, xt));
 }
 
 
@@ -86,6 +83,7 @@ main(int argc, char *argv[])
 {
     try {
         set_thousand_sep(std::cout, '\'');
+        setlocale(LC_NUMERIC, "");
 
         ArgParser ap ("tree_12x [file]\n");
         ap.add_option('i', "max-iter",
@@ -110,14 +108,14 @@ main(int argc, char *argv[])
         printf("max_iter = %d\n", max_iter);
         {
             if (ap.has_option("float64")) {
-                printf("float64\n");
+                printf("float64\n\n");
                 process_file<double, int_>(fname, group,
                                            max_iter,
                                            ap.has_option("quiet"),
                                            ap.has_option("dfs"),
                                            reorder);
             } else {
-                printf("float32\n");
+                printf("float32\n\n");
                 process_file<float, int_>(fname, group,
                                           max_iter,
                                           ap.has_option("quiet"),

@@ -3,6 +3,7 @@
    If it is not a tree, sample a random spanning tree.
    Traverse the graph and print timings.
 */
+#include <algorithm>
 #include <cstdint>
 #include <iostream>
 #include <argparser.hpp>
@@ -10,10 +11,9 @@
 
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/idx/biadjacent.hpp>
-// #include <graphidx/spanning/kruskal_mst.hpp>
+#include <graphidx/spanning/connected.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
-
-#include "thousand.hpp"
+#include <graphidx/utils/thousand.hpp>
 
 
 void
@@ -23,10 +23,8 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     {   Timer _ ("load hdf5");
         HDF5 io (fname, "r+");
         io.group(group);
-        if (io.has("head"))
-            head = io.read<decltype(head)::value_type>("head");
-        if (io.has("tail"))
-            tail = io.read<decltype(tail)::value_type>("tail");
+        head = io.read<decltype(head)::value_type>("head");
+        tail = io.read<decltype(tail)::value_type>("tail");
     }
 
     const size_t m = head.size();
@@ -34,10 +32,43 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     BiAdjacent index (head, tail);
     tim.stop();
     const size_t n = index.num_nodes();
+    {
+        Timer _ ("min nodes\n");
+        std::cout << "  min(head) = "
+                  << *std::min_element(head.begin(), head.end())
+                  << std::endl;
+        std::cout << "  min(tail) = "
+                  << *std::min_element(tail.begin(), tail.end())
+                  << std::endl;
+        std::cout << "  m = " << m << std::endl
+                  << "  n = " << n << std::endl;
+    }
+    std::vector<int> largest_cc;
+    {
+        Timer _ ("largest cc\n");
+        largest_cc = connected_components(index).largest().sorted();
+        std::cout << " n' = " << largest_cc.size() << std::endl;
+        if (largest_cc.size() != n) {
+            Timer _ ("store cc");
+            HDF5 io (fname, "r+");
+            io.group(group);
+            io.owrite("largest_cc", largest_cc);
+        }
+    }
+    {
+        Timer _ ("induced subgraph");
+        index.induced_subgraph(largest_cc);
+    }
 
     std::vector<int> parent;
     {   Timer _ ("random span");
         parent = random_spanning_tree(index, seed);
+    }
+    {
+        Timer _ ("min parent:\n");
+        std::cout << "  min(parent) = "
+                  << *std::min_element(parent.begin(), parent.end())
+                  << std::endl;
     }
 
     {   Timer _ ("store parent");
@@ -45,10 +76,6 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
         io.group(group);
         io.owrite("parent", parent);
     }
-
-    std::cout << "m = " << m << std::endl
-              << "n = " << n << std::endl;
-
 }
 
 
@@ -71,7 +98,7 @@ main(int argc, char *argv[])
         }
         const int seed = atoi(ap.get_option("srand"));
         const char *fname = argv[1];
-        set_thousand_sep(std::cout, '\'');
+        set_thousand_sep(std::cout);
         traverse(fname, ap.get_option("group"), seed);
     } catch (std::runtime_error &e) {
         fprintf(stderr, "EXCEPTION: %s\n", e.what());
@@ -84,5 +111,5 @@ main(int argc, char *argv[])
 
 
 // Local Variables:
-// compile-command: "cd ../build/ && make traverse && ./traverse ../data/snap/com-youtube.h5"
+// compile-command: "cd ../../build/ && make traverse && ./traverse ../data/snap/com-youtube.h5"
 // End:

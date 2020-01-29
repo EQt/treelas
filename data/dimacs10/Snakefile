@@ -25,7 +25,7 @@ rule _python_to_hdf5:
         convert(input[0], output[0])
 
 
-rule julia_to_hdf5:
+rule julia_bzcat_to_hdf5:
     input: "{name}.bz2"
     output: "{name}.proc.h5"
     shell: "bzcat {input} | julia convert.jl - {output}"
@@ -35,3 +35,6 @@ rule julia_to_hdf5:
     input: "{name}.bz2"
     output: "{name}.h5"
     shell: "julia convert.jl {input} {output}"
+
+
+include: "../Snakefile"

@@ -4,9 +4,8 @@ from six.moves.urllib.request import urlretrieve
 
 snap_url = "https://snap.stanford.edu/data"
 
-
 rule all:
-    input: "com-youtube.h5", "roadnet-ca.h5"
+    input: "com-youtube.h5", "roadnet-ca.h5", "com-orkut.h5"
 
 
 rule to_hdf5:
@@ -17,8 +16,14 @@ rule to_hdf5:
         df = read_csv(input[0], sep='\t', header=None, comment='#')
         with h5py.File(output[0], 'w') as io:
             g = io
-            g.create_dataset("head", data=df[0].values, compression=3)
-            g.create_dataset("tail", data=df[1].values, compression=3)
+            head = df[0].values
+            tail = df[1].values
+            min_idx = min(head.min(), tail.min())
+            if min_idx >= 1:
+                head -= min_idx
+                tail -= min_idx
+            g.create_dataset("head", data=head, compression=3)
+            g.create_dataset("tail", data=tail, compression=3)
 
 
 rule download_youtube:
@@ -32,3 +37,13 @@ rule download_road_ca:
     output: "roadnet-ca.txt.gz"
     run:
         urlretrieve(snap_url + "/roadNet-CA.txt.gz", filename=output[0])
+
+
+rule download_orkut:
+    output: "com-orkut.txt.gz"
+    run:
+        urlretrieve(snap_url + "/bigdata/communities/com-orkut.ungraph.txt.gz",
+                    filename=output[0])
+
+
+include: "../Snakefile"

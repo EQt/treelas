@@ -6,7 +6,7 @@ from data import data_dir
 
 
 def load_mini_h5():
-    with h5py.File(data_dir('tree.mini.h5'), 'r') as io:
+    with h5py.File(data_dir('test', 'tree.mini.h5'), 'r') as io:
         y = io['y'][:]
         parent = io['parent'][:]
         xt = io['xt'][:]

@@ -52,26 +52,7 @@ class Queue(object):
         return x
 
 
-def compute_children(parent):
-    """Return V, I such that V[I[j]:I[j+1]] are the children of j"""
-    @njit(cache=True)
-    def _compute_children(sort, vc, n):
-        k = 0
-        for i in range(n-1):
-            while sort[i+1] >= k:
-                vc[k] = i+1
-                k += 1
-
-    n = len(parent)
-    ci = parent.argsort()
-    vc = n * np.ones(n+1, dtype=int)
-    sort = parent[ci]
-    assert np.all(np.diff(sort) >= 0)
-    _compute_children(sort, vc, n)
-    return vc, ci
-
-
-@njit(cache=False)
+@njit(cache=True)
 def compute_bfs(vc, ci, root=0):
     """
     Return bfs whereby bfs[i] is the BFS number of i.
@@ -89,6 +70,13 @@ def compute_bfs(vc, ci, root=0):
         for u in range(vc[v], vc[v+1]):
             q.put(ci[u])
     return bfs
+
+
+def compute_children(parent):
+    from graphidx.py.children import PyChildrenIndex as ChildrenIndex
+
+    cidx = ChildrenIndex.compute(parent)
+    return cidx.idx, cidx.pi
 
 
 def bfs_order(parent, root=0):
@@ -136,11 +124,12 @@ def reverse_levels(levels, bfs):
 
 
 def process(treeh5, debug=False, plot_hist=False, args=None, dfs_order=True):
-    root, dfs, parent = load_tree(treeh5)
+    tree = load_tree(treeh5)
+    parent = tree.parent
+    n = len(tree)
     if args is not None and args.dot:
         print_tree(parent)
 
-    n = len(dfs)
     bfs = np.zeros(n, dtype=np.int64)
     vc, ci = compute_children(parent)
     bfs = compute_bfs(vc, ci, root=0)
@@ -184,7 +173,7 @@ if __name__ == '__main__':
                    help='Print tree in dot format')
     p.add_argument('-f', '--dfs-order', action='store_true',
                    help='Do the same but with DFS instead of BFS')
-    p.add_argument('treeh5', type=str, nargs='*',
+    p.add_argument('treeh5', type=str, nargs='+',
                    help='Tree(s) to process')
     args = p.parse_args()
     for t in args.treeh5:
