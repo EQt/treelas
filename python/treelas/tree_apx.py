@@ -22,7 +22,7 @@ PRINT_MAX = 10
 
 float_t = 'f4'
 int_t = 'i4'
-# http://numba.pydata.org/numba-doc/dev/reference/types.html
+
 Node = numba.from_dtype(np.dtype([
     # ('i',    int_t),   # only for debugging
     ('y',      float_t),
@@ -37,7 +37,6 @@ int64 = Node.fields['parent'][0]
 def njit(**args):
     """Enable/Disable caching for all JIT functions"""
     return numba.njit(cache=True, **args)
-    # return lambda f: f
 
 
 def iperm(perm):
