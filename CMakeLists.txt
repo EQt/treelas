@@ -94,11 +94,11 @@ if (HDF5_FOUND)
         cxx/bin/traverse.cpp
         $<TARGET_OBJECTS:argparser>
     )
+    # add_executable_h5(tree_apx
+    #     cxx/bin/tree_apx.cpp
+    #     $<TARGET_OBJECTS:argparser>
+    # )
     add_executable_h5(tree_apx
-        cxx/bin/tree_apx.cpp
-        $<TARGET_OBJECTS:argparser>
-    )
-    add_executable_h5(tree_12x
         cxx/bin/tree_12x.cpp
         cxx/tree_12x.cpp
         $<TARGET_OBJECTS:argparser>
