@@ -99,7 +99,7 @@ if (HDF5_FOUND)
     #     $<TARGET_OBJECTS:argparser>
     # )
     add_executable_h5(tree_apx
-        cxx/bin/tree_12x.cpp
+        cxx/bin/tree_apx.cpp
         cxx/tree_apx.cpp
         $<TARGET_OBJECTS:argparser>
     )
