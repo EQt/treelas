@@ -1,5 +1,9 @@
-if not 'cmake_dir' in config:
+from os import path
+
+if path.exists("./config.yml"):
     configfile: "./config.yml"
+elif path.exists("../config.yml"):
+    configfile: "../config.yml"
 
 CMAKE_BUILD = config["cmake_dir"]
 LAMS = config["lam"]
