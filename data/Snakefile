@@ -7,6 +7,7 @@ elif path.exists("../config.yml"):
 
 CMAKE_BUILD = config["cmake_dir"]
 LAMS = config["lam"]
+PARAMS = dict(s=[1,2], l=LAMS, i=[1,2])
 
 
 subworkflow dimacs:
@@ -16,8 +17,7 @@ subworkflow dimacs:
 
 rule bench_dimacs:
     input:
-        dimacs(expand("europe_{s}_lam{l}_rep{i}.tree_opt",
-                      s=[1,2], l=LAMS, i=[1,2]))
+        dimacs(expand("belgium_{s}_lam{l}_rep{i}.tree_opt", **PARAMS))
 
 
 rule run_treelas:
