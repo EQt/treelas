@@ -43,23 +43,25 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
         std::cout << "  m = " << m << std::endl
                   << "  n = " << n << std::endl;
     }
-    std::vector<int> largest_cc;
     {
         Timer _ ("largest cc\n");
-        largest_cc = connected_components(index).largest().sorted();
+        auto largest_cc = connected_components(index).largest().sorted();
         std::cout << " n' = " << largest_cc.size() << std::endl;
-        if (largest_cc.size() != n) {
-            Timer _ ("store cc");
-            HDF5 io (fname, "r+");
-            io.group(group);
-            io.owrite("largest_cc", largest_cc);
+        if (largest_cc.size() > n)
+            throw std::runtime_error("traverse(): Should not happen");
+        if (largest_cc.size() < n) {
+            {
+                Timer _ ("store cc");
+                HDF5 io (fname, "r+");
+                io.group(group);
+                io.owrite("largest_cc", largest_cc);
+            }
+            {
+                Timer _ ("induced subgraph");
+                index.induced_subgraph(largest_cc);
+            }
         }
     }
-    {
-        Timer _ ("induced subgraph");
-        index.induced_subgraph(largest_cc);
-    }
-
     std::vector<int> parent;
     {   Timer _ ("random span");
         parent = random_spanning_tree(index, seed);
