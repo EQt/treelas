@@ -1,0 +1,27 @@
+from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
+
+HTTP = HTTPRemoteProvider()
+WIKI = "https://upload.wikimedia.org/wikipedia/commons"
+
+
+rule all:
+    input:
+        'phantom.svg'
+
+
+rule download_phantom:
+    output:
+        'phantom.svg'
+    input:
+        HTTP.remote(WIKI + "/c/c7/SheppLogan_Phantom.svg", keep_local=False)
+    run:
+        from decss import remove_css
+
+        remove_css(input[0], output[0])
+
+
+rule render_svg:
+    input:  '{name}.svg'
+    output: '{name}.imh5'
+    run:
+        pass
