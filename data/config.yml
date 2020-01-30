@@ -3,4 +3,6 @@ lam:
   - 1e-1
   - 1e-0
 
+num_span_trees: 10
+num_repetitions: 10
 cmake_dir: "../../build.rel"
