@@ -3,7 +3,7 @@
 
   This implementation evaluates the derivative at one point per
   iteration, yielding the better option of two possible choices for
-  each x[i] (hence the name `tree12x`).
+  each x[i]
 */
 #include <clocale>
 #include <cmath>        // for std::abs
@@ -85,7 +85,7 @@ main(int argc, char *argv[])
         set_thousand_sep(std::cout, '\'');
         setlocale(LC_NUMERIC, "");
 
-        ArgParser ap ("tree_12x [file]\n");
+        ArgParser ap ("tree_apx [file]\n");
         ap.add_option('i', "max-iter",
                       "Number of iterations [default 3]",
                       "INT", "3");
