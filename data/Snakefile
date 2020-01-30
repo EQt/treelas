@@ -9,8 +9,10 @@ elif path.exists("../config.yml"):
 
 
 CMAKE_BUILD = config["cmake_dir"]
-LAMS = config["lam"]
-PARAMS = dict(s=[1,2], l=LAMS, i=[1,2], alg=["opt", "apx"])
+PARAMS = dict(s=range(config['num_span_trees']),
+              l=config["lam"],
+              i=config['num_repetitions'],
+              alg=["opt", "apx"])
 
 
 subworkflow dimacs:
