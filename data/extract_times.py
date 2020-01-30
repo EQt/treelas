@@ -1,5 +1,6 @@
 import re
 import h5py
+import pandas as pd
 
 
 def extract_time_n(fname):
@@ -11,3 +12,8 @@ def extract_time_n(fname):
         num_nodes = len(io["parent"])
     time_per_node_ns = time_ms * 1e-3 /  num_nodes * 1e9
     return time_per_node_ns, num_nodes
+
+
+def tsv_concat(output, fnames, sep='\t'):
+    pd.concat([pd.read_csv(f, sep=sep) for f in fnames])\
+      .to_csv(output, sep=sep, index=None)

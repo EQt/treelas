@@ -1,9 +1,12 @@
 from os import path
+import pandas as pd
+
 
 if path.exists("./config.yml"):
     configfile: "./config.yml"
 elif path.exists("../config.yml"):
     configfile: "../config.yml"
+
 
 CMAKE_BUILD = config["cmake_dir"]
 LAMS = config["lam"]
@@ -18,7 +21,10 @@ subworkflow dimacs:
 rule collect_times:
     input: expand("{{name}}_{s}_lam{l}_rep{i}.tree_{alg}.times", **PARAMS)
     output: "{name}.tsv"
-    shell: "cat {input} > {output}"
+    run:
+        from extract_times import tsv_concat
+
+        tsv_concat(output[0], input)
 
 
 rule extract_times:
@@ -27,16 +33,17 @@ rule extract_times:
     run:
         from extract_times import extract_time_n
 
-        with open(output[0], "w") as io:
-            time_pn, n = extract_time_n(input[0])
-            print(wildcards.name,
-                  wildcards.s,
-                  wildcards.l,
-                  wildcards.i,
-                  f'tree_{wildcards.alg}',
-                  n,
-                  time_pn,
-                  file=io, sep='\t')
+        time_pn, n = extract_time_n(input[0])
+        df = pd.DataFrame(data=dict(
+            name=wildcards.name,
+            seed=wildcards.s,
+            lam=wildcards.l,
+            rep=wildcards.i,
+            alg=f'tree_{wildcards.alg}',
+            num_nodes=n,
+            time_per_node=time_pn,
+        ), index=[0])
+        df.to_csv(output[0], sep="\t", index=None)
 
 
 rule bench_dimacs:
