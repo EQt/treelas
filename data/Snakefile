@@ -11,8 +11,10 @@ rule create_dimacs:
 
 rule run_treelas:
     input: "{name}.treelas"
-    output: "{name}.tree_solve"
-    shell: "{CMAKE_BUILD}/tree_solve {input} | tee {output}"
+    output: "{name}_lam{lam}.tree_solve"
+    shell: """
+    {CMAKE_BUILD}/tree_solve -l {wildcards.lam} {input} | tee {output}"
+    """
 
 
 rule run_treeapx:
