@@ -12,7 +12,7 @@ subworkflow dimacs:
 
 rule bench_dimacs:
     input:
-        dimacs(expand("europe_{s}_lam{l}_rep{i}.tree_solve",
+        dimacs(expand("europe_{s}_lam{l}_rep{i}.tree_opt",
                       s=[1,2], l=LAMS, i=[1,2]))
 
 
@@ -21,6 +21,14 @@ rule run_treelas:
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_solve"
     shell: """
     {CMAKE_BUILD}/tree_solve -l {wildcards.lam} {input} | tee {output}
+    """
+
+
+rule run_treelas_no_output:
+    input: "{name}.treelas"
+    output: "{name}_lam{lam,[^_]+}{ignore}.tree_opt"
+    shell: """
+    {CMAKE_BUILD}/tree_solve -O -l {wildcards.lam} {input} | tee {output}
     """
 
 
