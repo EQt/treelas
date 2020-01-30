@@ -4,7 +4,7 @@ from six.moves.urllib.request import urlretrieve
 
 snap_url = "https://snap.stanford.edu/data"
 
-rule all:
+rule download_all:
     input: "com-youtube.h5", "roadnet-ca.h5", "com-orkut.h5"
 
 

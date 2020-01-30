@@ -31,6 +31,10 @@ subworkflow random:
     configfile: "./config.yml"
 
 
+rule all:
+    input: dimacs("europe.tsv"), snap("com-orkut.tsv")
+
+
 rule collect_times:
     input: expand("{{name}}_{s}_lam{l}_rep{i}.tree_{alg}.times", **PARAMS)
     output: "{name}.tsv"

@@ -5,7 +5,7 @@ URL = "https://www.cc.gatech.edu/dimacs10/archive/data/streets"
 NAMES = ["asia", "belgium", "europe"]
 
 
-rule all:
+rule download_all:
     input: expand("{name}.h5", name=NAMES)
 
 
