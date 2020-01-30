@@ -13,6 +13,7 @@ PARAMS = dict(s=range(config['num_span_trees']),
               l=config["lam"],
               i=config['num_repetitions'],
               alg=["opt", "apx"])
+MAX_ITER = config['apx_max_iter']
 
 
 subworkflow dimacs:
@@ -72,7 +73,7 @@ rule run_treelas_no_output:
 rule run_treeapx:
     input: "{name}.treelas"
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_apx"
-    shell: "{CMAKE_BUILD}/tree_apx -l {wildcards.lam} {input} | tee {output}"
+    shell: "{CMAKE_BUILD}/tree_apx -i {MAX_ITER} -l {wildcards.lam} {input} | tee {output}"
 
 
 rule spanning_tree:

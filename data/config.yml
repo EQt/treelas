@@ -5,4 +5,5 @@ lam:
 
 num_span_trees: 10
 num_repetitions: 10
+apx_max_iter: 20
 cmake_dir: "../../build.rel"
