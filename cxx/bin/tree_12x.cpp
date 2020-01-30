@@ -25,10 +25,10 @@ void
 process_file(
     const char *fname,
     const char *group,
-    const int max_iter,
+    const int  max_iter,
     const bool quiet,
     const bool /* dfs */,
-    const bool reorder = false,
+    const bool reorder,
     const unsigned PRINT_MAX = 10)
 {
     std::vector<float_> xt, y, lam, x;
