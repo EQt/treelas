@@ -15,6 +15,18 @@ subworkflow dimacs:
     configfile: "./config.yml"
 
 
+rule collect_times:
+    input: expand("{{name}}_{s}_lam{l}_rep{i}.tree_{alg}", **PARAMS)
+    output: "{name}.tsv"
+    run:
+        from extract_times import extract_time_n
+
+        with open(output[0]) as io:
+            print("blub", file=io)
+            # for fn in input:
+            #     print(wildcards.lam, file=io)
+
+
 rule bench_dimacs:
     input:
         dimacs(expand("belgium_{s}_lam{l}_rep{i}.tree_{alg}", **PARAMS))
