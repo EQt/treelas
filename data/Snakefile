@@ -21,6 +21,16 @@ subworkflow dimacs:
     configfile: "./config.yml"
 
 
+subworkflow snap:
+    workdir: "snap"
+    configfile: "./config.yml"
+
+
+subworkflow random:
+    workdir: "random"
+    configfile: "./config.yml"
+
+
 rule collect_times:
     input: expand("{{name}}_{s}_lam{l}_rep{i}.tree_{alg}.times", **PARAMS)
     output: "{name}.tsv"
