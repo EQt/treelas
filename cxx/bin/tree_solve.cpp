@@ -30,7 +30,7 @@ process_tree(const char *fname,
 {
     TimerQuiet _ (verbose);
 
-    std::vector<double> y, lams, xt, x;
+    std::vector<double> y, xt, x;
     std::vector<int> parent;
     double lam;
     Ones<float_> mu;
@@ -38,7 +38,7 @@ process_tree(const char *fname,
     {   Timer _ ("Loading Tree");
         HDF5 io (fname, "r+");
         y = io.read<double>("y", &ydims);
-        lams = io.read<double>("lam");
+        auto lams = io.read<double>("lam");
         assert(lams.size() >= 1);
         lam = std::isnan(lam_override) ? float_(lams[0]) : lam_override;
         parent = io.read<decltype(parent)::value_type>("parent");

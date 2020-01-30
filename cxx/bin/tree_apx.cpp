@@ -29,18 +29,21 @@ process_file(
     const bool quiet,
     const bool /* dfs */,
     const bool reorder,
+    const double lam_override,
     const unsigned PRINT_MAX = 10)
 {
-    std::vector<float_> xt, y, lam, x;
+    std::vector<float_> xt, y, x;
     std::vector<int_> parent;
+    double lam;
     {   // Read extra information
         HDF5 io (fname, "r+");
         io.group(group);
 
         io.readv(y,      "y");
-        io.readv(lam,   "lam");
+        auto lams = io.read<double>("lam");
+        assert(lams.size() >= 1);
+        lam = std::isnan(lam_override) ? float_(lams[0]) : lam_override;
         io.readv(parent, "parent");
-
         if (io.has("xt")) {
             io.readv(xt, "xt");
         } else if (io.has("x++")) {
@@ -53,11 +56,12 @@ process_file(
                                  std::to_string(y.size()) +
                                  " != " + std::to_string(n));
     x.resize(n);
-
+    if (!quiet)
+        printf("lam = %f\n", lam);
     tree_12x(n,
              parent.data(),
              y.data(),
-             lam[0],
+             float_(lam),
              x.data(),
              -1 /* root*/,
              max_iter,
@@ -93,6 +97,7 @@ main(int argc, char *argv[])
         ap.add_option('6', "float64", "Calculate in float64_t precision");
         ap.add_option('r', "reorder", "Relabel nodes in post-order");
         ap.add_option('q', "quiet",   "Suppress timer output");
+        ap.add_option('l', "lam",     "Tuning parameter λ", "num", "nan");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No tree file!\n");
@@ -113,14 +118,16 @@ main(int argc, char *argv[])
                                            max_iter,
                                            ap.has_option("quiet"),
                                            ap.has_option("dfs"),
-                                           reorder);
+                                           reorder,
+                                           std::atof(ap.get_option("lam")));
             } else {
                 printf("float32\n\n");
                 process_file<float, int_>(fname, group,
                                           max_iter,
                                           ap.has_option("quiet"),
                                           ap.has_option("dfs"),
-                                          reorder);
+                                          reorder,
+                                          std::atof(ap.get_option("lam")));
             }
         }
     } catch (ArgParser::ArgParserException &ex) {
