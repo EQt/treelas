@@ -1,5 +1,14 @@
 CMAKE_BUILD = "../../build.rel"
 
+subworkflow dimacs:
+    workdir: "dimacs10"
+    configfile: "config.yml"
+
+
+rule create_dimacs:
+    input: dimacs(expand("europe_{s}.tree_solve", s=[1,2]))
+
+
 rule run_treelas:
     input: "{name}.treelas"
     output: "{name}.tree_solve"
@@ -14,8 +23,10 @@ rule run_treeapx:
 
 rule spanning_tree:
     input: "{name}.h5"
-    output: "{name}.tree"
-    shell: "cp {input} {output} && {CMAKE_BUILD}/traverse {output}"
+    output: "{name}_{seed,\\d+}.tree"
+    shell: """
+    cp {input} {output} && {CMAKE_BUILD}/traverse -s {wildcards.seed} {output}
+    """
 
 
 rule noisy_input:
