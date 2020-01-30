@@ -68,9 +68,11 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
     }
     {
         Timer _ ("min parent:\n");
-        std::cout << "  min(parent) = "
-                  << *std::min_element(parent.begin(), parent.end())
-                  << std::endl;
+        const auto min_parent =
+            *std::min_element(parent.begin(), parent.end());
+        std::cout << "  min(parent) = " << min_parent << std::endl;
+        if (min_parent < 0)
+            throw std::runtime_error("min(parent) is negative!");
     }
 
     {   Timer _ ("store parent");
