@@ -37,7 +37,7 @@ rule extract_times:
 
         time_pn, n = extract_time_n(input[0])
         df = pd.DataFrame(data=dict(
-            name=wildcards.name,
+            dataset=wildcards.name.rpartition('/')[-1],
             seed=wildcards.s,
             lam=wildcards.l,
             rep=wildcards.i,
