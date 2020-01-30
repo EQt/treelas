@@ -36,7 +36,7 @@ process_tree(const char *fname,
     Ones<float_> mu;
     HDF5::Dims ydims;
     {   Timer _ ("Loading Tree");
-        HDF5 io (fname, "r+");
+        HDF5 io (fname, "r");
         y = io.read<double>("y", &ydims);
         auto lams = io.read<double>("lam");
         assert(lams.size() >= 1);
