@@ -79,7 +79,7 @@ rule spanning_tree:
     input: "{name}.h5"
     output: "{name}_{seed,\\d+}.tree"
     shell: """
-    cp {input} {output} && {CMAKE_BUILD}/traverse -s {wildcards.seed} {output}
+    {CMAKE_BUILD}/traverse -s {wildcards.seed} {input} {output}
     """
 
 

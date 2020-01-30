@@ -87,6 +87,7 @@ traverse(
         }
         Timer _ ("store parent");
         HDF5 io (outfn, mode);
+        io.set_compression(3);
         io.group(group);
         io.owrite("parent", parent);
     }
