@@ -16,15 +16,27 @@ subworkflow dimacs:
 
 
 rule collect_times:
-    input: expand("{{name}}_{s}_lam{l}_rep{i}.tree_{alg}", **PARAMS)
+    input: expand("{{name}}_{s}_lam{l}_rep{i}.tree_{alg}.times", **PARAMS)
     output: "{name}.tsv"
+    shell: "cat {input} > {output}"
+
+
+rule extract_times:
+    input:  "{name}_{s}_lam{l}_rep{i}.tree_{alg}"
+    output: "{name}_{s}_lam{l}_rep{i}.tree_{alg}.times"
     run:
         from extract_times import extract_time_n
 
-        with open(output[0]) as io:
-            print("blub", file=io)
-            # for fn in input:
-            #     print(wildcards.lam, file=io)
+        with open(output[0], "w") as io:
+            time_pn, n = extract_time_n(input[0])
+            print(wildcards.name,
+                  wildcards.s,
+                  wildcards.l,
+                  wildcards.i,
+                  f'tree_{wildcards.alg}',
+                  n,
+                  time_pn,
+                  file=io, sep='\t')
 
 
 rule bench_dimacs:
