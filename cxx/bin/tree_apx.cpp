@@ -36,7 +36,7 @@ process_file(
     std::vector<int_> parent;
     double lam;
     {   // Read extra information
-        HDF5 io (fname, "r+");
+        HDF5 io (fname, "r");
         io.group(group);
 
         io.readv(y,      "y");
