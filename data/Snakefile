@@ -41,7 +41,7 @@ rule extract_times:
             seed=wildcards.s,
             lam=wildcards.l,
             rep=wildcards.i,
-            alg=f'tree_{wildcards.alg}',
+            algorithm=f'tree_{wildcards.alg}',
             num_nodes=n,
             time_per_node=time_pn,
         ), index=[0])
