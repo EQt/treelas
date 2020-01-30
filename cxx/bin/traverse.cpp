@@ -17,11 +17,15 @@
 
 
 void
-traverse(const char *fname, const char *group = "/", const int seed = 2018)
+traverse(
+    const char *fname,
+    const char *outfn,
+    const char *group = "/",
+    const int seed = 2018)
 {
     std::vector<int> head, tail;
     {   Timer _ ("load hdf5");
-        HDF5 io (fname, "r+");
+        HDF5 io (fname, "r");
         io.group(group);
         head = io.read<decltype(head)::value_type>("head");
         tail = io.read<decltype(tail)::value_type>("tail");
@@ -75,8 +79,14 @@ traverse(const char *fname, const char *group = "/", const int seed = 2018)
             throw std::runtime_error("min(parent) is negative!");
     }
 
-    {   Timer _ ("store parent");
-        HDF5 io (fname, "r+");
+    {
+        const char *mode = "w";
+        if (outfn == nullptr) {
+            outfn = fname;
+            mode = "r+";
+        }
+        Timer _ ("store parent");
+        HDF5 io (outfn, mode);
         io.group(group);
         io.owrite("parent", parent);
     }
@@ -102,8 +112,10 @@ main(int argc, char *argv[])
         }
         const int seed = atoi(ap.get_option("srand"));
         const char *fname = argv[1];
+        const char *outfn = argc > 2 ? argv[2] : fname;
         set_thousand_sep(std::cout);
-        traverse(fname, ap.get_option("group"), seed);
+        std::cout << fname << " => " << outfn << std::endl;
+        traverse(fname, outfn, ap.get_option("group"), seed);
     } catch (std::runtime_error &e) {
         fprintf(stderr, "EXCEPTION: %s\n", e.what());
     } catch (const char *msg) {
