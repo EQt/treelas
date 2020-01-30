@@ -56,8 +56,11 @@ process_file(
                                  std::to_string(y.size()) +
                                  " != " + std::to_string(n));
     x.resize(n);
-    if (!quiet)
-        printf("lam = %f\n\n", lam);
+    if (!quiet) {
+        std::cout << "lam = " << lam << std::endl;
+        std::cout << "n = " << y.size() << std::endl;
+        std::cout << std::endl;
+    }
     tree_12x(n,
              parent.data(),
              y.data(),
@@ -86,7 +89,7 @@ int
 main(int argc, char *argv[])
 {
     try {
-        set_thousand_sep(std::cout, '\'');
+        set_thousand_sep(std::cout, '_');
         setlocale(LC_NUMERIC, "");
 
         ArgParser ap ("tree_apx [file]\n");
