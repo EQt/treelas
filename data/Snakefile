@@ -7,7 +7,7 @@ elif path.exists("../config.yml"):
 
 CMAKE_BUILD = config["cmake_dir"]
 LAMS = config["lam"]
-PARAMS = dict(s=[1,2], l=LAMS, i=[1,2])
+PARAMS = dict(s=[1,2], l=LAMS, i=[1,2], alg=["opt", "apx"])
 
 
 subworkflow dimacs:
@@ -17,7 +17,7 @@ subworkflow dimacs:
 
 rule bench_dimacs:
     input:
-        dimacs(expand("belgium_{s}_lam{l}_rep{i}.tree_opt", **PARAMS))
+        dimacs(expand("belgium_{s}_lam{l}_rep{i}.tree_{alg}", **PARAMS))
 
 
 rule run_treelas:
@@ -38,8 +38,8 @@ rule run_treelas_no_output:
 
 rule run_treeapx:
     input: "{name}.treelas"
-    output: "{name}.tree_apx"
-    shell: "{CMAKE_BUILD}/tree_apx {input} | tee {output}"
+    output: "{name}_lam{lam,[^_]+}{ignore}.tree_apx"
+    shell: "{CMAKE_BUILD}/tree_apx -l {wildcards.lam} {input} | tee {output}"
 
 
 rule spanning_tree:

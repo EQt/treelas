@@ -57,7 +57,7 @@ process_file(
                                  " != " + std::to_string(n));
     x.resize(n);
     if (!quiet)
-        printf("lam = %f\n", lam);
+        printf("lam = %f\n\n", lam);
     tree_12x(n,
              parent.data(),
              y.data(),
@@ -113,7 +113,7 @@ main(int argc, char *argv[])
         printf("max_iter = %d\n", max_iter);
         {
             if (ap.has_option("float64")) {
-                printf("float64\n\n");
+                printf("float64\n");
                 process_file<double, int_>(fname, group,
                                            max_iter,
                                            ap.has_option("quiet"),
@@ -121,7 +121,7 @@ main(int argc, char *argv[])
                                            reorder,
                                            std::atof(ap.get_option("lam")));
             } else {
-                printf("float32\n\n");
+                printf("float32\n");
                 process_file<float, int_>(fname, group,
                                           max_iter,
                                           ap.has_option("quiet"),
