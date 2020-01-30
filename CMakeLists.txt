@@ -68,7 +68,7 @@ if (BUILD_PYEXT)
         python/_treelas.cpp
         python/line.cpp
         python/tree.cpp
-        cxx/tree_12x.cpp
+        cxx/tree_apx.cpp
         deps/graphidx/python/timer.cpp
         $<TARGET_OBJECTS:condat_tv>
         $<TARGET_OBJECTS:tf_dp>
@@ -100,7 +100,7 @@ if (HDF5_FOUND)
     # )
     add_executable_h5(tree_apx
         cxx/bin/tree_12x.cpp
-        cxx/tree_12x.cpp
+        cxx/tree_apx.cpp
         $<TARGET_OBJECTS:argparser>
     )
     add_executable_h5(tree_solve

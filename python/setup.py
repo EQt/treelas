@@ -14,10 +14,10 @@ sources = [
     "_treelas.cpp",
     "line.cpp",
     "tree.cpp",
-    "../cxx/tree_12x.cpp",
+    "../cxx/tree_apx.cpp",
+    "../deps/graphidx/python/timer.cpp",
     "../deps/condat/condat_tv_v2.cpp",
     "../deps/glmgen/tf_dp.cpp",
-    "../deps/graphidx/python/timer.cpp",
     "../cxx/line_dp.cpp",
     "../cxx/line/line_para.cpp",
     "../cxx/line/line_c.cpp",
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     )
 
     setup(name="treelas",
-          version=describe_tag(default="0.14.0"),
+          version=describe_tag(default="0.14.1"),
           author="Elias Kuthe",
           author_email="elias.kuthe@tu-dortmund.de",
           license="MIT",

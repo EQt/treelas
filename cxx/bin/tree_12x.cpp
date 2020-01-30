@@ -17,7 +17,7 @@
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/utils/thousand.hpp>
 
-#include "../tree_12x.hpp"
+#include "../tree_apx.hpp"
 
 
 template<typename float_ = float, typename int_ = int>
