@@ -1,1 +1,6 @@
-comment: Needed to fix a Snakemake bug
+lam:
+  - 0.01
+  - 0.1
+  - 1.0
+
+cmake_dir: "../../build.rel"
