@@ -7,7 +7,7 @@ rule generate_all:
 
 
 rule random_tree:
-    output: "rand{dist,norm|exp|mix}_n{n}_f{f}_s{seed}.tree"
+    output: "rand{dist,norm|exp|mix}_n{n}_f{f}_{seed,\\d+}.tree"
     run:
         from densetree import generate
 
