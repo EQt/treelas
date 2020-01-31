@@ -20,6 +20,10 @@ rule download_phantom:
         remove_css(input[0], output[0])
 
 
+rule phantom_demo:
+    input: "phantom_w300.img"
+
+
 rule render_svg:
     input:  '{name}.svg'
     output: '{name}_w{width,\d+}.img'
@@ -31,9 +35,10 @@ rule render_svg:
         seed = 2020
         std = 0.25
         np.random.seed(seed)
-        y = gm_render(input[0], width=int(wildcards.width))
-        y += np.random.normal(scale=std, size=y.shape)
+        orig = gm_render(input[0], width=int(wildcards.width))
+        y = orig + np.random.normal(scale=std, size=orig.shape)
         with h5py.File(output[0], 'w') as io:
+            io.create_dataset('orig', data=orig)
             io.create_dataset('y', data=y)
             io.create_dataset("lam", data=[0.1])
 
