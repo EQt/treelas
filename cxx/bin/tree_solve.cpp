@@ -126,7 +126,7 @@ main(int argc, char *argv[])
             return 1;
         }
         const char *fname = argv[1];
-        setlocale(LC_ALL, "");
+        setlocale(LC_ALL, "C");
         set_thousand_sep(std::cout);
         const int repeat = std::atoi(ap.get_option("repeat"));
         printf("%s\n", fname);

@@ -19,7 +19,7 @@ rule random_tree:
 
 
 rule binary_tree:
-    output: "binary_n{n}.tree"
+    output: "binary_n{n}{ignore,_.+}.tree"
     run:
         import h5py
         import numpy as np

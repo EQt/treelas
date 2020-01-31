@@ -90,7 +90,7 @@ main(int argc, char *argv[])
 {
     try {
         set_thousand_sep(std::cout, '_');
-        setlocale(LC_NUMERIC, "");
+        setlocale(LC_ALL, "C");
 
         ArgParser ap ("tree_apx [file]\n");
         ap.add_option('i', "max-iter",
