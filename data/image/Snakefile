@@ -21,7 +21,7 @@ rule download_phantom:
 
 
 rule phantom_demo:
-    input: "phantom_w300.img"
+    input: "phantom_w300.img", "phantom_w300_0_lam2e-1.tree_sol"
 
 
 rule render_svg:

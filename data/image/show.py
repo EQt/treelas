@@ -10,26 +10,40 @@ if __name__ == '__main__':
     import argparse
 
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('fname', type=str)
+    p.add_argument('fname', nargs='+')
     p.add_argument('-o', '--out', default=None, type=str)
+    p.add_argument('-c', '--cmap', default='gray', type=str)
     args = p.parse_args()
 
-    fname = args.fname
-    with h5py.File(fname, 'r') as io:
-        y = io['y'][:]
-        orig = io.get('orig', [None])[:]
-    nfigs = 1 if orig is None else 2
-    fig, axis = plt.subplots(1, nfigs)
-    axis[0].imshow(y, vmin=0, vmax=1, cmap='gray', interpolation='none')
-    axis[0].axis('off')
-    if orig is not None:
-        axis[1].imshow(orig, vmin=0, vmax=1, cmap='gray', interpolation='none')
-        axis[1].axis('off')
+
+    cmap = args.cmap
+    def imshow(a, cmap=cmap, vmin=0, vmax=1):
+        plt.axis('off')
+        plt.tight_layout()
+        plt.imshow(a, vmin=vmin, vmax=vmax, cmap=cmap, interpolation='none')
+
+    figs = dict()
+    shape = None
+    for fn in args.fname:
+        with h5py.File(fn, 'r') as io:
+            for n in ['orig', 'y', 'x++']:
+                if n in io and n not in figs:
+                    a = io[n][:]
+                    f = plt.figure(n)
+                    if n == 'orig':
+                        shape = a.shape
+                    if len(a.shape) < 2:
+                        a = a.reshape(shape, order='F')
+                    figs[n] = (a, f)
+                    imshow(a)
 
     if args.out is None:
         plt.show()
     else:
-        plt.savefig(fname + "." + args.out, bbox_inches='tight', pad_inches=0.001)
+        for n, (a, f) in figs.items():
+            outn = n + "." + args.out
+            print(outn)
+            plt.imsave(outn, a, cmap=cmap)
 
 
 # Local Variables:

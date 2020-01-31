@@ -80,9 +80,9 @@ rule bench_dimacs:
 
 rule run_treelas:
     input: "{name}.treelas"
-    output: "{name}_lam{lam,[^_]+}{ignore}.tree_sol"
+    output: "{name}_lam{lam,[^_]+}{ignore}.tree_opt", "{name}_lam{lam,[^_]+}{ignore}.tree_sol"
     shell: """
-    {CMAKE_BUILD}/tree_solve -l {wildcards.lam} {input} | tee {output}
+    {CMAKE_BUILD}/tree_solve -l {wildcards.lam} {input} | tee {output[0]} && cp {input} {output[1]}
     """
 
 
