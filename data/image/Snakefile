@@ -36,9 +36,8 @@ rule plot_imgs:
 
 rule solve_grid:
     input:  "{name}.img"
-    output: "{name}_lam{lam,[^_]+}.grid_opt"
-    run: "julia grid_opt.jl {input} {wildcards.lam} {input} > {ouput}"
-
+    output: "{name}_lam{lam}.grid_opt"
+    shell: "julia grid_opt.jl {input[0]} {wildcards.lam} {output[0]}"
 
 
 rule render_svg:
