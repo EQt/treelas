@@ -33,7 +33,6 @@ subworkflow random:
 
 rule all:
     input:
-        
         dimacs("europe.tsv"),
         snap("com-orkut.tsv")
 
