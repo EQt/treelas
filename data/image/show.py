@@ -17,7 +17,7 @@ def plot_figs(fnames, out, cmap, prefix=""):
     shape = None
     for fn in fnames:
         with h5py.File(fn, 'r') as io:
-            for n in ['orig', 'y', 'x++']:
+            for n in ['orig', 'y', 'x++', 'xgrid']:
                 if n in io:
                     nt = n + "2" if n in figs else n
                     a = io[n][:]
@@ -44,7 +44,7 @@ if __name__ == '__main__':
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('fname', nargs='+')
     p.add_argument('-o', '--out', default=None, type=str)
-    p.add_argument('-c', '--cmap', default='gray', type=str)
+    p.add_argument('-c', '--cmap', default=None, type=str)
     args = p.parse_args()
 
     plot_figs(args.fname, args.out, args.cmap)

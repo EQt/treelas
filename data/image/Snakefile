@@ -4,7 +4,7 @@ HTTP = HTTPRemoteProvider()
 WIKI = "https://upload.wikimedia.org/wikipedia/commons"
 
 rule phantom_demo:
-    input: "phantom_w300_0_lam2e-1_x++.png"
+    input: "phantom_w300_0_lam2e-1_x++.png", "phantom_w300_lam2e-1.grid_opt"
 
 
 rule download_all:
@@ -32,6 +32,13 @@ rule plot_imgs:
         prefix=f"{wildcards.name}_lam{wildcards.lam}_"
         plot_figs(input, 'png', None,
                   prefix=f"{wildcards.name}_{wildcards.seed}_lam{wildcards.lam}_")
+
+
+rule solve_grid:
+    input:  "{name}.img"
+    output: "{name}_lam{lam,[^_]+}.grid_opt"
+    run: "julia grid_opt.jl {input} {wildcards.lam} {input} > {ouput}"
+
 
 
 rule render_svg:
