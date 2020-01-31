@@ -15,7 +15,6 @@ if __name__ == '__main__':
     p.add_argument('-c', '--cmap', default='gray', type=str)
     args = p.parse_args()
 
-
     cmap = args.cmap
     def imshow(a, cmap=cmap, vmin=0, vmax=1):
         plt.axis('off')
@@ -27,14 +26,15 @@ if __name__ == '__main__':
     for fn in args.fname:
         with h5py.File(fn, 'r') as io:
             for n in ['orig', 'y', 'x++']:
-                if n in io and n not in figs:
+                if n in io:
+                    nt = n + "2" if n in figs else n
                     a = io[n][:]
-                    f = plt.figure(n)
+                    f = plt.figure(nt)
                     if n == 'orig':
                         shape = a.shape
                     if len(a.shape) < 2:
-                        a = a.reshape(shape, order='F')
-                    figs[n] = (a, f)
+                        a = a.reshape(shape, order='C')
+                    figs[nt] = (a, f)
                     imshow(a)
 
     if args.out is None:

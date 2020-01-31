@@ -120,7 +120,14 @@ rule noisy_input:
         seed = int(seed[1:]) if seed[0] == "_" else 2020
         np.random.seed()
         copyfile(input[0], output[0])
+        y = None
+        img_fn = f"{wildcards.name}.img"
+        if path.exists(img_fn):
+            with h5py.File(img_fn, "r") as io:
+                y = io['y'][:]
         with h5py.File(output[0], "r+") as io:
             n = len(io["parent"])
-            io.create_dataset("y", data=np.random.randn(n))
+            if y is None:
+                y = np.random.randn(n)
+            io.create_dataset("y", data=y)
             io.create_dataset("lam", data=[0.1])
