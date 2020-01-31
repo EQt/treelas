@@ -1,7 +1,7 @@
 include: "../Snakefile"
 
 
-rule all:
+rule generate_all:
     input: "randnorm_n1e7_f1e-7.treelas",
            "randmix_n1e7_f1e-7.treelas"
 
