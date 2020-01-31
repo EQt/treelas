@@ -38,6 +38,7 @@ subworkflow image:
 
 rule all:
     input:
+        random("binary_n1e8.tsv"),
         random("randmix_n5e7_f1e-7.tsv"),
         image("phantom_w1000.tsv"),
         dimacs("europe.tsv"),
