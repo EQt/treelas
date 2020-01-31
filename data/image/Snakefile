@@ -4,7 +4,7 @@ HTTP = HTTPRemoteProvider()
 WIKI = "https://upload.wikimedia.org/wikipedia/commons"
 
 
-rule all:
+rule download_all:
     input:
         'phantom.svg'
 
@@ -22,6 +22,16 @@ rule download_phantom:
 
 rule render_svg:
     input:  '{name}.svg'
-    output: '{name}.imh5'
+    output: '{name}_w{width,\d+}.h5'
     run:
-        pass
+        from render_svg import gm_render
+        import h5py
+        import numpy as np
+
+        seed = 2020
+        np.random.seed(seed)
+        y = gm_render(input[0], width=int(wildcards.width))
+        y += np.random.normal(size=y.shape)
+        with h5py.File(output[0], 'w') as io:
+            io.create_dataset('y', data=y)
+
