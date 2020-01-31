@@ -31,10 +31,16 @@ subworkflow random:
     configfile: "./config.yml"
 
 
+subworkflow image:
+    workdir: "image"
+    configfile: "./config.yml"
+
+
 rule all:
     input:
-        dimacs("europe.tsv"),
-        snap("com-orkut.tsv")
+        image("phantom_w1000.tsv"),
+        # dimacs("europe.tsv"),
+        # snap("com-orkut.tsv")
 
 
 rule collect_times:

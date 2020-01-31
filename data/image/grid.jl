@@ -14,4 +14,3 @@ head = [h for (h, _) in edges]
 tail = [t for (_, t) in edges]
 h5write(outfn, "head", head)
 h5write(outfn, "tail", tail)
-
