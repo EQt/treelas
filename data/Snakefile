@@ -36,13 +36,32 @@ subworkflow image:
     configfile: "./config.yml"
 
 
+rule all_degs:
+    input:
+        random("binary_n1e8.degs"),
+        random("randmix_n5e7_f1e-7.degs"),
+        image("phantom_w1000.degs"),
+        dimacs("europe.degs"),
+        snap("com-orkut.degs"),
+
+
 rule all:
     input:
         random("binary_n1e8.tsv"),
         random("randmix_n5e7_f1e-7.tsv"),
         image("phantom_w1000.tsv"),
         dimacs("europe.tsv"),
-        snap("com-orkut.tsv")
+        snap("com-orkut.tsv"),
+
+
+rule graph_degrees:
+    input:  "{name}_0.tree"
+    output: "{name}.degs"
+    run:
+        from degrees import print_deg_stats
+
+        with open(output[0], "w") as io:
+            print_deg_stats(input[0], out=io)
 
 
 rule collect_times:

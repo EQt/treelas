@@ -6,5 +6,6 @@
 *.tree_apx
 *.tree_opt
 *.tsv
+*.degs
 *.times
 __pycache__/
