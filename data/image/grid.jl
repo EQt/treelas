@@ -12,5 +12,5 @@ edges = GraphIdx.Grid.collect_edges(graph)
 edges = edges[1]
 head = [h for (h, _) in edges]
 tail = [t for (_, t) in edges]
-h5write(outfn, "head", head)
-h5write(outfn, "tail", tail)
+h5write(outfn, "head", head .- 1)
+h5write(outfn, "tail", tail .- 1)
