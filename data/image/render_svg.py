@@ -8,11 +8,10 @@ from os import path
 
 
 def phantom() -> str:
-    return path.join(path.dirname(__file__),
-                     "..", "data", "image", "phantom.svg")
+    return path.join(path.dirname(__file__), "phantom.svg")
 
 
-def gm_render(fname: str=phantom(), width=400, depth=8, verbose=False,
+def gm_render(fname: str = phantom(), width=400, depth=8, verbose=False,
               graphicsmagick=False) -> np.ndarray:
     """
     Render an image to a grayscale matrix with values in [0, 1].
