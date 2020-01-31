@@ -16,3 +16,16 @@ rule random_tree:
                      dist=wildcards.dist,
                      factor=float(wildcards.f))
         t.save_h5(output[0])
+
+
+rule binary_tree:
+    output: "binary_n{n}.tree"
+    run:
+        import h5py
+        import numpy as np
+
+        n = int(float(wildcards.n))
+        parent = np.arange(-1, n-1) // 2
+        parent[0] = 0
+        with h5py.File(output[0], 'w') as io:
+            io.create_dataset('parent', data=parent, compression=3)
