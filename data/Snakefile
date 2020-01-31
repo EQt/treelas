@@ -96,7 +96,7 @@ rule run_treelas_no_output:
 rule run_treeapx:
     input: "{name}.treelas"
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_apx"
-    shell: "{CMAKE_BUILD}/tree_apx -i {MAX_ITER} -l {wildcards.lam} {input} | tee {output}"
+    shell: "{CMAKE_BUILD}/tree_apx -r -i {MAX_ITER} -l {wildcards.lam} {input} | tee {output}"
 
 
 rule spanning_tree:
