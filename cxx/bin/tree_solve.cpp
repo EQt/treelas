@@ -129,6 +129,7 @@ main(int argc, char *argv[])
         setlocale(LC_ALL, "");
         set_thousand_sep(std::cout);
         const int repeat = std::atoi(ap.get_option("repeat"));
+        printf("%s\n", fname);
         process_tree(fname,
                      ap.has_option("merge"),
                      !ap.has_option("no-output"),

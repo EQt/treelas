@@ -112,6 +112,7 @@ main(int argc, char *argv[])
         const char *group = "/";
         const bool reorder = ap.has_option("reorder");
 
+        printf("%s\n", fname);
         printf("reorder  = %s\n", reorder ? "true" : "false");
         printf("max_iter = %d\n", max_iter);
         {
