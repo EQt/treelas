@@ -38,10 +38,10 @@ subworkflow image:
 
 rule all:
     input:
-        random("randmix_n1e5_f1e-7.tsv")
-        # image("phantom_w1000.tsv"),
-        # dimacs("europe.tsv"),
-        # snap("com-orkut.tsv")
+        random("randmix_n5e7_f1e-7.tsv"),
+        image("phantom_w1000.tsv"),
+        dimacs("europe.tsv"),
+        snap("com-orkut.tsv")
 
 
 rule collect_times:
