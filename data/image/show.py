@@ -6,16 +6,8 @@ import matplotlib.pyplot as plt
 import h5py
 
 
-if __name__ == '__main__':
-    import argparse
+def plot_figs(fnames, out, cmap, prefix=""):
 
-    p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('fname', nargs='+')
-    p.add_argument('-o', '--out', default=None, type=str)
-    p.add_argument('-c', '--cmap', default='gray', type=str)
-    args = p.parse_args()
-
-    cmap = args.cmap
     def imshow(a, cmap=cmap, vmin=0, vmax=1):
         plt.axis('off')
         plt.tight_layout()
@@ -23,7 +15,7 @@ if __name__ == '__main__':
 
     figs = dict()
     shape = None
-    for fn in args.fname:
+    for fn in fnames:
         with h5py.File(fn, 'r') as io:
             for n in ['orig', 'y', 'x++']:
                 if n in io:
@@ -37,14 +29,25 @@ if __name__ == '__main__':
                     figs[nt] = (a, f)
                     imshow(a)
 
-    if args.out is None:
+    if out is None:
         plt.show()
     else:
         for n, (a, f) in figs.items():
-            outn = n + "." + args.out
+            outn = prefix + n + "." + out
             print(outn)
             plt.imsave(outn, a, cmap=cmap)
 
+
+if __name__ == '__main__':
+    import argparse
+
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('fname', nargs='+')
+    p.add_argument('-o', '--out', default=None, type=str)
+    p.add_argument('-c', '--cmap', default='gray', type=str)
+    args = p.parse_args()
+
+    plot_figs(args.fname, args.out, args.cmap)
 
 # Local Variables:
 # compile-command: "python show.py phantom_w300.img"

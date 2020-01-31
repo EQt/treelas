@@ -3,6 +3,9 @@ from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 HTTP = HTTPRemoteProvider()
 WIKI = "https://upload.wikimedia.org/wikipedia/commons"
 
+rule phantom_demo:
+    input: "phantom_w300_0_lam2e-1_x++.png"
+
 
 rule download_all:
     input:
@@ -20,8 +23,15 @@ rule download_phantom:
         remove_css(input[0], output[0])
 
 
-rule phantom_demo:
-    input: "phantom_w300.img", "phantom_w300_0_lam2e-1.tree_sol"
+rule plot_imgs:
+    input:  "{name}_{seed}_lam{lam,[^_]+}.tree_sol", "{name}.img"
+    output: "{name}_{seed}_lam{lam,[^_]+}_x++.png"
+    run:
+        from show import plot_figs
+
+        prefix=f"{wildcards.name}_lam{wildcards.lam}_"
+        plot_figs(input, 'png', None,
+                  prefix=f"{wildcards.name}_{wildcards.seed}_lam{wildcards.lam}_")
 
 
 rule render_svg:
