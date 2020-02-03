@@ -53,5 +53,5 @@ Directory Structure
 ```
 
 
-[condat]: https://www.gipsa-lab.grenoble-inp.fr/~laurent.condat
+[condat]: https://lcondat.github.io/
 [glmgen]: https://github.com/glmgen/glmgen
