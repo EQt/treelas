@@ -5,6 +5,8 @@ include: "../Snakefile"
 
 HTTP = HTTPRemoteProvider()
 WIKI = "https://upload.wikimedia.org/wikipedia/commons"
+IMG_TYPES = ['orig', 'y', 'xgrid', 'x++']
+
 
 rule phantom_demo:
     input: "phantom_w300_0_lam2e-1_x++.png", "phantom_w300_lam2e-1.grid_opt"
@@ -67,10 +69,18 @@ rule plot_imgs:
     input:  "{name}_{seed}_lam{lam,[^_]+}.tree_sol",
             "{name}_lam{lam,[^_]+}.grid_opt",
             "{name}.img"
-    output: "{name}_{seed}_lam{lam,[^_]+}_x++.png"
+    output: expand("{{name}}_{{seed}}_lam{{lam}}_{t}.png", t=IMG_TYPES)
     run:
         from show import plot_figs
 
         prefix=f"{wildcards.name}_lam{wildcards.lam}_"
         plot_figs(input, 'png', None,
                   prefix=f"{wildcards.name}_{wildcards.seed}_lam{wildcards.lam}_")
+
+
+rule join_images:
+    output: "{name}_{seed}_lam{lam,[^_]+}_pad{p}.png"
+    input:  expand("{{name}}_{{seed}}_lam{{lam}}_{t}.png", t=IMG_TYPES)
+    shell:  """
+    convert -border {wildcards.p}x{wildcards.p} -bordercolor none {input}  +append {output}
+    """
