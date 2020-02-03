@@ -8,7 +8,6 @@
 #include <graphidx/utils/perm.hpp>
 #include <graphidx/utils/timer.hpp>
 
-#define PRINT_MAX 20
 #undef DEBUG_ID
 
 
@@ -75,7 +74,7 @@ struct TreeApx
     int_ *parent_ = nullptr;
     const int_ *porder;         // post-order (forward, i.e. upward)
 
-    TreeApx(const size_t n, const int_ *porder, bool is_linear)
+    TreeApx(const size_t n, const int_ *porder, bool is_linear = true)
         : n(n), is_linear(is_linear), porder(porder) {
         y = new float_[n];
         x = new float_[n];

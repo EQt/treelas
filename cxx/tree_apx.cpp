@@ -1,5 +1,7 @@
 #include "tree_apx.hpp"
 
+#define PRINT_MAX 20
+
 
 template<typename float_, typename int_>
 void
@@ -29,8 +31,8 @@ tree_apx(
     }
     {
         Timer _ ("vector::resize");
-        porder.resize(n);
-        iorder.resize(n);
+        porder.reserve(n);
+        iorder.reserve(n);
     }
     {
         Timer _ ("children idx");
@@ -39,7 +41,7 @@ tree_apx(
     //if (use_bfs)
     {
         Timer _ ("bfs");
-        reversed_bfs(porder, cidx);
+        reversed_bfs(porder.data(), cidx);
     } /*else {
         Timer _ ("dfs postorder\n");
         stack<int_> stack;
@@ -53,7 +55,7 @@ tree_apx(
             std::to_string(root) + " = root");
 
     {   Timer _ ("inverse order");
-        invperm(iorder, porder);
+        invperm(n, iorder.data(), porder.data());
     }
 
     Timer tim ("alloc");
