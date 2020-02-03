@@ -122,6 +122,7 @@ tree_apx(
             {
                 TimerQuiet _ (print_timings);
                 changed = s.iter(lam, delta);
+#ifdef DEBUG_ID
                 if (n <= PRINT_MAX) {
                     printf("deriv: [");
                     for (size_t i = 0; i < n; i++)
@@ -132,6 +133,7 @@ tree_apx(
                         printf("%.3f ", s.x[reorder ? iorder[i] : i]);
                     printf("]\n");
                 }
+#endif
             }
             if (changed)
                 Timer::log("  %'d", changed);
