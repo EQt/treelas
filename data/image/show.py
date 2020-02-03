@@ -35,7 +35,7 @@ def plot_figs(fnames, out, cmap, prefix=""):
         for n, (a, f) in figs.items():
             outn = prefix + n + "." + out
             print(outn)
-            plt.imsave(outn, a, cmap=cmap)
+            plt.imsave(outn, a, cmap=cmap, vmin=0, vmax=1)
 
 
 if __name__ == '__main__':
