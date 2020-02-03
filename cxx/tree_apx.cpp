@@ -22,6 +22,9 @@ tree_apx(
     std::vector<int_> iorder;    // inverse of porder
     ChildrenIndex cidx;
     int_ root = root_;
+    float_
+        min_y = y[0],
+        max_y = y[0];
 
     Timer::log("lam = %f\n", lam);
 
@@ -62,28 +65,10 @@ tree_apx(
     TreeApx<float_, int_> s (n, porder.data(), reorder);
     tim.stop();
 
-    float_ min_y, max_y, delta;
-    {   Timer _ ("minmax y");
-        find_minmax(y, n, min_y, max_y);
-        delta = float_((max_y - min_y) * 0.5);
-    }
-
-    if (n <= PRINT_MAX) {
-        printf("   parent: ");
-        print_int_list(Vec(parent, n));
-        printf("postorder: ");
-        print_int_list(porder);
-        printf("   iorder: ");
-        print_int_list(iorder);
-    }
-
     {   Timer _ ("init x,y,parent");
 #ifdef DEBUG_ID
         s.id.resize(n);
 #endif
-        const float_ x0 = float_(0.5 * (min_y + max_y));
-        for (size_t i = 0; i < n; i++)
-            s.x[i] = x0;
         if (reorder) {
             for (size_t i = 0; i < n; i++) {
                 const auto ii = porder[i];
@@ -91,6 +76,8 @@ tree_apx(
                 s.id[i] = ii;
 #endif
                 s.y[i] = y[ii];
+                min_y = std::min(s.y[i], min_y);
+                max_y = std::max(s.y[i], max_y);
                 s.init_parent(i, iorder[parent[ii]]);
             }
         } else {
@@ -99,10 +86,25 @@ tree_apx(
                 s.id[i] = int(i);
 #endif
                 s.y[i] = y[i];
+                min_y = std::min(s.y[i], min_y);
+                max_y = std::max(s.y[i], max_y);
                 s.init_parent(i, parent[i]);
             }
         }
+        const float_ x0 = float_(0.5 * (min_y + max_y));
+        for (size_t i = 0; i < n; i++)
+            s.x[i] = x0;
     }
+    if (n <= PRINT_MAX) {
+        printf("   parent: ");
+        print_int_list(Vec(parent, n));
+        printf("postorder: ");
+        print_int_list(Vec(porder.data(), n));
+        printf("   iorder: ");
+        print_int_list(Vec(iorder.data(), n));
+    }
+
+
     if (n <= PRINT_MAX) {
         printf("deriv: [");
         for (size_t i = 0; i < n; i++)
@@ -114,11 +116,12 @@ tree_apx(
         printf("]\n");
     }
     {   Timer _ ("iterations:\n");
+        float_ delta = float_((max_y - min_y) * 0.5);
         for (int k = 0; k < max_iter; k++) {
             size_t changed = 0;
             Timer::log("%2ld ...%s", k+1, print_timings ? "\n" : "");
 
-            delta = float_(0.5*delta);
+            delta *= float_(0.5);
             {
                 TimerQuiet _ (print_timings);
                 changed = s.iter(lam, delta);
