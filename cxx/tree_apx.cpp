@@ -9,14 +9,24 @@
 #include <graphidx/utils/timer.hpp>
 
 #define PRINT_MAX 20
+#undef DEBUG_ID
 
 
+/**
+   Data needed to perform an approximation iteration.
+
+   Whether nodes `i` and `j = parent(i)` are in the same region is stored
+   in the first bit of the `parent` array;
+   you can query it by calling `same(i)`.
+ */
 template<typename float_ = float, typename int_ = int>
 struct TreeApx
 {
     const size_t n = 0;
     const bool is_linear;
+#ifdef DEBUG_ID
     std::vector<int> id;
+#endif
     float_ *y = nullptr;
     float_ *x = nullptr;
     float_ *deriv = nullptr;
@@ -52,9 +62,7 @@ struct TreeApx
 
 template<typename float_, typename int_>
 size_t
-TreeApx<float_, int_>::iter(
-    const float_ lam,
-    const float_ delta)
+TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
 {
     {   // Timer _ ("deriv init");
         for (size_t i = 0; i < n; i++)
@@ -64,9 +72,11 @@ TreeApx<float_, int_>::iter(
     {   Timer _ (" forward");
         for (size_t i = 0; i < n-1; i++) {
             const auto v = is_linear ? i : porder[i];
+#ifdef DEBUG_ID
             if (n <= PRINT_MAX)
                 printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d",
                        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
+#endif
             if (same(v)) {
                 const auto p = parent(v);
                 deriv[p] += clamp(deriv[v], -lam, +lam);
@@ -79,15 +89,16 @@ TreeApx<float_, int_>::iter(
         const auto root = is_linear ? n-1 : porder[n-1];
         const auto xr = deriv[root] > 0 ? -delta : +delta;
         x[root] += xr;
-        if (n <= PRINT_MAX)
-            printf(" root deriv = %+.3f xr = %+.3f x[root] = %+.3f\n",
-                   deriv[root], xr, x[root]);
-
+        // if (n <= PRINT_MAX)
+        //     printf(" root deriv = %+.3f xr = %+.3f x[root] = %+.3f\n",
+        //            deriv[root], xr, x[root]);
         for (size_t i = n-1; i > 0; i--) {
             const auto v = is_linear ? i-1 : porder[i-1];
-            // printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d ",
-            //        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
-
+#ifdef DEBUG_ID
+            if (n <= PRINT_MAX)
+                printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d ",
+                       int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
+#endif
             if (same(v)) {
                 // printf(" deriv = %+.3f", deriv[v]);
 
@@ -200,20 +211,26 @@ tree_12x(
     }
 
     {   Timer _ ("init x,y,parent");
+#ifdef DEBUG_ID
         s.id.resize(n);
+#endif
         const float_ x0 = float_(0.5 * (min_y + max_y));
         for (size_t i = 0; i < n; i++)
             s.x[i] = x0;
         if (reorder) {
             for (size_t i = 0; i < n; i++) {
                 const auto ii = porder[i];
+#ifdef DEBUG_ID
                 s.id[i] = ii;
+#endif
                 s.y[i] = y[ii];
                 s.init_parent(i, iorder[parent[ii]]);
             }
         } else {
             for (size_t i = 0; i < n; i++) {
+#ifdef DEBUG_ID
                 s.id[i] = int(i);
+#endif
                 s.y[i] = y[i];
                 s.init_parent(i, parent[i]);
             }
