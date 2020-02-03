@@ -35,7 +35,7 @@ process_file(
     std::vector<float_> xt, y, x;
     std::vector<int_> parent;
     double lam;
-    {   // Read extra information
+    {   Timer _ ("load hdf5");
         HDF5 io (fname, "r");
         io.group(group);
 
@@ -57,6 +57,7 @@ process_file(
                                  " != " + std::to_string(n));
     x.resize(n);
     if (!quiet) {
+        std::cout << std::endl;
         std::cout << "lam = " << lam << std::endl;
         std::cout << "n = " << y.size() << std::endl;
         std::cout << std::endl;
@@ -116,7 +117,7 @@ main(int argc, char *argv[])
         printf("reorder  = %s\n", reorder ? "true" : "false");
         printf("max_iter = %d\n", max_iter);
         {
-            if (ap.has_option("float64")) {
+            if (ap.has_option("float 64")) {
                 printf("float64\n");
                 process_file<double, int_>(fname, group,
                                            max_iter,

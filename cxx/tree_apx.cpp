@@ -57,14 +57,12 @@ tree_apx(
             std::to_string(porder[n-1]) + " != " +
             std::to_string(root) + " = root");
 
+    Timer tim ("TreeApx::alloc");
+    TreeApx<float_, int_> s (n, porder.data(), reorder);
+    tim.stop();
     {   Timer _ ("inverse order");
         invperm(n, iorder.data(), porder.data());
     }
-
-    Timer tim ("alloc");
-    TreeApx<float_, int_> s (n, porder.data(), reorder);
-    tim.stop();
-
     {   Timer _ ("init x,y,parent");
 #ifdef DEBUG_ID
         s.id.resize(n);
@@ -146,7 +144,7 @@ tree_apx(
     {   Timer _ ("extract x");
         if (reorder) {
             for (size_t i = 0; i < n; i++) {
-                x[i] = s.x[iorder[i]];
+                x[porder[i]] = s.x[i];
             }
         } else {
             for (size_t i = 0; i < n; i++)
