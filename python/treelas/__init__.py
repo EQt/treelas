@@ -45,7 +45,7 @@ from ._treelas import (
     line_las2,
     line_las3,
     tree_dp,
-    tree_12x,
+    tree_apx,
     tree_dual,
     tree_dual_gap,
 )

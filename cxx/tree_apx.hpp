@@ -4,7 +4,7 @@
 
 template<typename float_ = float, typename int_ = int>
 void
-tree_12x(
+tree_apx(
     const size_t n,
     const int_ *parent,
     const float_ *y,
@@ -18,7 +18,7 @@ tree_12x(
 
 extern template
 void
-tree_12x(
+tree_apx(
     const size_t n,
     const int *parent,
     const float *y,
@@ -32,7 +32,7 @@ tree_12x(
 
 extern template
 void
-tree_12x(
+tree_apx(
     const size_t n,
     const int *parent,
     const double *y,

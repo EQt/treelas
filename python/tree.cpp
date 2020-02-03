@@ -15,7 +15,7 @@ namespace py = pybind11;
 void
 reg_tree(py::module &m)
 {
-    m.def("tree_12x",
+    m.def("tree_apx",
           [](const py::array_i32 &parent,
              const py::array_f64 &y,
              const double lam,
@@ -30,7 +30,7 @@ reg_tree(py::module &m)
               if (is_empty(x))
                   x = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, x, "x");
-              tree_12x(n, parent.data(), y.data(), lam, x.mutable_data(), root, max_iter);
+              tree_apx(n, parent.data(), y.data(), lam, x.mutable_data(), root, max_iter);
               return x;
           },
           R"pbdoc(

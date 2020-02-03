@@ -138,7 +138,7 @@ TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
 
 template<typename float_, typename int_>
 void
-tree_12x(
+tree_apx(
     const size_t n,
     const int_ *parent,
     const float_ *y,
@@ -149,7 +149,7 @@ tree_12x(
     const bool print_timings,
     const bool reorder)
 {
-    Timer _ ("tree_12x:\n");
+    Timer _ ("tree_apx:\n");
 
     std::vector<int_> porder;    // post order (forward)
     std::vector<int_> iorder;    // inverse of porder
@@ -182,7 +182,7 @@ tree_12x(
        }*/
     if (porder[n-1] != root)
         throw std::runtime_error(
-            std::string("tree_12x(): FATAL: ") +
+            std::string("tree_apx(): FATAL: ") +
             "forder[" + std::to_string(n-1) + "] = " +
             std::to_string(porder[n-1]) + " != " +
             std::to_string(root) + " = root");
@@ -287,7 +287,7 @@ tree_12x(
 
 template
 void
-tree_12x(
+tree_apx(
     const size_t n,
     const int *parent,
     const float *y,
@@ -301,7 +301,7 @@ tree_12x(
 
 template
 void
-tree_12x(
+tree_apx(
     const size_t n,
     const int *parent,
     const double *y,

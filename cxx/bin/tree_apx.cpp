@@ -61,7 +61,7 @@ process_file(
         std::cout << "n = " << y.size() << std::endl;
         std::cout << std::endl;
     }
-    tree_12x(n,
+    tree_apx(n,
              parent.data(),
              y.data(),
              float_(lam),
