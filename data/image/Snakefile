@@ -26,23 +26,6 @@ rule download_phantom:
         remove_css(input[0], output[0])
 
 
-rule plot_imgs:
-    input:  "{name}_{seed}_lam{lam,[^_]+}.tree_sol", "{name}.img"
-    output: "{name}_{seed}_lam{lam,[^_]+}_x++.png"
-    run:
-        from show import plot_figs
-
-        prefix=f"{wildcards.name}_lam{wildcards.lam}_"
-        plot_figs(input, 'png', None,
-                  prefix=f"{wildcards.name}_{wildcards.seed}_lam{wildcards.lam}_")
-
-
-rule solve_grid:
-    input:  "{name}.img"
-    output: "{name}_lam{lam}.grid_opt"
-    shell: "julia grid_opt.jl {input[0]} {wildcards.lam} {output[0]}"
-
-
 rule render_svg:
     input:  '{name}.svg'
     output: '{name}_w{width,\d+}.img'
@@ -63,12 +46,31 @@ rule render_svg:
 
 
 rule grid_graph:
-    input:  '{name}.img'
-    output: '{name}.graph'
-    shell: "julia grid.jl {input} {output}"
+    input:  "{name}.img"
+    output: "{name}.graph"
+    shell:  "julia grid.jl {input} {output}"
+
+
+rule solve_grid:
+    input:  "{name}.img"
+    output: "{name}_lam{lam}.grid_opt"
+    shell:  "julia grid_opt.jl {input[0]} {wildcards.lam} {output[0]}"
 
 
 rule grid_spanning_tree:
     input:  "{name}.graph", f"{CMAKE_BUILD}/traverse"
     output: "{name}_{seed,\\d+}.tree"
     shell:  "{input[1]} -s {wildcards.seed} {input[0]} {output}"
+
+
+rule plot_imgs:
+    input:  "{name}_{seed}_lam{lam,[^_]+}.tree_sol",
+            "{name}_lam{lam,[^_]+}.grid_opt",
+            "{name}.img"
+    output: "{name}_{seed}_lam{lam,[^_]+}_x++.png"
+    run:
+        from show import plot_figs
+
+        prefix=f"{wildcards.name}_lam{wildcards.lam}_"
+        plot_figs(input, 'png', None,
+                  prefix=f"{wildcards.name}_{wildcards.seed}_lam{wildcards.lam}_")
