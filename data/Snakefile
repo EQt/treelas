@@ -1,5 +1,6 @@
 from os import path
 import pandas as pd
+from typing import List
 
 
 if path.exists("./config.yml"):
@@ -74,13 +75,19 @@ rule graph_degrees:
             print_deg_stats(input[0], out=io)
 
 
+def tsv_concat(output: str, fnames: List[str], sep : str ='\t'):
+    """
+    Read tab separated values (TSV) from the files as `fnames`
+    and make one big tables out of it, to be stored at `output`.
+    """
+    pd.concat([pd.read_csv(f, sep=sep) for f in fnames])\
+      .to_csv(output, sep=sep, index=None)
+
+
 rule collect_times:
     input: expand("{{name}}_{s}_lam{l}_rep{i}.tree_{alg}.times", **PARAMS)
     output: "{name}.tsv"
-    run:
-        from extract_times import tsv_concat
-
-        tsv_concat(output[0], input)
+    run: tsv_concat(output[0], input)
 
 
 rule extract_times:

@@ -4,6 +4,11 @@ from treelas import Tree
 
 
 def print_deg_stats(fname="dimacs10/europe_0.tree", out=sys.stdout):
+    """
+    Parse HDF5 file containing "parent" array and
+    printout a line of a TeX table containing some statistics about
+    the degree distribution.
+    """
     t = Tree.load(fname)
     n = len(t)
     deg = t.degree
