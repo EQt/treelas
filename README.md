@@ -45,10 +45,10 @@ Directory Structure
 ```
 ├── ci          Continous integration
 ├── cxx         C++ source/header files
-├── data        Some test data (needed for `py.test`)
+├── data        Some test data and benchmarks
 ├── deps        External dependencies/libraries
-├── graphidx    (Almost) independent graph library
 ├── julia       Julia Bindings/Implementation
+├── rust        Rust re-implementation
 └── python      Python bindings
 ```
 
