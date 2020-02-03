@@ -4,6 +4,7 @@ Show HDF5 as image
 """
 import matplotlib.pyplot as plt
 import h5py
+import numpy as np
 
 
 def plot_figs(fnames, out, cmap, prefix=""):
@@ -19,14 +20,16 @@ def plot_figs(fnames, out, cmap, prefix=""):
         with h5py.File(fn, 'r') as io:
             for n in ['orig', 'y', 'x++', 'xgrid']:
                 if n in io:
-                    nt = n + "2" if n in figs else n
                     a = io[n][:]
-                    f = plt.figure(nt)
+                    f = plt.figure(n)
                     if n == 'orig':
                         shape = a.shape
                     if len(a.shape) < 2:
                         a = a.reshape(shape, order='C')
-                    figs[nt] = (a, f)
+                    if n in figs:
+                        assert np.abs(a - figs[n][0]).max() < 1e-10
+                    else:
+                        figs[n] = (a, f)
                     imshow(a)
 
     if out is None:
