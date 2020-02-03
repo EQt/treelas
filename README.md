@@ -27,14 +27,8 @@ For compiling, add the Git submodule
 ```bash
 git submodule update --init --recursive deps/graphidx
 ```
-Afterwards, you can build the library using CMake
-```bash
-mkdir build
-cd build
-cmake ..
-cmake --build . --target pysetup
-```
-or using `setup.py`:
+
+Afterwards build the python extension by calling [`setup.py`](python/setup.py)
 ```bash
 cd python && python setup.py develop
 ```
