@@ -81,7 +81,7 @@ process_file(
     }
 
     if (xt.size() == n)
-        fprintf(stdout, "Norm(x - xt, Inf):  %g\n", max_abs_diff(x, xt));
+        fprintf(stderr, "Norm(x - xt, Inf):  %g\n", max_abs_diff(x, xt));
 }
 
 

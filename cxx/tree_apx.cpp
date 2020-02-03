@@ -104,7 +104,6 @@ tree_apx(
         print_int_list(Vec(iorder.data(), n));
     }
 
-
     if (n <= PRINT_MAX) {
         printf("deriv: [");
         for (size_t i = 0; i < n; i++)
