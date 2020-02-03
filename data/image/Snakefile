@@ -1,5 +1,8 @@
 from snakemake.remote.HTTP import RemoteProvider as HTTPRemoteProvider
 
+include: "../Snakefile"
+
+
 HTTP = HTTPRemoteProvider()
 WIKI = "https://upload.wikimedia.org/wikipedia/commons"
 
@@ -66,11 +69,6 @@ rule grid_graph:
 
 
 rule grid_spanning_tree:
-    input: "{name}.graph"
+    input:  "{name}.graph", f"{CMAKE_BUILD}/traverse"
     output: "{name}_{seed,\\d+}.tree"
-    shell: """
-    {CMAKE_BUILD}/traverse -s {wildcards.seed} {input} {output}
-    """
-
-
-include: "../Snakefile"
+    shell:  "{input[1]} -s {wildcards.seed} {input[0]} {output}"

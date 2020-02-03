@@ -1,11 +1,12 @@
-.snakemake/
 *.h5
 *.tree
 *.treelas
 *.tree_sol
 *.tree_apx
 *.tree_opt
+*.tree_opti
 *.tsv
 *.degs
 *.times
+.snakemake/
 __pycache__/

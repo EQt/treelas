@@ -15,7 +15,6 @@ PARAMS = dict(s=range(config['num_span_trees']),
               alg=["opt", "apx"])
 MAX_ITER = config['apx_max_iter']
 
-
 subworkflow dimacs:
     workdir: "dimacs10"
     configfile: "./config.yml"
@@ -52,6 +51,17 @@ rule all:
         image("phantom_w1000.tsv"),
         dimacs("europe.tsv"),
         snap("com-orkut.tsv"),
+
+
+rule cmake_init:
+    output: CMAKE_BUILD + "/CMakeCache.txt"
+    shell:  "cd {CMAKE_BUILD} && cmake -DCMAKE_BUILD_TYPE=Release .."
+
+
+rule cmake_build:
+    input:  rules.cmake_init.output
+    output: f"{CMAKE_BUILD}/{{bin}}"
+    shell:  "make -j{workflow.cores} -C {CMAKE_BUILD} {wildcards.bin}"
 
 
 rule graph_degrees:
@@ -98,33 +108,27 @@ rule bench_dimacs:
 
 
 rule run_treelas:
-    input: "{name}.treelas"
+    input:  "{name}.treelas", f"{CMAKE_BUILD}/tree_solve"
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_opti", "{name}_lam{lam,[^_]+}{ignore}.tree_sol"
-    shell: """
-    {CMAKE_BUILD}/tree_solve -l {wildcards.lam} {input} | tee {output[0]} && cp {input} {output[1]}
-    """
+    shell:  "{input[1]} -l {wildcards.lam} {input[0]} | tee {output[0]} && cp {input[0]} {output[1]}"
 
 
 rule run_treelas_no_output:
-    input: "{name}.treelas"
+    input:  "{name}.treelas", f"{CMAKE_BUILD}/tree_solve"
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_opt"
-    shell: """
-    {CMAKE_BUILD}/tree_solve -O -l {wildcards.lam} {input} | tee {output}
-    """
+    shell:  "{input[1]} -O -l {wildcards.lam} {input[0]} | tee {output}"
 
 
 rule run_treeapx:
-    input: "{name}.treelas"
+    input:  "{name}.treelas", f"{CMAKE_BUILD}/tree_apx"
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_apx"
-    shell: "{CMAKE_BUILD}/tree_apx -r -i {MAX_ITER} -l {wildcards.lam} {input} | tee {output}"
+    shell:  "{input[1]} -r -i {MAX_ITER} -l {wildcards.lam} {input[0]} | tee {output}"
 
 
 rule spanning_tree:
-    input: "{name}.h5"
+    input:  "{name}.h5", f"{CMAKE_BUILD}/traverse"
     output: "{name}_{seed,\\d+}.tree"
-    shell: """
-    {CMAKE_BUILD}/traverse -s {wildcards.seed} {input} {output}
-    """
+    shell:  "{input[1]} -s {wildcards.seed} {input[0]} {output}"
 
 
 rule noisy_input:
