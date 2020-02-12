@@ -1,0 +1,8 @@
+% some comments
+%  ... to be ignored
+% integer node numbers start at one
+% number of nodes, number of edges
+4 4
+2 4
+3
+4

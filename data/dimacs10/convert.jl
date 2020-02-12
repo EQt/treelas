@@ -4,7 +4,15 @@ import HDF5: h5open, attrs
 import CodecBzip2
 
 
-function parse_dimacs10(fname::String, f = parse_dimacs10; as_process=false)
+"""
+    open_dimacs10(f, fname; as_process = false)
+
+Open file `fname` to perform reading with function `f`.
+If `fname` ends with `".bz2"`, start a corresponding decompressor.
+If `fname == "-"`, read from `stdin`.
+"""
+function open_dimacs10(f::Function, fname::String;
+                        as_process::Bool=false)
     if endswith(fname, ".bz2")
         if as_process
             open(`bzip2 -d -c $fname`) do io
@@ -27,16 +35,28 @@ function parse_dimacs10(fname::String, f = parse_dimacs10; as_process=false)
 end
 
 
-function parse_dimacs10_header(io::IO)
+"""
+    parse_dimacs10_header(io)
+
+Read lines until lines does not start with comment character "%" and
+then return the first two integers (number of nodes, number of edges).
+"""
+function parse_dimacs10_header(io::IO)::Tuple{Int,Int}
     line = ""
     while startswith(line, "%") || line == ""
         line = readline(io)
     end
     n, m = map(x-> parse(Int, x), split(line))
+    n, m
 end
 
 
-function parse_dimacs10(io::IO)::BiAdjacentIndex
+"""
+    parse_dimacs10_idx(io)
+
+Parse a Dimacs10 file into a bidirectional index.
+"""
+function parse_dimacs10_idx(io::IO)::BiAdjacentIndex
     n, m = parse_dimacs10_header(io)
     pi = Vector{Int}()
     idx = Vector{Int}()
@@ -52,7 +72,12 @@ function parse_dimacs10(io::IO)::BiAdjacentIndex
 end
 
 
-function parse_dimacs10_ht(io::IO)
+"""
+    parse_dimacs10_edges(io)
+
+Return the graph as `n, m, head, tail`.
+"""
+function parse_dimacs10_edges(io::IO)
     n, m = parse_dimacs10_header(io)
     head = Vector{Int32}()
     tail = Vector{Int32}()
@@ -72,34 +97,13 @@ function parse_dimacs10_ht(io::IO)
 end
 
 
-function transform(fname::String)
-    out = "out.h5"
-    idx = parse_dimacs10(fname)
-    m = num_edges(idx)
-    n = num_nodes(idx)
-    @show (n, m)
-    head, tail = Vector{Int}(), Vector{Int}()
-    sizehint!(head, m)
-    sizehint!(tail, m)
-    for i in 1:n
-        for j in idx[i]
-            if i < j
-                push!(head, i)
-                push!(tail, j)
-            end
-        end
-    end
-    n, m, head, tail
-end
-
-
 fname = get(ARGS, 1, "belgium.bz2")
 out = get(ARGS, 2, "out.h5")
 output_bin = false
 
-@time n, m, head, tail = parse_dimacs10(fname, parse_dimacs10_ht)
-isfile(out) && rm(out)
+@time n, m, head, tail = open_dimacs10(parse_dimacs10_edges, fname)
 
+isfile(out) && rm(out)
 h5open(out, "w") do io
     attrs(io)["n"] = n
     attrs(io)["m"] = m
