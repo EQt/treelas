@@ -1,3 +1,4 @@
+#!/usr/bin/env julia
 using GraphIdx.Io.Dimacs10: open_dimacs10, parse_dimacs10_edges
 using HDF5: h5open, attrs
 
