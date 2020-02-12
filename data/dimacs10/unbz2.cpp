@@ -1,7 +1,7 @@
-#include <bzlib.h>
 #include <cstdio>
 #include <string>      // stoi
-#include <memory>
+#include <memory>      // unique_ptr
+#include "bz2istream.hpp"
 
 
 int
@@ -16,30 +16,20 @@ main(int argc, char *argv[])
     const int buf_size = argc > 3 ? std::stoi(argv[3]) : 2*4096;
     const bool only_read = argc > 4;
 
-    auto in = BZ2_bzopen(infn, "rb");
-    if (!in) {
-        fprintf(stderr, "Could not open \"%s\"\n", infn);
-        return 1;
-    }
-
     auto out = fopen(outfn, "wb");
     if (!out) {
         fprintf(stderr, "Could not open \"%s\" for writing\n", infn);
-        BZ2_bzclose(in);
         return 2;
     }
 
-    std::unique_ptr<char> buf (new char[buf_size]);
-    while (true) {
-        auto nread = BZ2_bzread(in, buf.get(), buf_size);
-        if (nread <= 0)
-            break;
-        only_read || fwrite(buf.get(), buf_size, 1, out);
-    }
-    int errnum;
-    fprintf(stdout, "finally: %s\n",  BZ2_bzerror(in, &errnum));
+    BZ2IStream io (infn);
 
+    std::unique_ptr<char> buf (new char[buf_size]);
+    while (io) {
+        io.read(buf.get(), buf_size);
+        auto nread = io.gcount();
+        only_read || fwrite(buf.get(), nread, 1, out);
+    }
     fclose(out);
-    BZ2_bzclose(in);
     return 0;
 }
