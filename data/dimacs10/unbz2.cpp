@@ -1,4 +1,4 @@
-#include <cstdio>
+#include <fstream>
 #include <string>      // stoi
 #include <memory>      // unique_ptr
 #include "bz2istream.hpp"
@@ -16,20 +16,19 @@ main(int argc, char *argv[])
     const int buf_size = argc > 3 ? std::stoi(argv[3]) : 2*4096;
     const bool only_read = argc > 4;
 
-    auto out = fopen(outfn, "wb");
-    if (!out) {
-        fprintf(stderr, "Could not open \"%s\" for writing\n", infn);
+    BZ2IStream io (infn);
+    std::fstream out (outfn, std::ios::out | std::ios::binary);
+    if (out) {
+        std::unique_ptr<char> buf (new char[buf_size]);
+        while (io) {
+            io.read(buf.get(), buf_size);
+            auto nread = io.gcount();
+            only_read || out.write(buf.get(), nread);
+        }
+    } else {
+        fprintf(stderr, "Could not open \"%s\" for writing\n", outfn);
         return 2;
     }
 
-    BZ2IStream io (infn);
-
-    std::unique_ptr<char> buf (new char[buf_size]);
-    while (io) {
-        io.read(buf.get(), buf_size);
-        auto nread = io.gcount();
-        only_read || fwrite(buf.get(), nread, 1, out);
-    }
-    fclose(out);
     return 0;
 }
