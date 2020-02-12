@@ -1,3 +1,12 @@
+/**
+
+   Inspiring codes
+
+   https://stackoverflow.com/q/39017752
+   http://www.mathematik.uni-kassel.de/~fifr/fossils/cpp-util
+   https://www.codeproject.com/KB/stl/zipstream/bzip2stream_src.zip
+*/
+#pragma once
 #include <bzlib.h>
 #include <streambuf>
 #include <istream>
