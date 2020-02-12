@@ -2,7 +2,7 @@
 #include <string>      // stoi
 #include <memory>      // unique_ptr
 #include <graphidx/io/dimacs10.hpp>
-#include "bz2istream.hpp"
+#include <graphidx/io/bz2istream.hpp>
 
 
 int
