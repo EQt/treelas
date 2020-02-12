@@ -14,7 +14,6 @@ public:
     }
 
     BZ2IStreamBuf& open(const char *fname) {
-        printf("open %s\n", fname);
         bzfile = BZ2_bzopen(fname, "rb");
         if (!bzfile)
             throw std::runtime_error(std::string("bz_open file \"") + fname + "\"");
@@ -53,7 +52,9 @@ public:
     void close() {
         if (bzfile) BZ2_bzclose(bzfile);
         int errnum;
-        fprintf(stdout, "finally: %s\n",  BZ2_bzerror(bzfile, &errnum));
+        auto msg = BZ2_bzerror(bzfile, &errnum);
+        if (errnum != BZ_OK)
+            throw std::runtime_error(std::string("bzclose: ") + msg);
     }
 
     ~BZ2IStreamBuf() { close(); }
