@@ -21,11 +21,13 @@ reg_tree(py::module &m)
              const double lam,
              int max_iter,
              bool verbose,
-             py::array_f64 x) -> py::array_f64
+             py::array_f64 x,
+             bool reorder) -> py::array_f64
           {
               TimerQuiet _ (verbose);
               const auto n = check_1d_len(parent, "parent");
               const int root = -1;
+              const bool print_timings = verbose;
               check_len(n, y, "y");
               if (is_empty(x))
                   x = py::array_t<double>({n}, {sizeof(double)});
@@ -36,7 +38,9 @@ reg_tree(py::module &m)
                        lam,
                        x.mutable_data(),
                        root,
-                       max_iter);
+                       max_iter,
+                       print_timings,
+                       reorder);
               return x;
           },
           R"pbdoc(
@@ -47,7 +51,8 @@ reg_tree(py::module &m)
           py::arg("lam"),
           py::arg("max_iter") = 10,
           py::arg("verbose") = false,
-          py::arg("x") = py::none());
+          py::arg("x") = py::none(),
+          py::arg("reorder") = true);
 
     m.def("tree_dp",
           [](const py::array_f64 &y,
