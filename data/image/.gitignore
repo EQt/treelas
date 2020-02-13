@@ -1,4 +1,5 @@
 *.graph
+*.jlgraph
 *.img
 *.png
 *.grid_opt

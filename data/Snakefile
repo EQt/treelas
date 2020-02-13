@@ -16,6 +16,11 @@ PARAMS = dict(s=range(config['num_span_trees']),
               alg=["opt", "apx"])
 MAX_ITER = config['apx_max_iter']
 
+
+def cmake(exe):
+    return f"{CMAKE_BUILD}/{exe}"
+
+
 subworkflow dimacs:
     workdir: "dimacs10"
     configfile: "./config.yml"
