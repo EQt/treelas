@@ -22,7 +22,7 @@ tree_apx(
     const int_ root_ = int_(-1),
     const int max_iter = 3,
     const bool print_timings = true,
-    const bool reorder = false);
+    const bool reorder = true);
 
 
 extern template
