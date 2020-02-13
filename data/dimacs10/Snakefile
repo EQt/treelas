@@ -33,8 +33,20 @@ rule julia_bzcat_to_hdf5:
 
 rule julia_to_hdf5:
     input: "{name}.bz2"
-    output: "{name}.h5"
+    output: "{name}.jlh5"
     shell: "julia convert.jl {input} {output}"
+
+
+rule convert_to_hdf5:
+    input: "{name}.bz2", "convert"
+    output: "{name}.h5"
+    shell: "./{input[1]} {input[0]} {output}"
+
+
+rule make_convert:
+    input: "convert.cpp"
+    output: "convert"
+    shell: "make {output}"
 
 
 include: "../Snakefile"
