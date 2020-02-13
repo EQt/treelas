@@ -27,11 +27,14 @@ process_file(
     const char *group,
     const int  max_iter,
     const bool quiet,
-    const bool /* dfs */,
+    const bool dfs,
     const bool reorder,
     const double lam_override,
     const unsigned PRINT_MAX = 10)
 {
+    if (dfs)
+        throw std::runtime_error("DFS order is not implemented at the moment");
+
     std::vector<float_> xt, y, x;
     std::vector<int_> parent;
     double lam;
