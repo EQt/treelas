@@ -74,18 +74,33 @@ main(int argc, char *argv[])
 {
     try {
         ArgParser ap (
-            "grid N1 N2\n"
+            "grid\n"
             "\n"
             "Generate edges of grid graph and store them as HDF5 file"
         );
         ap.add_option('o', "out", "Output file", "FILE", "grid.h5");
+        ap.add_option('i', "img", "Image (HDF5) => sizes", "FILE");
+        ap.add_option('w', "width", "Image (HDF5) => sizes", "INT", "5");
+        ap.add_option('h', "height", "Image (HDF5) => sizes", "INT", "3");
         ap.parse(&argc, argv);
-        if (argc <= 2)
-            throw std::runtime_error("Dimensions N1 or N2 no provided");
 
-        const int
-            n1 = atoi(argv[1]),
-            n2 = atoi(argv[2]);
+        int n1 = -1, n2 = -2;
+        if (ap.has_option("img")) {
+            const auto fname = ap.get_option("img");
+            HDF5 in5 (fname, "r");
+            if (!in5.has("y"))
+                throw std::runtime_error(std::string("y needed in ") + fname);
+            auto dims = in5.dimensions("y");
+            if (dims.size() != 2)
+                throw std::runtime_error(
+                    std::string("y needs two dimensions, got ") +
+                    std::to_string(dims.size()));
+            n1 = decltype(n1)(dims[0]);
+            n2 = decltype(n2)(dims[1]);
+        } else {
+            n1 = atoi(ap.get_option("height"));
+            n2 = atoi(ap.get_option("width"));
+        }
         const char *outfn = ap.get_option("out");
         set_thousand_sep(std::cout);
 
