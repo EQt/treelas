@@ -66,7 +66,7 @@ rule cmake_init:
 
 rule cmake_build:
     input:  rules.cmake_init.output
-    output: f"{CMAKE_BUILD}/{{bin}}"
+    output: cmake("{bin}")
     shell:  "make -j{workflow.cores} -C {CMAKE_BUILD} {wildcards.bin}"
 
 
@@ -120,25 +120,25 @@ rule bench_dimacs:
 
 
 rule run_treelas:
-    input:  "{name}.treelas", f"{CMAKE_BUILD}/tree_solve"
+    input:  "{name}.treelas", cmake("tree_solve")
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_opti", "{name}_lam{lam,[^_]+}{ignore}.tree_sol"
     shell:  "{input[1]} -l {wildcards.lam} {input[0]} | tee {output[0]} && cp {input[0]} {output[1]}"
 
 
 rule run_treelas_no_output:
-    input:  "{name}.treelas", f"{CMAKE_BUILD}/tree_solve"
+    input:  "{name}.treelas", cmake("tree_solve")
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_opt"
     shell:  "{input[1]} -O -l {wildcards.lam} {input[0]} | tee {output}"
 
 
 rule run_treeapx:
-    input:  "{name}.treelas", f"{CMAKE_BUILD}/tree_apx"
+    input:  "{name}.treelas", cmake("tree_apx")
     output: "{name}_lam{lam,[^_]+}{ignore}.tree_apx"
     shell:  "{input[1]} -r -i {MAX_ITER} -l {wildcards.lam} {input[0]} | tee {output}"
 
 
 rule spanning_tree:
-    input:  "{name}.h5", f"{CMAKE_BUILD}/traverse"
+    input:  "{name}.h5", cmake("traverse")
     output: "{name}_{seed,\\d+}.tree"
     shell:  "{input[1]} -s {wildcards.seed} {input[0]} {output}"
 

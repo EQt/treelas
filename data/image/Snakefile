@@ -66,7 +66,7 @@ rule solve_grid:
 
 
 rule grid_spanning_tree:
-    input:  "{name}.graph", f"{CMAKE_BUILD}/traverse"
+    input:  "{name}.graph", cmake("traverse")
     output: "{name}_{seed,\\d+}.tree"
     shell:  "{input[1]} -s {wildcards.seed} {input[0]} {output}"
 
