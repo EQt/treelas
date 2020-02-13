@@ -30,7 +30,13 @@ reg_tree(py::module &m)
               if (is_empty(x))
                   x = py::array_t<double>({n}, {sizeof(double)});
               check_len(n, x, "x");
-              tree_apx(n, parent.data(), y.data(), lam, x.mutable_data(), root, max_iter);
+              tree_apx(n,
+                       parent.data(),
+                       y.data(),
+                       lam,
+                       x.mutable_data(),
+                       root,
+                       max_iter);
               return x;
           },
           R"pbdoc(
