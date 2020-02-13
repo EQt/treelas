@@ -1,7 +1,6 @@
 #include <fstream>
 #include <string>      // stoi
 #include <memory>      // unique_ptr
-#include <graphidx/io/dimacs10.hpp>
 #include <graphidx/io/bz2istream.hpp>
 
 
@@ -18,10 +17,7 @@ main(int argc, char *argv[])
     const bool only_read = argc > 4;
 
     BZ2IStream io (infn, buf_size);
-
-    if (false)
-        auto idx = parse_dimacs10_idx(io);
-    else {
+    {
         std::fstream out (outfn, std::ios::out | std::ios::binary);
         if (out) {
             std::unique_ptr<char> buf (new char[buf_size]);
