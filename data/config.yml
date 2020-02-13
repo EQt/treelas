@@ -7,4 +7,4 @@ num_span_trees: 10
 num_repetitions: 10
 apx_max_iter: 20
 cmake_dir: "../../build.rel"
-cmake_config: "-DBUILD_TESTS=OFF -DASAN=OFF"
+cmake_config: "-DBUILD_TESTS=OFF -DASAN=OFF -DCMAKE_BUILD_TYPE=Release"
