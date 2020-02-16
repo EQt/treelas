@@ -2,11 +2,12 @@ TreeLas
 =======
 [![Travis](https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master)](https://travis-ci.com/EQt/treelas)
 
+![logo](https://eqt.github.io/treelas/imgs/treelas.png)
 
-Fused Lasso solver for tree graphs, implemented in C++ with Python bindings.
+Fused Lasso solvers for tree graphs.
 We exactly compute the minimizer of the convex function
 
-![alt text](https://eqt.github.io/treelas/imgs/formula.svg)
+![formula](https://eqt.github.io/treelas/imgs/formula.svg)
 
 whereby _E_ are the edges of a tree graph.
 
