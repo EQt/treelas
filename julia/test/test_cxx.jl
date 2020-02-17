@@ -14,7 +14,7 @@ const cxx_jl = joinpath(dirname(pathof(TreeLas)), "cxx.jl")
     syms = Set((String(m.captures[1])
                 for m in eachmatch(r"(_Z\w+)", read(open(cxx_jl), String))))
 
-    @static if !Sys.iswindows()
+    @static if true #!Sys.iswindows()
         Libdl.dlopen(Cxx.lib) do tl
             @testset "Check DLL symbols" begin
                 for s in syms
