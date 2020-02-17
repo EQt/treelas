@@ -28,7 +28,7 @@ sources = [
 ]
 
 includes = [
-    path.join(graphidx_dir, "cxx", "include"),
+    path.join(graphidx_dir, "cxx"),
     path.join(graphidx_dir, "deps", "pybind11", "include"),
 ]
 
@@ -63,7 +63,7 @@ if __name__ == '__main__':
     )
 
     setup(name="treelas",
-          version=describe_tag(default="0.14.1"),
+          version=describe_tag(default="0.15.2"),
           author="Elias Kuthe",
           author_email="elias.kuthe@tu-dortmund.de",
           license="MIT",
