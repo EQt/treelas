@@ -1,6 +1,8 @@
 TreeLas
 =======
 [![Travis](https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master)](https://travis-ci.com/EQt/treelas)
+[![Build status](https://ci.appveyor.com/api/projects/status/feofb7j476jagsbb?svg=true)](https://ci.appveyor.com/project/EQt/treelas)
+
 
 Fused Lasso solvers for tree graphs.
 We exactly compute the minimizer of the convex function
@@ -12,8 +14,13 @@ whereby
  * _λ > 0_ some edge weights,
  * _μ ≥ 0_ some node weights.
 
+[Documentation](https://eqt.github.io/treelas/)
+
+Demo: Image Denoising
+-------------------
+
 ![demo](docs/phantom_w200_0_lam2e-1_pad10.png)
-**Demo** (from left to right)
+From left to right:
 1. [Original Image][phantom]
 2. Gaussian noise added (std=0.25)
 3. _E_ is grid graph (_λ_ = 0.2)

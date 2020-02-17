@@ -2,7 +2,7 @@
 #   https://github.com/h5py/h5py/blob/master/ci/appveyor/get_hdf5.py
 branches:
   only:
-    - develop
+    - master
 
 notifications:
   - provider: Email
@@ -21,8 +21,9 @@ cache:
 
 environment:
   matrix:
-    - lang: Julia 1.3
     - lang: C++
+    - lang: Julia 1.3
+    - lang: Rust
 
 for:
   -
