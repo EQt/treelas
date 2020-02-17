@@ -18,8 +18,6 @@ image: Visual Studio 2017
 
 environment:
   matrix:
-    - lang: C++
-    - lang: Python3.7
     - lang: Julia 1.3
     - lang: Rust
 
@@ -85,13 +83,13 @@ for:
       - julia --version
       - git submodule update --init deps/graphidx
     build_script:
-      - julia --color=yes -e "import Pkg; Pkg.develop(Pkg.PackageSpec(path=""deps/graphidx/julia""))"
-      - julia --color=yes -e "import Pkg; Pkg.develop(Pkg.PackageSpec(path=""julia""))"
-      - julia --color=yes -e "import Pkg; Pkg.instantiate()"
-      - julia --color=yes -e "import Pkg; Pkg.build(""TreeLas"")"
-      - julia --color=yes --project=docs/ -e "import Pkg; Pkg.add(""Documenter"")"
+      - 'julia -e "import Pkg; Pkg.develop(Pkg.PackageSpec(path=""deps/graphidx/julia""))"'
+      - julia -e "import Pkg; Pkg.develop(Pkg.PackageSpec(path=""julia""))"
+      - julia -e "import Pkg; Pkg.instantiate()"
+      - julia -e "import Pkg; Pkg.build(""TreeLas"")"
+      - julia --project=docs/ -e "import Pkg; Pkg.add(""Documenter"")"
     test_script:
-      - julia --color=yes -e "import Pkg; Pkg.test(""TreeLas"")"
+      - julia -e "import Pkg; Pkg.test(""TreeLas"")"
 
   -
     matrix:
