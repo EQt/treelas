@@ -96,9 +96,12 @@ end
         @test mean(y) ≈ mean(x)
     end
 
+
+    @static if !Sys.iswindows()
     @testset "compare to cxx tree_dp" begin
         cxx_x = Cxx.cxx_tree_dp(y, parent, root, 1.0)
         @test cxx_x ≈ x
+    end
     end
 
     @testset "dual!" begin
@@ -123,6 +126,7 @@ end
         end
     end
 
+    @static if !Sys.iswindows()
     @testset "compare to tree_dual" begin
         cxx_alpha = Cxx.cxx_tree_dual!(x - copy(y), parent, root)
         @test abs.(tree_alpha[2:end]) ≈ abs.(cxx_alpha[2:end])
@@ -132,6 +136,7 @@ end
             @test sign01.(tree_alpha[2:end]) == sign01.(cxx_alpha[2:end])
         end
         @test tree_alpha[2:end] ≈ cxx_alpha[2:end]
+    end
     end
 
     local wtree = GraphIdx.Tree.WeightedTree(tree, TreeDP.Ones{Float64}())
