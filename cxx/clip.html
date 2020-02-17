@@ -148,10 +148,9 @@
 <div class="breathe-sectiondef docutils container">
 <p class="breathe-sectiondef-title rubric">Defines</p>
 <dl class="macro">
-<dt id="c.SLOPE_EPS">
-<span class="target" id="clip_8hpp_1ac5d82e76349b4ec15387ac010b9f54f2"></span><code class="descname">SLOPE_EPS</code><a class="headerlink" href="#c.SLOPE_EPS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Minimal slope after which the PWL is treated as having zero slope. </p>
-</dd></dl>
+<dt id="c.DEBUG_CLIP">
+<span class="target" id="clip_8hpp_1ab69c340f8547f4e36f6b676468614b00"></span><code class="descname">DEBUG_CLIP</code><a class="headerlink" href="#c.DEBUG_CLIP" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -159,34 +158,10 @@
 <dl class="function">
 <dt id="_CPPv44clipP5EventR5Range6float_6float_">
 <span id="_CPPv34clipP5EventR5Range6float_6float_"></span><span id="_CPPv24clipP5EventR5Range6float_6float_"></span><span id="clip__EventP.RangeR.float_.float_"></span><em class="property">template </em>&lt;int <em>step</em>, bool <em>need_check</em> = false, <em class="property">typename</em> float_ = double&gt;<br /><span class="target" id="clip_8hpp_1a2fd96a9d3241bb0c4bdfb9c5a4b82d4e"></span>float_ <code class="descname">clip</code><span class="sig-paren">(</span><a class="reference internal" href="#_CPPv45Event" title="Event">Event</a> *<em>elem</em>, Range &amp;<em>pq</em>, float_ <em>slope</em>, float_ <em>offset</em><span class="sig-paren">)</span><a class="headerlink" href="#_CPPv44clipP5EventR5Range6float_6float_" title="Permalink to this definition">¶</a><br /></dt>
-<dd><p>Cut all knots until the PWL is at least <code class="docutils literal notranslate"><span class="pre">t</span></code>. </p>
-<p>The reason why there are two versions, <code class="docutils literal notranslate"><span class="pre">clip_front</span></code> and <code class="docutils literal notranslate"><span class="pre">clip_fronw</span></code>:</p>
-<p>In the end we usually divide by slope to obtain a position x, which might be problematic in case that slope is (almost) zero. Setting the position <code class="docutils literal notranslate"><span class="pre">x</span></code> to <span class="math notranslate nohighlight">\(-\infty\)</span> will result in the problem that <code class="docutils literal notranslate"><span class="pre">x</span></code> times <code class="docutils literal notranslate"><span class="pre">slope</span></code> is not exactly <code class="docutils literal notranslate"><span class="pre">t</span></code>.</p>
-<p>Hence we agree that we will never insert an <a class="reference internal" href="#struct_event"><span class="std std-ref">Event</span></a> with zero slope. Zero-slope Events can occur only at the beginning or the end of a queue. That is way they can be merged into the adjoining events. Just bear in mind that the initial offset might change by this change. That is way I started two different implementations.</p>
-<p>In case I favor a solution that returns the initial <code class="docutils literal notranslate"><span class="pre">offset</span></code> and the position <code class="docutils literal notranslate"><span class="pre">x</span></code> the method <a class="reference external" href="http://www.cplusplus.com/reference/tuple/tie/">std::tie</a> might be helpful.</p>
-<p><em>Usage</em></p>
-<p>This methods returns the position where the event will happen next time. Furthermore, a corresponding event is prepended to <code class="docutils literal notranslate"><span class="pre">elements</span></code>.</p>
-<p><em>Why do we need the position <code class="docutils literal notranslate"><span class="pre">x</span></code> at all?</em></p>
-<p>There are mainly to occasions: We need it to<ol class="arabic simple">
-<li>order the events</li>
-<li>have a proper bound in case slope is not zero</li>
-</ol>
-</p>
-<p>Regarding the first point, the ordering: In principle it is possible to avoid the division and store <code class="docutils literal notranslate"><span class="pre">(offset,</span> <span class="pre">slope)</span></code> instead of <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">slope)</span></code>. However, to compare two <a class="reference internal" href="#struct_event"><span class="std std-ref">Event</span></a> s we would need to do a multiplication each time.</p>
-<p>Also for the second point we could avoid the division if we store the slope and offset instead of the position <code class="docutils literal notranslate"><span class="pre">x</span></code>.</p>
-<p>All in all I realized that events with zero-slope can be avoided: they simple don’t have an effect on further processing.</p>
-<p>The only that can happen is that the associated edge edge might shrink the possible flow (or overtake the effect of the proceeding other edges). That is why I would like to return both, x and initial offset while the zero slope should not go into the queue.</p>
-<p><em>Checking <code class="docutils literal notranslate"><span class="pre">abs(slope)</span> <span class="pre">&gt;</span> <span class="pre">eps</span></code></em></p>
-<p>When is this really necessary?</p>
-<p>It cannot happen if we never insert a line with <code class="docutils literal notranslate"><span class="pre">slope</span> <span class="pre">==</span> <span class="pre">0</span></code>. But can it happen at other places after some events have been processed?</p>
-<p>What does it mean? The implication is that a node’s value is not unique. Of course that can also happen for “inner nodes” with non-latent children, e.g.</p>
-<p><div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">V</span><span class="p">)</span> <span class="o">--</span> <span class="p">(</span><span class="n">L</span><span class="p">)</span> <span class="o">--</span> <span class="p">(</span><span class="n">V</span><span class="p">)</span>
-
-<span class="nl">L</span><span class="p">:</span> <span class="n">latent</span>
-<span class="nl">V</span><span class="p">:</span> <span class="n">non</span><span class="o">-</span><span class="n">latent</span>
-</pre></div>
-</div>
- </p>
+<dd><p>Cut all knots until the PWL is at least zero. </p>
+<p>Hereby, start with initial <code class="docutils literal notranslate"><span class="pre">slope</span></code> and <code class="docutils literal notranslate"><span class="pre">offset</span></code>. To achieve a value of <code class="docutils literal notranslate"><span class="pre">t</span></code>, subtract it from <code class="docutils literal notranslate"><span class="pre">offset</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">step</span></code> is positive, go from <code class="docutils literal notranslate"><span class="pre">pq.start</span></code> till <code class="docutils literal notranslate"><span class="pre">pq.stop</span></code> (inclusive); otherwise go the other direction, i.e. from <code class="docutils literal notranslate"><span class="pre">pq.stop</span></code> down to <code class="docutils literal notranslate"><span class="pre">pq.start</span></code> (inclusive).</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">need_check</span></code> is set, ensure that in the end <code class="docutils literal notranslate"><span class="pre">std::abs(slope)</span> <span class="pre">&gt;</span> <span class="pre">EPS</span></code>; if <code class="docutils literal notranslate"><span class="pre">slope</span></code> is too close to zero (i.e. <code class="docutils literal notranslate"><span class="pre">EPS</span></code>) the division by <code class="docutils literal notranslate"><span class="pre">slope</span></code> might result in strange behavior. That is why a new <code class="docutils literal notranslate"><a class="reference internal" href="#struct_event"><span class="std std-ref"><span class="pre">Event</span></span></a></code> is only added if <code class="docutils literal notranslate"><span class="pre">std::abs(slope)</span> <span class="pre">&gt;</span> <span class="pre">EPS</span></code>. </p>
 </dd></dl>
 
 <dl class="function">
@@ -219,13 +194,15 @@
 <p class="breathe-sectiondef-title rubric">Variables</p>
 <dl class="member">
 <dt id="_CPPv43EPS">
-<span id="_CPPv33EPS"></span><span id="_CPPv23EPS"></span><span id="EPS__autoC"></span><span class="target" id="clip_8hpp_1a3542b93b1bfff51280b7db666fb98722"></span><em class="property">const</em> auto <code class="descname">EPS</code> = 1e-10<a class="headerlink" href="#_CPPv43EPS" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<span id="_CPPv33EPS"></span><span id="_CPPv23EPS"></span><span id="EPS__doubleC"></span><span class="target" id="clip_8hpp_1afe01386a82fedc016455a43c20280a97"></span><em class="property">const</em> double <code class="descname">EPS</code> = 1e-10<a class="headerlink" href="#_CPPv43EPS" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Minimal slope after which the PWL is treated as having zero slope. </p>
+</dd></dl>
 
 <dl class="member">
 <dt id="_CPPv45DEBUG">
-<span id="_CPPv35DEBUG"></span><span id="_CPPv25DEBUG"></span><span id="DEBUG__autoC"></span><span class="target" id="clip_8hpp_1a3f0b2750c00a16d13de5a28ef3cc7685"></span><em class="property">const</em> auto <code class="descname">DEBUG</code> = false<a class="headerlink" href="#_CPPv45DEBUG" title="Permalink to this definition">¶</a><br /></dt>
-<dd></dd></dl>
+<span id="_CPPv35DEBUG"></span><span id="_CPPv25DEBUG"></span><span id="DEBUG__bC"></span><span class="target" id="clip_8hpp_1a9c4ab189c2f018bc7ccc8ba4f6e04b9d"></span><em class="property">const</em> bool <code class="descname">DEBUG</code> =  false<a class="headerlink" href="#_CPPv45DEBUG" title="Permalink to this definition">¶</a><br /></dt>
+<dd><p>Printout debugging information? </p>
+</dd></dl>
 
 </div>
 <div class="breathe-sectiondef docutils container">
@@ -240,7 +217,7 @@
 <dt id="_CPPv45Event">
 <span id="_CPPv35Event"></span><span id="_CPPv25Event"></span><span id="Event"></span><span class="target" id="struct_event"></span><em class="property">struct </em><code class="descname">Event</code><a class="headerlink" href="#_CPPv45Event" title="Permalink to this definition">¶</a><br /></dt>
 <dd><em>#include &lt;event.hpp&gt;</em><p>Record the changes of a piecewise-linear function. </p>
-<p>The offset is calculated implicitly as we assume that the postion <code class="docutils literal notranslate"><span class="pre">e.x</span></code> of the event <code class="docutils literal notranslate"><span class="pre">e</span></code> is the root of the linear function, i.e. <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span> <span class="n">e</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">e</span><span class="p">.</span><span class="n">slope</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="n">offset</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+<p>The offset is calculated implicitly as we assume that for any <code class="docutils literal notranslate"><a class="reference internal" href="#struct_event"><span class="std std-ref"><span class="pre">Event</span></span></a> <span class="pre">e</span></code> the postion <code class="docutils literal notranslate"><span class="pre">e.x</span></code> of the event <code class="docutils literal notranslate"><span class="pre">e</span></code> is the root of the linear function, i.e. <div class="highlight-c++ notranslate"><div class="highlight"><pre><span></span> <span class="n">e</span><span class="p">.</span><span class="n">x</span> <span class="o">*</span> <span class="n">e</span><span class="p">.</span><span class="n">slope</span> <span class="o">+</span> <span class="n">e</span><span class="p">.</span><span class="n">offset</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
 </pre></div>
 </div>
  </p>
