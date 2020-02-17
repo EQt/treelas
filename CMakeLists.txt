@@ -122,7 +122,6 @@ if (BUILD_TESTS)
         cxx/test/doctests.cpp
         ${TESTS}
         cxx/test/test_line.cpp
-        cxx/test/test_strtok.cpp
         cxx/test/test_ref.cpp
         cxx/test/test_clip.cpp
         cxx/test/test_line_dp.cpp
