@@ -3,8 +3,8 @@ Fused Lasso on Trees
 
 This is the documentation of the Julia part.
 For other languages, have a look at
-- [C++](../cxx/index.html)
-- [Python](../python/index.html)
+- [C++](./cxx/index.html)
+- [Python](./python/index.html)
 
 
 ```@autodocs
