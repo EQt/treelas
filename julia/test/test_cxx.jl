@@ -17,7 +17,9 @@ const cxx_jl = joinpath(dirname(pathof(TreeLas)), "cxx.jl")
     Libdl.dlopen(Cxx.lib) do tl
         @testset "Check DLL symbols" begin
             for s in syms
-                @test Libdl.dlsym_e(tl, s) != Ptr{Nothing}()
+                @testset "Check symbol $s" begin
+                    @test Libdl.dlsym_e(tl, s) != Ptr{Nothing}()
+                end
             end
         end
     end
