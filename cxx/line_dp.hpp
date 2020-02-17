@@ -2,6 +2,7 @@
   Dynamic programming solver for line graphs
 */
 #pragma once
+#include <algorithm>        // std::min
 #include <cmath>            // std::abs
 #include <stdexcept>        // std::invalid_argument
 #include <vector>
