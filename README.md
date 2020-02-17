@@ -2,14 +2,15 @@ TreeLas
 =======
 [![Travis](https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master)](https://travis-ci.com/EQt/treelas)
 
-![logo](https://eqt.github.io/treelas/imgs/treelas.png)
-
 Fused Lasso solvers for tree graphs.
 We exactly compute the minimizer of the convex function
 
-![formula](https://eqt.github.io/treelas/imgs/formula.svg)
+![logo and formula](https://eqt.github.io/treelas/imgs/treelas.png)
 
-whereby _E_ are the edges of a tree graph.
+whereby
+ * _E_ are the edges of a tree graph, 
+ * _λ > 0_ some edge weights,
+ * _μ ≥ 0_ some node weights.
 
 ![demo](docs/phantom_w200_0_lam2e-1_pad10.png)
 **Demo** (from left to right)
