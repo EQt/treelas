@@ -6,7 +6,6 @@ import TreeLas
 
 const cxx_jl = joinpath(dirname(pathof(TreeLas)), "cxx.jl")
 
-
 @testset "TreeLas.Cxx                    " begin
     @test isfile(cxx_jl)
     include(cxx_jl)
@@ -23,6 +22,5 @@ const cxx_jl = joinpath(dirname(pathof(TreeLas)), "cxx.jl")
         end
     end
 end
-
 
 end

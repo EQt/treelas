@@ -5,17 +5,17 @@ module Cxx
 
 import Libdl
 
-const  BUILD_DIR = joinpath(@__DIR__, "..", "deps", "build")
+const BUILD_CONFIG = Sys.iswindows() ? "Release" : ""
+const BUILD_DIR = joinpath(@__DIR__, "..", "deps", "build")
+const lib = joinpath(BUILD_DIR, BUILD_CONFIG,
+                     (Sys.isunix() ? "lib" : "") * "treelas.$(Libdl.dlext)")
+
 
 function _find_python_extension()::String
     _libs = filter(s -> match(Regex("_treelas.+\\.$(Libdl.dlext)"), s) != nothing, readdir(BUILD_DIR))
     @assert length(_libs) == 1
     return joinpath(BUILD_DIR, _libs[1])
 end
-
-
-const lib = joinpath(BUILD_DIR,
-                     (Sys.isunix() ? "lib" : "") * "treelas.$(Libdl.dlext)")
 
 
 function _find_all_tree_dp()
