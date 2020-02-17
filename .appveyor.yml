@@ -1,36 +1,118 @@
-shallow_clone: true
+# How to install/build HDF5 on Windows:
+#   https://github.com/h5py/h5py/blob/master/ci/appveyor/get_hdf5.py
+branches:
+  only:
+    - develop
 
-platform:
-  - x64
-# - x86
+notifications:
+  - provider: Email
+    to:
+      - '{{commitAuthorEmail}}'
+    on_build_status_changed: true
+    on_build_success: false
+    on_build_failure: false
 
-configuration:
-  - Release
-# - Debug
-
-image:
-  - Visual Studio 2015
-# - Visual Studio 2017
+platform: x64
+configuration: Release
+image: Visual Studio 2017
 
 environment:
   matrix:
-    - MINICONDA: C:\Miniconda36-x64
+    - lang: C++
+    - lang: Python3.7
+    - lang: Julia 1.3
+    - lang: Rust
 
-init:
-  - "set PATH=%MINICONDA%;%MINICONDA%\\Scripts;%MINICONDA%\\Library\\bin;%PATH%"
+for:
+  -
+    matrix:
+      only:
+        - lang: C++
+    build:
+      parallel: true
+      verbosity: detailed
+    only_commits:
+      files:
+        - .appveyor.yml
+        - CMakeLists.txt
+        - cxx/
+        - deps/graphidx/
+        - deps/doctest/
+    build_script:
+      - echo %APPVEYOR_BUILD_FOLDER%
+      - git submodule update --recursive --init deps/graphidx
+      - mkdir build.appveyor && cd build.appveyor && cmake .. -A x64 -DPYTHON_EXECUTABLE:FILEPATH=C:\Python37-x64\python.exe
+      - cmake --build . --target doctests --config "%CONFIGURATION%"
 
-install:
-  - conda install -y cmake h5py pytest
-  - pip install pybind11
+    test_script: "%CONFIGURATION%\\doctests.exe -s"
 
-build_script:
-  - if exist build.appveyor rmdir /Q /S build.appveyor
-  - mkdir build.appveyor
-  - cd build.appveyor && cmake -G "Visual Studio 14 2015 Win64" ..
-  - cd build.appveyor && cmake --build . --target tests --config "%CONFIGURATION%"
-  - cd python && python setup.py install
+  -
+    matrix:
+      only:
+        - lang: Python3.7
+    only_commits:
+      files:
+        - .appveyor.yml
+        - cxx/
+        - python/
+        - deps/graphidx/
+    build_script:
+      - SET PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
+      - python --version
+      - git submodule update --recursive --init deps/graphidx
+      -  pip3 install --only-binary all
+            -r python/requirements.txt
+            -r python/test/requirements.txt
+      - cd python && python setup.py install
+    test_script: pytest test
 
-test_script:
-  - "build.appveyor\\%CONFIGURATION%\\tests.exe --gtest_color=yes"
-  - cd python/test && if exist "__pycache__" rmdir /Q /S "__pycache__"
-  - cd python/test && pytest --color=yes
+  -
+    matrix:
+      only:
+        - lang: Julia 1.3
+    only_commits:
+      files:
+        - .appveyor.yml
+        - julia/
+        - docs/src/julia/
+    environment:
+      julia_version: 1.3
+      hub: "https://raw.githubusercontent.com/JuliaCI/Appveyor.jl"
+      url: "version-1/bin/install.ps1"
+    install:
+      - ps: iex ((new-object net.webclient).DownloadString("$env:hub/$env:url"))
+      - SET PATH=C:\julia\bin;%PATH%
+      - julia --version
+      - git submodule update --init deps/graphidx
+    build_script:
+      - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="deps/graphidx/julia"))'
+      - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
+      - julia --color=yes -e 'import Pkg; Pkg.instantiate()'
+      - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
+      - julia --color=yes --project=docs/ -e 'import Pkg; Pkg.add("Documenter")'
+    test_script:
+      - julia --color=yes -e 'import Pkg; Pkg.test("TreeLas")'
+
+  -
+    matrix:
+      only:
+        - lang: Rust
+    only_commits:
+      files:
+        - .appveyor.yml
+        - Cargo.toml
+        - rust/
+    environment:
+      target: x86_64-pc-windows-msvc
+      channel: stable
+    install:
+      - curl -sSf -o rustup-init.exe https://win.rustup.rs
+      - rustup-init.exe --default-host %TARGET% --default-toolchain %CHANNEL% -y
+      - set PATH=%HOMEPATH%\.cargo\bin;%PATH%
+      - rustc -Vv
+      - cargo -V
+      - git submodule update --init deps/graphidx
+    build_script:
+      - cargo build --verbose
+    test_script:
+      - cargo test
