@@ -3,6 +3,7 @@ http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
 import importlib
 import subprocess as sp
+import sys
 from os import path
 from setuptools import setup
 from setuptools.extension import Extension
@@ -73,4 +74,6 @@ if __name__ == '__main__':
           cmdclass={'build_ext': gs.BuildExt},
     )
 
-    gs.graphidx_setup(_graphidx)
+    root = path.dirname(graphidx_setup) if sys.platform == 'windows' else '.'
+    gs.graphidx_setup(_graphidx, root=root)
+
