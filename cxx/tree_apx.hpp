@@ -73,6 +73,7 @@ struct TreeApx
     float_ *x = nullptr;
     float_ *deriv = nullptr;
     int_ *parent_ = nullptr;
+    float_ *lam = nullptr;
     const int_ *porder;         // post-order (forward, i.e. upward)
 
     TreeApx(const size_t n, const int_ *porder, bool is_linear = true)
@@ -81,6 +82,7 @@ struct TreeApx
         x = new float_[n];
         deriv = new float_[n];
         parent_ = new int_[n];
+        lam = new float_[n];
     }
 
     static constexpr int_ one =             //  b"100...0"
@@ -96,15 +98,16 @@ struct TreeApx
         if (x) delete[] x;
         if (deriv) delete[] deriv;
         if (parent_) delete[] parent_;
+        if (lam) delete[] lam;
     }
 
-    size_t iter(const float_ lam, const float_ delta);
+    size_t iter(const float_ delta);
 };
 
 
 template<typename float_, typename int_>
 size_t
-TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
+TreeApx<float_, int_>::iter(const float_ delta)
 {
     {   Timer _ ("deriv init");
         for (size_t i = 0; i < n; i++)
@@ -120,7 +123,7 @@ TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
 #endif
             if (same(v)) {
                 const auto p = parent(v);
-                deriv[p] += clamp(deriv[v], -lam, +lam);
+                deriv[p] += clamp(deriv[v], -lam[v], +lam[v]);
             }
         }
     }
@@ -142,9 +145,9 @@ TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
             if (same(v)) {
                 // printf(" deriv = %+.3f", deriv[v]);
 
-                if (deriv[v] > lam) {
+                if (deriv[v] > lam[v]) {
                     x[v] -= delta;
-                } else if (deriv[v] < -lam) {
+                } else if (deriv[v] < -lam[v]) {
                     x[v] += delta;
                 } else {
                     x[v] = x[parent(v)];
@@ -158,13 +161,13 @@ TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
                 if (x[v] < x[p]) {
                     changed++;
                     divorce(v);
-                    y[v] += lam;
-                    y[p] -= lam;
+                    y[v] += lam[v];
+                    y[p] -= lam[v];
                 } else if (x[v] > x[p]) {
                     changed++;
                     divorce(v);
-                    y[v] -= lam;
-                    y[p] += lam;
+                    y[v] -= lam[v];
+                    y[p] += lam[v];
                 }
             } else {
                 x[v] += deriv[v] < 0 ? +delta : -delta;
@@ -269,8 +272,11 @@ tree_apx(
             }
         }
         const float_ x0 = float_(0.5 * (min_y + max_y));
-        for (size_t i = 0; i < n; i++)
+        for (size_t i = 0; i < n; i++) {
             s.x[i] = x0;
+            s.lam[i] = lam;
+        }
+        s.lam[reorder ? n-1 : porder[n-1]] = 0;
     }
     if (n <= PRINT_MAX) {
         printf("   parent: ");
@@ -300,7 +306,7 @@ tree_apx(
             delta *= float_(0.5);
             {
                 TimerQuiet _ (print_timings);
-                changed = s.iter(lam, delta);
+                changed = s.iter(delta);
 #ifdef DEBUG_ID
                 if (n <= PRINT_MAX) {
                     printf("deriv: [");
