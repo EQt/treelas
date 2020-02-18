@@ -38,8 +38,7 @@ if (NOT EXISTS "${GRAPHIDX_DIR}/CMakeLists.txt")
 endif()
 
 include_directories(deps/graphidx/cxx)
-include_directories(deps/argparser)
-
+add_subdirectory(deps/argparser)
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
 add_subdirectory(deps/graphidx)
@@ -54,7 +53,6 @@ add_object(line_c3    cxx/line/line_c3.cpp)
 add_object(tree_dp    cxx/tree_dp.cpp)
 add_object(tree_dual  cxx/tree_dual.cpp)
 
-add_library(argparser OBJECT deps/argparser/argparser.cpp)
 add_library(treelas SHARED
     cxx/bin/libtreelas.cpp
     $<TARGET_OBJECTS:tree_dp>
@@ -90,24 +88,17 @@ endif()
 
 find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
-    add_executable_h5(traverse
-        cxx/bin/traverse.cpp
-        $<TARGET_OBJECTS:argparser>
-    )
-    add_executable_h5(grid
-        cxx/bin/grid.cpp
-        $<TARGET_OBJECTS:argparser>
-    )
-    add_executable_h5(tree_apx
-        cxx/bin/tree_apx.cpp
-        cxx/tree_apx.cpp
-        $<TARGET_OBJECTS:argparser>
-    )
-    add_executable_h5(tree_solve
-        cxx/bin/tree_solve.cpp
-        $<TARGET_OBJECTS:tree_dp>
-        $<TARGET_OBJECTS:argparser>
-    )
+    add_executable_h5(traverse cxx/bin/traverse.cpp)
+    target_link_libraries(traverse argparser)
+
+    add_executable_h5(grid cxx/bin/grid.cpp)
+    target_link_libraries(grid argparser)
+
+    add_executable_h5(tree_apx cxx/bin/tree_apx.cpp cxx/tree_apx.cpp)
+    target_link_libraries(tree_apx argparser)
+
+    add_executable_h5(tree_solve cxx/bin/tree_solve.cpp $<TARGET_OBJECTS:tree_dp>)
+    target_link_libraries(tree_solve argparser)
 endif()
 
 
