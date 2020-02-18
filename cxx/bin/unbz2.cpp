@@ -26,7 +26,7 @@ main(int argc, char *argv[])
     }
 
     const char *infn = argv[1];
-    const char *outfn =  (argc >= 2) ? argv[2] : "out.txt";
+    const char *outfn =  (argc > 2) ? argv[2] : "out.txt";
     const int buf_size = atoi(ap.get_option("buf-size"));
     const bool only_read = ap.has_option("only-read");
 

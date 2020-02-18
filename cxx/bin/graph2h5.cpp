@@ -1,5 +1,6 @@
 #include <string>      // stoi
 #include <iostream>
+#include <argparser.hpp>
 #include <minih5.hpp>
 #include <graphidx/io/dimacs10.hpp>
 #include <graphidx/io/bz2istream.hpp>
@@ -10,13 +11,24 @@
 int
 main(int argc, char *argv[])
 {
-    const char *infn = "belgium.bz2";
-    const char *outfn = "out.h5";
-    if (argc > 1)
-        infn = argv[1];
-    if (argc > 2)
-        outfn = argv[2];
-    const size_t buf_size = argc > 3 ? std::stoi(argv[3]) : 8192;
+    ArgParser ap (
+        "graph2h5 <graph> [outfile]\n"
+        "\n"
+        "Decompress `graph` (in DIMACS10 format) and store edges as HDF5"
+    );
+    ap.add_option('b', "buf-size",  "Buffer size [8192]", "INT", "8192");
+    ap.parse(&argc, argv);
+
+    if (argc <= 1) {
+        fprintf(stderr, "No input graph!\n\nUSAGE:\n");
+        ap.print_usage(stderr);
+        return 1;
+    }
+
+    const char *infn = argv[1];
+    const char *outfn =  (argc > 2) ? argv[2] : "out.h5";
+    const int buf_size = atoi(ap.get_option("buf-size"));
+
     set_thousand_sep(std::cout);
 
     std::cout << infn << " -> " << outfn << std::endl;
