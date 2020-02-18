@@ -106,11 +106,10 @@ template<typename float_, typename int_>
 size_t
 TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
 {
-    {   // Timer _ ("deriv init");
+    {   Timer _ ("deriv init");
         for (size_t i = 0; i < n; i++)
             deriv[i] = x[i] - y[i];
     }
-
     {   Timer _ (" forward");
         for (size_t i = 0; i < n-1; i++) {
             const auto v = is_linear ? i : porder[i];
@@ -125,7 +124,6 @@ TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
             }
         }
     }
-
     size_t changed = 0;
     {   Timer _ (" backward");
         const auto root = is_linear ? n-1 : porder[n-1];
@@ -202,16 +200,14 @@ tree_apx(
         min_y = y[0],
         max_y = y[0];
 
-    Timer::log("lam = %f\n", lam);
-
-    Timer tim ("TreeApx::alloc");
-    TreeApx<float_, int_> s (n, porder.data(), reorder);
-    tim.stop();
     {
         Timer _ ("vector::resize");
         porder.reserve(n);
         iorder.reserve(n);
     }
+    Timer tim ("TreeApx::alloc");
+    TreeApx<float_, int_> s (n, porder.data(), reorder);
+    tim.stop();
     if (root < 0) {
         Timer _ ("find_root");
         root = find_root(n, parent);
@@ -326,9 +322,8 @@ tree_apx(
 
     {   Timer _ ("extract x");
         if (reorder) {
-            for (size_t i = 0; i < n; i++) {
+            for (size_t i = 0; i < n; i++)
                 x[porder[i]] = s.x[i];
-            }
         } else {
             for (size_t i = 0; i < n; i++)
                 x[i] = s.x[i];
