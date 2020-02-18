@@ -155,17 +155,14 @@ TreeApx<float_, int_>::iter(const float_ lam, const float_ delta)
                 // printf(" x = %+.3f", x[v]);
 
                 const auto p = parent(v);
-                if (x[v] < x[p]) {
+                if (x[v] != x[p]) {
                     changed++;
                     divorce(v);
-                    y[v] += lam;
-                    y[p] -= lam;
-                } else if (x[v] > x[p]) {
-                    changed++;
-                    divorce(v);
-                    y[v] -= lam;
-                    y[p] += lam;
                 }
+                y[v] += x[v] < x[p] ? lam : float_(0.0);
+                y[p] -= x[v] < x[p] ? lam : float_(0.0);
+                y[v] -= x[v] > x[p] ? lam : float_(0.0);
+                y[p] += x[v] > x[p] ? lam : float_(0.0);
             } else {
                 x[v] += deriv[v] < 0 ? +delta : -delta;
             }
