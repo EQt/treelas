@@ -204,23 +204,22 @@ tree_apx(
 
     Timer::log("lam = %f\n", lam);
 
-    if (root < 0) {
-        Timer _ ("find_root");
-        root = find_root(n, parent);
-    }
+    Timer tim ("TreeApx::alloc");
+    TreeApx<float_, int_> s (n, porder.data(), reorder);
+    tim.stop();
     {
         Timer _ ("vector::resize");
         porder.reserve(n);
         iorder.reserve(n);
     }
+    if (root < 0) {
+        Timer _ ("find_root");
+        root = find_root(n, parent);
+    }
     {
         Timer _ ("children idx");
         cidx.reset(n, parent, root);
     }
-
-    Timer tim ("TreeApx::alloc");
-    TreeApx<float_, int_> s (n, porder.data(), reorder);
-    tim.stop();
 
     //if (use_bfs)
     {
