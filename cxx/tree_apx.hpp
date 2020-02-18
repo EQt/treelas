@@ -131,6 +131,8 @@ TreeApx<float_, int_>::iter(const float_ delta)
     {   Timer _ (" backward");
         const auto root = is_linear ? n-1 : porder[n-1];
         const auto xr = deriv[root] > 0 ? -delta : +delta;
+        if (lam[root] > 0)
+            throw std::runtime_error("Should not happen");
         x[root] += xr;
         // if (n <= PRINT_MAX)
         //     printf(" root deriv = %+.3f xr = %+.3f x[root] = %+.3f\n",
@@ -142,7 +144,10 @@ TreeApx<float_, int_>::iter(const float_ delta)
                 printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d ",
                        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
 #endif
-            if (same(v)) {
+            if (true) {
+                if (lam[v] == 0 && !same(v))
+                    throw std::runtime_error(std::string("FATAL: v=") + std::to_string(v) + " pi=" +
+                                             std::to_string(parent(v)));
                 // printf(" deriv = %+.3f", deriv[v]);
 
                 if (deriv[v] > lam[v]) {
@@ -157,6 +162,7 @@ TreeApx<float_, int_>::iter(const float_ delta)
 
                 // printf(" x = %+.3f", x[v]);
 
+                if (same(v)) {
                 const auto p = parent(v);
                 if (x[v] < x[p]) {
                     y[v] += lam[v];
@@ -168,6 +174,7 @@ TreeApx<float_, int_>::iter(const float_ delta)
                     y[p] += lam[v];
                     changed++;
                     divorce(v);
+                }
                 }
             } else {
                 x[v] += deriv[v] < 0 ? +delta : -delta;
