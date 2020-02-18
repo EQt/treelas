@@ -11,6 +11,7 @@ option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
 option(FAST_MATH   "Use -ffast-math"                   OFF)
 option(ASAN        "Use Address SANitizer"             OFF)
+option(DEBUG       "Debug CMAKE"                       OFF)
 
 set(CMAKE_CXX_STANDARD 14)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
@@ -37,7 +38,6 @@ endif()
 if (NOT EXISTS "${GRAPHIDX_DIR}/CMakeLists.txt")
     execute_process(COMMAND git submodule update --init ${GRAPHIDX_DIR})
 endif()
-
 
 include_directories(deps/graphidx/cxx)
 
@@ -90,7 +90,7 @@ if (BUILD_PYEXT)
 endif()
 
 
-if (HDF5_FOUND)
+if (TARGET minih5)
     add_executable(traverse cxx/bin/traverse.cpp)
     target_link_libraries(traverse argparser minih5)
 
@@ -102,12 +102,27 @@ if (HDF5_FOUND)
 
     add_executable(tree_solve cxx/bin/tree_solve.cpp $<TARGET_OBJECTS:tree_dp>)
     target_link_libraries(tree_solve argparser minih5)
+
+    if (TARGET bz2io)
+        message("-- With graph2h5")
+        add_executable(graph2h5 cxx/bin/graph2h5.cpp)
+        target_link_libraries(graph2h5 bz2io minih5)
+    endif()
+else()
+    message(WARNING "NO HDF5 found; some apps won't be compiled")
 endif()
 
 
 if (TARGET bz2io)
     add_executable(unbz2 cxx/bin/unbz2.cpp)
     target_link_libraries(unbz2 bz2io argparser)
+
+    if (DEBUG)
+        get_target_property(i bz2io INTERFACE_LINK_LIBRARIES)
+        message(STATUS "bzip_library ${i}")
+    endif()
+else()
+    message("-- No BZip2 found")
 endif()
 
 

@@ -41,7 +41,7 @@ for:
         - deps/doctest/
     build_script:
       - echo %APPVEYOR_BUILD_FOLDER%
-      - vcpkg install hdf5
+      - vcpkg install hdf5 bzip2
       - git submodule update --recursive --init deps/graphidx
       - mkdir build.appveyor && cd build.appveyor && cmake .. -A x64 -DPYTHON_EXECUTABLE:FILEPATH=C:\Python37-x64\python.exe -DCMAKE_TOOLCHAIN_FILE=c:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake
       - cmake --build . --target doctests --config "%CONFIGURATION%"
