@@ -120,7 +120,7 @@ main(int argc, char *argv[])
         printf("reorder  = %s\n", reorder ? "true" : "false");
         printf("max_iter = %d\n", max_iter);
         {
-            if (ap.has_option("float 64")) {
+            if (ap.has_option("float64")) {
                 printf("float64\n");
                 process_file<double, int_>(fname, group,
                                            max_iter,
