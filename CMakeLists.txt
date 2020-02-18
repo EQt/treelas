@@ -4,15 +4,14 @@ project(treelas
     HOMEPAGE_URL  "https://github.com/EQt/treelas")
 
 set(GRAPHIDX_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx"
-    CACHE STRING   "Which GraphIdx to be used")
+    CACHE PATH     "Which GraphIdx to be used")
 set(DOCTEST_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx/deps/doctest"
-    CACHE STRING   "Which DOCTEST to be used")
+    CACHE PATH     "Which DOCTEST to be used")
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
 option(FAST_MATH   "Use -ffast-math"                   OFF)
 option(ASAN        "Use Address SANitizer"             OFF)
 
-# FLAGS
 set(CMAKE_CXX_STANDARD 14)
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU")
     add_definitions(-Wall -Wno-error=conversion -Wextra -Wconversion)
@@ -39,11 +38,13 @@ if (NOT EXISTS "${GRAPHIDX_DIR}/CMakeLists.txt")
     execute_process(COMMAND git submodule update --init ${GRAPHIDX_DIR})
 endif()
 
+
 include_directories(deps/graphidx/cxx)
+
+add_subdirectory(deps/graphidx)
 add_subdirectory(deps/argparser)
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
-add_subdirectory(deps/graphidx)
 add_subdirectory(deps/minih5)
 add_subdirectory(ci)
 
@@ -61,7 +62,7 @@ add_library(treelas SHARED
     $<TARGET_OBJECTS:tree_dual>
 )
 
-# PYTHON
+
 if (BUILD_PYEXT)
     message("-- Enable python extension")
     pybind11_add_module(_treelas
@@ -88,7 +89,7 @@ if (BUILD_PYEXT)
         COMMAND py.test ${CMAKE_SOURCE_DIR}/python/test VERBATIM)
 endif()
 
-find_package(HDF5 COMPONENTS C)
+
 if (HDF5_FOUND)
     add_executable(traverse cxx/bin/traverse.cpp)
     target_link_libraries(traverse argparser minih5)
