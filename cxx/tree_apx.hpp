@@ -224,12 +224,17 @@ tree_apx(
     //if (use_bfs)
     {
         Timer _ ("bfs");
-        reversed_bfs(porder.data(), cidx);
+        reversed_bfs_pi(porder.data(), cidx, s.parent_);
     } /*else {
         Timer _ ("dfs postorder\n");
         stack<int_> stack;
         post_order(porder.data(), cidx, stack);
        }*/
+    {
+        Timer _ ("parent bit");
+        for (size_t i = 0; i < n; i++)
+            s.parent_[i] |= decltype(s)::one;
+    }
     if (porder[n-1] != root)
         throw std::runtime_error(
             std::string("tree_apx(): FATAL: ") +
@@ -253,7 +258,7 @@ tree_apx(
                 s.y[i] = y[ii];
                 min_y = std::min(s.y[i], min_y);
                 max_y = std::max(s.y[i], max_y);
-                s.init_parent(i, iorder[parent[ii]]);
+                // s.init_parent(i, iorder[parent[ii]]);
             }
         } else {
             for (size_t i = 0; i < n; i++) {
