@@ -121,10 +121,7 @@ TreeApx<float_, int_>::iter(const float_ delta)
                 printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d",
                        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
 #endif
-            if (true) {
-                const auto p = parent(v);
-                deriv[p] += clamp(deriv[v], -lam[v], +lam[v]);
-            }
+            deriv[parent(v)] += clamp(deriv[v], -lam[v], +lam[v]);
         }
     }
     size_t changed = 0;
