@@ -242,10 +242,11 @@ tree_apx(
             std::to_string(porder[n-1]) + " != " +
             std::to_string(root) + " = root");
 
-    {   Timer _ ("inverse order");
+    if (n <= PRINT_MAX) {
+        Timer _ ("inverse order");
         invperm(n, iorder.data(), porder.data());
     }
-    {   Timer _ ("init x,y,parent");
+    {   Timer _ ("init x,y");
 #ifdef DEBUG_ID
         s.id.resize(n);
 #endif
