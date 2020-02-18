@@ -88,7 +88,7 @@ struct TreeApx
     static constexpr int_ one =             //  b"100...0"
         (int_(1)<<(8*sizeof(int_)-1));
 
-    inline void divorce(size_t i) { parent_[i] &= ~one; }
+    inline void divorce(size_t i) { parent_[i] &= ~one; lam[i] = 0;}
     inline void init_parent(size_t i, int_ p) { parent_[i] = p | one; }
     inline bool same(size_t i) { return (parent_[i] & one) != 0; }
     inline int_ parent(size_t i) { return parent_[i] & (~one); }
@@ -121,7 +121,7 @@ TreeApx<float_, int_>::iter(const float_ delta)
                 printf("\ni = %d: id = %d, v = %d, p = %d, p.id = %d",
                        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
 #endif
-            if (same(v)) {
+            if (true) {
                 const auto p = parent(v);
                 deriv[p] += clamp(deriv[v], -lam[v], +lam[v]);
             }
@@ -159,15 +159,15 @@ TreeApx<float_, int_>::iter(const float_ delta)
 
                 const auto p = parent(v);
                 if (x[v] < x[p]) {
-                    changed++;
-                    divorce(v);
                     y[v] += lam[v];
                     y[p] -= lam[v];
-                } else if (x[v] > x[p]) {
                     changed++;
                     divorce(v);
+                } else if (x[v] > x[p]) {
                     y[v] -= lam[v];
                     y[p] += lam[v];
+                    changed++;
+                    divorce(v);
                 }
             } else {
                 x[v] += deriv[v] < 0 ? +delta : -delta;
