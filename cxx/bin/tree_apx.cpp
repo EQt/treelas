@@ -100,11 +100,11 @@ main(int argc, char *argv[])
         ap.add_option('i', "max-iter",
                       "Number of iterations [default 3]",
                       "INT", "3");
-        ap.add_option('d', "dfs",     "Use DFS instead of BFS order");
-        ap.add_option('6', "float64", "Calculate in float64_t precision");
-        ap.add_option('r', "reorder", "Relabel nodes in post-order");
-        ap.add_option('q', "quiet",   "Suppress timer output");
-        ap.add_option('l', "lam",     "Tuning parameter λ", "num", "nan");
+        ap.add_option('d', "dfs",        "Use DFS instead of BFS order");
+        ap.add_option('6', "float64",    "Calculate in float64_t precision");
+        ap.add_option('R', "no-reorder", "Relabel nodes in post-order");
+        ap.add_option('q', "quiet",      "Suppress timer output");
+        ap.add_option('l', "lam",        "Tuning parameter λ", "num", "nan");
         ap.parse(&argc, argv);
         if (argc <= 1) {
             fprintf(stderr, "No tree file!\n");
@@ -114,7 +114,7 @@ main(int argc, char *argv[])
         const int max_iter = atoi(ap.get_option("max-iter"));
         typedef int   int_;
         const char *group = "/";
-        const bool reorder = ap.has_option("reorder");
+        const bool reorder = !ap.has_option("no-reorder");
 
         printf("%s\n", fname);
         printf("reorder  = %s\n", reorder ? "true" : "false");

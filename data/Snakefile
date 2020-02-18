@@ -133,8 +133,8 @@ rule run_treelas_no_output:
 
 rule run_treeapx:
     input:  "{name}.treelas", cmake("tree_apx")
-    output: "{name}_lam{lam,[^_]+}{ignore}.tree_apx"
-    shell:  "{input[1]} -r -i {MAX_ITER} -l {wildcards.lam} {input[0]} | tee {output}"
+    output: "{name}_lam{lam,[^_]+}{ignore,(_.*)?}.tree_apx"
+    shell:  "{input[1]} -i {MAX_ITER} -l {wildcards.lam} {input[0]} | tee {output}"
 
 
 rule spanning_tree:
