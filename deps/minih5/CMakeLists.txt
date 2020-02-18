@@ -16,7 +16,8 @@ if (HDF5_FOUND)
         ${CMAKE_CURRENT_SOURCE_DIR}/include ${HDF5_INCLUDE_DIR})
     target_link_libraries(minih5 INTERFACE ${HDF5_LIBRARIES})
     if (MSVC)
-        target_compile_definitions(minih5 INTERFACE H5_BUILT_AS_DYNAMIC_LIB)
+        target_compile_definitions(minih5 INTERFACE
+            H5_BUILT_AS_DYNAMIC_LIB _CRT_SECURE_NO_WARNINGS)
     endif()
 
     if (BUILD_TEST)

@@ -19,8 +19,8 @@ cache:
 
 environment:
   matrix:
-    - lang: Python3.7
     - lang: C++
+    - lang: Python3.7
     - lang: Julia 1.3
     - lang: Rust
 
