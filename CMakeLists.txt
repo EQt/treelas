@@ -105,14 +105,9 @@ if (HDF5_FOUND)
 endif()
 
 
-find_package(BZip2)
-if (BZIP2_FOUND)
-    add_library(decompress INTERFACE)
-    target_include_directories(decompress INTERFACE ${BZIP2_INCLUDE_DIR})
-    target_link_libraries(decompress INTERFACE ${BZIP2_LIBRARIES})
-
+if (TARGET bz2io)
     add_executable(unbz2 cxx/bin/unbz2.cpp)
-    target_link_libraries(unbz2 PRIVATE decompress)
+    target_link_libraries(unbz2 bz2io argparser)
 endif()
 
 
