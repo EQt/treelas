@@ -1,14 +1,16 @@
 cmake_minimum_required(VERSION 3.11)
-project(treelas)
+project(treelas
+    DESCRIPTION   "Fused Lasso Solvers on Trees"
+    HOMEPAGE_URL  "https://github.com/EQt/treelas")
 
+set(GRAPHIDX_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx"
+    CACHE STRING   "Which GraphIdx to be used")
+set(DOCTEST_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx/deps/doctest"
+    CACHE STRING   "Which DOCTEST to be used")
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
 option(FAST_MATH   "Use -ffast-math"                   OFF)
 option(ASAN        "Use Address SANitizer"             OFF)
-set(GRAPHIDX_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx"
-    CACHE STRING   "Which graphidx to be used")
-set(DOCTEST_DIR   "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx/deps/doctest"
-    CACHE STRING   "Which graphidx to be used")
 
 # FLAGS
 set(CMAKE_CXX_STANDARD 14)
@@ -88,17 +90,17 @@ endif()
 
 find_package(HDF5 COMPONENTS C)
 if (HDF5_FOUND)
-    add_executable_h5(traverse cxx/bin/traverse.cpp)
-    target_link_libraries(traverse argparser)
+    add_executable(traverse cxx/bin/traverse.cpp)
+    target_link_libraries(traverse argparser minih5)
 
-    add_executable_h5(grid cxx/bin/grid.cpp)
-    target_link_libraries(grid argparser)
+    add_executable(grid cxx/bin/grid.cpp)
+    target_link_libraries(grid argparser minih5)
 
-    add_executable_h5(tree_apx cxx/bin/tree_apx.cpp cxx/tree_apx.cpp)
-    target_link_libraries(tree_apx argparser)
+    add_executable(tree_apx cxx/bin/tree_apx.cpp cxx/tree_apx.cpp)
+    target_link_libraries(tree_apx argparser minih5)
 
-    add_executable_h5(tree_solve cxx/bin/tree_solve.cpp $<TARGET_OBJECTS:tree_dp>)
-    target_link_libraries(tree_solve argparser)
+    add_executable(tree_solve cxx/bin/tree_solve.cpp $<TARGET_OBJECTS:tree_dp>)
+    target_link_libraries(tree_solve argparser minih5)
 endif()
 
 
