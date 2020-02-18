@@ -2,10 +2,13 @@
 http://www.benjack.io/2017/06/12/python-cpp-tests.html
 """
 import importlib
+import os
 import subprocess as sp
+import sys
 from os import path
 from setuptools import setup
 from setuptools.extension import Extension
+from distutils.dir_util import copy_tree
 from gitversion import describe_tag
 
 graphidx_dir = path.join(path.dirname(__file__), "..", "deps", "graphidx")
@@ -73,4 +76,8 @@ if __name__ == '__main__':
           cmdclass={'build_ext': gs.BuildExt},
     )
 
+    if not path.isdir("graphidx"):
+        copy_or_link = copy_tree if sys.platform == 'windows' else os.symlink
+        copy_or_link(path.join(path.dirname(graphidx_setup), "graphidx"), "graphidx")
     gs.graphidx_setup(_graphidx)
+

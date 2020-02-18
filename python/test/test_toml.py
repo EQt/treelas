@@ -13,18 +13,20 @@ def test_dump_np():
     assert noml.dumps({'o': o}) == 'o = [ 5,]\n'
     enc = toml.TomlEncoder()
     enc.dump_funcs[np.int64] = enc.dump_funcs[int]
-    assert toml.dumps({'o': o}, encoder=enc) == 'o = [ 5,]\n'
+    enc.dump_funcs[np.int32] = enc.dump_funcs[int]
+    assert toml.dumps({'o': o}, encoder=enc) == 'o = [ 5,]\n', str(o)
 
 
 def test_dump_ndarray():
     l = [1, 2]
     o = np.array(l)
-    assert toml.dumps({'a': {'o': l}}) == '[a]\no = [ 1, 2,]\n'
-    assert noml.dumps({'a': {'o': o}}) == '[a]\no = [ 1, 2,]\n'
+    assert toml.dumps({'a': {'o': l}}) == '[a]\no = [ 1, 2,]\n', l
+    assert noml.dumps({'a': {'o': o}}) == '[a]\no = [ 1, 2,]\n', o
     enc = toml.TomlEncoder()
     enc.dump_funcs[np.int64] = enc.dump_funcs[int]
+    enc.dump_funcs[np.int32] = enc.dump_funcs[int]
     enc.dump_funcs[np.ndarray] = enc.dump_funcs[list]
-    assert toml.dumps({'a': {'o': o}}, encoder=enc) == '[a]\no = [ 1, 2,]\n'
+    assert toml.dumps({'a': {'o': o}}, encoder=enc) == '[a]\no = [ 1, 2,]\n', o
 
 
 def test_dump_ndarray_nested():

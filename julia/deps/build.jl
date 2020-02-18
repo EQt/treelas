@@ -5,7 +5,7 @@ const root_dir = joinpath(dirname(@__FILE__), "..", "..")
 const build_config = "Release"
 const target = "treelas"
 const cmake_opts = [
-    "-A", "x64",
+    (Sys.iswindows() ? ["-A", "x64"] : [])...,
     "-DCMAKE_BUILD_TYPE=$build_config",
     "-DBUILD_TESTS=OFF",
     "-DBUILD_PYEXT=OFF",
