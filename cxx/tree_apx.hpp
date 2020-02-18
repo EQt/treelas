@@ -221,15 +221,15 @@ tree_apx(
         cidx.reset(n, parent, root);
     }
 
-    //if (use_bfs)
+    if (true /*use_bfs*/)
     {
         Timer _ ("bfs");
         reversed_bfs_pi(porder.data(), cidx, s.parent_);
-    } /*else {
+    } else {
         Timer _ ("dfs postorder\n");
         stack<int_> stack;
         post_order(porder.data(), cidx, stack);
-       }*/
+    }
     {
         Timer _ ("parent bit");
         for (size_t i = 0; i < n; i++)
