@@ -105,6 +105,17 @@ if (HDF5_FOUND)
 endif()
 
 
+find_package(BZip2)
+if (BZIP2_FOUND)
+    add_library(decompress INTERFACE)
+    target_include_directories(decompress INTERFACE ${BZIP2_INCLUDE_DIR})
+    target_link_libraries(decompress INTERFACE ${BZIP2_LIBRARIES})
+
+    add_executable(unbz2 cxx/bin/unbz2.cpp)
+    target_link_libraries(unbz2 PRIVATE decompress)
+endif()
+
+
 if (BUILD_TESTS)
     message("-- Enable unit tests")
     if (NOT EXISTS "${DOCTEST_DIR}/CMakeLists.txt")
