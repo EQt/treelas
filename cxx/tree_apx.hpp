@@ -145,16 +145,19 @@ TreeApx<float_, int_>::iter(const float_ delta)
                        int(i), int(id[v]), int(v), parent(v), id[parent(v)]);
 #endif
             if (true) {
-                if (lam[v] == 0 && !same(v))
+                if (lam[v] == 0 && same(v))
                     throw std::runtime_error(std::string("FATAL: v=") + std::to_string(v) + " pi=" +
                                              std::to_string(parent(v)));
                 // printf(" deriv = %+.3f", deriv[v]);
 
-                if (deriv[v] > lam[v]) {
+                if (deriv[v] >= lam[v]) {
                     x[v] -= delta;
-                } else if (deriv[v] < -lam[v]) {
+                } else if (deriv[v] <= -lam[v]) {
                     x[v] += delta;
                 } else {
+                    if (!same(v))
+                        throw std::runtime_error(std::string("FATAL3: v=") + std::to_string(v) + " pi=" +
+                                                 std::to_string(parent(v)));
                     x[v] = x[parent(v)];
                     // printf(" x = %+.3f parent", x[v]);
                     continue;
@@ -177,6 +180,9 @@ TreeApx<float_, int_>::iter(const float_ delta)
                 }
                 }
             } else {
+                if (lam[v] != 0)
+                    throw std::runtime_error(std::string("FATAL2: v=") + std::to_string(v) + " pi=" +
+                                             std::to_string(parent(v)));
                 x[v] += deriv[v] < 0 ? +delta : -delta;
             }
         }
