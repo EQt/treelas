@@ -10,7 +10,9 @@ TreeLas: Fused Lasso Solvers for Trees
 
 We compute the minimizer of the convex function
 
-![logo and formula](https://eqt.github.io/treelas/imgs/treelas.png)
+![logo and formula][formula]
+
+
 
 whereby
  * _E_ are the edges of a tree graph, 
@@ -76,3 +78,5 @@ For the sake of benchmarks the implementation by [Laurent Condat][condat] and th
 [appveyor-img]: https://ci.appveyor.com/api/projects/status/feofb7j476jagsbb?svg=true
 [license-img]: https://img.shields.io/badge/License-MIT-brightgreen.svg
 [travis-img]: https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master
+[formula-png]: https://eqt.github.io/treelas/imgs/treelas.png
+[formula]: https://latex.codecogs.com/svg.latex?\fn_cm&space;\LARGE&space;\displaystyle&space;f(x)&space;=&space;\frac{1}{2}&space;\sum_{i=1}^n&space;\mu_i&space;(x_i&space;-&space;y_i)^2&space;&plus;&space;\sum_{(i,j)&space;\in&space;E}&space;\lambda_{ij}&space;|x_i&space;-&space;x_j|
