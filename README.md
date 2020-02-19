@@ -1,9 +1,10 @@
 TreeLas: Fused Lasso Solvers for Trees
 =======
+
 [![Travis][travis-img]](https://travis-ci.com/EQt/treelas)
 [![Build status][appveyor-img]](https://ci.appveyor.com/project/EQt/treelas)
 [![License: MIT][license-img]](LICENSE.md)
-&nbsp;&nbsp;&nbsp;&nbsp;
+      
 [![Documentation: c++][docs-cxx]](https://eqt.github.io/treelas/cxx)
 [![Documentation: python][docs-python]](https://eqt.github.io/treelas/python)
 [![Documentation: Julia][docs-julia]](https://eqt.github.io/treelas/)
@@ -11,14 +12,10 @@ TreeLas: Fused Lasso Solvers for Trees
 
 We compute the minimizer of the convex function
 
-
 ![formula][formula]
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://eqt.github.io/treelas/imgs/treelas.png" alt="logo" width="20%">
-
-
-whereby
- * _E_ are the edges of a tree graph, 
+     
+<img src="https://eqt.github.io/treelas/imgs/treelas.png" align="top" width="20%"> whereby
+ * _E_ are the edges of a tree graph,
  * _λ > 0_ some edge weights,
  * _μ ≥ 0_ some node weights.
 
@@ -79,7 +76,7 @@ For the sake of benchmarks the implementation by [Laurent Condat][condat] and th
 [docs-cxx]: https://img.shields.io/badge/docs-cxx-0298c3.svg
 [docs-python]: https://img.shields.io/badge/docs-python-0298c3.svg
 [appveyor-img]: https://ci.appveyor.com/api/projects/status/feofb7j476jagsbb?svg=true
-[license-img]: https://img.shields.io/badge/License-MIT-brightgreen.svg
+[license-img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
 [travis-img]: https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master
 [logo]: https://eqt.github.io/treelas/imgs/treelas.png
 [formula]: https://latex.codecogs.com/svg.latex?\fn_cm&space;\large&space;\displaystyle&space;f(x)&space;=&space;\frac{1}{2}&space;\sum_{i=1}^n&space;\mu_i&space;(x_i&space;-&space;y_i)^2&space;&plus;&space;\sum_{(i,j)&space;\in&space;E}&space;\lambda_{ij}&space;|x_i&space;-&space;x_j|
