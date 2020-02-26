@@ -56,9 +56,13 @@ tree_dp(
 
 {
     if (root < 0) {
-        Timer _ ("find root");
+        int new_root = -1;
+        {
+            Timer _ ("find root");
+            new_root = find_root(n, parent);
+        }
         return tree_dp<merge_sort, lazy_sort, check>(
-            n, x, y, parent, lam, mu, find_root(n, parent), s);
+            n, x, y, parent, lam, mu, new_root, s);
     }
 
     auto *elements = s.elements_.data();
