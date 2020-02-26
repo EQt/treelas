@@ -8,7 +8,7 @@ from os import path
 import treelas
 from graphidx import random_spanning_tree
 from graphidx import GridGraph
-from graphidx.idx import BiAdjacent, ChildrenIndex
+from graphidx.idx import BiAdjacent
 
 
 def average_tree(fname: str, lam: float, rep: int):
@@ -40,12 +40,15 @@ def average_tree(fname: str, lam: float, rep: int):
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
+    import argparse
 
-    fname = "phantom_w200.img"
-    rep = int("50")
-    lam = float("0.2")
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument("fname", nargs='?', default="phantom_w200.img")
+    p.add_argument("-r", "--rep", type=int, default=50)
+    p.add_argument("-l", "--lam", type=float, default=0.2)
+    args = p.parse_args()
 
-    xsol, xopt, grid_opt = average_tree(fname, lam, rep)
+    xsol, xopt, grid_opt = average_tree(args.fname, args.lam, args.rep)
 
     for i, x in enumerate(xsol[:5]):
         plt.figure(f"seed={i}")
