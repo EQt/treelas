@@ -9,7 +9,9 @@
 #include <graphidx/bits/minmax.hpp>
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/std/stack.hpp>
+#include <graphidx/tree/root.hpp>
 #include <graphidx/utils/timer.hpp>
+
 
 #include "clip.hpp"
 #include "merge.hpp"
@@ -53,6 +55,12 @@ tree_dp(
     TreeDPStatus &s)
 
 {
+    if (root < 0) {
+        Timer _ ("find root");
+        return tree_dp<merge_sort, lazy_sort, check>(
+            n, x, y, parent, lam, mu, find_root(n, parent), s);
+    }
+
     auto *elements = s.elements_.data();
     auto &pq = s.pq;
     auto
