@@ -121,13 +121,13 @@ rule bench_dimacs:
 
 rule run_treelas:
     input:  "{name}.treelas", cmake("tree_solve")
-    output: "{name}_lam{lam,[^_]+}{ignore}.tree_opti", "{name}_lam{lam,[^_]+}{ignore}.tree_sol"
+    output: "{name}_lam{lam}{ignore,(_.*)?}.tree_opti", "{name}_lam{lam,}{ignore,(_.*)?}.tree_sol"
     shell:  "{input[1]} -l {wildcards.lam} {input[0]} | tee {output[0]} && cp {input[0]} {output[1]}"
 
 
 rule run_treelas_no_output:
     input:  "{name}.treelas", cmake("tree_solve")
-    output: "{name}_lam{lam,[^_]+}{ignore}.tree_opt"
+    output: "{name}_lam{lam,[^_]+}{ignore,(_.*)?}.tree_opt"
     shell:  "{input[1]} -O -l {wildcards.lam} {input[0]} | tee {output}"
 
 
