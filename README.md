@@ -1,3 +1,5 @@
+<img src="https://eqt.github.io/treelas/imgs/treelas.png" align="top" width="20%">
+
 TreeLas: Fused Lasso Solvers for Trees
 =======
 
@@ -13,8 +15,7 @@ TreeLas: Fused Lasso Solvers for Trees
 We compute the minimizer of the convex function
 
 ![formula][formula]
-     
-<img src="https://eqt.github.io/treelas/imgs/treelas.png" align="top" width="20%"> whereby
+   whereby
  * _E_ are the edges of a tree graph,
  * _λ > 0_ some edge weights,
  * _μ ≥ 0_ some node weights.
