@@ -15,7 +15,8 @@ TreeLas: Fused Lasso Solvers for Trees
 We compute the minimizer of the convex function
 
 ![formula][formula]
-   whereby
+
+whereby
  * _E_ are the edges of a tree graph,
  * _λ > 0_ some edge weights,
  * _μ ≥ 0_ some node weights.
