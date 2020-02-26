@@ -36,11 +36,13 @@ tree_dp_w(
     const double *mu,
     const int root)
 {
-    if (parent[root] != root) {     // verify root property
-        throw std::invalid_argument(std::string("parent[") +
-                                    std::to_string(root) + "] = " +
-                                    std::to_string(parent[root]) + " != root");
-    }
+    if (root < 0)
+        throw std::invalid_argument(std::string("root = ") + std::to_string(root));
+    if (parent[root] != root)     // verify root property
+        throw std::invalid_argument(
+            std::string("parent[") +
+            std::to_string(root) + "] = " +
+            std::to_string(parent[root]) + " != root");
 
     const Array<const double> _lam(lam);
     const Array<const double> _mu(mu);
