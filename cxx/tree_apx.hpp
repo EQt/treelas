@@ -2,8 +2,8 @@
 #include <cstddef>                      // for std::size_t
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/minmax.hpp>
-#include <graphidx/tree/postorder.hpp>
 #include <graphidx/tree/bfs.hpp>
+#include <graphidx/tree/dfs.hpp>
 #include <graphidx/tree/root.hpp>
 #include <graphidx/utils/perm.hpp>
 #include <graphidx/utils/timer.hpp>
@@ -222,9 +222,9 @@ tree_apx(
     }
 
     if (dfs_order) {
-        Timer _ ("dfs postorder\n");
+        Timer _ ("dfs");
         stack<int_> stack;
-        post_order(porder.data(), cidx, stack);
+        reversed_dfs_discover_pi(porder.data(), cidx, stack, s.parent_);
     } else {
         Timer _ ("bfs");
         reversed_bfs_pi(porder.data(), cidx, s.parent_);
