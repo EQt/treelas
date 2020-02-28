@@ -23,7 +23,8 @@ tree_apx(
     const int_ root_ = int_(-1),
     const int max_iter = 3,
     const bool print_timings = true,
-    const bool reorder = true);
+    const bool reorder = true,
+    const bool dfs_order = false);
 
 
 extern template
@@ -37,7 +38,8 @@ tree_apx(
     const int root_,
     const int max_iter,
     const bool print_timings,
-    const bool reorder);
+    const bool reorder,
+    const bool dfs_order);
 
 
 extern template
@@ -51,7 +53,8 @@ tree_apx(
     const int root_,
     const int max_iter,
     const bool print_timings,
-    const bool reorder);
+    const bool reorder,
+    const bool dfs_order);
 
 
 /**
@@ -188,7 +191,8 @@ tree_apx(
     const int_ root_,
     const int max_iter,
     const bool print_timings,
-    const bool reorder)
+    const bool reorder,
+    const bool dfs_order)
 {
     Timer _ ("tree_apx:\n");
 
@@ -217,14 +221,13 @@ tree_apx(
         cidx.reset(n, parent, root);
     }
 
-    if (true /*use_bfs*/)
-    {
-        Timer _ ("bfs");
-        reversed_bfs_pi(porder.data(), cidx, s.parent_);
-    } else {
+    if (dfs_order) {
         Timer _ ("dfs postorder\n");
         stack<int_> stack;
         post_order(porder.data(), cidx, stack);
+    } else {
+        Timer _ ("bfs");
+        reversed_bfs_pi(porder.data(), cidx, s.parent_);
     }
     {
         Timer _ ("parent bit");

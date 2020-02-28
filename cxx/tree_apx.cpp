@@ -12,7 +12,8 @@ tree_apx(
     const int root_,
     const int max_iter,
     const bool print_timings,
-    const bool reorder);
+    const bool reorder,
+    const bool dfs_order);
 
 
 template
@@ -26,4 +27,5 @@ tree_apx(
     const int root_,
     const int max_iter,
     const bool print_timings,
-    const bool reorder);
+    const bool reorder,
+    const bool dfs_order);
