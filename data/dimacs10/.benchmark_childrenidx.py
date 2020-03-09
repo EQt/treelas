@@ -12,18 +12,18 @@ def benchmark(fname: str):
         with h5py.File(fname) as io:
             pi = io["parent"][()]
 
-    with Timer("pybind", end="\n"):
+    with Timer("pybind[groupby]", end="\n"):
         (idx, vals) = groupby(pi, verbose=True)
     for a in (idx, vals):
         print(" ", hex(a.ctypes.data))
 
-    with Timer("pybind", end="\n"):
+    with Timer("pybind[ChildrenIdx]", end="\n"):
         cidx = ChildrenIndex(pi, verbose=True)
     print(" root =", cidx.root)
     for d in cidx.__ptr__():
         print(" ", hex(d))
 
-    with Timer("pybind", end="\n"):
+    with Timer("pybind[CIdx.reset]", end="\n"):
         ridx = ChildrenIndex([0]).reset(pi, verbose=True)
     print(" root =", ridx.root)
     for d in ridx.__ptr__():
