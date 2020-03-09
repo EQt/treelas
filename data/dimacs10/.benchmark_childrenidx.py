@@ -23,8 +23,11 @@ def benchmark(fname: str):
     for d in cidx.__ptr__():
         print(" ", hex(d))
 
+    with Timer("pybind[create CIdx]"):
+        ridx = ChildrenIndex([0])
+
     with Timer("pybind[CIdx.reset]", end="\n"):
-        ridx = ChildrenIndex([0]).reset(pi, verbose=True)
+        ridx.reset(pi, verbose=True)
     print(" root =", ridx.root)
     for d in ridx.__ptr__():
         print(" ", hex(d))
