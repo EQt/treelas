@@ -1,3 +1,6 @@
+"""
+Benchmark ChildrenIndex creation
+"""
 import h5py
 from graphidx.idx import ChildrenIndex, groupby
 from graphidx.py.children import PyChildrenIndex
@@ -25,8 +28,18 @@ def benchmark(fname: str):
 
 
 if __name__ == '__main__':
-    (idx, vals), pidx = benchmark("europe_0.tree")
+    import argparse
 
-    with Timer("check index"):
-        assert all(idx == pidx.idx+1)
-        assert all(vals[1:] == pidx.pi[:-1])
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('fname', nargs='*', default=["europe_0.tree"])
+    p.add_argument('-c', '--check', action='store_true')
+    args = p.parse_args()
+
+    for fname in args.fname:
+        print('--', fname)
+        (idx, vals), pidx = benchmark(fname)
+
+    if args.check:
+        with Timer("check index"):
+            assert all(idx == pidx.idx+1)
+            assert all(vals[1:] == pidx.pi[:-1])
