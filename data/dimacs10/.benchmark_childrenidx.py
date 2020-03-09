@@ -14,12 +14,20 @@ def benchmark(fname: str):
 
     with Timer("pybind", end="\n"):
         (idx, vals) = groupby(pi, verbose=True)
+    for a in (idx, vals):
+        print(" ", hex(a.ctypes.data))
 
     with Timer("pybind", end="\n"):
         cidx = ChildrenIndex(pi, verbose=True)
+    print(" root =", cidx.root)
+    for d in cidx.__ptr__():
+        print(" ", hex(d))
 
     with Timer("pybind", end="\n"):
-        cidx2 = ChildrenIndex([0]).reset(pi, verbose=True)
+        ridx = ChildrenIndex([0]).reset(pi, verbose=True)
+    print(" root =", ridx.root)
+    for d in ridx.__ptr__():
+        print(" ", hex(d))
 
     with Timer("PyChildrenIndex", end="\n"):
         pidx = PyChildrenIndex.compute(pi)
