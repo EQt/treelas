@@ -67,6 +67,9 @@ PYBIND11_MODULE(_treelas, m)
     )pbdoc");
 
     m.def("_pointer",
+          [](const py::array_i32 &arr) -> size_t { return (size_t) arr.data(); });
+
+    m.def("_pointer",
           [](py::object v) {
               if (v) {
                   v = py::float_(42.0);
