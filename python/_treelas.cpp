@@ -22,11 +22,12 @@ void reg_timer(py::module &m);
 py::array_t<double>
 _test_create_array()
 {
-    double *x = new double[3];
+    auto arr = py::array_t<double>({3}, {sizeof(double)});
+    double *x = arr.mutable_data();
     x[0] = 13.0;
     x[1] = -1.0;
     x[2] = 42.0;
-    return py::array_t<double>({3}, {sizeof(double)}, x);
+    return arr;
 }
 
 
@@ -48,7 +49,8 @@ PYBIND11_MODULE(_treelas, m)
     m.attr("__compiler__") = compiler_info();
     m.attr("__asan__") = asan_enabled();
 
-    m.def("_test_create_array", &_test_create_array, R"pbdoc(
+    m.def("_test_create_array", &_test_create_array,
+          py::return_value_policy::move, R"pbdoc(
         Test to create an array with elements [13., -1., 42]
     )pbdoc");
 
