@@ -85,8 +85,18 @@ if (BUILD_PYEXT)
     add_custom_target(pysetup DEPENDS _treelas graphidx_pysetup
         COMMAND ${CMAKE_COMMAND} -E copy
         $<TARGET_FILE_NAME:_treelas> ${CMAKE_SOURCE_DIR}/python/treelas)
+
+    if (ASAN)
+        execute_process(
+            COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=libasan${CMAKE_SHARED_LIBRARY_SUFFIX}
+            OUTPUT_VARIABLE LD_PRELOAD
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+        set(LD_PRELOAD "LD_PRELOAD=${LD_PRELOAD}")
+        message("-- ${LD_PRELOAD}")
+    endif()
     add_custom_target(pytest DEPENDS pysetup
-        COMMAND py.test ${CMAKE_SOURCE_DIR}/python/test VERBATIM)
+        COMMAND ${LD_PRELOAD} py.test ${CMAKE_SOURCE_DIR}/python/test VERBATIM)
 endif()
 
 

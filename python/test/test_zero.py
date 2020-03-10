@@ -5,6 +5,7 @@ in particular that decreasing lambdas are handled correctly.
 import numpy as np
 import pytest
 from treelas import TreeInstance
+from treelas._treelas import __asan__
 
 
 def test_nan():
@@ -14,6 +15,8 @@ def test_nan():
                      lam=np.array([1.0, 0.5, 0.3]),
                      parent=np.array([1, 2, 2], dtype=np.int32),
                      root=2)
+    if __asan__:
+        return
     with pytest.raises(RuntimeError) as e:
         t.solve()
         assert 'y[1] = nan' in str(e.value)

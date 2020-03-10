@@ -46,6 +46,7 @@ PYBIND11_MODULE(_treelas, m)
     )pbdoc";
     m.attr("__author__") = "Elias Kuthe <elias.kuthe@tu-dortmund.de>";
     m.attr("__compiler__") = compiler_info();
+    m.attr("__asan__") = asan_enabled();
 
     m.def("_test_create_array", &_test_create_array, R"pbdoc(
         Test to create an array with elements [13., -1., 42]
