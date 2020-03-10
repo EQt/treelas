@@ -10,6 +10,10 @@ def test_create_array():
     a = t._treelas._test_create_array()
     assert a.dtype == np.float64
     assert len(a) == 3
+    assert a.flags.writeable
+    assert a.flags.owndata
+    assert a.flags.c_contiguous
+    assert a.flags.aligned
     assert (a == np.array([13, -1, 42.])).all()
 
 
