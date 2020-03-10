@@ -15,7 +15,8 @@ def benchmark(fname: str):
             pi = io["parent"][()].astype(np.int32)
 
     with Timer("allocate"):
-        idx, vals = np.empty(len(pi)+1, dtype=np.int32), np.empty_like(pi)
+        vals = np.empty_like(pi)
+        idx = np.empty(len(pi)+1, dtype=np.int32)
     for a in (idx, vals):
         assert _pointer(a) == a.ctypes.data
         print(" ", hex(a.ctypes.data))
