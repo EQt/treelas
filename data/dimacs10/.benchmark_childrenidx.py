@@ -2,18 +2,26 @@
 Benchmark ChildrenIndex creation
 """
 import h5py
+import numpy as np
 from graphidx.idx import ChildrenIndex, groupby
 from graphidx.py.children import PyChildrenIndex
 from graphidx.timer import Timer
+from treelas._treelas import _pointer
 
 
 def benchmark(fname: str):
     with Timer("load hdf5"):
         with h5py.File(fname) as io:
-            pi = io["parent"][()]
+            pi = io["parent"][()].astype(np.int32)
+
+    with Timer("allocate"):
+        idx, vals = np.empty(len(pi)+1, dtype=np.int32), np.empty_like(pi)
+    for a in (idx, vals):
+        assert _pointer(a) == a.ctypes.data
+        print(" ", hex(a.ctypes.data))
 
     with Timer("pybind[groupby]", end="\n"):
-        (idx, vals) = groupby(pi, verbose=True)
+        groupby(pi, verbose=True, idx=idx, value=vals)
     for a in (idx, vals):
         print(" ", hex(a.ctypes.data))
 
