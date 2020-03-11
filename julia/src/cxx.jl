@@ -100,7 +100,7 @@ function cxx_tree_dp(
     root -= 1
     ccall((:timer_disable, lib), Cvoid, ())
     ccall(
-        (:_Z7tree_dpILb0ELb1EEPKdmPdS1_PKiddi, lib),
+        (:tree_dp_f64_i32, lib),
         Ref{Cdouble},
         (
             Csize_t,
