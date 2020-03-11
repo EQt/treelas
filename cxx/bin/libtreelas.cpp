@@ -2,10 +2,17 @@
 #include "../tree_dp.hpp"
 
 
+void
+inline _timer_disable()
+{
+    Timer::set_disable(true);
+}
+
+
 extern "C" void
 timer_disable()
 {
-    Timer::set_disable(true);
+    _timer_disable();
 }
 
 
