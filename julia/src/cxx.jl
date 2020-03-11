@@ -137,7 +137,7 @@ function cxx_tree_dual!(
     x = copy(alpha)
     post_order = Ptr{Cint}(0)
     ccall((:timer_disable, lib), Cvoid, ())
-    ccall((:_Z9tree_dualmPdPKiS1_S_ib, lib),
+    ccall((:tree_dual_f64_i32, lib),
         Ref{Cdouble},
         (
             Csize_t,

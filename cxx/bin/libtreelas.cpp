@@ -1,5 +1,6 @@
 #include <graphidx/utils/timer.hpp>
 #include "../tree_dp.hpp"
+#include "../tree_dual.hpp"
 
 #ifdef _WIN32
 #  define __export __declspec(dllexport)
@@ -35,4 +36,18 @@ tree_dp_f64_i32(
     int root)
 {
     return tree_dp<false, true>(n, x, y, parent, lam, mu, root);
+}
+
+
+extern "C" __export double*
+tree_dual_f64_i32(
+    const size_t n,
+    double *x,
+    const int *parent,
+    const int *postord,
+    double *alpha,
+    const int root,
+    const unsigned char tree_orientation)
+{
+    return tree_dual(n, x, parent, postord, alpha, root, tree_orientation != 0);
 }
