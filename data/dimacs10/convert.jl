@@ -12,11 +12,11 @@ isfile(out) && rm(out)
 h5open(out, "w") do io
     attrs(io)["n"] = n
     attrs(io)["m"] = m
-    write(io, "head", head)
-    write(io, "tail", tail)
+    write(io, "head", head .-1)
+    write(io, "tail", tail .-1)
 end
 
 output_bin && open("bin", "w") do io
-    write(io, head);
-    write(io, tail)
+    write(io, head .-1);
+    write(io, tail .-1)
 end
