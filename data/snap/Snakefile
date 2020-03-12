@@ -27,6 +27,12 @@ rule to_hdf5:
             g.create_dataset("tail", data=tail, compression=3)
 
 
+rule julia_to_hdf5:
+    input: "{name}.txt.gz"
+    output: "{name}.julia.h5"
+    shell: "julia convert.jl {input} {output}"
+
+
 rule download_youtube:
     output: "com-youtube.txt.gz"
     run:
