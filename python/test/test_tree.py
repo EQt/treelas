@@ -1,5 +1,4 @@
 import numpy as np
-import h5py
 import toml
 import pytest
 import os
@@ -51,6 +50,7 @@ def test_tree5_solve(tree5):
 
 
 def test_tree5_write_h5_simple(tree5):
+    h5py = pytest.importorskip("h5py")
     ti = tree5
     ti.save('tree5.h5')
     with h5py.File('tree5.h5', 'r') as io:
@@ -69,6 +69,7 @@ def test_tree5_write_toml_simple(tree5):
 
 
 def test_tree5_write_h5_mu(tree5):
+    h5py = pytest.importorskip("h5py")
     ti = tree5
     n = 10
     assert len(ti.parent) == n

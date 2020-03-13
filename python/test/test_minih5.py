@@ -1,11 +1,12 @@
+import pytest
 import treelas as tl
-import h5py
 import numpy as np
 import sys
 from data import data_dir
 
 
 def load_mini_h5():
+    h5py = pytest.importorskip("h5py")
     with h5py.File(data_dir('test', 'tree.mini.h5'), 'r') as io:
         y = io['y'][:]
         parent = io['parent'][:]

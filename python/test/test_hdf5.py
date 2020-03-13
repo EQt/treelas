@@ -1,6 +1,6 @@
-import h5py
+import pytest
 from distutils.version import LooseVersion
-# from pytest import mark
+h5py = pytest.importorskip("h5py")
 
 
 def test_libversion():
@@ -8,7 +8,7 @@ def test_libversion():
     assert h5v >= LooseVersion("1.10")
 
 
-# @mark.skip
+# @pytest.mark.skip
 # def test_lowlevel(fname="../../build/test.h5"):
 #     from os import path
 #

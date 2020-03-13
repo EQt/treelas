@@ -1,8 +1,9 @@
-from numba import njit
+import pytest
+numba = pytest.importorskip("numba")
 
 
 def compute_njit(a, b):
-    @njit(cache=True)
+    @numba.njit(cache=True)
     def _compute(a, b):
         return a + b
 
