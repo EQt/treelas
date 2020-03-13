@@ -40,7 +40,7 @@ if __name__ == '__main__':
     graphidx_setup = path.join(graphidx_dir, "python", "setup.py")
 
     if not path.isdir("graphidx"):
-        copy_or_link = copy_tree if sys.platform == 'windows' else os.symlink
+        copy_or_link = copy_tree if sys.platform == 'win32' else os.symlink
         copy_or_link(path.join(path.dirname(graphidx_setup), "graphidx"), "graphidx")
 
     if not path.exists(graphidx_setup):

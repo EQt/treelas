@@ -3,6 +3,7 @@ dist/
 __pycache__/
 .cache/
 *.egg-info/
-*.so
+_treelas*.so
+_treelas*.pyd
 *.pyc
 graphidx

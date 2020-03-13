@@ -84,7 +84,7 @@ if (BUILD_PYEXT)
 
     add_custom_target(pysetup DEPENDS _treelas graphidx_pysetup
         COMMAND ${CMAKE_COMMAND} -E copy
-        $<TARGET_FILE_NAME:_treelas> ${CMAKE_SOURCE_DIR}/python/treelas)
+        $<TARGET_FILE:_treelas> ${CMAKE_SOURCE_DIR}/python/treelas)
 
     if (ASAN)
         execute_process(
