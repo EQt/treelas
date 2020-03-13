@@ -1,5 +1,6 @@
 import h5py
 from six.moves.urllib.request import urlretrieve
+include: "../Snakefile"
 
 
 snap_url = "https://snap.stanford.edu/data"
@@ -8,9 +9,9 @@ rule download_all:
     input: "com-youtube.h5", "roadnet-ca.h5", "com-orkut.h5"
 
 
-rule to_hdf5:
+rule pandas_to_hdf5:
     input: "{name}.txt.gz"
-    output: "{name}.h5"
+    output: "{name}.py.h5"
     run:
         from pandas import read_csv
 
@@ -33,6 +34,12 @@ rule julia_to_hdf5:
     shell: "julia convert.jl {input} {output}"
 
 
+rule convert_to_hdf5:
+    input: "{name}.txt.gz", cmake("graph2h5")
+    output: "{name}.h5"
+    shell: "./{input[1]} --snap {input[0]} {output}"
+
+
 rule download_youtube:
     output: "com-youtube.txt.gz"
     run:
@@ -51,6 +58,3 @@ rule download_orkut:
     run:
         urlretrieve(snap_url + "/bigdata/communities/com-orkut.ungraph.txt.gz",
                     filename=output[0])
-
-
-include: "../Snakefile"
