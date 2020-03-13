@@ -1,5 +1,5 @@
 import numpy as np
-from numba import njit
+from graphidx.py._numba import njit
 from ._treelas import line_dp as line_las
 
 
