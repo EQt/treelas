@@ -9,6 +9,7 @@
 
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/weights.hpp>
+#include <graphidx/std/uvector.hpp>
 #include <graphidx/utils/timer.hpp>
 
 #include "event.hpp"
@@ -48,7 +49,6 @@ line_las(
     const std::vector<float_> &y,
     const Wlam &lam)
 {
-
     return line_las(y.size(), y.data(), lam);
 }
 
@@ -65,8 +65,8 @@ line_las(
     if ((mu[n-1]) <= 0)
         throw std::invalid_argument("End node must not be latent");
 
-    std::vector<Event> elem;
-    std::vector<float_> ub;
+    uvector<Event> elem;
+    uvector<float_> ub;
     Range pq {int(n), int(n-1)};
     {
         Timer _ ("alloc");
