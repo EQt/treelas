@@ -1,7 +1,6 @@
 """
 Input and output of graph/tree instances.
 """
-import h5py
 from os import path
 from graphidx.tree import Tree
 
@@ -19,6 +18,8 @@ def njoin(*pathel):
 
 def load_tree(treeh5):
     """Return root, parent from a tree instance stored in hdf5"""
+    import h5py
+
     with h5py.File(treeh5, 'r') as io:
         parent = io['parent'][()]
         if parent.max() >= len(parent):
