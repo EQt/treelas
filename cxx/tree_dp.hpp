@@ -9,6 +9,7 @@
 #include <graphidx/bits/minmax.hpp>
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/std/stack.hpp>
+#include <graphidx/std/uvector.hpp>
 #include <graphidx/tree/root.hpp>
 #include <graphidx/utils/timer.hpp>
 
@@ -32,9 +33,9 @@ struct TreeDPStatus
     stack<int> dfs_stack;
 
     std::vector<int> proc_order;
-    std::vector<Event> elements_;
-    std::vector<Range> pq;
-    std::vector<double> lb;
+    uvector<Event> elements_;
+    uvector<Range> pq;
+    uvector<double> lb;
 };
 
 
@@ -53,7 +54,6 @@ tree_dp(
     const Wmu &mu,
     const int root,
     TreeDPStatus &s)
-
 {
     if (root < 0) {
         int new_root = -1;

@@ -35,7 +35,7 @@ TEST_CASE("dptree: init_queues")
 
     const std::vector<int> parent = {0, 0, 1, 2, 3, 0, 7, 8, 3, 8};
     const auto n = parent.size();
-    std::vector<Range> pq (n);
+    uvector<Range> pq (n);
     ChildrenIndex childs (parent);
     stack<int> stack;
     std::vector<int> proc_order;

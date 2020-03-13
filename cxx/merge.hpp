@@ -22,7 +22,7 @@
 */
 inline void
 init_queues(const size_t n,
-            std::vector<Range> &pq,
+            uvector<Range> &pq,
             std::vector<int> &proc_order,
             const ChildrenIndex &childs,
             stack<int> &stack,
