@@ -3,9 +3,9 @@
  */
 #include "line_c.hpp"
 
-#include <vector>
 #include <stdexcept>
 
+#include <graphidx/std/uvector.hpp>
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/bits/minmax.hpp>
 
@@ -14,7 +14,6 @@ template <int step, int size, typename T = double>
 struct Slice
 {
     T *const elem;
-
     inline T& operator[](size_t i) const { return elem[size*i + step]; }
 };
 
@@ -154,7 +153,7 @@ dp_line_c(
     };
     dp_line_c(n, y, lam, mem);
 #else
-    std::vector<float_> buf;
+    uvector<float_> buf;
     {
         Timer _ ("alloc");
         buf.reserve(2*n + 2*n + n + n);

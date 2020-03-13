@@ -1,10 +1,10 @@
 #include "line_para.hpp"
 
 #include <iostream>
-#include <vector>
 #include <thread>
 
 #include <graphidx/bits/clamp.hpp>          // for clip(x, lb, ub)
+#include <graphidx/std/uvector.hpp>
 #include <graphidx/utils/timer.hpp>
 
 #include "../clip.hpp"
@@ -70,8 +70,8 @@ line_para(const size_t n,
           float_ *x,
           const bool parallel)
 {
-    std::vector<Event> event_;
-    std::vector<float_> ub_;
+    uvector<Event> event_;
+    uvector<float_> ub_;
     {   Timer _ ("allocation");
         event_.reserve(2*n);
         ub_.reserve(n);
