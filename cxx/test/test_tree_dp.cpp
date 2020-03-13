@@ -124,7 +124,7 @@ TEST_CASE("dptree0: proc_order")
     const std::vector<int> parent = {0, 0, 0, 1, 1, 2, 2};
     const int n = 7;
     REQUIRE(n == parent.size());
-    std::vector<Range> pq (n);
+    uvector<Range> pq (n);
     std::vector<int> proc_order;
     ChildrenIndex childs (parent);
     stack<int> stack;

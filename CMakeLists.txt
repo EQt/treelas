@@ -139,6 +139,7 @@ if (BUILD_TESTS)
         execute_process(COMMAND git submodule update --init ${DOCTEST_DIR}
             WORKING_DIRECTORY ${GRAPHIDX_DIR})
     endif()
+    find_package(Threads)
     add_subdirectory(${DOCTEST_DIR})
     add_executable(doctests
         cxx/test/doctests.cpp
@@ -147,11 +148,13 @@ if (BUILD_TESTS)
         cxx/test/test_ref.cpp
         cxx/test/test_clip.cpp
         cxx/test/test_line_dp.cpp
+        cxx/test/test_line_para.cpp
         cxx/test/test_tree_dp.cpp
         cxx/test/test_tree_dp_2.cpp
         cxx/test/test_tree_apx.cpp
+        $<TARGET_OBJECTS:line_para>
     )
-    target_link_libraries(doctests PRIVATE doctest::doctest graphidx)
+target_link_libraries(doctests PRIVATE doctest::doctest graphidx Threads::Threads)
 endif()
 
 # Local Variables:
