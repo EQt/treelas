@@ -1,5 +1,4 @@
 import numpy as np
-import toml
 import pytest
 import os
 from treelas import Tree, TreeInstance
@@ -60,6 +59,8 @@ def test_tree5_write_h5_simple(tree5):
 
 
 def test_tree5_write_toml_simple(tree5):
+    import toml
+
     ti = tree5
     ti.save('tree5.toml')
     [io] = toml.load('tree5.toml')['tree']

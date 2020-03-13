@@ -42,5 +42,7 @@ class Instance:
     def __len__(self):
         return len(self.y)
 
-
-insts = Instance.from_toml(test_dir("lines.toml"))
+try:
+    insts = Instance.from_toml(test_dir("lines.toml"))
+except ImportError:
+    pass

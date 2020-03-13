@@ -1,8 +1,10 @@
 """
 There are some issues to be taken into account when dumping TOML from numpy arrays
 """
-import toml
+import pytest
 import numpy as np
+toml = pytest.importorskip("toml")
+
 from treelas import _toml as noml
 
 

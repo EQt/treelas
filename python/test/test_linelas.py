@@ -1,5 +1,7 @@
 import numpy as np
 import pytest
+pytest.importorskip("toml")
+
 from treelas import linelas
 from line import insts
 

@@ -3,6 +3,8 @@ Load trees containing latent nodes and perform some checks
 """
 import pytest
 import numpy as np
+pytest.importorskip("toml")
+
 from treelas import TreeInstance
 from data import test_dir
 
