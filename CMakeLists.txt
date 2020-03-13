@@ -41,6 +41,9 @@ endif()
 
 include_directories(deps/graphidx/cxx)
 
+find_package(Threads)
+
+
 add_subdirectory(deps/graphidx)
 add_subdirectory(deps/argparser)
 add_subdirectory(deps/glmgen)
@@ -50,6 +53,8 @@ add_subdirectory(ci)
 
 add_object(line_dp    cxx/line_dp.cpp)
 add_object(line_para  cxx/line/line_para.cpp)
+target_link_libraries(line_para Threads::Threads)
+
 add_object(line_c     cxx/line/line_c.cpp)
 add_object(line_c2    cxx/line/line_c2.cpp)
 add_object(line_c3    cxx/line/line_c3.cpp)
@@ -139,7 +144,6 @@ if (BUILD_TESTS)
         execute_process(COMMAND git submodule update --init ${DOCTEST_DIR}
             WORKING_DIRECTORY ${GRAPHIDX_DIR})
     endif()
-    find_package(Threads)
     add_subdirectory(${DOCTEST_DIR})
     add_executable(doctests
         cxx/test/doctests.cpp
@@ -154,7 +158,7 @@ if (BUILD_TESTS)
         cxx/test/test_tree_apx.cpp
         $<TARGET_OBJECTS:line_para>
     )
-target_link_libraries(doctests PRIVATE doctest::doctest graphidx Threads::Threads)
+target_link_libraries(doctests PRIVATE doctest::doctest graphidx)
 endif()
 
 # Local Variables:
