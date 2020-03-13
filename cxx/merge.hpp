@@ -7,6 +7,7 @@
 
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/std/stack.hpp>
+#include <graphidx/std/uvector.hpp>
 
 #include "range.hpp"
 #include <graphidx/idx/children.hpp>
@@ -90,12 +91,11 @@ template <typename E>
 inline Range
 merge2(const Range &parent, const Range &child, E *elements)
 {
-    static std::vector<E> buf (15);
+    static uvector<E> buf (15);
     if (parent.start <= parent.stop) {
         const auto gap = child.start - parent.stop -1;
         const Range res {parent.start, child.stop - gap};
         buf.reserve(parent.length());
-        buf.clear();
         /*
           for (int i = 0, j = parent.start; j <= parent.stop; j++)
               buf[i++] = elements[j];
