@@ -1,5 +1,4 @@
 from os import path
-import pandas as pd
 from typing import List
 
 
@@ -85,6 +84,8 @@ def tsv_concat(output: str, fnames: List[str], sep : str ='\t'):
     Read tab separated values (TSV) from the files as `fnames`
     and make one big tables out of it, to be stored at `output`.
     """
+    import pandas as pd
+
     pd.concat([pd.read_csv(f, sep=sep) for f in fnames])\
       .to_csv(output, sep=sep, index=None)
 
@@ -99,6 +100,7 @@ rule extract_times:
     input:  "{name}_{s}_lam{l}_rep{i}.tree_{alg}"
     output: "{name}_{s}_lam{l}_rep{i}.tree_{alg}.times"
     run:
+        import pandas as pd
         from extract_times import extract_time_n
 
         time_pn, n = extract_time_n(input[0])
