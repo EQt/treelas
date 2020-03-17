@@ -1,5 +1,6 @@
 from os import path
 from typing import List
+from sys import platform
 
 
 if path.exists("./config.yml"):
@@ -8,7 +9,7 @@ elif path.exists("../config.yml"):
     configfile: "../config.yml"
 
 
-CMAKE_BUILD = config["cmake_dir"]
+CMAKE_BUILD = config["cmake_dir"].replace('/', path.sep)
 PARAMS = dict(s=range(config['num_span_trees']),
               l=config["lam"],
               i=config['num_repetitions'],
@@ -17,6 +18,8 @@ MAX_ITER = config['apx_max_iter']
 
 
 def cmake(exe):
+    if platform == "win32":
+        return f"{CMAKE_BUILD}\\Release\\{exe}.exe"
     return f"{CMAKE_BUILD}/{exe}"
 
 
