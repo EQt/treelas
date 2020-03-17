@@ -11,7 +11,7 @@ from treelas._treelas import _pointer
 
 def benchmark(fname: str):
     with Timer("load hdf5"):
-        with h5py.File(fname) as io:
+        with h5py.File(fname, "r") as io:
             pi = io["parent"][()].astype(np.int32)
 
     with Timer("allocate"):
