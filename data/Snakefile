@@ -66,7 +66,8 @@ rule cmake_init:
 rule cmake_build:
     input:  rules.cmake_init.output
     output: cmake("{bin}")
-    shell:  "make -j{workflow.cores} -C {CMAKE_BUILD} {wildcards.bin}"
+    shell:
+        "cmake --build {CMAKE_BUILD} -j{workflow.cores} --target {wildcards.bin}"
 
 
 rule graph_degrees:
