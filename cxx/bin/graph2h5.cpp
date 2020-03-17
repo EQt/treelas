@@ -4,8 +4,7 @@
 #include <minih5.hpp>
 #include <graphidx/io/dimacs10.hpp>
 #include <graphidx/io/snap.hpp>
-#include <graphidx/io/bz2istream.hpp>
-#include <graphidx/io/gzistream.hpp>
+#include <graphidx/io/autoistream.hpp>
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/utils/thousand.hpp>
 
@@ -38,11 +37,11 @@ main(int argc, char *argv[])
     std::vector<int> head, tail;
     if (!ap.has_option("snap")) {
         Timer _ ("parse dimacs10");
-        BZ2IStream io (infn, buf_size);
+        AutoIStream io (infn, buf_size);
         parse_dimacs10_edges(io, head, tail);
     } else {
         Timer _ ("parse snap");
-        GZIStream io (infn, buf_size);
+        AutoIStream io (infn, buf_size);
         parse_snap_edges(io, head, tail);
     }
     std::cout << " m = " << head.size() << std::endl;
