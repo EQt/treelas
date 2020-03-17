@@ -37,7 +37,7 @@ rule julia_to_hdf5:
 rule convert_to_hdf5:
     input: "{name}.txt.gz", cmake("graph2h5")
     output: "{name}.h5"
-    shell: "./{input[1]} --snap {input[0]} {output}"
+    shell: "{input[1]} --snap {input[0]} {output}"
 
 
 rule download_youtube:
