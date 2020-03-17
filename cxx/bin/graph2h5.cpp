@@ -34,22 +34,29 @@ main(int argc, char *argv[])
     set_thousand_sep(std::cout);
 
     std::cout << infn << " -> " << outfn << std::endl;
-    std::vector<int> head, tail;
-    if (!ap.has_option("snap")) {
-        Timer _ ("parse dimacs10");
-        AutoIStream io (infn, buf_size);
-        parse_dimacs10_edges(io, head, tail);
-    } else {
-        Timer _ ("parse snap");
-        AutoIStream io (infn, buf_size);
-        parse_snap_edges(io, head, tail);
-    }
-    std::cout << " m = " << head.size() << std::endl;
-    {
-        Timer _ ("write hdf5");
-        HDF5 io (outfn, "w");
-        io.owrite("head", head);
-        io.owrite("tail", tail);
+    try {
+	std::vector<int> head, tail;
+	if (!ap.has_option("snap")) {
+	    Timer _ ("parse dimacs10");
+	    AutoIStream io (infn, buf_size);
+	    parse_dimacs10_edges(io, head, tail);
+	} else {
+	    Timer _ ("parse snap");
+	    AutoIStream io (infn, buf_size);
+	    parse_snap_edges(io, head, tail);
+	}
+	std::cout << " m = " << head.size() << std::endl;
+	{   Timer _ ("write hdf5");
+	    HDF5 io (outfn, "w");
+	    io.owrite("head", head);
+	    io.owrite("tail", tail);
+	}
+    } catch (std::exception &e) {
+	std::cerr << "EXCEPTION: " << e.what() << std::endl;
+	return -1;
+    } catch (...) {
+	std::cerr << "SOME ERROR OCCURRED" << std::endl;
+	return -2;
     }
 
     return 0;
