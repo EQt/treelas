@@ -9,11 +9,11 @@ git-tree-sha1 = "66158ad56b4bf6cc8413b37d0b7bc52402682764"
 uuid = "9e28174c-4ba2-5203-b857-d8d62c4213ee"
 version = "1.0.0"
 
-[[BinaryProvider]]
-deps = ["Libdl", "SHA"]
-git-tree-sha1 = "5b08ed6036d9d3f0ee6369410b830f8873d4024c"
-uuid = "b99e7846-7c00-51b0-8f62-c81ae34c0232"
-version = "0.5.8"
+[[Bzip2_jll]]
+deps = ["Libdl", "Pkg"]
+git-tree-sha1 = "92463331a641b19fc3baa427e0b76cdbd54dc05d"
+uuid = "6e34b625-4abd-537c-b88f-471c36dfa7a0"
+version = "1.0.6+1"
 
 [[CMake]]
 deps = ["BinDeps"]
@@ -28,10 +28,16 @@ uuid = "d5fb7624-851a-54ee-a528-d3f3bac0b4a0"
 version = "0.2.3"
 
 [[CodecBzip2]]
-deps = ["BinaryProvider", "Libdl", "TranscodingStreams"]
-git-tree-sha1 = "5db086e510c11b4c87d05067627eadb2dc079995"
+deps = ["Bzip2_jll", "Libdl", "TranscodingStreams"]
+git-tree-sha1 = "2fee975d68f9a8b22187ae86e33c0829b30cf231"
 uuid = "523fee87-0ab8-5b00-afb7-3ecf72e48cfd"
-version = "0.6.0"
+version = "0.7.1"
+
+[[CodecZlib]]
+deps = ["TranscodingStreams", "Zlib_jll"]
+git-tree-sha1 = "ded953804d019afa9a3f98981d99b33e3db7b6da"
+uuid = "944b1d66-785c-5afd-91f1-9de20f533193"
+version = "0.7.0"
 
 [[Dates]]
 deps = ["Printf"]
@@ -42,7 +48,7 @@ deps = ["Random", "Serialization", "Sockets"]
 uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[GraphIdx]]
-deps = ["CodecBzip2", "LinearAlgebra", "Mmap", "Random", "SparseArrays", "Test"]
+deps = ["CodecBzip2", "CodecZlib", "LinearAlgebra", "Mmap", "Random", "SparseArrays", "Test"]
 path = "../deps/graphidx/julia"
 uuid = "6f20e514-06e4-11e9-04c5-39592f74a46d"
 version = "0.11.1"
@@ -52,6 +58,7 @@ deps = ["Markdown"]
 uuid = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 
 [[LibGit2]]
+deps = ["Printf"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
 
 [[Libdl]]
@@ -84,7 +91,7 @@ uuid = "d96e819e-fc66-5662-9728-84c9c7592b0a"
 version = "0.12.0"
 
 [[Pkg]]
-deps = ["Dates", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Test", "UUIDs"]
+deps = ["Dates", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "UUIDs"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[Printf]]
@@ -138,3 +145,9 @@ uuid = "cf7118a7-6976-5b1a-9a39-7adc72f591a4"
 
 [[Unicode]]
 uuid = "4ec0a83e-493e-50e2-b9ac-8f72acf5a8f5"
+
+[[Zlib_jll]]
+deps = ["Libdl", "Pkg"]
+git-tree-sha1 = "fd36a6739e256527287c5444960d0266712cd49e"
+uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
+version = "1.2.11+8"
