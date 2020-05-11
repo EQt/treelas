@@ -9,7 +9,7 @@ from ._treelas.timer import Seconds
 
 _libname = "libtreelars.so"
 _libfname = path.join(path.dirname(__file__),
-                     "..", "..", "rust", "target", "release", _libname)
+                      "..", "..", "rust", "target", "release", _libname)
 
 if path.exists(_libfname):
     _lib = ctypes.CDLL(_libfname)

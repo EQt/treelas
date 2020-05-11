@@ -28,6 +28,7 @@ Details
 
 See https://github.com/eqt/treelas
 """
+# flake8: noqa
 from .tree import Tree, TreeInstance
 from .segment import line_mean
 from graphidx._graphidx import (

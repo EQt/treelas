@@ -47,13 +47,13 @@ parent = {repr(self.parent)})"""
                                  **args)
         else:
             self.x = _tl.tree_dp(y=self.y,
-                                   parent=self.parent,
-                                   lam=self.lam,
-                                   mu=self.mu,
-                                   root=self.root,
-                                   x=x,
-                                   verbose=verbose,
-                                   **args)
+                                 parent=self.parent,
+                                 lam=self.lam,
+                                 mu=self.mu,
+                                 root=self.root,
+                                 x=x,
+                                 verbose=verbose,
+                                 **args)
         return self
 
     def dsolve(self, max_iter=20):
@@ -120,7 +120,7 @@ parent = {repr(self.parent)})"""
             del to_write['mu']
         if isinstance(self.lam, float):
             to_write['lam'] = [to_write['lam']]
-        return  to_write
+        return to_write
 
     def save(self, fname, *args, **kwargs):
         if fname.endswith(".toml"):

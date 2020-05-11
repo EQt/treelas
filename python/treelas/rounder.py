@@ -1,6 +1,8 @@
 """
 Utility functions regarding rounding operations
 """
+
+
 def _int_or_round(x, digits=8):
     """x is an `int` or return `_fround`"""
     if isinstance(x, float) and x.is_integer():
