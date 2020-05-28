@@ -14,6 +14,7 @@ from numba import njit, jitclass, int64
 
 from graphidx.graphviz import print_tree
 from .graphio import load_tree
+
 # from queue import Queue
 
 
@@ -29,6 +30,7 @@ _Queue = [
 @jitclass(_Queue)
 class Queue(object):
     """Int queue of predefined size"""
+
     # __slots__ = ['n', 'first', 'last', 'a', 'size']
     def __init__(self, maxsize):
         self.n = maxsize
@@ -113,8 +115,8 @@ def reverse_levels(levels, bfs):
     # @njit
     def _reverse_levels(rev, levels, bfs):
         k = 0
-        for i in range(len(levels)-2, -1, -1):
-            for j in range(levels[i], levels[i+1]):
+        for i in range(len(levels) - 2, -1, -1):
+            for j in range(levels[i], levels[i + 1]):
                 rev[k] = bfs[j]
                 k += 1
 
@@ -146,39 +148,41 @@ def process(treeh5, debug=False, plot_hist=False, args=None, dfs_order=True):
     dacc = np.diff(access)
     if args is not None and args.print_rbfs:
         for i in range(n):
-            print(i, ci[vc[i]:vc[i+1]], file=sys.stderr)
-        print('   bfs', bfs, file=sys.stderr)
-        print('  rbfs', rbfs, file=sys.stderr)
-        print(' irbfs', irbfs, file=sys.stderr)
-        print('access', access, file=sys.stderr)
+            print(i, ci[vc[i] : vc[i + 1]], file=sys.stderr)
+        print("   bfs", bfs, file=sys.stderr)
+        print("  rbfs", rbfs, file=sys.stderr)
+        print(" irbfs", irbfs, file=sys.stderr)
+        print("access", access, file=sys.stderr)
     if plot_hist:
         max_hist = 30
         if not dfs_order:
             assert dacc.min() >= 0
             max_hist = dacc.max()
-        print('max(access distance) =', dacc.max(), file=sys.stderr)
-        print('mean(abs(access distance)) =', np.abs(dacc).mean(),
-              file=sys.stderr)
+        print("max(access distance) =", dacc.max(), file=sys.stderr)
+        print("mean(abs(access distance)) =", np.abs(dacc).mean(), file=sys.stderr)
         plt.hist(dacc, max_hist)
     print(dacc.mean(), file=sys.stderr)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('-p', '--plot-hist', action='store_true',
-                   help='Plot a histogram')
-    p.add_argument('-r', '--print-rbfs', action='store_true',
-                   help='Print reversed bfs')
-    p.add_argument('-d', '--dot', action='store_true',
-                   help='Print tree in dot format')
-    p.add_argument('-f', '--dfs-order', action='store_true',
-                   help='Do the same but with DFS instead of BFS')
-    p.add_argument('treeh5', type=str, nargs='+',
-                   help='Tree(s) to process')
+    p.add_argument("-p", "--plot-hist", action="store_true", help="Plot a histogram")
+    p.add_argument(
+        "-r", "--print-rbfs", action="store_true", help="Print reversed bfs"
+    )
+    p.add_argument(
+        "-d", "--dot", action="store_true", help="Print tree in dot format"
+    )
+    p.add_argument(
+        "-f",
+        "--dfs-order",
+        action="store_true",
+        help="Do the same but with DFS instead of BFS",
+    )
+    p.add_argument("treeh5", type=str, nargs="+", help="Tree(s) to process")
     args = p.parse_args()
     for t in args.treeh5:
-        print('Processing', t, file=sys.stderr)
-        process(t, plot_hist=args.plot_hist, args=args,
-                dfs_order=args.dfs_order)
+        print("Processing", t, file=sys.stderr)
+        process(t, plot_hist=args.plot_hist, args=args, dfs_order=args.dfs_order)
         if args.plot_hist:
             plt.show()

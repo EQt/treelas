@@ -4,6 +4,7 @@ import toml
 
 class NumPyEncoder(toml.TomlEncoder):
     """Encode numpy arrays similar to lists, not as list of str"""
+
     def __init__(self):
         super().__init__()
         self.dump_funcs[np.int64] = self.dump_funcs[int]

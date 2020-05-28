@@ -8,8 +8,9 @@ from ._treelas.timer import Seconds
 
 
 _libname = "libtreelars.so"
-_libfname = path.join(path.dirname(__file__),
-                      "..", "..", "rust", "target", "release", _libname)
+_libfname = path.join(
+    path.dirname(__file__), "..", "..", "rust", "target", "release", _libname
+)
 
 if path.exists(_libfname):
     _lib = ctypes.CDLL(_libfname)
@@ -22,11 +23,11 @@ if path.exists(_libfname):
     ]
 
     def line_las(
-            y: np.ndarray,
-            lam: float,
-            out: np.ndarray = None,
-            verbose: bool = False,
-            timer: Seconds = Seconds(),
+        y: np.ndarray,
+        lam: float,
+        out: np.ndarray = None,
+        verbose: bool = False,
+        timer: Seconds = Seconds(),
     ) -> np.ndarray:
         y = y.reshape(-1).astype(float)
         if out is None:
@@ -38,7 +39,7 @@ if path.exists(_libfname):
             len(y),
             out.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),
             y.ctypes.data_as(ctypes.POINTER(ctypes.c_double)),
-            lam
+            lam,
         )
         timer.value = duration
         return out

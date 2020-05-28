@@ -56,4 +56,3 @@ def line_las(y, lam, x=None, increasing=True, verbose=False, timer=None):
     if not increasing:
         raise NotImplementedError("")
     return line_dp(y=y, lam=lam, out=x, verbose=verbose, timer=timer)
-

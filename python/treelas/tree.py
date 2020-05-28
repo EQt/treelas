@@ -8,13 +8,14 @@ from . import _treelas as _tl
 
 class TreeInstance(Tree):
     """Fused lasso tree instance (including all weight-parameters)"""
+
     def __init__(self, y, parent, lam, mu=1.0, root=-1):
-        assert isinstance(lam, float) or \
-            (isinstance(lam, np.ndarray) and lam.dtype == np.float64), \
-            f"{type(lam)}"
-        assert isinstance(mu, float) or \
-            (isinstance(mu, np.ndarray) and mu.dtype == np.float64), \
-            f"{type(mu)}"
+        assert isinstance(lam, float) or (
+            isinstance(lam, np.ndarray) and lam.dtype == np.float64
+        ), f"{type(lam)}"
+        assert isinstance(mu, float) or (
+            isinstance(mu, np.ndarray) and mu.dtype == np.float64
+        ), f"{type(mu)}"
         super().__init__(parent, root=root)
         self.y = np.asarray(y, dtype=np.float64)
         self.lam = lam
@@ -37,23 +38,27 @@ parent = {repr(self.parent)})"""
         """Compute a primal solution self.x (return self)"""
         if isinstance(self.lam, float) and isinstance(self.mu, float):
             assert self.mu > 0
-            self.x = _tl.tree_dp(y=self.y,
-                                 parent=self.parent,
-                                 lam=self.lam,
-                                 root=self.root,
-                                 mu=self.mu,
-                                 x=x,
-                                 verbose=verbose,
-                                 **args)
+            self.x = _tl.tree_dp(
+                y=self.y,
+                parent=self.parent,
+                lam=self.lam,
+                root=self.root,
+                mu=self.mu,
+                x=x,
+                verbose=verbose,
+                **args,
+            )
         else:
-            self.x = _tl.tree_dp(y=self.y,
-                                 parent=self.parent,
-                                 lam=self.lam,
-                                 mu=self.mu,
-                                 root=self.root,
-                                 x=x,
-                                 verbose=verbose,
-                                 **args)
+            self.x = _tl.tree_dp(
+                y=self.y,
+                parent=self.parent,
+                lam=self.lam,
+                mu=self.mu,
+                root=self.root,
+                x=x,
+                verbose=verbose,
+                **args,
+            )
         return self
 
     def dsolve(self, max_iter=20):
@@ -77,11 +82,13 @@ parent = {repr(self.parent)})"""
             self.z = self.mu * (self.x - self.y0)
 
         if self.alpha is None or not np.isnan(self.alpha[self.root]):
-            self.alpha = _tl.tree_dual(parent=self.parent,
-                                       z=self.z.copy(),
-                                       post_ord=self._postord,
-                                       root=self.root,
-                                       alpha=self.alpha)
+            self.alpha = _tl.tree_dual(
+                parent=self.parent,
+                z=self.z.copy(),
+                post_ord=self._postord,
+                root=self.root,
+                alpha=self.alpha,
+            )
         return self.alpha
 
     @property
@@ -90,8 +97,9 @@ parent = {repr(self.parent)})"""
         alpha = self.dual
         if self._gamma is None:
             self._gamma = np.empty_like(alpha)
-        self._gamma = _tl.tree_dual_gap(self.x, alpha, self.lam, self.parent,
-                                        root_val, gamma=self._gamma)
+        self._gamma = _tl.tree_dual_gap(
+            self.x, alpha, self.lam, self.parent, root_val, gamma=self._gamma
+        )
         return self._gamma
 
     @property
@@ -108,18 +116,15 @@ parent = {repr(self.parent)})"""
 
     def _to_write(self) -> Dict[str, Any]:
         to_write = dict(
-            parent=self.parent,
-            y=self.y,
-            lam=self.lam,
-            mu=self.mu,
-            root=self.root)
-        for n, v in {'x': self.x, 'alpha': self.alpha}.items():
+            parent=self.parent, y=self.y, lam=self.lam, mu=self.mu, root=self.root
+        )
+        for n, v in {"x": self.x, "alpha": self.alpha}.items():
             if v is not None:
                 to_write[n] = v
         if isinstance(self.mu, (int, float)) and self.mu == 1.0:
-            del to_write['mu']
+            del to_write["mu"]
         if isinstance(self.lam, float):
-            to_write['lam'] = [to_write['lam']]
+            to_write["lam"] = [to_write["lam"]]
         return to_write
 
     def save(self, fname, *args, **kwargs):
@@ -131,20 +136,21 @@ parent = {repr(self.parent)})"""
     def _save_toml(self, fname, header="tree"):
         from . import _toml as toml
 
-        with open(fname, 'w') as io:
+        with open(fname, "w") as io:
             toml.dump({header: [self._to_write()]}, io)
 
     def _save_h5(self, fname, group="/", overwrite=True, compression=4):
         """Store in HDF5 file format"""
         import h5py
 
-        with h5py.File(fname, 'a') as io:
+        with h5py.File(fname, "a") as io:
             if group != "/":
                 if group in io:
                     if not overwrite:
                         raise RuntimeError(
-                            f"{group} already exists in {fname}. Overwrite?")
-                    else:       # overwrite
+                            f"{group} already exists in {fname}. Overwrite?"
+                        )
+                    else:  # overwrite
                         del io[group]
                 io = io.create_group(group)
             for n, v in self._to_write().items():
@@ -153,7 +159,7 @@ parent = {repr(self.parent)})"""
                         del io[n]
                     else:
                         raise RuntimeError(f"Allow to delete {n} in {fname}?")
-                if n in ["root"]:       # support compression?
+                if n in ["root"]:  # support compression?
                     io.create_dataset(n, data=v)
                 else:
                     io.create_dataset(n, data=v, compression=compression)

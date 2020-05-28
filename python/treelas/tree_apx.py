@@ -20,18 +20,22 @@ from .bfs import compute_bfs, compute_children, compute_levels, reverse_levels
 
 PRINT_MAX = 10
 
-float_t = 'f4'
-int_t = 'i4'
+float_t = "f4"
+int_t = "i4"
 
-Node = numba.from_dtype(np.dtype([
-    # ('id',     int_t),   # only for debugging
-    ('y',      float_t),
-    ('x',      float_t),
-    ('deriv',  float_t),
-    ('parent', int_t)
-]))
-double = Node.fields['x'][0]
-int64 = Node.fields['parent'][0]
+Node = numba.from_dtype(
+    np.dtype(
+        [
+            # ('id',     int_t),   # only for debugging
+            ("y", float_t),
+            ("x", float_t),
+            ("deriv", float_t),
+            ("parent", int_t),
+        ]
+    )
+)
+double = Node.fields["x"][0]
+int64 = Node.fields["parent"][0]
 
 
 def njit(*argp, **args):
@@ -71,7 +75,7 @@ def clip(x, a, b):
 def discrete_flsa(nodes, delta, lam, mu=0.5):
     n = len(nodes)
     for v in nodes:
-        v.deriv = 2.0*mu * (v.x - v.y)
+        v.deriv = 2.0 * mu * (v.x - v.y)
 
     # compute derivative
     for v in nodes:
@@ -94,17 +98,17 @@ def discrete_flsa(nodes, delta, lam, mu=0.5):
     # print("r.i", r.i)
 
     # backtracing
-    for i in range(n-2, -1, -1):
+    for i in range(n - 2, -1, -1):
         v = nodes[i]
         p = nodes[v.parent]
         if abs(p.x - v.x) <= delta:  # in same range?
-            if v.deriv > lam:        # usual clipping
+            if v.deriv > lam:  # usual clipping
                 v.x -= c
             elif v.deriv < -lam:
                 v.x += c
             else:
                 v.x = p.x
-        else:                        # in different ranges
+        else:  # in different ranges
             d = v.deriv + (-lam if v.x < p.x else +lam)
             v.x += c if d < 0 else -c
         # print(' --> % .3f' % v.x)
@@ -127,15 +131,16 @@ def discrete_solution(x_opt, x_base, delta):
 
 def extract_x(nodes, order):
     """Reorder the nodes.x values and return as numpy array"""
+
     @njit
     def _extract_x(x, nodes, order):
         for i, ii in enumerate(order):
             x[ii] = nodes[i].x
         return x
 
-    return _extract_x(np.empty(len(nodes), dtype=Node.fields['x'][0].name),
-                      nodes,
-                      order)
+    return _extract_x(
+        np.empty(len(nodes), dtype=Node.fields["x"][0].name), nodes, order
+    )
 
 
 def process_tree(treeh5, args=None):
@@ -144,13 +149,18 @@ def process_tree(treeh5, args=None):
     """
     with Timer("Loading Tree"):
         tree = load_tree(treeh5)
-        with h5py.File(treeh5, 'r') as io:
-            y = io['y'][()]
-            lam = io['lam'][()]
+        with h5py.File(treeh5, "r") as io:
+            y = io["y"][()]
+            lam = io["lam"][()]
             if not isinstance(lam, float):
                 lam = float(lam[0])
-            xt = io['xt'][()] if 'xt' in io else \
-                io['x++'][()] if 'x++' in io else None
+            xt = (
+                io["xt"][()]
+                if "xt" in io
+                else io["x++"][()]
+                if "x++" in io
+                else None
+            )
 
     parent = tree.parent
     root = tree.root
@@ -177,10 +187,10 @@ def process_tree(treeh5, args=None):
         bfs = compute_bfs(vc, ci, root=root)
     with Timer("Reverse BFS"):
         rbfs = bfs.copy()[::-1]
-    with h5py.File(treeh5, 'r+') as io:
-        if 'bfs' not in io:
+    with h5py.File(treeh5, "r+") as io:
+        if "bfs" not in io:
             with Timer("Write BFS"):
-                io.create_dataset('bfs', data=bfs)
+                io.create_dataset("bfs", data=bfs)
     preorder = bfs.copy()
     levels = None
     if args is not None and args.use_levels:
@@ -189,13 +199,13 @@ def process_tree(treeh5, args=None):
     if n <= PRINT_MAX:
         if levels is not None:
             print(" levels:", levels)
-            for i in range(len(levels)-1):
-                print("  %d:" % i, bfs[levels[i]:levels[i+1]])
+            for i in range(len(levels) - 1):
+                print("  %d:" % i, bfs[levels[i] : levels[i + 1]])
                 print("\nrlevels:", levels[::-1])
                 nl = len(levels)
-            for i in range(len(levels)-1):
-                low = levels[nl-i-2]
-                upp = levels[nl-i-1]
+            for i in range(len(levels) - 1):
+                low = levels[nl - i - 2]
+                upp = levels[nl - i - 1]
                 print("  %d [%d:%d):" % (i, low, upp), bfs[low:upp])
 
     with Timer("Inverse Order"):
@@ -207,7 +217,7 @@ def process_tree(treeh5, args=None):
             backord = np.arange(n)[::-1]
         ipostord = iperm(postorder)
 
-    if 'i' in Node.fields:
+    if "i" in Node.fields:
         for i, ii in enumerate(postorder):
             nodes[i].i = ii
 
@@ -233,23 +243,22 @@ def process_tree(treeh5, args=None):
         # print(nodes)
         print("parent:", parent)
         print("access:", ipostord[parent[postorder]])
-        if 'i' in Node.fields:
-            print("parent:",
-                  np.array([nodes[nodes[i].parent].i for i in postorder]))
+        if "i" in Node.fields:
+            print("parent:", np.array([nodes[nodes[i].parent].i for i in postorder]))
         print("    x0:", nodes.x[ipostord])
 
     with Timer("Iterations:", end="\n"):
         for it in range(args.max_iter):
-            print(it+1, '...')
+            print(it + 1, "...")
             if n <= PRINT_MAX:
                 print("delta:", delta)
-                if 'i' in Node.fields:
+                if "i" in Node.fields:
                     print("nodes.i:", nodes.i)
                     print(" ident?:", nodes.i[ipostord])
                 xb = nodes.x[ipostord]
             discrete_flsa(nodes, delta, lam)
             if n <= PRINT_MAX:
-                if 'i' in Node.fields:
+                if "i" in Node.fields:
                     print("    i:", nodes.i[ipostord])
                 print("deriv:", nodes.deriv[ipostord])
                 print("    y:", nodes.y[ipostord])
@@ -278,32 +287,43 @@ def process_tree(treeh5, args=None):
 
         def plot():
             import matplotlib.pyplot as plt
+
             plt.plot(np.diff(levels))
             plt.show()
 
         multiprocessing.Process(target=plot).start()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('-i', '--max-iter', type=int, default=3,
-                   help='Number of iterations')
-    p.add_argument('-d', '--dot-tree', action='store_true',
-                   help='Show the tree (using graphviz)')
-    p.add_argument('-L', '--show-levels', action='store_true',
-                   help='Show the distribution of tree levels (depth)')
-    p.add_argument('-l', '--use-levels', action='store_true',
-                   help='Postorder = reverse Levels(BFS)')
-    p.add_argument('-s', '--scale-y', action='store_true',
-                   help='Scale y to [0,1]')
-    p.add_argument('-v', '--verbose', action='store_true',
-                   help='Be more verbose')
-    p.add_argument('treeh5', type=str, nargs='*',
-                   help='Tree(s) to process')
+    p.add_argument(
+        "-i", "--max-iter", type=int, default=3, help="Number of iterations"
+    )
+    p.add_argument(
+        "-d",
+        "--dot-tree",
+        action="store_true",
+        help="Show the tree (using graphviz)",
+    )
+    p.add_argument(
+        "-L",
+        "--show-levels",
+        action="store_true",
+        help="Show the distribution of tree levels (depth)",
+    )
+    p.add_argument(
+        "-l",
+        "--use-levels",
+        action="store_true",
+        help="Postorder = reverse Levels(BFS)",
+    )
+    p.add_argument("-s", "--scale-y", action="store_true", help="Scale y to [0,1]")
+    p.add_argument("-v", "--verbose", action="store_true", help="Be more verbose")
+    p.add_argument("treeh5", type=str, nargs="*", help="Tree(s) to process")
     args = p.parse_args()
     np.set_printoptions(precision=3)
     for t in args.treeh5:
-        print('Processing', t, file=sys.stderr)
+        print("Processing", t, file=sys.stderr)
         if args.verbose:
             PRINT_MAX = 20
         process_tree(t, args)

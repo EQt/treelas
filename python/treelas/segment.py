@@ -7,6 +7,7 @@ def line_segments(x, eps=1e-10):
     """Return indices idx where x changes, i.e. for all i=0..len(x)-1:
         x[idx[i]:idx[i+1]] is constant
     """
+
     @njit(cache=True)
     def _compute_segments(x, idx, eps):
         i = 0
@@ -21,17 +22,17 @@ def line_segments(x, eps=1e-10):
         return i
 
     n = len(x)
-    idx = np.zeros(n+1, dtype=int)
+    idx = np.zeros(n + 1, dtype=int)
     i = _compute_segments(x, idx, eps)
-    idx.resize(i+1)
+    idx.resize(i + 1)
     return idx
 
 
 def mean_segments(y, segs, x=None):
     if x is None:
         x = np.zeros_like(y)
-    for i in range(len(segs)-1):
-        a, b = segs[i], segs[i+1]
+    for i in range(len(segs) - 1):
+        a, b = segs[i], segs[i + 1]
         x[a:b] = y[a:b].mean()
     return x
 
