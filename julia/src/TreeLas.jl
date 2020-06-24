@@ -11,6 +11,7 @@ Hereby is
 - ``\\lambda_{ij} > 0`` is the edge weight for ``(i,j)``.
 """
 module TreeLas
+import GraphIdx
 
 include("utils.jl")
 include("dual.jl")
@@ -20,5 +21,8 @@ include("tree_dp.jl")
 # include("tree_dp.old.jl")
 # include("cxx.jl")
 include("mgt.jl")
+
+include("precompile.jl")
+_precompile_()
 
 end
