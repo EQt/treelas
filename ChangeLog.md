@@ -1,6 +1,10 @@
 ChangeLog
 ---------
 
+### v0.15.4
+Released 2020-07-17
+Collect minor changes over time
+
 ### v0.14.1
 Released 2019-11-25
 - Fixed Bug in Julia: index shift
