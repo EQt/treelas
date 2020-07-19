@@ -116,8 +116,8 @@ if (TARGET minih5)
     add_executable(tree_apx cxx/bin/tree_apx.cpp cxx/tree_apx.cpp)
     target_link_libraries(tree_apx argparser minih5)
 
-    add_executable(tree_solve cxx/bin/tree_solve.cpp $<TARGET_OBJECTS:tree_dp>)
-    target_link_libraries(tree_solve argparser minih5)
+    add_executable(tree_opt cxx/bin/tree_opt.cpp $<TARGET_OBJECTS:tree_dp>)
+    target_link_libraries(tree_opt argparser minih5)
 
     add_executable(graph2h5 cxx/bin/graph2h5.cpp)
     target_link_libraries(graph2h5 graphidx minih5 argparser)
