@@ -25,7 +25,7 @@ ArgParser::add_option(char short_name, const char *long_name,
 
 ArgParser::ArgParserException::ArgParserException(const char *arg, int index)
     : std::runtime_error("Could not parse argument nr " + std::to_string(index) +
-                         ": \"" + std::string(arg) + "\"")
+                         ": \"" + std::string(arg ? arg : "(nullptr)") + "\"")
 {}
 
 

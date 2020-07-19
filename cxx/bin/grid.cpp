@@ -44,12 +44,12 @@ generate(const int n1, const int n2, const char *outfn)
 int
 main(int argc, char *argv[])
 {
+    ArgParser ap (
+        "grid\n"
+        "\n"
+        "Generate edges of grid graph and store them as HDF5 file"
+    );
     try {
-        ArgParser ap (
-            "grid\n"
-            "\n"
-            "Generate edges of grid graph and store them as HDF5 file"
-        );
         ap.add_option('o', "out", "Output file", "FILE", "grid.h5");
         ap.add_option('i', "img", "Take dimensions from HDF5 file", "FILE");
         ap.add_option('w', "width", "Width (number of columns)", "INT", "5");
@@ -78,6 +78,9 @@ main(int argc, char *argv[])
 
         std::cout << n1 << "x" << n2 << " => " << outfn << std::endl;
         generate(n1, n2, outfn);
+    } catch (ArgParser::ArgParserException &e) {
+        fprintf(stderr, "%s\n", e.what());
+        ap.print_usage();
     } catch (std::runtime_error &e) {
         fprintf(stderr, "EXCEPTION: %s\n", e.what());
         return 1;
