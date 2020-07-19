@@ -33,7 +33,8 @@ void
 ArgParser::parse(int *argc, char *argv[])
 {
     if (include_help)
-        this->add_option('h', "help", "Print this help");
+        this->add_option(short2long_names.count('h') > 0 ? '\0' : 'h',
+                         "help", "Print this help");
     std::vector<char *> unparsed_args;
     for (int i = 1; i < *argc; i++) {
         if (argv[i][0] == '-' && argv[i][1] != '\0') {
@@ -162,7 +163,11 @@ ArgParser::print_usage(FILE *out,
             long_param += " " + std::string(o.param_value);
         const auto pos = std::max(4 + 2 + long_param.length(), desc_indent);
         const auto desc = wrap_line(o.description, pos, desc_indent, text_width);
-        fprintf(out, " -%c --%-*s %s\n",
-                o.short_name, long_param_len, long_param.c_str(), desc.c_str());
+        if (o.short_name)
+            fprintf(out, " -%c --%-*s %s\n",
+                    o.short_name, long_param_len, long_param.c_str(), desc.c_str());
+        else
+            fprintf(out, "    --%-*s %s\n",
+                    long_param_len, long_param.c_str(), desc.c_str());
     }
 }
