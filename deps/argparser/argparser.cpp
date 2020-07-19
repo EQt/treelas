@@ -1,6 +1,4 @@
 #include "argparser.hpp"
-#include <algorithm>
-#include <regex>
 
 
 void
@@ -9,6 +7,12 @@ ArgParser::add_option(char short_name, const char *long_name,
                       const char *param_value,
                       const char *default_value)
 {
+    if (short2long_names.count(short_name) > 0)
+        throw std::invalid_argument(std::string("short option with '") +
+                                    short_name + "' already exists");
+    if (options.count(long_name) > 0)
+        throw std::invalid_argument(std::string("long option with --") +
+                                    long_name + " already exists");
     if (long_name == nullptr)
         throw std::runtime_error("long_name == NULL");
     options[long_name] = {short_name, description, param_value, default_value};
@@ -21,7 +25,7 @@ ArgParser::add_option(char short_name, const char *long_name,
 
 ArgParser::ArgParserException::ArgParserException(const char *arg, int index)
     : std::runtime_error("Could not parse argument nr " + std::to_string(index) +
-                         ": \"" + std::string(arg) + "\"")
+                         ": \"" + std::string(arg ? arg : "(nullptr)") + "\"")
 {}
 
 
@@ -29,7 +33,8 @@ void
 ArgParser::parse(int *argc, char *argv[])
 {
     if (include_help)
-        this->add_option('h', "help", "Print this help");
+        this->add_option(short2long_names.count('h') > 0 ? '\0' : 'h',
+                         "help", "Print this help");
     std::vector<char *> unparsed_args;
     for (int i = 1; i < *argc; i++) {
         if (argv[i][0] == '-' && argv[i][1] != '\0') {
@@ -73,7 +78,6 @@ ArgParser::parse_long_option(const char *long_name, char *argv[], int *i)
 }
 
 
-
 bool
 ArgParser::parse_arg(char *argv[], int *i)
 {
@@ -96,7 +100,6 @@ ArgParser::get_option(const char *long_name)
         return nullptr;
     return options[long_name].value;
 }
-
 
 
 bool
@@ -160,7 +163,11 @@ ArgParser::print_usage(FILE *out,
             long_param += " " + std::string(o.param_value);
         const auto pos = std::max(4 + 2 + long_param.length(), desc_indent);
         const auto desc = wrap_line(o.description, pos, desc_indent, text_width);
-        fprintf(out, " -%c --%-*s %s\n",
-                o.short_name, long_param_len, long_param.c_str(), desc.c_str());
+        if (o.short_name)
+            fprintf(out, " -%c --%-*s %s\n",
+                    o.short_name, long_param_len, long_param.c_str(), desc.c_str());
+        else
+            fprintf(out, "    --%-*s %s\n",
+                    long_param_len, long_param.c_str(), desc.c_str());
     }
 }
