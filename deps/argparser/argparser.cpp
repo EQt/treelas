@@ -79,7 +79,6 @@ ArgParser::parse_long_option(const char *long_name, char *argv[], int *i)
 }
 
 
-
 bool
 ArgParser::parse_arg(char *argv[], int *i)
 {
@@ -102,7 +101,6 @@ ArgParser::get_option(const char *long_name)
         return nullptr;
     return options[long_name].value;
 }
-
 
 
 bool
