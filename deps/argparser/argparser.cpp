@@ -12,6 +12,9 @@ ArgParser::add_option(char short_name, const char *long_name,
     if (short2long_names.count(short_name) > 0)
         throw std::invalid_argument(std::string("short option with '") +
                                     short_name + "' already exists");
+    if (options.count(long_name) > 0)
+        throw std::invalid_argument(std::string("long option with --") +
+                                    long_name + " already exists");
     if (long_name == nullptr)
         throw std::runtime_error("long_name == NULL");
     options[long_name] = {short_name, description, param_value, default_value};
