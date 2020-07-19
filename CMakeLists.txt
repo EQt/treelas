@@ -156,9 +156,12 @@ if (BUILD_TESTS)
         cxx/test/test_tree_dp.cpp
         cxx/test/test_tree_dp_2.cpp
         cxx/test/test_tree_apx.cpp
-        $<TARGET_OBJECTS:line_para>
     )
-target_link_libraries(doctests PRIVATE doctest::doctest graphidx)
+    target_link_libraries(doctests PRIVATE
+        doctest::doctest
+        graphidx
+        line_para
+    )
 endif()
 
 # Local Variables:
