@@ -93,7 +93,8 @@ if (BUILD_PYEXT)
 
     if (ASAN)
         execute_process(
-            COMMAND ${CMAKE_CXX_COMPILER} -print-file-name=libasan${CMAKE_SHARED_LIBRARY_SUFFIX}
+            COMMAND "${CMAKE_CXX_COMPILER} \
+                        -print-file-name=libasan${CMAKE_SHARED_LIBRARY_SUFFIX}"
             OUTPUT_VARIABLE LD_PRELOAD
             OUTPUT_STRIP_TRAILING_WHITESPACE
         )
