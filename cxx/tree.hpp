@@ -1,7 +1,5 @@
 #pragma once
-#include <cassert>
-#include <stdexcept>
-#include <string>
+#include <vector>
 
 
 template <typename float_ = double, typename int_ = int>
