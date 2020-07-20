@@ -1,4 +1,5 @@
 #include "argparser.hpp"
+#include <algorithm>    // for std::min
 
 
 void
