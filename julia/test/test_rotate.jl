@@ -1,11 +1,12 @@
 module TestRotate
 
+using Test
+
 import GraphIdx
 import GraphIdx: IncidenceIndex, Vec
 import GraphIdx.Tree: ChildrenIndex, hierarchy_string
 import GraphIdx.Tree: lowest_common_ancestors, root_node
 import GraphIdx.Tree: dfs_finish
-using Test
 
 include("cycle.jl")
 

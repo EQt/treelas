@@ -1,6 +1,6 @@
 module Utils
 
-import GraphIdx: Const, enumerate_edges
+import GraphIdx: Const, enumerate_edges, Graph, Weights
 
 
 """
@@ -14,7 +14,7 @@ julia> TreeLas.Utils.sum2([1, 11])
 
 ```
 """
-function sum2(x::Array{F,N})::F where{F<:Real,N}
+function sum2(x::Array{F,N})::F where{F<:Real, N}
     local s::F = zero(F)
     for xi in x
         s += xi^2
@@ -32,12 +32,12 @@ Compute the objective function, i.e.
 ```
 Hereby the edges (and edge weights ``λ_{ij}``) are obtained via `enumerate_edges(graph)`.
 """
-function primal_objective(
+@inline function primal_objective(
     x::Array{F,N},
     y::Array{F,N},
     graph::G,
     mu::F2 = Const(1.0),
-)::F where {F,N,G,F1,F2}
+)::F where {F, N, G<:Graph, F1<:Weights{F}, F2<:Weights{F}}
     @assert length(y) == length(x)
     local n = length(x)
     local obj::Ref{F} = Ref{F}(0.5 * sum(mu[i] * (x[i] - y[i])^2 for i = 1:n))

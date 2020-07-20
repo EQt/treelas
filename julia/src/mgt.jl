@@ -75,7 +75,9 @@ func(istree, i, u, v)
 whereby `istree` tells whether the edge is a tree edge.
 If it is a tree edge, `u` is the child of `v`.
 """
-function enumerate_typed_edges(func::Function, graph::Graph, parent::Vector{Int})
+@inline function enumerate_typed_edges(
+    func::Func, graph::Graph, parent::Vector{Int}
+) where {Func<:Function}
     enumerate_edges(graph) do i::Int, u::Int, v::Int
         if parent[v] == u
             func(true, i, v, u)
@@ -102,13 +104,13 @@ function gaplas(
     lambda::Vector{Float64};
     root_node::Int = 1,
     mu::Wmu = Ones{Float64}(),
-    max_iter::Integer = 3,
+    max_iter::I = 3,
     verbose::Bool = true,
     process::Fu1 = x->nothing,
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
     learn::Float64 = 1.0,
-)::Array{Float64,N} where {N, Fu1<:Function, Fu2<:Function, Fu3<:Function, Wmu}
+)::Array{Float64,N} where {N, I<:Integer, Fu1<:Function, Fu2<:Function, Fu3<:Function, Wmu}
     local m = num_edges(graph)
     local n = length(y)
     @assert n == num_nodes(graph)
@@ -185,10 +187,10 @@ function gaplas(
     return x
 end
 
-gaplas(y::Array, edges, λ::Float64; args...) =
+gaplas(y::Array, edges, λ::Float64; args::Args...) where {Args}=
     gaplas(y, edges, fill(λ, length(edges)); args...)
 
-gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Vector{Float64}; args...) where {E} =
+gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Vector{Float64}; args::Args...) where {Args} =
     gaplas(y, EdgeGraph(length(y), edges), λ; args...)
 
 
@@ -203,8 +205,9 @@ function gaplas(
     y::Array{F,N},
     g::Graph,
     λ::Weights,
-    μ::Weights = Ones{F}(),
-)::Array{F,N} where {F, N}
+    μ::Weights = Ones{F}();
+    args::Args...
+)::Array{F,N} where {F, N, Args}
     x = copy(y)
     α = zeros(num_edges(g))
     error("notimplemented")
