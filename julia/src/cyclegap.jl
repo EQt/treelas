@@ -5,6 +5,7 @@ import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
+import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
 
 
 function Base.collect(g::Graph)::EdgeGraph
@@ -68,7 +69,7 @@ function gaplas!(
     y::Array{Float64,N},
     graph::GraphT,
     lambda::Weights{Float64},
-)::Array{Float64,N} where {N, GraphT<:Graph}
+) where {N, GraphT<:Graph}
     gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)
 end
 
