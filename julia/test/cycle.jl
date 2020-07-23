@@ -83,7 +83,7 @@ For every cycle call function `func(ei, u, v, r)` whereby
 Notice that for every edge `(u, v)` the function is called twice:
 With `(u, v)` and `(v, u)`.
 """
-function enumerate_non_tree(func::Function, cb::CycleBasis)
+@inline function enumerate_non_tree(func::F, cb::CycleBasis) where {F<:Function}
     n = GraphIdx.num_nodes(cb)
     for v = 1:n
         for (u, i) in cb.non_tree_idx[v]
@@ -99,7 +99,9 @@ end
 
 Return the weights
 """
-function extract_rotate(cb::CycleBasis, lam::Weights{F})::Tuple{Vector{F}, Vector{F}} where {F}
+function extract_rotate(
+    cb::CycleBasis, lam::Weights{F}
+)::Tuple{Vector{F}, Vector{F}} where {F}
     n = GraphIdx.num_nodes(cb)
     m = GraphIdx.num_edges(cb)
     tlam = Vector{Float64}(undef, n)
