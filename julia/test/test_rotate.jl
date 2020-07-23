@@ -31,11 +31,11 @@ include("cycle.jl")
     n = GraphIdx.num_nodes(g)
     m = GraphIdx.num_edges(g)
     lam = Vec(Float64.(collect(1:m)))
-    cb = extract_cyclebasis(g, cidx, pi)
+    cb = Cycle.extract_cyclebasis(g, cidx, pi)
     @test cb.non_tree_edges == [2 => 4, 4 => 6]
     @test cb.lca == [1, 3]
 
-    tlam0, tlam = extract_rotate(cb, lam)
+    tlam0, tlam = Cycle.extract_rotate(cb, lam)
     @test tlam[2:end] ≈ [7, 10, 15, 12, 10]
     @test tlam0[2:end] ≈ [1, 4, 2, 5, 3]
 end
@@ -56,11 +56,11 @@ end
     n = GraphIdx.num_nodes(g)
     m = GraphIdx.num_edges(g)
     lam = Vec(Float64.(collect(1:m)))
-    cb = extract_cyclebasis(g, cidx, pi)
+    cb = Cycle.extract_cyclebasis(g, cidx, pi)
     @test cb.non_tree_edges == [3 => 4, 2 => 4]
     @test cb.lca == [3, 1]
 
-    tlam0, tlam = extract_rotate(cb, lam)
+    tlam0, tlam = Cycle.extract_rotate(cb, lam)
     @test tlam0[2:end] ≈ [1, 4, 7, 5, 3]
     @test tlam[2:end] ≈ (tlam0[2:end] .+ 6) + [0, 0, 2, 2, 2]
 end

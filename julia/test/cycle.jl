@@ -1,6 +1,8 @@
+module Cycle
+
 import GraphIdx
 import GraphIdx: IncidenceIndex, Weights, Graph
-import GraphIdx.Tree: ChildrenIndex
+import GraphIdx.Tree: ChildrenIndex, root_node, lowest_common_ancestors, dfs_finish
 
 
 """
@@ -124,3 +126,5 @@ end
         extract_rotate(cb, lam)..., cb.non_tree_edges, cb.lca
     end
 )
+
+end
