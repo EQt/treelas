@@ -99,7 +99,7 @@ end
 
 Return the weights
 """
-function extract_rotate(cb::CycleBasis, lam::Weights)
+function extract_rotate(cb::CycleBasis, lam::Weights{F})::Tuple{Vector{F}, Vector{F}} where {F}
     n = GraphIdx.num_nodes(cb)
     m = GraphIdx.num_edges(cb)
     tlam = Vector{Float64}(undef, n)
