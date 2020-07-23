@@ -1,0 +1,64 @@
+module CycleGap
+
+import GraphIdx
+import GraphIdx: Graph, Weights, WeightedGraph
+import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
+
+import TreeLas.TreeDP: TreeDPMem, tree_dp!
+
+
+struct GapMem{N}
+    x::Array{Float64,N}
+    alpha::Vector{Float64}
+    gamma::Vector{Float64}
+    tree_lam::Vector{Float64}
+    dp_mem::TreeDPMem
+    mst_mem::PrimMstMem
+    wgraph::WeightedGraph
+end
+
+function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
+    m = GraphIdx.num_edges(graph)
+    n = GraphIdx.num_nodes(graph)
+    @assert length(y) == n
+    mst_mem = PrimMstMem(graph)
+    lam = Float64[lambda[i] for i=1:m]
+    GapMem(
+        copy(y),
+        zeros(Float64, m),
+        Vector{Float64}(undef, m),
+        Vector{Float64}(undef, n),
+        TreeDPMem(n),
+        mst_mem,
+        WeightedGraph(mst_mem.neighbors, lam),
+    )
+end
+
+
+function gaplas(
+    y::Array{Float64,N},
+    graph::GraphT,
+    lambda::Weights{Float64};
+    max_iter::Int = 5,
+)::Array{Float64,N} where {N, GraphT<:Graph}
+    mem = GapMem(y, graph, lambda)
+    for it in 1:max_iter
+        gaplas!(mem, y, graph, lambda)
+    end
+    return mem.x
+end
+
+
+function gaplas!(
+    mem::GapMem{N},
+    y::Array{Float64,N},
+    graph::GraphT,
+    lambda::Weights{Float64},
+)::Array{Float64,N} where {N, GraphT<:Graph}
+    gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)
+end
+
+
+
+
+end

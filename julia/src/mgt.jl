@@ -32,6 +32,7 @@ import GraphIdx.Tree: RootedTree
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 import GraphIdx: WeightedGraph, enumerate_edges, num_edges, num_nodes
 import GraphIdx: Const, Vec, Ones, Weights
+
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
 import ..Dual: dual!, gap_vec!, primal_from_dual!
@@ -133,8 +134,9 @@ function gaplas(
     end
 
     for it in 1:max_iter
+        @time begin
         gap_vec!(γ, x, alpha, wgraph, -1.0)
-        if verbose
+        @time if verbose
             if n < 30 && it > 1 && false
                 tree_gamma_check(γ, alpha, tlam, selected,
                                  x, z, dp_mem.proc_order, parent)
@@ -161,12 +163,12 @@ function gaplas(
             println()
         end
 
-        prim_mst_edges(γ, root_node, mst_mem)
+        @time prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         z .= y
         extract_non_tree!(graph, parent, z, alpha, tlam, lambda)
         x_new .= x
-        tree_dp!(x_new, z, tree, Vec(tlam), mu, dp_mem)
+        @time tree_dp!(x_new, z, tree, Vec(tlam), mu, dp_mem)
         if !(x === x_new)
             x .= (1 - learn) .* x .+ learn .* x_new
         end
@@ -184,6 +186,7 @@ function gaplas(
             end
         end
         dprocess(alpha)
+        end
     end
 
     return x
