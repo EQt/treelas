@@ -1,10 +1,23 @@
 module CycleGap
 
 import GraphIdx
-import GraphIdx: Graph, Weights, WeightedGraph
+import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
+
+
+function Base.collect(g::Graph)::EdgeGraph
+    m = GraphIdx.num_edges(g)
+    n = GraphIdx.num_nodes(g)
+    edges = Vector{Edge{Int}}(undef, m)
+    GraphIdx.enumerate_edges(g) do i::Int, u::Int, v::Int, ::Float64
+        edges[i] = Edge((u, v))
+    end
+    EdgeGraph(n, edges)
+end
+
+Base.collect(g::EdgeGraph)::EdgeGraph = g
 
 
 struct GapMem{N}
@@ -21,7 +34,8 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     m = GraphIdx.num_edges(graph)
     n = GraphIdx.num_nodes(graph)
     @assert length(y) == n
-    mst_mem = PrimMstMem(graph)
+    egraph = collect(graph)
+    mst_mem = PrimMstMem(egraph)
     lam = Float64[lambda[i] for i=1:m]
     GapMem(
         copy(y),
