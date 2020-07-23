@@ -35,16 +35,29 @@ GraphIdx.num_edges(cb::CycleBasis) =
 
 
 """
+    CycleBasis(graph)
+    CyccleBasis(m, n)
+
+If no tree is provided, just allocate the space.
+"""
+CycleBasis(g::Graph)::CycleBasis =
+    CycleBasis(GraphIdx.num_edges(g), GraphIdx.num_nodes(g))
+
+function CycleBasis(m::Integer, n::Integer)
+    non_tree = Vector{Pair{Int,Int}}()
+    non_tree_enum = Vector{Int}()
+    sizehint!(non_tree, m - n + 1)
+    sizehint!(non_tree_enum, m - n + 1)
+    tree_enum = Vector{Int}(undef, n)
+    error("not finished, yet")
+end
+
+"""
     CycleBasis(graph, pi, [cidx])
 
-Construct a cycle basis given a tree with parents `pi`
-and `cidx::ChildrenIndex`.
+Construct a cycle basis given a tree with parents `pi` and `cidx::ChildrenIndex`.
 """
-function CycleBasis(
-    g::Graph,
-    pi::Vector{Int},
-    cidx::ChildrenIndex,
-)::CycleBasis
+function CycleBasis(g::Graph, pi::Vector{Int}, cidx::ChildrenIndex)::CycleBasis
     n = GraphIdx.num_nodes(g)
     m = GraphIdx.num_edges(g)
     non_tree = Vector{Pair{Int,Int}}()
