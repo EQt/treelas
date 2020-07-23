@@ -22,7 +22,8 @@ include("tree_dp.jl")
 # include("cxx.jl")
 include("mgt.jl")
 
+include("cycle.jl")
 include("precompile.jl")
-_precompile_()
+# _precompile_()
 
 end

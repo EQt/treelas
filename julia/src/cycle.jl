@@ -134,11 +134,4 @@ function extract_rotate(
 end
 
 
-@deprecate(
-    extract_rotate(graph::Graph, cidx::ChildrenIndex, pi::Vector{Int}, lam::Weights),
-    let cb = extract_cyclebasis(graph, cidx, pi)
-        extract_rotate(cb, lam)..., cb.non_tree_edges, cb.lca
-    end
-)
-
 end
