@@ -1,3 +1,11 @@
+"""
+Given a graph `g` and a rooted tree `t` within `g`, we can decompose `g` into cycles:
+
+Every non-tree edge `(u,v)` of `g` defines a cycle, i.e. the
+unique path `v --> u` within the tree `t` plus the edge `(u, v)` to close it.
+
+This module contains functions to compute within the cycle space.
+"""
 module Cycle
 
 import GraphIdx
@@ -98,6 +106,7 @@ end
     extract_rotate(cb, λ)
 
 Return the weights
+TODO: finish
 """
 function extract_rotate(
     cb::CycleBasis, lam::Weights{F}
