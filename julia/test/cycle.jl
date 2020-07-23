@@ -27,12 +27,12 @@ GraphIdx.num_edges(cb::CycleBasis) =
 
 
 """
-    extract_cyclebasis(graph, pi, [cidx])
+    CycleBasis(graph, pi, [cidx])
 
 Construct a cycle basis given a tree with parents `pi`
 and `cidx::ChildrenIndex`.
 """
-function extract_cyclebasis(
+function CycleBasis(
     g::Graph,
     pi::Vector{Int},
     cidx::ChildrenIndex,
@@ -68,8 +68,8 @@ function extract_cyclebasis(
     )
 end    
 
-extract_cyclebasis(g::Graph, pi::Vector{Int}) =
-    extract_cyclebasis(g, pi, ChildrenIndex(pi))
+CycleBasis(g::Graph, pi::Vector{Int}) =
+    CycleBasis(g, pi, ChildrenIndex(pi))
 
 
 """

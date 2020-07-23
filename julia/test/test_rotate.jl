@@ -31,7 +31,7 @@ include("cycle.jl")
     n = GraphIdx.num_nodes(g)
     m = GraphIdx.num_edges(g)
     lam = Vec(Float64.(collect(1:m)))
-    cb = Cycle.extract_cyclebasis(g, cidx, pi)
+    cb = Cycle.CycleBasis(g, pi, cidx)
     @test cb.non_tree_edges == [2 => 4, 4 => 6]
     @test cb.lca == [1, 3]
 
@@ -56,7 +56,7 @@ end
     n = GraphIdx.num_nodes(g)
     m = GraphIdx.num_edges(g)
     lam = Vec(Float64.(collect(1:m)))
-    cb = Cycle.extract_cyclebasis(g, cidx, pi)
+    cb = Cycle.CycleBasis(g, pi)
     @test cb.non_tree_edges == [3 => 4, 2 => 4]
     @test cb.lca == [3, 1]
 
