@@ -179,7 +179,9 @@ function gaplas(
             if !(alpha === alpha_new)
                 alpha .= (1 - learn) .* alpha .+ learn .* alpha_new
             end
-            duality_check(alpha, lambda)
+            if false
+                duality_check(alpha, lambda)
+            end
         end
         dprocess(alpha)
     end
