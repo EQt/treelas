@@ -1,5 +1,7 @@
 module CycleGap
 
+import Printf: @printf
+
 import GraphIdx
 import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
@@ -48,7 +50,7 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     mst = PrimMstMem(egraph)
     lam = Float64[lambda[i] for i=1:m]
     tree = RootedTree(root_node, mst.parent)
-    GapMem(
+    return GapMem(
         copy(y),                        # x
         similar(y),                     # z
         zeros(Float64, m),              # alpha
@@ -70,10 +72,16 @@ function gaplas(
     lambda::Weights{Float64},
     mu::W2 = GraphIdx.Ones{Float64}();
     max_iter::Int = 5,
+    verbose::Bool = true,
 )::Array{Float64,N} where {N, GraphT<:Graph, W2<:Weights{Float64}}
     mem = GapMem(y, graph, lambda)
     for it in 1:max_iter
         gaplas!(mem, y, graph, lambda, mu)
+        if verbose
+            let gap = -sum(mem.gamma)
+                @printf("%4d %12.4f\n", it, gap)
+            end
+        end
     end
     return mem.x
 end
@@ -84,7 +92,7 @@ function gaplas!(
     y::Array{Float64,N},
     graph::GraphT,
     lambda::Weights{Float64},
-    mu::W2
+    mu::W2,
 ) where {N, GraphT<:Graph, W2<:Weights{Float64}}
     gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)
     prim_mst_edges(mem.gamma, mem.tree.root, mem.mst)
@@ -100,8 +108,13 @@ function gaplas!(
     tree_dp!(mem.x, mem.z, mem.tree, GraphIdx.Vec(mem.tree_lam), mu, mem.dp_mem)
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
     dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
-    update_tree!(mem.alpha, mem.tree_alpha, mem.mst.selected, mem.egraph, mem.mst.parent)
-
+    update_tree!(
+        mem.alpha,
+        mem.tree_alpha,
+        mem.mst.selected,
+        mem.egraph,
+        mem.mst.parent,
+    )
 end
 
 
