@@ -11,18 +11,7 @@ import TreeLas.TreeDP: TreeDPMem, tree_dp!
 import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
 import TreeLas.MGT: extract_non_tree!, update_tree!
 
-
-function Base.collect(g::Graph)::EdgeGraph
-    m = GraphIdx.num_edges(g)
-    n = GraphIdx.num_nodes(g)
-    edges = Vector{Edge{Int}}(undef, m)
-    GraphIdx.enumerate_edges(g) do i::Int, u::Int, v::Int
-        edges[i] = Edge((u, v))
-    end
-    EdgeGraph(n, edges)
-end
-
-Base.collect(g::EdgeGraph)::EdgeGraph = g
+include("extend_graphidx.jl")
 
 
 struct GapMem{N, WL<:Weights{Float64}}
@@ -38,17 +27,6 @@ struct GapMem{N, WL<:Weights{Float64}}
     tree_alpha::Vector{Float64}
     egraph::EdgeGraph
 end
-
-
-Base.similar(::GraphIdx.Vec{F}, n::Integer) where {F} =
-    GraphIdx.Vec(Vector{F}(undef, n))
-
-Base.similar(w::GraphIdx.Const{F}, n::Integer) where {F} =
-    GraphIdx.Const(w.w)
-
-Base.similar(::GraphIdx.Ones{F}, n::Integer) where {F} =
-    GraphIdx.Ones{F}()
-
 
 
 function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
