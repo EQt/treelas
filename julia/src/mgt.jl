@@ -28,10 +28,12 @@ module MGT
 
 import Statistics
 import Printf: @sprintf
-import GraphIdx.Tree: RootedTree
+
+import GraphIdx
+import GraphIdx: Const, Vec, Ones, Weights
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 import GraphIdx: WeightedGraph, enumerate_edges, num_edges, num_nodes
-import GraphIdx: Const, Vec, Ones, Weights
+import GraphIdx.Tree: RootedTree
 
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
@@ -51,9 +53,9 @@ function extract_non_tree!(
     parent::Vector{Int},
     y::Array,
     alpha::Array,
-    tlam::W,
-    lambda::W,
-) where {W}
+    tlam::W1,
+    lambda::W2,
+) where {W1, W2<:Weights}
     enumerate_typed_edges(graph, parent) do istree::Bool, i::Int, u::Int, v::Int
         if istree
             tlam[u] = lambda[i]
@@ -63,6 +65,24 @@ function extract_non_tree!(
         end
     end
 end
+
+extract_non_tree!(
+    graph::Graph,
+    parent::Vector{Int},
+    y::Array,
+    alpha::Array,
+    tlam::W1,
+    lambda::Array{T},
+) where {W1, T} =
+    extract_non_tree!(
+        graph::Graph,
+        parent::Vector{Int},
+        y::Array,
+        alpha::Array,
+        tlam::W1,
+        GraphIdx.Vec(lambda),
+    )
+
 
 
 """
