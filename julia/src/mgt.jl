@@ -153,9 +153,9 @@ function gaplas(
     end
 
     for it in 1:max_iter
-        @time begin
+        @timed begin
         gap_vec!(γ, x, alpha, wgraph, -1.0)
-        @time if verbose
+        @timed if verbose
             if n < 30 && it > 1 && false
                 tree_gamma_check(γ, alpha, tlam, selected,
                                  x, z, dp_mem.proc_order, parent)
@@ -182,12 +182,12 @@ function gaplas(
             println()
         end
 
-        @time prim_mst_edges(γ, root_node, mst_mem)
+        @timed prim_mst_edges(γ, root_node, mst_mem)
         tprocess(γ, parent)
         z .= y
         extract_non_tree!(graph, parent, z, alpha, tlam, lambda)
         x_new .= x
-        @time tree_dp!(x_new, z, tree, Vec(tlam), mu, dp_mem)
+        @timed tree_dp!(x_new, z, tree, Vec(tlam), mu, dp_mem)
         if !(x === x_new)
             x .= (1 - learn) .* x .+ learn .* x_new
         end
