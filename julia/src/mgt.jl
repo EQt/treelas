@@ -85,7 +85,7 @@ extract_non_tree!(
 
 
 """
-    traverse_edges(func, edges, π)
+    enumerate_typed_edges(func, edges, π)
 
 Call for every edge `(u, v)` enumerated by `i` the function
 ```julia
