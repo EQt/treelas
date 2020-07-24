@@ -66,7 +66,7 @@ function CycleBasis(g::Graph, pi::Vector{Int}, cidx::ChildrenIndex)::CycleBasis
     sizehint!(non_tree_enum, m - n + 1)
     tree_enum = Vector{Int}(undef, n)
     tree_enum[root_node(cidx)] = 0
-    GraphIdx.enumerate_edges(g) do i::Int, u::Int, v::Int, _::Float64
+    GraphIdx.enumerate_edges(g) do i::Int, u::Int, v::Int
         if pi[u] == v
             tree_enum[u] = i
         elseif pi[v] == u

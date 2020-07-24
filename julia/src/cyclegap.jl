@@ -16,7 +16,7 @@ function Base.collect(g::Graph)::EdgeGraph
     m = GraphIdx.num_edges(g)
     n = GraphIdx.num_nodes(g)
     edges = Vector{Edge{Int}}(undef, m)
-    GraphIdx.enumerate_edges(g) do i::Int, u::Int, v::Int, ::Float64
+    GraphIdx.enumerate_edges(g) do i::Int, u::Int, v::Int
         edges[i] = Edge((u, v))
     end
     EdgeGraph(n, edges)

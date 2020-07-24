@@ -1,5 +1,7 @@
 import GraphIdx.LinA: IncMat
-import GraphIdx: enumerate_edges
+import GraphIdx: enumerate_edges, WeightedGraph
+import GraphIdx.Tree: WeightedTree
+import GraphIdx.Grid: GridGraph
 
 
 """
@@ -17,7 +19,7 @@ function gap_vec!(
     γ::Vector{F},
     x::Array{F},
     α::Vector{F},
-    g::Graph,
+    g::Union{WeightedGraph, WeightedTree},
     c::F = F(1.0),
 ) where {F<:Real,Graph}
     enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
@@ -26,6 +28,21 @@ function gap_vec!(
         end
     end
 end
+
+function gap_vec!(
+    γ::Vector{F},
+    x::Array{F},
+    α::Vector{F},
+    g::GridGraph,
+    c::F = F(1.0),
+) where {F<:Real,Graph}
+    enumerate_edges(g, weighted=true) do ei::Int, u::Int, v::Int, lam::Float64
+        let diff = x[u] - x[v]
+            γ[ei] = c * (lam*abs(diff) + α[ei] * diff)
+        end
+    end
+end
+
 
 
 """
