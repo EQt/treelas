@@ -44,12 +44,20 @@ CycleBasis(g::Graph)::CycleBasis =
     CycleBasis(GraphIdx.num_edges(g), GraphIdx.num_nodes(g))
 
 function CycleBasis(m::Integer, n::Integer)
-    non_tree = Vector{Pair{Int,Int}}()
+    non_tree_edges = Vector{Pair{Int,Int}}()
     non_tree_enum = Vector{Int}()
-    sizehint!(non_tree, m - n + 1)
+    sizehint!(non_tree_edges, m - n + 1)
     sizehint!(non_tree_enum, m - n + 1)
     tree_enum = Vector{Int}(undef, n)
-    error("not finished, yet")
+    return CycleBasis(
+        [],                     # pi
+        ChildrenIndex([], []),  # cidx
+        non_tree_edges,
+        non_tree_enum,
+        tree_enum,
+        IncidenceIndex([], []), # non_tree_idx
+        [],                     # lca
+    )
 end
 
 """
