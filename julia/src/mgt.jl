@@ -84,7 +84,6 @@ extract_non_tree!(
     )
 
 
-
 """
     traverse_edges(func, edges, π)
 
@@ -99,7 +98,7 @@ If it is a tree edge, `u` is the child of `v`.
 @inline function enumerate_typed_edges(
     func::Func, graph::Graph, parent::Vector{Int}
 ) where {Func<:Function}
-    enumerate_edges(graph) do i::Int, u::Int, v::Int
+    enumerate_edges(graph) do i::Int, u::Int, v::Int, _
         if parent[v] == u
             func(true, i, v, u)
         elseif parent[u] == v
