@@ -62,19 +62,23 @@ mutable struct CycMem{N, WL<:Weights{Float64}}
     gamma::Vector{Float64}
     gap_mem::GapMem{N, WL}
     cycles::CycleBasis
+    tree_lam::Vector{Float64}
 end
 
 function CycMem(
     y::Array{Float64,N}, graph::Graph, lambda::W
 ) where {N, W<:Weights{Float64}}
     gap_mem = GapMem(y, graph, lambda)
+    tree_lam = collect(lambda, num_nodes(graph))
     return CycMem(
         gap_mem.x,
         gap_mem.gamma,
         gap_mem,
         CycleBasis(num_edges(graph), num_nodes(graph)),
+        tree_lam,
     )
 end
+
 
 
 function gaplas(
@@ -96,6 +100,18 @@ function gaplas(
         end
     end
     return mem.x
+end
+
+
+function cyclas(
+    y::Array{Float64, N},
+    graph::Graph,
+    lambda::Weights{Float64},
+    mu::W2 = GraphIdx.Ones{Float64}();
+    max_iter::Int = 5,
+    verbose::Bool = true,
+) where {N, W2<:Weights{Float64}}
+    gaplas(y, graph, lambda, mu, CycMem, max_iter = max_iter, verbose = verbose)
 end
 
 
@@ -163,11 +179,15 @@ function gaplas!(
         lambda,
     )
 
-    cmem.cycles = CycleBasis(graph, mem.mst.parent)
+    cmem.cycles = Cycle.CycleBasis(graph, mem.mst.parent)
+    tlam0, tlam = Cycle.extract_rotate(cmem.cycles, lambda)
+    cmem.tree_lam .= tlam
+    # @show tlam
 
-    tree_dp!(mem.x, mem.z, mem.tree, mem.tree_lam, mu, mem.dp_mem)
+    tree_dp!(mem.x, mem.z, mem.tree, GraphIdx.Vec(cmem.tree_lam), mu, mem.dp_mem)
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
     dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
+
     update_tree!(
         mem.alpha,
         mem.tree_alpha,
