@@ -6,6 +6,7 @@ import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
 import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
+import TreeLas.MGT: extract_non_tree!
 
 
 function Base.collect(g::Graph)::EdgeGraph
@@ -22,7 +23,10 @@ Base.collect(g::EdgeGraph)::EdgeGraph = g
 
 
 struct GapMem{N}
+    root_node::Int
     x::Array{Float64,N}
+    z::Array{Float64,N}
+    tlam::Vector{Float64}
     alpha::Vector{Float64}
     gamma::Vector{Float64}
     tree_lam::Vector{Float64}
@@ -39,7 +43,10 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     mst_mem = PrimMstMem(egraph)
     lam = Float64[lambda[i] for i=1:m]
     GapMem(
+        1,
         copy(y),
+        similar(y),
+        Vector{Float64}(undef, n),
         zeros(Float64, m),
         Vector{Float64}(undef, m),
         Vector{Float64}(undef, n),
@@ -71,9 +78,17 @@ function gaplas!(
     lambda::Weights{Float64},
 ) where {N, GraphT<:Graph}
     gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)
+    prim_mst_edges(mem.gamma, mem.root_node, mem.mst_mem)
+    mem.z .= y
+    extract_non_tree!(
+        graph,
+        mem.mst_mem.parent,
+        mem.z,
+        mem.alpha,
+        mem.tlam,
+        lambda,
+    )
 end
 
 
-
-
-end
+end # CycleGap
