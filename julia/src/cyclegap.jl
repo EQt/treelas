@@ -188,6 +188,8 @@ function gaplas!(
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
     dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
 
+    fix_alpha!(mem.tree_alpha, tlam0, mem.x, mem.mst.parent)
+
     update_tree!(
         mem.alpha,
         mem.tree_alpha,
@@ -197,6 +199,23 @@ function gaplas!(
     )
 end
 
+
+function fix_alpha!(alpha, lam, x, pi)
+    n = length(alpha)
+    n < 30 && @info "before" alpha lam x
+    for i = 1:n
+        let ai = alpha[i]
+            if abs(ai) > lam[i]
+                alpha[i] = sign(ai) * lam[i]
+                let diff = alpha[i] - ai
+                    x[i] -= diff
+                    x[pi[i]] += diff
+                end
+            end
+        end
+    end
+    n < 30 && @info "after" alpha lam x
+end
 
 
 end # CycleGap
