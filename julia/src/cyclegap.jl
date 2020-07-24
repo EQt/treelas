@@ -80,21 +80,7 @@ function gaplas(
     y::Array{Float64,N},
     graph::GraphT,
     lambda::Weights{Float64},
-    ::Type{Mem} = GapMem;
-    max_iter::Int = 5,
-    verbose::Bool = true,
-)::Array{Float64,N} where {N, GraphT<:Graph, Mem}
-    gaplas(y, graph, lambda, GraphIdx.Ones{Float64}(), Mem;
-           max_iter=max_iter, verbose=verbose)
-end
-
-
-
-function gaplas(
-    y::Array{Float64,N},
-    graph::GraphT,
-    lambda::Weights{Float64},
-    mu::W2 = GraphIdx.Ones{Float64}(),
+    mu::W2,
     ::Type{Mem} = GapMem;
     max_iter::Int = 5,
     verbose::Bool = true,
@@ -110,6 +96,21 @@ function gaplas(
     end
     return mem.x
 end
+
+
+function gaplas(
+    y::Array{Float64,N},
+    graph::GraphT,
+    lambda::Weights{Float64},
+    ::Type{Mem} = GapMem;
+    max_iter::Int = 5,
+    verbose::Bool = true,
+)::Array{Float64,N} where {N, GraphT<:Graph, Mem}
+    gaplas(y, graph, lambda, GraphIdx.Ones{Float64}(), Mem;
+           max_iter=max_iter, verbose=verbose)
+end
+
+
 
 
 function gaplas!(
