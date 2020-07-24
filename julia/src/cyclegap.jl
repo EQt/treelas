@@ -3,6 +3,7 @@ module CycleGap
 import GraphIdx
 import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
+import GraphIdx.Tree: RootedTree
 
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
 import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
@@ -23,7 +24,6 @@ Base.collect(g::EdgeGraph)::EdgeGraph = g
 
 
 struct GapMem{N}
-    root_node::Int
     x::Array{Float64,N}
     z::Array{Float64,N}
     tlam::Vector{Float64}
@@ -33,6 +33,7 @@ struct GapMem{N}
     dp_mem::TreeDPMem
     mst_mem::PrimMstMem
     wgraph::WeightedGraph
+    tree::RootedTree
 end
 
 function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
@@ -42,8 +43,8 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     egraph = collect(graph)
     mst_mem = PrimMstMem(egraph)
     lam = Float64[lambda[i] for i=1:m]
+    root_node = 1
     GapMem(
-        1,
         copy(y),
         similar(y),
         Vector{Float64}(undef, n),
@@ -53,6 +54,7 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
         TreeDPMem(n),
         mst_mem,
         WeightedGraph(mst_mem.neighbors, lam),
+        RootedTree(root_node, mst_mem.parent)
     )
 end
 
@@ -60,12 +62,13 @@ end
 function gaplas(
     y::Array{Float64,N},
     graph::GraphT,
-    lambda::Weights{Float64};
+    lambda::Weights{Float64},
+    mu::W2 = GraphIdx.Ones{Float64}();
     max_iter::Int = 5,
-)::Array{Float64,N} where {N, GraphT<:Graph}
+)::Array{Float64,N} where {N, GraphT<:Graph, W2<:Weights{Float64}}
     mem = GapMem(y, graph, lambda)
     for it in 1:max_iter
-        gaplas!(mem, y, graph, lambda)
+        gaplas!(mem, y, graph, lambda, mu)
     end
     return mem.x
 end
@@ -76,9 +79,10 @@ function gaplas!(
     y::Array{Float64,N},
     graph::GraphT,
     lambda::Weights{Float64},
-) where {N, GraphT<:Graph}
+    mu::W2
+) where {N, GraphT<:Graph, W2<:Weights{Float64}}
     gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)
-    prim_mst_edges(mem.gamma, mem.root_node, mem.mst_mem)
+    prim_mst_edges(mem.gamma, mem.tree.root, mem.mst_mem)
     mem.z .= y
     extract_non_tree!(
         graph,
@@ -88,6 +92,7 @@ function gaplas!(
         mem.tlam,
         lambda,
     )
+    tree_dp!(mem.x, mem.z, mem.tree, GraphIdx.Vec(mem.tlam), mu, mem.dp_mem)
 end
 
 
