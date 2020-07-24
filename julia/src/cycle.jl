@@ -131,7 +131,7 @@ TODO: finish
 """
 function extract_rotate(
     cb::CycleBasis, lam::Weights{F}
-)::Tuple{Vector{F}, Vector{F}} where {F}
+)::NTuple{2, Vector{F}} where {F}
     n = GraphIdx.num_nodes(cb)
     tlam = Vector{Float64}(undef, n)
     tlam0 = Vector{Float64}(undef, n)
