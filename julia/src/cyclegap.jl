@@ -11,6 +11,7 @@ import GraphIdx.Tree: RootedTree
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
 import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
 import TreeLas.MGT: extract_non_tree!, update_tree!
+import TreeLas: Cycle
 import TreeLas.Cycle: CycleBasis
 
 
@@ -56,7 +57,7 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
 end
 
 
-struct CycMem{N, WL<:Weights{Float64}}
+mutable struct CycMem{N, WL<:Weights{Float64}}
     x::Array{Float64, N}
     gamma::Vector{Float64}
     gap_mem::GapMem{N, WL}
@@ -111,8 +112,6 @@ function gaplas(
 end
 
 
-
-
 function gaplas!(
     mem::GapMem{N, W1},
     y::Array{Float64,N},
@@ -163,6 +162,9 @@ function gaplas!(
         mem.tree_lam,
         lambda,
     )
+
+    cmem.cycles = CycleBasis(graph, mem.mst.parent)
+
     tree_dp!(mem.x, mem.z, mem.tree, mem.tree_lam, mu, mem.dp_mem)
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
     dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
