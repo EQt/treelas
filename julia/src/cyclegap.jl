@@ -25,12 +25,12 @@ end
 Base.collect(g::EdgeGraph)::EdgeGraph = g
 
 
-struct GapMem{N}
+struct GapMem{N, WL<:Weights{Float64}}
     x::Array{Float64,N}
     z::Array{Float64,N}
     alpha::Vector{Float64}
     gamma::Vector{Float64}
-    tree_lam::Vector{Float64}
+    tree_lam::WL
     dp_mem::TreeDPMem
     mst::PrimMstMem
     wgraph::WeightedGraph
@@ -39,13 +39,25 @@ struct GapMem{N}
     egraph::EdgeGraph
 end
 
+
+Base.similar(::GraphIdx.Vec{F}, n::Integer) where {F} =
+    GraphIdx.Vec(Vector{F}(undef, n))
+
+Base.similar(w::GraphIdx.Const{F}, n::Integer) where {F} =
+    GraphIdx.Const(w.w)
+
+Base.similar(::GraphIdx.Ones{F}, n::Integer) where {F} =
+    GraphIdx.Ones{F}()
+
+
+
 function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
     root_node = 1
     m = GraphIdx.num_edges(graph)
     n = GraphIdx.num_nodes(graph)
     @assert length(y) == n
-    tree_lam = Vector{Float64}(undef, n)
-    tree_alpha = tree_lam
+    tree_lam = similar(lambda, n)
+    tree_alpha = Vector{Float64}(undef, n)
     egraph = collect(graph)
     mst = PrimMstMem(egraph)
     lam = Float64[lambda[i] for i=1:m]
@@ -105,7 +117,7 @@ function gaplas!(
         mem.tree_lam,
         lambda,
     )
-    tree_dp!(mem.x, mem.z, mem.tree, GraphIdx.Vec(mem.tree_lam), mu, mem.dp_mem)
+    tree_dp!(mem.x, mem.z, mem.tree, mem.tree_lam, mu, mem.dp_mem)
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
     dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
     update_tree!(
