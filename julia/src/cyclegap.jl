@@ -7,7 +7,7 @@ import GraphIdx.Tree: RootedTree
 
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
 import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
-import TreeLas.MGT: extract_non_tree!
+import TreeLas.MGT: extract_non_tree!, update_tree!
 
 
 function Base.collect(g::Graph)::EdgeGraph
@@ -26,7 +26,6 @@ Base.collect(g::EdgeGraph)::EdgeGraph = g
 struct GapMem{N}
     x::Array{Float64,N}
     z::Array{Float64,N}
-    tlam::Vector{Float64}
     alpha::Vector{Float64}
     gamma::Vector{Float64}
     tree_lam::Vector{Float64}
@@ -34,27 +33,33 @@ struct GapMem{N}
     mst_mem::PrimMstMem
     wgraph::WeightedGraph
     tree::RootedTree
+    tree_alpha::Vector{Float64}
+    egraph::EdgeGraph
 end
 
 function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
+    root_node = 1
     m = GraphIdx.num_edges(graph)
     n = GraphIdx.num_nodes(graph)
     @assert length(y) == n
+    tree_lam = Vector{Float64}(undef, n)
+    tree_alpha = tree_lam
     egraph = collect(graph)
     mst_mem = PrimMstMem(egraph)
     lam = Float64[lambda[i] for i=1:m]
-    root_node = 1
+    tree = RootedTree(root_node, mst_mem.parent)
     GapMem(
-        copy(y),
-        similar(y),
-        Vector{Float64}(undef, n),
-        zeros(Float64, m),
-        Vector{Float64}(undef, m),
-        Vector{Float64}(undef, n),
+        copy(y),                        # x
+        similar(y),                     # z
+        zeros(Float64, m),              # alpha
+        Vector{Float64}(undef, m),      # gamma
+        tree_lam,
         TreeDPMem(n),
         mst_mem,
         WeightedGraph(mst_mem.neighbors, lam),
-        RootedTree(root_node, mst_mem.parent)
+        tree,
+        tree_alpha,
+        egraph,
     )
 end
 
@@ -89,10 +94,14 @@ function gaplas!(
         mem.mst_mem.parent,
         mem.z,
         mem.alpha,
-        mem.tlam,
+        mem.tree_lam,
         lambda,
     )
-    tree_dp!(mem.x, mem.z, mem.tree, GraphIdx.Vec(mem.tlam), mu, mem.dp_mem)
+    tree_dp!(mem.x, mem.z, mem.tree, GraphIdx.Vec(mem.tree_lam), mu, mem.dp_mem)
+    mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
+    dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst_mem.parent)
+    update_tree!(mem.alpha, mem.tree_alpha, mem.mst_mem.selected, mem.egraph, mem.mst_mem.parent)
+
 end
 
 
