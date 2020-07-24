@@ -1,12 +1,13 @@
 import GraphIdx
-import GraphIdx: EdgeGraph, Graph, Edge
+import GraphIdx: EdgeGraph, Graph, Edge, num_edges, num_nodes, enumerate_edges
+import GraphIdx: Vec, Const, Ones
 
 
 function Base.collect(g::Graph)::EdgeGraph
-    m = GraphIdx.num_edges(g)
-    n = GraphIdx.num_nodes(g)
+    m = num_edges(g)
+    n = num_nodes(g)
     edges = Vector{Edge{Int}}(undef, m)
-    GraphIdx.enumerate_edges(g) do i::Int, u::Int, v::Int
+    enumerate_edges(g) do i::Int, u::Int, v::Int
         edges[i] = Edge((u, v))
     end
     EdgeGraph(n, edges)
@@ -15,11 +16,11 @@ end
 Base.collect(g::EdgeGraph)::EdgeGraph = g
 
 
-Base.similar(::GraphIdx.Vec{F}, n::Integer) where {F} =
-    GraphIdx.Vec(Vector{F}(undef, n))
+Base.similar(::Vec{F}, n::Integer) where {F} =
+    Vec(Vector{F}(undef, n))
 
-Base.similar(w::GraphIdx.Const{F}, n::Integer) where {F} =
-    GraphIdx.Const(w.w)
+Base.similar(w::Const{F}, n::Integer) where {F} =
+    Const(w.w)
 
-Base.similar(::GraphIdx.Ones{F}, n::Integer) where {F} =
-    GraphIdx.Ones{F}()
+Base.similar(::Ones{F}, n::Integer) where {F} =
+    Ones{F}()
