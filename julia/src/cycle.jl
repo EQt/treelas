@@ -16,7 +16,7 @@ import GraphIdx.Tree: ChildrenIndex, root_node, lowest_common_ancestors, dfs_fin
 """
 All kind of indices to represant a cycle basis corresponding to spanning tree
 """
-struct CycleBasis
+mutable struct CycleBasis
     pi::Vector{Int}
     cidx::ChildrenIndex
     non_tree_edges::Vector{Pair{Int,Int}}
@@ -133,19 +133,20 @@ function extract_rotate(
     cb::CycleBasis, lam::Weights{F}
 )::Tuple{Vector{F}, Vector{F}} where {F}
     n = GraphIdx.num_nodes(cb)
-    m = GraphIdx.num_edges(cb)
     tlam = Vector{Float64}(undef, n)
+    tlam0 = Vector{Float64}(undef, n)
+    ldiff = zeros(Float64, n)
+
     for (i, ei) in enumerate(cb.tree_enum)
         tlam[i] = ei > 0 ? lam[ei] : NaN
     end
-    ldiff = zeros(Float64, n)
     enumerate_non_tree(cb) do i, _, v, r
         let lami = lam[cb.non_tree_enum[i]]
             ldiff[v] += lami
             ldiff[r] -= lami
         end
     end
-    tlam0 = copy(tlam)
+    tlam0 .= tlam
     for v in dfs_finish(cb.pi)
         tlam[v] += ldiff[v]
         ldiff[cb.pi[v]] += ldiff[v]
