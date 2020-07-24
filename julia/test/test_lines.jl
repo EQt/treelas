@@ -12,15 +12,15 @@ function instance(line; to_tree::Bool = false)
     y = Float64.(line["y"])
     n = length(y)
     mu = if haskey(line, "mu")
-        GraphIdx.create_weights(Float64.(line["mu"]))
+        GraphIdx.Weights(Float64.(line["mu"]))
     else
-        GraphIdx.create_weights(Float64)
+        GraphIdx.Weights(Float64)
     end
     lam = Float64.(line["lam"])
     if to_tree && lam isa Array
         prepend!(lam, NaN)
     end
-    lam = GraphIdx.create_weights(lam)
+    lam = GraphIdx.Weights(lam)
     return y, lam, mu
 end
 

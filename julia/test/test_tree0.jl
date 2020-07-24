@@ -17,7 +17,7 @@ end
 function instance(tree)
     y = Float64.(tree["y"])
     n = length(y)
-    mu = GraphIdx.create_weights(Float64.(get(tree, "mu", 1.0)))
+    mu = GraphIdx.Weights(Float64.(get(tree, "mu", 1.0)))
     pi = Int.(tree["parent"]) .+ 1
     root::Int = get(tree, "root", -1) + 1
     if root <= 0
@@ -28,7 +28,7 @@ function instance(tree)
         @assert findall(lam .< 0) == [root] "$(typeof(lam)): $lam, $root"
         lam[root] = NaN
     end
-    lam = GraphIdx.create_weights(lam)
+    lam = GraphIdx.Weights(lam)
     t = GraphIdx.Tree.RootedTree(root, pi)
     return y, t, lam, mu
 end
