@@ -136,6 +136,8 @@ function extract_rotate(
     tlam = Vector{Float64}(undef, n)
     tlam0 = Vector{Float64}(undef, n)
     ldiff = zeros(Float64, n)
+    stack = Vector{Int}()
+    sizehint!(stack, n)
 
     for (i, ei) in enumerate(cb.tree_enum)
         tlam[i] = ei > 0 ? lam[ei] : NaN
@@ -147,7 +149,7 @@ function extract_rotate(
         end
     end
     tlam0 .= tlam
-    for v in dfs_finish(cb.pi)
+    for v in dfs_finish(cb.pi, stack)
         tlam[v] += ldiff[v]
         ldiff[cb.pi[v]] += ldiff[v]
         ldiff[v] = 0
