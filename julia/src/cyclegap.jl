@@ -11,8 +11,6 @@ import TreeLas.TreeDP: TreeDPMem, tree_dp!
 import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
 import TreeLas.MGT: extract_non_tree!, update_tree!
 
-include("extend_graphidx.jl")
-
 
 struct GapMem{N, WL<:Weights{Float64}}
     x::Array{Float64,N}
