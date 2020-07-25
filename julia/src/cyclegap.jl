@@ -182,7 +182,7 @@ function gaplas!(
     cmem.cycles = Cycle.CycleBasis(graph, mem.mst.parent)
     tlam0, tlam = Cycle.extract_rotate(cmem.cycles, lambda)
     cmem.tree_lam .= tlam
-    # @show tlam
+    length(tlam) < 30 && @info tlam
 
     tree_dp!(mem.x, mem.z, mem.tree, GraphIdx.Vec(cmem.tree_lam), mu, mem.dp_mem)
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
@@ -204,12 +204,15 @@ function fix_alpha!(alpha, lam, x, pi)
     n = length(alpha)
     n < 30 && @info "before" alpha lam x
     for i = 1:n
+        if i == pi[i]
+            continue
+        end
         let ai = alpha[i]
             if abs(ai) > lam[i]
                 alpha[i] = sign(ai) * lam[i]
                 let diff = alpha[i] - ai
-                    x[i] -= diff
-                    x[pi[i]] += diff
+                    x[i] += diff
+                    x[pi[i]] -= diff
                 end
             end
         end
