@@ -158,4 +158,36 @@ function extract_rotate(
 end
 
 
+function GraphIdx.GraphViz.dot(
+    graph::GraphIdx.Graph, cycles::CycleBasis, tree_label::F = i -> ""
+) where {F<:Function}
+    open(`dot -Tx11 -Kneato`, "w") do io::IO
+        GraphIdx.GraphViz.dot(io, graph) do io::IO
+            println(io, "{ edge [color=black]")
+            for (i, v) in enumerate(cycles.pi)
+                if i != v
+                    println(io, i, " -> ", v, tree_label(i))
+                end
+            end
+            println(io, "}")
+            Cycle.enumerate_non_tree(cycles) do ei::Int, u::Int, v::Int, r::Int
+                if u < v
+                    local col = 1 + (ei % 8)
+                    tstyle = " [ color=$(col) ]"
+                    println(io, u, " -> ", v , " [style=dotted, color=", col, "]")
+                    for i in [u, v]
+                        while i != r
+                            local pi = cycles.pi[i]
+                            println(io, i, " -> ", pi, tstyle)
+                            i = pi
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+
+
 end

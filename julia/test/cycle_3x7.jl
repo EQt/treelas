@@ -20,49 +20,6 @@ tlam0, tlam = Cycle.extract_rotate(cmem.cycles, lambda)
 cycles = cmem.cycles
 
 
-function GraphViz.dot(graph::GridGraph, tree::GraphIdx.Tree.RootedTree)
-    open(`dot -Tx11 -Kneato`, "w") do io::IO
-        GraphViz.dot(io, graph) do io::IO
-            for (i, v) in enumerate(tree.parent)
-                if i != v
-                    println(io, i, " -> ", v)
-                end
-            end
-        end
-    end
-end
-    
-
-function GraphViz.dot(
-    graph::GridGraph, cycles::Cycle.CycleBasis, tree_label = i -> ""
-)
-    open(`dot -Tx11 -Kneato`, "w") do io::IO
-        GraphViz.dot(io, graph) do io::IO
-            println(io, "{ edge [color=black]")
-            for (i, v) in enumerate(cycles.pi)
-                if i != v
-                    println(io, i, " -> ", v, tree_label(i))
-                end
-            end
-            println(io, "}")
-            Cycle.enumerate_non_tree(cycles) do ei::Int, u::Int, v::Int, r::Int
-                if u < v
-                    local col = 1 + (ei % 8)
-                    tstyle = " [ color=$(col) ]"
-                    println(io, u, " -> ", v , " [style=dotted, color=", col, "]")
-                    for i in [u, v]
-                        while i != r
-                            local pi = cycles.pi[i]
-                            println(io, i, " -> ", pi, tstyle)
-                            i = pi
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
 GraphViz.dot(graph, cycles, i -> "[ label=\"$(Int(tlam[i]))\"]")
 
 
