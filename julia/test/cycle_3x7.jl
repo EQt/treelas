@@ -22,9 +22,8 @@ function show(y, lambda = Const(1.0))
 end
 
 
-@time tasks = [@async show(randn(size)) for size in [(3, 7), (4, 6), (4, 6)]]
-for t in tasks
-    wait(t)
+@sync for size in [(3, 7), (4, 6), (4, 6)]
+    @async show(randn(size))
 end
 
 
