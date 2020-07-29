@@ -22,7 +22,8 @@ function show(y, lambda = Const(1.0))
 end
 
 
-@sync for size in [(3, 7), (4, 6), (4, 6)]
+@info "compiled"
+@sync for size in [(3, 7), (4, 6), (4, 6), (2, 30), (2, 30), (2, 30)]
     @async show(randn(size))
 end
 
