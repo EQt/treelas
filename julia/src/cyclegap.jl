@@ -4,7 +4,7 @@ import Printf: @printf
 
 import GraphIdx
 import GraphIdx: num_edges, num_nodes, enumerate_edges
-import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph
+import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph, Ones
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 import GraphIdx.Tree: RootedTree
 
@@ -80,7 +80,6 @@ function CycMem(
 end
 
 
-
 function gaplas(
     y::Array{Float64,N},
     graph::GraphT,
@@ -107,24 +106,23 @@ function cyclas(
     y::Array{Float64, N},
     graph::Graph,
     lambda::Weights{Float64},
-    mu::W2 = GraphIdx.Ones{Float64}();
+    mu::Weights{Float64} = GraphIdx.Ones{Float64}();
     max_iter::Int = 5,
     verbose::Bool = true,
-) where {N, W2<:Weights{Float64}}
+) where {N}
     gaplas(y, graph, lambda, mu, CycMem, max_iter = max_iter, verbose = verbose)
 end
 
 
 function gaplas(
     y::Array{Float64,N},
-    graph::GraphT,
+    graph::Graph,
     lambda::Weights{Float64},
     ::Type{Mem} = GapMem;
     max_iter::Int = 5,
     verbose::Bool = true,
-)::Array{Float64,N} where {N, GraphT<:Graph, Mem}
-    gaplas(y, graph, lambda, GraphIdx.Ones{Float64}(), Mem;
-           max_iter=max_iter, verbose=verbose)
+)::Array{Float64,N} where {N, Mem}
+    gaplas(y, graph, lambda, Ones{Float64}(), Mem; max_iter=max_iter, verbose=verbose)
 end
 
 
@@ -148,10 +146,10 @@ end
 function gaplas!(
     mem::GapMem{N, W1},
     y::Array{Float64,N},
-    graph::GraphT,
+    graph::Graph,
     lambda::Weights{Float64},
-    mu::W2,
-) where {N, GraphT<:Graph, W1<:Weights{Float64}, W2<:Weights{Float64}}
+    mu::Weights{Float64},
+) where {N, W1<:Weights{Float64}}
     _extract_tree!(mem, y, graph, lambda)
     tree_dp!(mem.x, mem.z, mem.tree, mem.tree_lam, mu, mem.dp_mem)
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
