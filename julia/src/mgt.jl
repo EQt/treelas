@@ -121,7 +121,7 @@ solution should be taken (should be between ``0`` and ``1.0``).
 function gaplas(
     y::Array{Float64,N},
     graph::EdgeGraph,
-    lambda::Vector{Float64};
+    lambda::Weights{Float64};
     root_node::Int = 1,
     mu::Wmu = Ones{Float64}(),
     max_iter::I = 3,
@@ -144,7 +144,7 @@ function gaplas(
     local selected = mst_mem.selected
     local parent = mst_mem.parent
     local tree = RootedTree(root_node, parent)
-    local wgraph::WeightedGraph = WeightedGraph(mst_mem.neighbors, lambda)
+    local wgraph::WeightedGraph = WeightedGraph(mst_mem.neighbors, collect(lambda, m))
     local x_new::Array{Float64,N} = learn >= 1.0 ? x : copy(x)
     local alpha_new::Array{Float64} = learn >= 1.0 ? alpha : copy(alpha)
     if verbose
@@ -211,10 +211,20 @@ function gaplas(
     return x
 end
 
-gaplas(y::Array, edges, λ::Float64; args::Args...) where {Args}=
-    gaplas(y, edges, fill(λ, length(edges)); args...)
 
-gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Vector{Float64}; args::Args...) where {Args} =
+@deprecate(
+    gaplas(y::Array, edges, λ::Array{Float64}; args::Args...) where {Args},
+    gaplas(y, edges, GraphIdx.Vec(λ); args...),
+)
+
+
+@deprecate(
+    gaplas(y::Array, edges, λ::Float64; args::Args...) where {Args},
+    gaplas(y, edges, GraphIdx.Const(λ); args...),
+)
+
+
+gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Weights{Float64}; args::Args...) where {Args} =
     gaplas(y, EdgeGraph(length(y), edges), λ; args...)
 
 

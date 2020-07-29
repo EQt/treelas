@@ -16,7 +16,7 @@ Base.sort(i::T, j::T) where {T} =
 @testset "MGT     : Square               " begin
     edges, n = square_edges()
     m = length(edges)
-    lambda = fill(0.5, length(edges))
+    lambda = GraphIdx.Const(0.5)
     y = Float64[0 1; 0 0.5]
     x = MGT.gaplas(y, edges, lambda)
     @test size(x) == size(y)
@@ -97,7 +97,7 @@ end
 
     @testset "extract non-tree" begin
         z = copy(y)
-        lambda = ones(Float64, length(edges))
+        lambda = GraphIdx.Ones{Float64}()
         tlam = fill(NaN, length(y))
         alpha = zeros(length(edges))
         MGT.extract_non_tree!(EdgeGraph(n, edges), parent, z, alpha, tlam, lambda)
@@ -106,7 +106,7 @@ end
     end
 
     @testset "call gaplas" begin
-        local lam = ones(Float64, length(edges))
+        local lam = GraphIdx.Ones{Float64}()
         x = MGT.gaplas(y, edges, lam, max_iter=5)
         @test mean(x) ≈ mean(y)
     end
