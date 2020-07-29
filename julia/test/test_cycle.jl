@@ -70,6 +70,7 @@ end
     include("demo3x7.jl")
     n1, n2 = size(y)
     graph = GraphIdx.Grid.GridGraph(n1, n2)
+    @test size(graph) == (n1, n2)
 end
 
 
