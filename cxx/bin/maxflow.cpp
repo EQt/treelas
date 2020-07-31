@@ -12,6 +12,35 @@
 #include <lemon/preflow.h>
 
 
+template <typename Arcs, typename float_t = double>
+std::vector<bool>
+min_cut(
+    const size_t n,
+    const Arcs arcs,
+    const float_t capacities[],
+    const int source,
+    const int target)
+{
+    using Graph = lemon::StaticDigraph;
+    using MaxFlow = lemon::Preflow<Graph, Graph::ArcMap<float_t>>;
+
+    const auto m = arcs.size();
+    Graph graph;
+    graph.build(n, arcs.begin(), arcs.end());
+    Graph::ArcMap<double> capacity(graph);
+    for (int i = 0; i < int(m); i++)
+        capacity[graph.arcFromId(i)] = capacities[i];
+
+    MaxFlow mf (graph, capacity, graph.nodeFromId(source), graph.nodeFromId(target));
+    mf.runMinCut();
+
+    std::vector<bool> above (n, false);
+    for (int i = 0; i < (int)n; i++)
+        above[i] = mf.minCut(graph.nodeFromId(i));
+    return above;
+}
+
+
 int
 main()
 {
@@ -24,12 +53,8 @@ main()
 
       https://en.wikipedia.org/wiki/Maximum_flow_problem#/media/File:MFP1.jpg
      */
-    using Graph = lemon::StaticDigraph;
-    using MaxFlow = lemon::Preflow<Graph, Graph::ArcMap<double>>;
 
     const size_t n = 4;
-
-    Graph graph;
     std::vector<std::pair<int,int>> arcs {
         {0, 1}, // 5
         {0, 3}, // 10
@@ -37,21 +62,13 @@ main()
         {3, 1}, // 15
         {3, 2}, // 5
     };
-    graph.build(n, arcs.begin(), arcs.end());
-
-    Graph::ArcMap<double> capacity(graph);
-    {
-        int i = 0;
-        for (auto c : {5, 10, 10, 15, 5})
-            capacity[graph.arcFromId(i++)] = double(c);
-    }
-
-    MaxFlow mf (graph, capacity, graph.nodeFromId(0), graph.nodeFromId(1));
-    mf.runMinCut();
-
-    std::vector<bool> above (n, false);
-    for (int i = 0; i < (int)n; i++)
-        above[i] = mf.minCut(graph.nodeFromId(i));
+    double capacities[] = {5, 10, 10, 15, 5};
+    auto above = min_cut(
+        n,
+        arcs,
+        capacities,
+        0,
+        2);
 
     std::cout << "above = {";
     for (int i = 0; i < (int)n; i++)
@@ -61,3 +78,7 @@ main()
     std::cout << "}" << std::endl;
     return 0;
 }
+
+// Local Variables:
+// compile-command: "cd ../../build && COLOR=0 make  maxflow && ./maxflow"
+// End:
