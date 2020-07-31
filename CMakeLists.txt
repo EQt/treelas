@@ -168,6 +168,12 @@ if (BUILD_TESTS)
     )
 endif()
 
+if (WITH_LEMON)
+    add_executable(maxflow cxx/bin/maxflow.cpp)
+    target_link_libraries(maxflow PRIVATE lemon doctest::doctest)
+endif()
+
+
 # Local Variables:
 # cmake-tab-width: 4
 # End:
