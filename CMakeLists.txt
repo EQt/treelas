@@ -9,6 +9,7 @@ set(DOCTEST_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx/deps/doctest"
     CACHE PATH     "Which DOCTEST to be used")
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
+option(WITH_LEMON  "Include algorithms using LEMON"    OFF)
 option(FAST_MATH   "Use -ffast-math"                   OFF)
 option(ASAN        "Use Address SANitizer"             OFF)
 option(DEBUG       "Debug CMAKE"                       OFF)
@@ -44,12 +45,14 @@ include_directories(deps/graphidx/cxx)
 find_package(Threads)
 
 
+add_subdirectory(deps/lemon)
 add_subdirectory(deps/graphidx)
 add_subdirectory(deps/argparser)
 add_subdirectory(deps/glmgen)
 add_subdirectory(deps/condat)
 add_subdirectory(deps/minih5)
 add_subdirectory(ci)
+
 
 add_object(line_dp    cxx/line_dp.cpp)
 add_object(line_para  cxx/line/line_para.cpp)
