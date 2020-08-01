@@ -5,6 +5,23 @@
 
 #include "../min_cut.hpp"
 
+template <typename WArcs>
+std::vector<bool>
+min_cut(
+    const size_t n,
+    WArcs warcs,
+    const int source,
+    const int target)
+{
+    std::vector<std::pair<int, int>> arcs;
+    std::vector<double> cap;
+    for (auto &wa: warcs) {
+        arcs.push_back(std::make_pair(std::get<0>(wa), std::get<1>(wa)));
+        cap.push_back(std::get<2>(wa));
+    }
+    return min_cut(n, arcs, cap.data(), source, target);
+}
+
 
 std::set<size_t>
 to_set(const std::vector<bool> &v)
@@ -47,7 +64,7 @@ TEST_CASE("min_cut")
     SUBCASE("chengw1005")
     {
         // http://chengw1005.blogspot.com/2015/11/graph-network-flow-problems.html
-        std::vector<std::tuple<int, int, double>> warcs {
+        std::vector<std::tuple<int, int, double>>  warcs = {
             {0, 2, 13},
             {0, 1, 16},
             {1, 2, 10},
@@ -57,17 +74,11 @@ TEST_CASE("min_cut")
             {3, 2, 9},
             {3, 5, 20},
             {4, 3, 7},
-            {4, 5, 4}};
-
-        std::vector<std::pair<int, int>> arcs;
-        std::vector<double> cap;
-        for (auto &wa: warcs) {
-            arcs.push_back(std::make_pair(std::get<0>(wa), std::get<1>(wa)));
-            cap.push_back(std::get<2>(wa));
-        }
+            {4, 5, 4}
+        };
         const int source = 0, target = 5;
         const size_t n = 6;
-        auto above = min_cut(n, arcs, cap.data(), source, target);
+        const auto above = min_cut(n, warcs, source, target);
         REQUIRE(to_set(above) == std::set<size_t>({0, 1, 2, 4}));
     }
 }
