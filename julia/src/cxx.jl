@@ -12,7 +12,9 @@ const lib = joinpath(BUILD_DIR, BUILD_CONFIG,
 
 
 function _find_python_extension()::String
-    _libs = filter(s -> match(Regex("_treelas.+\\.$(Libdl.dlext)"), s) != nothing, readdir(BUILD_DIR))
+    let regex = Regex("_treelas.+\\.$(Libdl.dlext)")
+        _libs = filter(s -> match(regex, s) != nothing, readdir(BUILD_DIR))
+    end
     @assert length(_libs) == 1
     return joinpath(BUILD_DIR, _libs[1])
 end
@@ -46,7 +48,8 @@ function _find_tree_dp(; verbose=false)
     i = findfirst(s -> occursin(sig, s), cxx)
     cxx = cxx[i]
     if verbose
-        param_names = map(s -> replace(s, r".+[ *](\w+),?" => s"\1"), header_lines[3:end-2])
+        param_names = map(s -> replace(s, r".+[ *](\w+),?" => s"\1"),
+                          header_lines[3:end-2])
         param_types = String.(split(replace(cxx, r".+\((.+)\)" => s"\1"), ", "))
         map!(param_types, param_types) do s::String
             for (a, b) in ["const" => "", " *" => "*", "unsigned long" => "size_t"]
