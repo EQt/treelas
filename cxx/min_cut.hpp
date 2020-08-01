@@ -15,11 +15,25 @@
 #include <lemon/preflow.h>
 
 
-template <typename Arcs, typename float_t = double>
-std::vector<bool>
+template <typename int_t = int>
+using IArc = std::pair<int_t, int_t>;
+
+
+template <typename int_t = int, typename float_t = double>
+struct WeightedArc
+{
+    int_t head, tail;
+    float_t weight;
+};
+
+
+template <typename bool_ptr, typename int_t = int, typename float_t = double>
+bool_ptr
 min_cut(
+    bool_ptr &above,
     const size_t n,
-    const Arcs arcs,
+    const size_t m,
+    const IArc<int_t> *arcs,
     const float_t *capacities,
     const int source,
     const int target)
@@ -27,9 +41,8 @@ min_cut(
     using Graph = lemon::StaticDigraph;
     using MaxFlow = lemon::Preflow<Graph, Graph::ArcMap<float_t>>;
 
-    const auto m = arcs.size();
     Graph graph;
-    graph.build(n, arcs.begin(), arcs.end());
+    graph.build(n, arcs, arcs + m);
     Graph::ArcMap<double> capacity(graph);
     for (int i = 0; i < int(m); i++)
         capacity[graph.arcFromId(i)] = capacities[i];
@@ -37,25 +50,38 @@ min_cut(
     MaxFlow mf (graph, capacity, graph.nodeFromId(source), graph.nodeFromId(target));
     mf.runMinCut();
 
-    std::vector<bool> above (n, false);
     for (int i = 0; i < (int)n; i++)
         above[i] = mf.minCut(graph.nodeFromId(i));
     return above;
 }
 
 
-template <typename WArcs>
+template <typename int_t = int, typename float_t = double>
 std::vector<bool>
 min_cut(
     const size_t n,
-    WArcs warcs,
+    const std::vector<IArc<int_t>> &arcs,
+    const float_t *capacities,
     const int source,
     const int target)
 {
-    std::vector<std::pair<int, int>> arcs;
-    std::vector<double> cap;
+    std::vector<bool> cut (n);
+    return min_cut(cut, n, arcs.size(), arcs.data(), capacities, source, target);
+}
+
+
+template <typename WArcs, typename float_t = double>
+std::vector<bool>
+min_cut(
+    const size_t n,
+    const WArcs &warcs,
+    const int source,
+    const int target)
+{
+    std::vector<IArc<int>> arcs;
+    std::vector<float_t> cap;
     for (auto &wa: warcs) {
-        arcs.push_back(std::make_pair(std::get<0>(wa), std::get<1>(wa)));
+        arcs.push_back({std::get<0>(wa), std::get<1>(wa)});
         cap.push_back(std::get<2>(wa));
     }
     return min_cut(n, arcs, cap.data(), source, target);

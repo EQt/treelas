@@ -6,6 +6,11 @@
 #include "lemon_throws.hpp"
 #include "../min_cut.hpp"
 
+#ifdef RESTORE_NDEBUG
+#  define NDEBUG
+#  undef RESTORE_NDEBUG
+#endif
+
 
 std::set<size_t>
 to_set(const std::vector<bool> &v)
@@ -33,7 +38,7 @@ TEST_CASE("min_cut")
         */
 
         const size_t n = 4;
-        std::vector<std::pair<int,int>> arcs {
+        std::vector<IArc<int>> arcs {
             {0, 1}, // 5
             {0, 3}, // 10
             {1, 2}, // 10
