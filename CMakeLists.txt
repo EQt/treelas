@@ -160,12 +160,16 @@ if (BUILD_TESTS)
         cxx/test/test_tree_dp.cpp
         cxx/test/test_tree_dp_2.cpp
         cxx/test/test_tree_apx.cpp
+        cxx/test/test_min_cut.cpp
     )
     target_link_libraries(doctests PRIVATE
         doctest::doctest
         graphidx
         line_para
     )
+    if (TARGET lemon)
+        target_link_libraries(doctests PRIVATE lemon)
+    endif()
 endif()
 
 if (WITH_LEMON)
