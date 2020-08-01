@@ -51,19 +51,40 @@ import ..MinCut
 using Test
 
 @testset "MinCut" begin
-    warcs = MinCut.WeightedArc{Cint, Cdouble}.([
-        (0, 1, 5.0),
-        (0, 3, 10),
-        (1, 2, 10),
-        (3, 1, 15),
-        (3, 2, 5),
-    ])
-    source = 0
-    target = 2
-    n = 4
-    cut = Vector{Bool}()
-    MinCut.cxx_min_cut!(cut, n, warcs, source, target)
-    @test Set(i for i=1:n if cut[i]) == Set(1)
+    @testset "wiki1" begin
+        warcs = MinCut.WeightedArc{Cint, Cdouble}.([
+            (0, 1, 5.0),
+            (0, 3, 10),
+            (1, 2, 10),
+            (3, 1, 15),
+            (3, 2, 5),
+        ])
+        source = 0
+        target = 2
+        n = 4
+        cut = Vector{Bool}()
+        MinCut.cxx_min_cut!(cut, n, warcs, source, target)
+        @test Set(i for i=1:n if cut[i]) == Set(1)
+    end
+    @testset "chengw1005" begin
+        warcs = MinCut.WeightedArc{Cint, Cdouble}.([
+            (0, 2, 13),
+            (0, 1, 16),
+            (1, 2, 10),
+            (1, 3, 12),
+            (2, 1, 4),
+            (2, 4, 14),
+            (3, 2, 9),
+            (3, 5, 20),
+            (4, 3, 7),
+            (4, 5, 4),
+        ])
+        source, target = 0, 5
+        n = 6
+        cut = Vector{Bool}()
+        MinCut.cxx_min_cut!(cut, n, warcs, source, target)
+        @test Set(i for i=1:n if cut[i]) == Set(1 .+ [0, 1, 2, 4])
+    end
 end
 
 
