@@ -1,6 +1,7 @@
 #include <graphidx/utils/timer.hpp>
 #include "../tree_dp.hpp"
 #include "../tree_dual.hpp"
+#include "../min_cut.hpp"
 
 #ifdef _WIN32
 #  define __export __declspec(dllexport)
@@ -51,3 +52,28 @@ tree_dual_f64_i32(
 {
     return tree_dual(n, x, parent, postord, alpha, root, tree_orientation != 0);
 }
+
+
+#ifdef HAVE_LEMON
+extern "C" __export bool*
+min_cut_f64_i32(
+    bool* cut,
+    const size_t n,
+    const size_t m,
+    const WeightedArc<int, double> *warcs,
+    const int source,
+    const int target)
+{
+    std::vector<IArc<int>> arcs;
+    std::vector<float_t> cap;
+    for (size_t e = 0; e < m; e++) {
+        arcs.push_back({warcs[e].head, warcs[e].tail});
+        cap.push_back(warcs[e].weight);
+    }
+    return min_cut(cut, n, m, cap.data(), source, target);
+}
+#endif
+
+// Local Variables:
+// compile-command: "make -C ../../build treelas"
+// End:
