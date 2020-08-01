@@ -66,8 +66,13 @@ add_object(tree_dual  cxx/tree_dual.cpp)
 
 add_library(treelas SHARED
     cxx/bin/libtreelas.cpp
-    $<TARGET_OBJECTS:tree_dp>
-    $<TARGET_OBJECTS:tree_dual>
+    cxx/tree_dp.cpp
+    cxx/tree_dual.cpp
+)
+set_target_properties(treelas PROPERTIES
+    C_VISIBILITY_PRESET       hidden
+    CXX_VISIBILITY_PRESET     hidden
+    VISIBILITY_INLINES_HIDDEN YES
 )
 if (WITH_LEMON)
     target_link_libraries(treelas lemon)
