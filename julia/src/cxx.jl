@@ -5,10 +5,15 @@ module Cxx
 
 import Libdl
 
-const BUILD_CONFIG = Sys.iswindows() ? "Release" : ""
 const BUILD_DIR = joinpath(@__DIR__, "..", "deps", "build")
-const lib = joinpath(BUILD_DIR, BUILD_CONFIG,
-                     (Sys.isunix() ? "lib" : "") * "treelas.$(Libdl.dlext)")
+
+const lib = let BUILD_CONFIG = @static Sys.iswindows() ? "Release" : ""
+    joinpath(
+        BUILD_DIR,
+        BUILD_CONFIG,
+        (@static Sys.isunix() ? "lib" : "") * "treelas.$(Libdl.dlext)",
+    )
+end
 
 
 function _find_python_extension()::String
@@ -161,6 +166,8 @@ function cxx_tree_dual!(
     )
     return vec(alpha)
 end
+
+
 
 
 end
