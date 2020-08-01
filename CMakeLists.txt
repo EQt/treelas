@@ -69,6 +69,9 @@ add_library(treelas SHARED
     $<TARGET_OBJECTS:tree_dp>
     $<TARGET_OBJECTS:tree_dual>
 )
+if (WITH_LEMON)
+    target_link_libraries(treelas lemon)
+endif()
 
 
 if (BUILD_PYEXT)
@@ -174,7 +177,7 @@ endif()
 
 if (WITH_LEMON)
     add_executable(maxflow cxx/bin/maxflow.cpp)
-    target_link_libraries(maxflow PRIVATE lemon doctest::doctest)
+    target_link_libraries(maxflow PRIVATE lemon)
 endif()
 
 

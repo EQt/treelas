@@ -55,7 +55,7 @@ tree_dual_f64_i32(
 
 
 #ifdef HAVE_LEMON
-extern "C" __export bool*
+extern "C" __export double
 min_cut_f64_i32(
     bool* cut,
     const size_t n,
@@ -65,12 +65,12 @@ min_cut_f64_i32(
     const int target)
 {
     std::vector<IArc<int>> arcs;
-    std::vector<float_t> cap;
+    std::vector<double> cap;
     for (size_t e = 0; e < m; e++) {
         arcs.push_back({warcs[e].head, warcs[e].tail});
         cap.push_back(warcs[e].weight);
     }
-    return min_cut(cut, n, m, cap.data(), source, target);
+    return min_cut(cut, n, m, arcs.data(), cap.data(), source, target);
 }
 #endif
 

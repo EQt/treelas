@@ -10,6 +10,7 @@
 
 #include <tuple>
 #include <vector>
+#include <graphidx/utils/timer.hpp>
 
 #include <lemon/static_graph.h>
 #include <lemon/preflow.h>
@@ -28,7 +29,7 @@ struct WeightedArc
 
 
 template <typename bool_ptr, typename int_t = int, typename float_t = double>
-bool_ptr
+double
 min_cut(
     bool_ptr &above,
     const size_t n,
@@ -48,11 +49,14 @@ min_cut(
         capacity[graph.arcFromId(i)] = capacities[i];
 
     MaxFlow mf (graph, capacity, graph.nodeFromId(source), graph.nodeFromId(target));
+    BareTimer timer;
+    timer.start();
     mf.runMinCut();
+    timer.stop();
 
     for (int i = 0; i < (int)n; i++)
         above[i] = mf.minCut(graph.nodeFromId(i));
-    return above;
+    return double(timer);
 }
 
 
@@ -66,7 +70,8 @@ min_cut(
     const int target)
 {
     std::vector<bool> cut (n);
-    return min_cut(cut, n, arcs.size(), arcs.data(), capacities, source, target);
+    min_cut(cut, n, arcs.size(), arcs.data(), capacities, source, target);
+    return cut;
 }
 
 

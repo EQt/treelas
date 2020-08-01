@@ -13,6 +13,7 @@ Hereby is
 module TreeLas
 import GraphIdx
 
+include("cxx.jl")
 include("utils.jl")
 include("dual.jl")
 include("pwl.jl")

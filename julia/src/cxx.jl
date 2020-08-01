@@ -168,6 +168,4 @@ function cxx_tree_dual!(
 end
 
 
-
-
 end

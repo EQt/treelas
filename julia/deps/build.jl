@@ -5,10 +5,11 @@ const root_dir = joinpath(dirname(@__FILE__), "..", "..")
 const build_config = "Release"
 const target = "treelas"
 const cmake_opts = [
-    (Sys.iswindows() ? ["-A", "x64"] : [])...,
+    (@static Sys.iswindows() ? ["-A", "x64"] : [])...,
     "-DCMAKE_BUILD_TYPE=$build_config",
     "-DBUILD_TESTS=OFF",
     "-DBUILD_PYEXT=OFF",
+    "-DWITH_LEMON=ON",
 ]
 
 # rm(build_dir, recursive=true)
