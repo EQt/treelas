@@ -6,12 +6,8 @@ use std::ops::Range;
 #[inline]
 fn clamp(x: f64, min: f64, max: f64) -> f64 {
     let mut x = x;
-    if x < min {
-        x = min;
-    }
-    if x > max {
-        x = max;
-    }
+    x = if x < min { min } else { x };
+    x = if x > max { max } else { x };
     x
 }
 
