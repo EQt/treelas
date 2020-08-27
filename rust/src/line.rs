@@ -77,30 +77,39 @@ impl LineDP {
     }
 
     pub fn solve_instance(&mut self, mut x: &mut [f64], inst: &Instance) {
-        use graphidx::weights::{ArrayRef, Const};
+        use graphidx::weights::{ArrayRef, Const, Ones};
 
-        let mu_def: Weights<f64> = Weights::Const(1.0);
-        let mu: &Weights<f64> = inst.mu.as_ref().unwrap_or(&mu_def);
+        let mu: Option<&Weights<f64>> = inst.mu.as_ref();
         let lam: &Weights<f64> = &inst.lam;
         match (lam, mu) {
-            (Weights::Const(lam), Weights::Const(mu)) => {
+            (Weights::Const(lam), Some(Weights::Const(mu))) => {
                 let lam: Const<_> = lam.into();
                 let mu: Const<_> = mu.into();
                 self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
-            (Weights::Array(lam), Weights::Const(mu)) => {
+            (Weights::Array(lam), Some(Weights::Const(mu))) => {
                 let lam: ArrayRef<_> = lam.into();
                 let mu: Const<_> = mu.into();
                 self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
-            (Weights::Const(lam), Weights::Array(mu)) => {
+            (Weights::Const(lam), Some(Weights::Array(mu))) => {
                 let lam: Const<_> = lam.into();
                 let mu: ArrayRef<_> = mu.into();
                 self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
-            (Weights::Array(lam), Weights::Array(mu)) => {
+            (Weights::Array(lam), Some(Weights::Array(mu))) => {
                 let mu: ArrayRef<_> = mu.into();
                 let lam: ArrayRef<_> = lam.into();
+                self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
+            }
+            (Weights::Array(lam), None) => {
+                let mu: Ones<f64> = Ones::default();
+                let lam: ArrayRef<_> = lam.into();
+                self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
+            }
+            (Weights::Const(lam), None) => {
+                let mu: Ones<f64> = Ones::default();
+                let lam: Const<_> = lam.into();
                 self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
         };
