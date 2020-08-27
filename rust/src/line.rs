@@ -81,28 +81,30 @@ impl LineDP {
     }
 
     pub fn solve_instance(&mut self, mut x: &mut [f64], inst: &Instance) {
+        use graphidx::weights::{ArrayRef, Const};
+
         let mu_def: Weights<f64> = Weights::Const(1.0);
         let mu: &Weights<f64> = inst.mu.as_ref().unwrap_or(&mu_def);
         let lam: &Weights<f64> = &inst.lam;
         match (lam, mu) {
             (Weights::Const(lam), Weights::Const(mu)) => {
-                let lam = graphidx::weights::Const::new(*lam);
-                let mu = graphidx::weights::Const::new(*mu);
+                let lam: Const<_> = lam.into();
+                let mu: Const<_> = mu.into();
                 self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Weights::Const(mu)) => {
-                let lam = graphidx::weights::ArrayRef::new(lam);
-                let mu = graphidx::weights::Const::new(*mu);
+                let lam: ArrayRef<_> = lam.into();
+                let mu: Const<_> = mu.into();
                 self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Const(lam), Weights::Array(mu)) => {
-                let lam = graphidx::weights::Const::new(*lam);
-                let mu = graphidx::weights::ArrayRef::new(mu);
+                let lam: Const<_> = lam.into();
+                let mu: ArrayRef<_> = mu.into();
                 self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Weights::Array(mu)) => {
-                let mu = graphidx::weights::ArrayRef::new(mu);
-                let lam = graphidx::weights::ArrayRef::new(lam);
+                let mu: ArrayRef<_> = mu.into();
+                let lam: ArrayRef<_> = lam.into();
                 self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
             }
         };
