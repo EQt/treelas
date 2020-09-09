@@ -1,5 +1,10 @@
 ChangeLog
 ---------
+### v0.15.5
+Released 2020-09-09
+- Deduce whether to check for zero nodes from type parameter
+- Name-Mangling in libtreelas
+- julia: Some experiments with new algorithms
 
 ### v0.15.4
 Released 2020-07-17
