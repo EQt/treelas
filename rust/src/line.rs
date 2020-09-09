@@ -20,7 +20,7 @@ pub struct LineDP {
 }
 
 impl LineDP {
-    pub fn new<'a>(n: usize) -> Self {
+    pub fn new(n: usize) -> Self {
         let mut dp = LineDP {
             event: Vec::with_capacity(2 * n),
             lb: Vec::with_capacity(n - 1),
@@ -30,7 +30,7 @@ impl LineDP {
         dp.event.resize_with(2 * n, Default::default);
         dp.lb.resize(n - 1, std::f64::NAN);
         dp.ub.resize(n - 1, std::f64::NAN);
-        return dp;
+        dp
     }
 
     pub fn clip<F: Bool, W: Weighted<f64>>(

@@ -32,6 +32,7 @@ pub struct Instance {
     pub root: Option<i64>,
 }
 
+#[allow(clippy::len_without_is_empty)]
 impl Instance {
     pub fn from_path<P: AsRef<Path>>(
         fname: P,
@@ -49,8 +50,8 @@ impl Instance {
         kind: &str,
     ) -> Vec<Self> {
         if let Some(mut trees) = instances.remove(kind) {
-            for i in 0..trees.len() {
-                trees[i].nr = Some((i + 1) as u32);
+            for (i, mut t) in trees.iter_mut().enumerate() {
+                t.nr = Some((i + 1) as u32);
             }
             trees
         } else {

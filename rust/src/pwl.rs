@@ -81,7 +81,7 @@ pub fn clip<Forward: Bool, Check: Bool>(
             stop += 1;
             stop
         };
-        elements[prev] = Event { x: x, slope: slope };
+        elements[prev] = Event { x, slope };
         x
     };
     if DEBUG {
