@@ -33,7 +33,7 @@ function line_las!(
     y::Array{F,N},
     λ::Lam,
     µ::Mu,
-    C::Val{check} = Val(true),
+    C::Val{check},
 )::Array{F,N}  where {F, N, Lam, Mu, check}
     n = length(y)
     @assert n == length(x)
