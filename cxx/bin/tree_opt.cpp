@@ -71,9 +71,8 @@ process_tree(const char *fname,
             Timer _ ("tree_dp:\n");
             Const<double> clam (lam);
             constexpr bool lazy_sort = true;
-            constexpr bool check = false;
             if (merge_sort)
-                tree_dp<true, lazy_sort, check>(
+                tree_dp<true, lazy_sort>(
                     y.size(),
                     x.data(),
                     y.data(),
@@ -83,7 +82,7 @@ process_tree(const char *fname,
                     root
                 );
             else
-                tree_dp<false, lazy_sort, check>(
+                tree_dp<false, lazy_sort>(
                     y.size(),
                     x.data(),
                     y.data(),

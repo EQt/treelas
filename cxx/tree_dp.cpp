@@ -18,8 +18,7 @@ tree_dp(
 {
     const Const<double> _lam (lam);
     const Const<double> _mu (mu);
-    return tree_dp<merge_sort, lazy_sort, false>(n, x, y, parent,
-                                                 _lam, _mu, root);
+    return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, _lam, _mu, root);
 }
 
 
@@ -46,8 +45,7 @@ tree_dp_w(
 
     const Array<const double> _lam(lam);
     const Array<const double> _mu(mu);
-    return tree_dp<merge_sort, lazy_sort, true>(n, x, y, parent,
-                                                _lam, _mu, root);
+    return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, _lam, _mu, root);
 
     Timer::startit("free");
     return x;

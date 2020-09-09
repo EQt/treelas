@@ -187,9 +187,8 @@ reg_tree(py::module &m)
               }
 
               constexpr auto merge_sort = true;
-              constexpr auto check_zero = true;
               if (lazy_sort)
-                  tree_dp<merge_sort, true, check_zero>(
+                  tree_dp<merge_sort, true>(
                       n,
                       x.mutable_data(),
                       y.data(),
@@ -198,7 +197,7 @@ reg_tree(py::module &m)
                       convert(mu),
                       root);
               else
-                  tree_dp<merge_sort, false, check_zero>(
+                  tree_dp<merge_sort, false>(
                       n,
                       x.mutable_data(),
                       y.data(),

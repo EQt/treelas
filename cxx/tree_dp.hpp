@@ -39,11 +39,7 @@ struct TreeDPStatus
 };
 
 
-template <bool merge_sort,
-          bool lazy_sort,
-          bool check = true,
-          typename Wlam,
-          typename Wmu>
+template <bool merge_sort, bool lazy_sort, typename Wlam, typename Wmu>
 inline const double*
 tree_dp(
     const size_t n,
@@ -61,8 +57,7 @@ tree_dp(
             Timer _ ("find root");
             new_root = find_root(n, parent);
         }
-        return tree_dp<merge_sort, lazy_sort, check>(
-            n, x, y, parent, lam, mu, new_root, s);
+        return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, new_root, s);
     }
 
     auto *elements = s.elements_.data();
@@ -82,7 +77,7 @@ tree_dp(
     }
 
     init_queues(n, pq, s.proc_order, childs, s.dfs_stack, root);
-
+    constexpr bool check = !Wmu::is_const();
     {   Timer _ ("forward");
         for (auto i : proc_order) {
             const auto sig_i = sig[i];  // backup before it is set in next line
@@ -125,11 +120,7 @@ tree_dp(
    Paramters:
     x   Output solution (if NULL, allocate it); x == y possible.
  */
-template <bool merge_sort,
-          bool lazy_sort,
-          bool check = true,
-          typename Wlam,
-          typename Wmu>
+template <bool merge_sort, bool lazy_sort, typename Wlam, typename Wmu>
 inline const double*
 tree_dp(
     const size_t n,
@@ -145,7 +136,7 @@ tree_dp(
         x = new double[n];
     TreeDPStatus s(n);
     timer.stop();
-    return tree_dp<merge_sort, lazy_sort, check, Wlam, Wmu>(
+    return tree_dp<merge_sort, lazy_sort, Wlam, Wmu>(
         n, x, y, parent, lam, mu, root, s);
 }
 
@@ -162,7 +153,7 @@ tree_dp(
     std::vector<double> x;
     const size_t n = y.size();
     x.resize(n);
-    tree_dp<merge_sort, lazy_sort, false>(
+    tree_dp<merge_sort, lazy_sort>(
         n,
         x.data(),
         y.data(),
@@ -222,8 +213,7 @@ tree_dp<false, true>(
     const int root);
 
 
-template <bool lazy_sort,
-          bool merge_sort = true>
+template <bool lazy_sort, bool merge_sort = true>
 [[deprecated]]
 const double*
 tree_dp_w(
