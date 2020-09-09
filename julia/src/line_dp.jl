@@ -2,7 +2,7 @@ module LineDP
 
 import Printf: @printf
 import ..Pwl: clip, Range, Event, EPS, DEBUG
-import GraphIdx: Ones, Vec
+import GraphIdx: Ones, Vec, is_const
 
 """
 Contains all memory needed for `line_las!`.
@@ -33,8 +33,18 @@ function line_las!(
     y::Array{F,N},
     λ::Lam,
     µ::Mu,
+)::Array{F,N} where {F, N, Lam, Mu}
+    line_las!(mem, x, y, λ, μ, Val(!is_const(Mu)))
+end
+
+function line_las!(
+    mem::LineDPMem{F},
+    x::Array{F,N},
+    y::Array{F,N},
+    λ::Lam,
+    µ::Mu,
     C::Val{check},
-)::Array{F,N}  where {F, N, Lam, Mu, check}
+)::Array{F,N} where {F, N, Lam, Mu, check}
     n = length(y)
     @assert n == length(x)
     resize!(mem, n)
@@ -60,11 +70,10 @@ function line_las!(
     return x
 end
 
+line_las!(x::Array{F,N}, y::Array{F,N}, λ::Lam, µ::Mu) where {F, N, Lam, Mu} =
+    line_las!(LineDPMem{F}(N), x, y, λ, µ)
 
-line_las!(x::Array{F,N}, y::Array{F,N}, λ::Lam, µ::Mu) where {F,N,Lam,Mu} =
-    line_las!(LineDPMem{F}(N), x, y, λ, µ, Val(μ isa Vec))
-
-line_las(y::Array{F,N}, λ::Lam, µ::Mu = Ones{F}()) where {F,N,Lam,Mu} =
+line_las(y::Array{F,N}, λ::Lam, µ::Mu = Ones{F}()) where {F, N, Lam, Mu} =
     line_las!(similar(y), y, λ, µ)
 
 end
