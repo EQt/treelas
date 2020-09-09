@@ -1,6 +1,7 @@
 use crate::generics::{Bool, False, True};
 use crate::instance::{Instance, Weights};
 use crate::pwl::{clip, Event, EPS};
+use graphidx::weights::Weighted;
 use std::ops::Range;
 
 #[inline]
@@ -32,20 +33,22 @@ impl LineDP {
         return dp;
     }
 
-    pub fn clip<F: Bool, C: Bool>(&mut self, slope: f64, offset: f64) -> f64 {
-        clip::<F, C>(&mut self.event, &mut self.pq, slope, offset)
+    pub fn clip<F: Bool, W: Weighted<f64>>(
+        &mut self,
+        slope: f64,
+        offset: f64,
+    ) -> f64 {
+        if W::is_const() {
+            clip::<F, False>(&mut self.event, &mut self.pq, slope, offset)
+        } else {
+            clip::<F, True>(&mut self.event, &mut self.pq, slope, offset)
+        }
     }
 
-    pub fn solve<W1, W2, B>(
-        &mut self,
-        x: &mut [f64],
-        y: &[f64],
-        lam: &W1,
-        mu: &W2,
-    ) where
-        W1: graphidx::weights::Weighted<f64>,
-        W2: graphidx::weights::Weighted<f64> + std::fmt::Debug,
-        B: Bool,
+    pub fn solve<Wl, W>(&mut self, x: &mut [f64], y: &[f64], lam: &Wl, mu: &W)
+    where
+        Wl: graphidx::weights::Weighted<f64>,
+        W: graphidx::weights::Weighted<f64> + std::fmt::Debug,
     {
         let n = y.len();
         assert!(n == x.len());
@@ -60,9 +63,9 @@ impl LineDP {
         let mut lam0: f64 = 0.0;
         for i in 0..n - 1 {
             self.lb[i] =
-                self.clip::<True, B>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+                self.clip::<True, W>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
             self.ub[i] =
-                self.clip::<False, B>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+                self.clip::<False, W>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
             lam0 = if mu[i] > EPS {
                 lam[i]
             } else {
@@ -70,7 +73,7 @@ impl LineDP {
             };
         }
         x[n - 1] =
-            self.clip::<True, B>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
+            self.clip::<True, W>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
         for i in (0..n - 1).rev() {
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
@@ -85,32 +88,32 @@ impl LineDP {
             (Weights::Const(lam), Some(Weights::Const(mu))) => {
                 let lam: Const<_> = lam.into();
                 let mu: Const<_> = mu.into();
-                self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
+                self.solve(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Some(Weights::Const(mu))) => {
                 let lam: ArrayRef<_> = lam.into();
                 let mu: Const<_> = mu.into();
-                self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
+                self.solve(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Const(lam), Some(Weights::Array(mu))) => {
                 let lam: Const<_> = lam.into();
                 let mu: ArrayRef<_> = mu.into();
-                self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
+                self.solve(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), Some(Weights::Array(mu))) => {
                 let mu: ArrayRef<_> = mu.into();
                 let lam: ArrayRef<_> = lam.into();
-                self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
+                self.solve(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Array(lam), None) => {
                 let mu: Ones<f64> = Ones::default();
                 let lam: ArrayRef<_> = lam.into();
-                self.solve::<_, _, False>(&mut x, &inst.y, &lam, &mu);
+                self.solve(&mut x, &inst.y, &lam, &mu);
             }
             (Weights::Const(lam), None) => {
                 let mu: Ones<f64> = Ones::default();
                 let lam: Const<_> = lam.into();
-                self.solve::<_, _, True>(&mut x, &inst.y, &lam, &mu);
+                self.solve(&mut x, &inst.y, &lam, &mu);
             }
         };
     }
@@ -128,7 +131,7 @@ mod tests {
         let mut solver = LineDP::new(y.len());
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
-        solver.solve::<_, _, False>(&mut x, &y, &lam, &mu);
+        solver.solve(&mut x, &y, &lam, &mu);
         assert!(graphidx::lina::l1_diff(&x, &[0.0, 0.0, 1.0]) > 1.0);
         let diff: f64 = graphidx::lina::l1_diff(&x, &[1.1, 1.8, 1.1]);
         assert!(

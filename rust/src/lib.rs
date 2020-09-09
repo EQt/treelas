@@ -18,6 +18,6 @@ pub extern "C" fn line_las(
     let mu = graphidx::weights::Ones::<f64>::new();
     let mut solver = line::LineDP::new(y.len());
     let start_time = Instant::now();
-    solver.solve::<_, _, generics::False>(&mut x, &y, &lam, &mu);
+    solver.solve::<_, _>(&mut x, &y, &lam, &mu);
     start_time.elapsed().as_secs_f64()
 }
