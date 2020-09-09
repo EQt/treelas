@@ -38,7 +38,7 @@ function clip(
     slope::F,
     offset::F,
     ::Val{forward},
-    ::Val{check} = Val(true),
+    ::Val{check},
 )::F where {F,forward,check}
     local start::Int = pq[].start
     local stop::Int = pq[].stop
