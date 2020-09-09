@@ -12,7 +12,7 @@ rest.
 module TreeDP
 
 import GraphIdx
-import GraphIdx: Ones, Const, Vec, Weights
+import GraphIdx: Ones, Const, Vec, Weights, is_const
 import GraphIdx.Utils: MutRef
 import GraphIdx.Tree: ChildrenIndex, reset!, dfs_walk
 import ..Pwl: clip, Range, Event, EPS, DEBUG
@@ -98,6 +98,18 @@ function tree_dp!(
     µ::Mu,
     mem::TreeDPMem{F,I},
 )::Array{F,N} where {F, I, N, Lam<:Weights, Mu<:Weights}
+    tree_dp!(x, y, t, λ, μ, mem, Val(!is_const(Mu)))
+end
+
+function tree_dp!(
+    x::Array{F,N},
+    y::Array{F,N},
+    t::Tree,
+    λ::Lam,
+    µ::Mu,
+    mem::TreeDPMem{F,I},
+    C::Val{check} = Val(true),
+)::Array{F,N} where {F, I, N, Lam<:Weights, Mu<:Weights, check}
     reset!(mem, t)
     local lb::Vector{F} = mem.lb
     local ub::Vector{F} = vec(x)
@@ -110,8 +122,8 @@ function tree_dp!(
     for i in @view mem.proc_order[1:end-1]
         local sig_i::F = sig[i]
         ref.i = i
-        lb[i] = clip(ev, ref, +µ[i], -µ[i]*y[i] - sig_i + λ[i], Val(true))
-        ub[i] = clip(ev, ref, -µ[i], +µ[i]*y[i] - sig_i + λ[i], Val(false))
+        lb[i] = clip(ev, ref, +µ[i], -µ[i]*y[i] - sig_i + λ[i], Val(true), C)
+        ub[i] = clip(ev, ref, -µ[i], +µ[i]*y[i] - sig_i + λ[i], Val(false), C)
         merge(mem.queues.events::Vector{Event},
               mem.queues.pq::Vector{Range},
               t.parent[i]::Int, i::Int)
@@ -120,7 +132,7 @@ function tree_dp!(
 
     let r = t.root
         ref.i = r
-        x[r] = clip(ev, ref,  +µ[r], -µ[r]*y[r] -sig[r] + 0.0, Val(true))
+        x[r] = clip(ev, ref,  +µ[r], -µ[r]*y[r] -sig[r] + 0.0, Val(true), C)
     end
     for v in @view mem.proc_order[end-1:-1:1]
         x[v] = clamp(x[t.parent[v]], lb[v], ub[v])
