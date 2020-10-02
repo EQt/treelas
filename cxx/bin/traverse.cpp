@@ -17,7 +17,7 @@
 
 
 void
-traverse(
+spantree(
     const char *fname,
     const char *outfn,
     const char *group = "/",
@@ -116,7 +116,7 @@ main(int argc, char *argv[])
         const char *outfn = argc > 2 ? argv[2] : fname;
         set_thousand_sep(std::cout);
         std::cout << fname << " => " << outfn << std::endl;
-        traverse(fname, outfn, ap.get_option("group"), seed);
+        spantree(fname, outfn, ap.get_option("group"), seed);
     } catch (std::runtime_error &e) {
         fprintf(stderr, "EXCEPTION: %s\n", e.what());
     } catch (const char *msg) {
