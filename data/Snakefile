@@ -145,7 +145,7 @@ rule run_treeapx:
 
 
 rule spanning_tree:
-    input:  "{name}.h5", cmake("traverse")
+    input:  "{name}.h5", cmake("spantree")
     output: "{name}_{seed,\\d+}.tree"
     shell:  "{input[1]} -s {wildcards.seed} {input[0]} {output}"
 

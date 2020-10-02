@@ -99,7 +99,7 @@ main(int argc, char *argv[])
 {
     try {
         ArgParser ap (
-            "traverse [file]\n"
+            "spantree [file]\n"
             "\n"
             "Read in a graph (edge list) and compute a random spanning tree.\n"
             "Store this tree (parent)."
@@ -128,5 +128,5 @@ main(int argc, char *argv[])
 
 
 // Local Variables:
-// compile-command: "cd ../../build/ && make traverse && ./traverse ../data/snap/com-youtube.h5"
+// compile-command: "cd ../../build/ && make spantree && ./spantree ../data/snap/com-youtube.h5"
 // End:

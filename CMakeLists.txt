@@ -118,8 +118,8 @@ endif()
 
 
 if (TARGET minih5)
-    add_executable(traverse cxx/bin/traverse.cpp)
-    target_link_libraries(traverse argparser minih5)
+    add_executable(spantree cxx/bin/spantree.cpp)
+    target_link_libraries(spantree argparser minih5)
 
     add_executable(grid cxx/bin/grid.cpp)
     target_link_libraries(grid argparser minih5)
