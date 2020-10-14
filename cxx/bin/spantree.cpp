@@ -12,7 +12,7 @@
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/idx/biadjacent.hpp>
 #include <graphidx/spanning/connected.hpp>
-#include <graphidx/spanning/prim_mst.hpp>
+#include <graphidx/spanning/rand_prim_mst.hpp>
 #include <graphidx/utils/thousand.hpp>
 
 
