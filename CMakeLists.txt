@@ -9,7 +9,6 @@ set(DOCTEST_DIR    "${CMAKE_CURRENT_SOURCE_DIR}/deps/graphidx/deps/doctest"
     CACHE PATH     "Which DOCTEST to be used")
 option(BUILD_TESTS "Build unit tests using googletest" ON)
 option(BUILD_PYEXT "Build python extension module"     ON)
-option(WITH_LEMON  "Include algorithms using LEMON"    OFF)
 option(FAST_MATH   "Use -ffast-math"                   OFF)
 option(ASAN        "Use Address SANitizer"             OFF)
 option(DEBUG       "Debug CMAKE"                       OFF)
@@ -44,8 +43,6 @@ include_directories(deps/graphidx/cxx)
 
 find_package(Threads)
 
-
-add_subdirectory(deps/lemon)
 add_subdirectory(deps/graphidx)
 add_subdirectory(deps/argparser)
 add_subdirectory(deps/glmgen)
@@ -81,6 +78,7 @@ endif()
 
 if (BUILD_PYEXT)
     message("-- Enable python extension")
+    find_package(Python3 COMPONENTS Interpreter Development)
     pybind11_add_module(_treelas
         python/_treelas.cpp
         python/line.cpp
@@ -168,7 +166,6 @@ if (BUILD_TESTS)
         cxx/test/test_tree_dp.cpp
         cxx/test/test_tree_dp_2.cpp
         cxx/test/test_tree_apx.cpp
-        cxx/test/test_min_cut.cpp
     )
     target_link_libraries(doctests PRIVATE
         doctest::doctest
