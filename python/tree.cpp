@@ -1,6 +1,4 @@
 #include <pybind11/pybind11.h>
-#include "py_np.hpp"
-#include "weights.hpp"
 
 #include <graphidx/bits/finite.hpp>
 #include <graphidx/utils/timer.hpp>       // for TimerQuiet
@@ -9,6 +7,8 @@
 #include "../cxx/tree_dp.hpp"
 #include "../cxx/tree_dual.hpp"
 
+#include "py_np.hpp"
+#include "weights.hpp"
 
 namespace py = pybind11;
 
