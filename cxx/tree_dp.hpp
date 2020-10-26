@@ -68,6 +68,7 @@ tree_dp(
     auto *sig = lb;
     const auto &childs = s.childs;
     const auto &proc_order = s.proc_order;
+    constexpr bool check = !Wmu::is_const();
 
     {   Timer _ ("lb init");
         std::fill(lb, lb + n, 0);
@@ -77,16 +78,13 @@ tree_dp(
     }
 
     init_queues(n, pq, s.proc_order, childs, s.dfs_stack, root);
-    constexpr bool check = !Wmu::is_const();
     {   Timer _ ("forward");
         for (auto i : proc_order) {
             const auto sig_i = sig[i];  // backup before it is set in next line
             if (!merge_sort && lazy_sort)
                 sort_events(pq[i], elements);
-            lb[i] = clip<+1, check>(elements, pq[i],
-                                    +mu[i], -mu[i]*y[i] - sig_i + lam[i]);
-            ub[i] = clip<-1, check>(elements, pq[i],
-                                    -mu[i], +mu[i]*y[i] - sig_i + lam[i]);
+            lb[i] = clip<+1, check>(elements, pq[i], +mu[i], -mu[i]*y[i] - sig_i + lam[i]);
+            ub[i] = clip<-1, check>(elements, pq[i], -mu[i], +mu[i]*y[i] - sig_i + lam[i]);
             sig[parent[i]] +=
                 (check && mu[i] <= EPS) ? std::min(lam[i], sig_i) : lam[i];
             if (merge_sort)
