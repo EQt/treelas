@@ -5,8 +5,6 @@
 #include <limits>
 
 #include <graphidx/bits/clamp.hpp>
-#include <graphidx/bits/finite.hpp>
-#include <graphidx/bits/minmax.hpp>
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/std/stack.hpp>
 #include <graphidx/std/uvector.hpp>

@@ -2,6 +2,7 @@
 #include "py_np.hpp"
 #include "weights.hpp"
 
+#include <graphidx/bits/finite.hpp>
 #include <graphidx/utils/timer.hpp>       // for TimerQuiet
 
 #include "../cxx/tree_apx.hpp"
