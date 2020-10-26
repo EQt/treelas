@@ -1,7 +1,9 @@
+#include <graphidx/min_cut.hpp>
 #include <graphidx/utils/timer.hpp>
+
 #include "../tree_dp.hpp"
 #include "../tree_dual.hpp"
-#include "../min_cut.hpp"
+
 
 #ifdef _WIN32
 #  define __export __declspec(dllexport)
@@ -36,7 +38,10 @@ tree_dp_f64_i32(
     const double mu,
     int root)
 {
-    return tree_dp<false, true>(n, x, y, parent, lam, mu, root);
+    constexpr bool
+        merge_sort = false,
+        lazy_sort = true;
+    return tree_dp<merge_sort, lazy_sort>(n, x, y, parent, lam, mu, root);
 }
 
 
