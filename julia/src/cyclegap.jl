@@ -7,8 +7,8 @@ module CycleGap
 import Printf: @printf
 
 import GraphIdx
-import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph, Ones
-import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
+import GraphIdx: Graph, EdgeGraph, Edge, Weights, WeightedGraph
+import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx.Tree: RootedTree
 
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
@@ -125,7 +125,9 @@ function gaplas(
     max_iter::Int = 5,
     verbose::Bool = true,
 )::Array{Float64,N} where {N, Mem}
-    gaplas(y, graph, lambda, Ones{Float64}(), Mem; max_iter=max_iter, verbose=verbose)
+    gaplas(
+        y, graph, lambda, GraphIdx.Ones{Float64}(), Mem; max_iter=max_iter, verbose=verbose
+    )
 end
 
 
