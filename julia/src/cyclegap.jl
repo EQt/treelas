@@ -7,7 +7,6 @@ module CycleGap
 import Printf: @printf
 
 import GraphIdx
-import GraphIdx: num_edges, num_nodes, enumerate_edges
 import GraphIdx: Graph, Weights, WeightedGraph, EdgeGraph, Ones
 import GraphIdx: PrimMstMem, prim_mst_edges, Graph, EdgeGraph, Edge
 import GraphIdx.Tree: RootedTree
@@ -73,12 +72,12 @@ function CycMem(
     y::Array{Float64,N}, graph::Graph, lambda::W
 ) where {N, W<:Weights{Float64}}
     gap_mem = GapMem(y, graph, lambda)
-    tree_lam = collect(lambda, num_nodes(graph))
+    tree_lam = collect(lambda, GraphIdx.num_nodes(graph))
     return CycMem(
         gap_mem.x,
         gap_mem.gamma,
         gap_mem,
-        CycleBasis(num_edges(graph), num_nodes(graph)),
+        CycleBasis(GraphIdx.num_edges(graph), GraphIdx.num_nodes(graph)),
         tree_lam,
     )
 end
