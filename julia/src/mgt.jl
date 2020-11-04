@@ -224,7 +224,9 @@ end
 )
 
 
-gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Weights{Float64}; args::Args...) where {Args} =
+gaplas(
+    y::Array, edges::Vector{Edge{Int}}, λ::Weights{Float64}; args::Args...
+) where {Args} =
     gaplas(y, EdgeGraph(length(y), edges), λ; args...)
 
 
