@@ -12,7 +12,7 @@ import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx.Tree: RootedTree
 
 import TreeLas.TreeDP: TreeDPMem, tree_dp!
-import TreeLas.Dual: dual!, gap_vec!, primal_from_dual!
+import TreeLas.Dual: dual!, gap_vec!
 import TreeLas.MGT: extract_non_tree!, update_tree!
 import TreeLas: Cycle
 import TreeLas.Cycle: CycleBasis
