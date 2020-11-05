@@ -8,9 +8,10 @@ import GraphIdx
 import GraphIdx: Graph, EdgeGraph, Edge, Weights, WeightedGraph
 import GraphIdx: PrimMstMem, prim_mst_edges
 import GraphIdx.Tree: RootedTree
-import TreeLas.TreeDP: TreeDPMem, tree_dp!
-import TreeLas.Dual: dual!, gap_vec!
-import TreeLas.MGT: extract_non_tree!, update_tree!
+
+import ..Dual: dual!, gap_vec!
+import ..TreeDP: TreeDPMem, tree_dp!
+import ..TreeFlow: extract_non_tree!, update_tree!
 
 
 struct GapMem{N, WL<:Weights{Float64}}
