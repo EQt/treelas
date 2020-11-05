@@ -1,3 +1,6 @@
+module TreeFlow
+import GraphIdx: Vec, Weights, Graph, EdgeGraph, enumerate_edges
+
 """
     extract_non_tree!(graph, y, λt, π, α, λ)
 
@@ -91,3 +94,5 @@ function update_tree!(alpha, tree_alpha, selected, graph::EdgeGraph, parent)
         end
     end
 end
+
+end # module

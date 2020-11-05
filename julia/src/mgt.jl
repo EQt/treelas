@@ -38,8 +38,7 @@ import GraphIdx.Tree: RootedTree
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..Utils: sum2, primal_objective
 import ..Dual: dual!, gap_vec!, primal_from_dual!
-
-include("treeflow.jl")
+import ..TreeFlow: update_tree!, extract_non_tree!
 
 
 """

@@ -19,6 +19,7 @@ include("dual.jl")
 include("pwl.jl")
 include("line_dp.jl")
 include("tree_dp.jl")
+include("treeflow.jl")
 include("mgt.jl")
 
 include("cycle.jl")
