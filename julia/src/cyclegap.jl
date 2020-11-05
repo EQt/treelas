@@ -1,6 +1,3 @@
-include("gaplas.jl")
-
-
 """
 Test an idea about a variant of iterated gap trees:
 Include the non-tree edges by rotate the capacities in the associated cycles.
