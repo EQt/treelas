@@ -99,7 +99,7 @@ function gaplas!(
     lambda::Weights{Float64},
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
-    _extract_tree!(mem, y, graph, lambda)
+    find_gap_tree!(mem, y, graph, lambda)
     tree_dp!(mem.x, mem.z, mem.tree, mem.tree_lam, mu, mem.dp_mem)
     mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
     dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
@@ -113,7 +113,10 @@ function gaplas!(
 end
 
 
-function _extract_tree!(
+"""
+Determine a tree by choosing edges with high gap value.
+"""
+function find_gap_tree!(
     mem::GapMem{N, W1}, y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}
 ) where {N, W1<:Weights{Float64}}
     gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)

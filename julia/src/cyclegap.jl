@@ -75,7 +75,7 @@ function GapLas.gaplas!(
     mu::W2,
 ) where {N, GraphT<:Graph, W1<:Weights{Float64}, W2<:Weights{Float64}}
     mem = cmem.gap_mem
-    GapLas._extract_tree!(mem, y, graph, lambda)
+    GapLas.find_gap_tree!(mem, y, graph, lambda)
 
     cmem.cycles = Cycle.CycleBasis(graph, mem.mst.parent)
     tlam0, tlam = Cycle.extract_rotate(cmem.cycles, lambda)
