@@ -108,7 +108,7 @@ function tree_dp!(
     λ::Lam,
     µ::Mu,
     mem::TreeDPMem{F,I},
-    C::Val{check} = Val(true),
+    C::Val{check},
 )::Array{F,N} where {F, I, N, Lam<:Weights, Mu<:Weights, check}
     reset!(mem, t)
     local lb::Vector{F} = mem.lb
