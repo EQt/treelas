@@ -81,14 +81,14 @@ end
 
 Update the global dual `α` by a tree dual `αt`.
 """
-function update_tree!(alpha, tree_alpha, selected, graph::EdgeGraph, parent)
+function update_tree!(α, αt, selected, graph::EdgeGraph, parent)
     @assert selected[1] < 0
     for i in @view selected[2:end]
         local u::Int, v::Int = graph.edges[i]
-        alpha[i] = if parent[v] == u
-            -tree_alpha[v]
+        α[i] = if parent[v] == u
+            -αt[v]
         elseif parent[u] == v
-            +tree_alpha[u]
+            +αt[u]
         else
             error("Should not happen")
         end
