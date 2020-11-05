@@ -7,7 +7,7 @@ import GraphIdx.Tree: hierarchy_string, ChildrenIndex, parenthesis_string, root_
 import GraphIdx.Tree: dfs_walk_rev
 
 
-@testset "Queus: init 2 nodes            " begin
+@testset "Queues: init 2 nodes           " begin
     tree = Tree([1, 1])
     n = length(tree)
     @test n == 2
@@ -24,7 +24,7 @@ import GraphIdx.Tree: dfs_walk_rev
 end
 
 
-@testset "Queus: init 10 nodes           " begin
+@testset "Queues: init 10 nodes          " begin
     """
     Compare to cxx/test/test_tree_dp.cpp: TEST(dptree, init_queues)
     """

@@ -6,7 +6,7 @@ import TreeLas
 import TreeLas.TreeDP
 import TreeLas.Dual: dual
 import GraphIdx
-import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with
+import GraphIdx.Tree: ChildrenIndex, hierarchy, hierarchy_with, hierarchy_string
 
 include(joinpath(dirname(pathof(TreeLas)), "cxx.jl"))
 
@@ -50,8 +50,9 @@ end
         let z = expect3x/3 - y
             local alpha = dual(z, t.parent, cidx)
             # @info "alpha=" *string(round.(alpha, digits=4))
-            hierarchy(cidx, i -> @sprintf("%.1f≈%+.1f", -3y[i]+expect3x[i],
-                                          -3alpha[i]))
+            @debug hierarchy_string(
+                cidx, i -> @sprintf("%.1f≈%+.1f", -3y[i]+expect3x[i], -3alpha[i])
+            )
         end
     end
 end
