@@ -53,20 +53,6 @@ function cyclas(
 end
 
 
-function gaplas(
-    y::Array{Float64,N},
-    graph::Graph,
-    lambda::Weights{Float64},
-    ::Type{Mem} = GapMem;
-    max_iter::Int = 5,
-    verbose::Bool = true,
-)::Array{Float64,N} where {N, Mem}
-    gaplas(
-        y, graph, lambda, GraphIdx.Ones{Float64}(), Mem; max_iter=max_iter, verbose=verbose
-    )
-end
-
-
 function GapLas.gaplas!(
     cmem::CycMem{N, W1},
     y::Array{Float64,N},
