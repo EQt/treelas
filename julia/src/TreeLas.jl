@@ -26,6 +26,8 @@ include("cycle.jl")
 
 include("gaplas.jl")
 include("cyclegap.jl")
+include("momentum.jl")
+
 include("precompile.jl")
 # _precompile_()
 
