@@ -1,5 +1,5 @@
 """
-Test the eXtension of the GapLas/MGT idea
+Test ideas for eXtensions of the GapLas/MGT idea
 """
 module TestGapLaX
 

@@ -15,7 +15,11 @@ const cxx_jl = joinpath(dirname(pathof(TreeLas)), "cxx.jl")
 
     syms = Set((String(m.captures[1])
                 for m in eachmatch(r"(_Z\w+)", read(open(cxx_jl), String))))
-
+    @test syms == Set()
+    syms = Set([
+        "tree_dp_f64_i32",
+        "tree_dual_f64_i32",
+    ])
     Libdl.dlopen(Cxx.lib) do tl
         @testset "Check DLL symbols" begin
             for s in syms
