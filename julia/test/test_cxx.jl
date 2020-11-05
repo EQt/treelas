@@ -7,12 +7,12 @@ import TreeLas
 const cxx_jl = joinpath(dirname(pathof(TreeLas)), "cxx.jl")
 
 @static if !Sys.iswindows()
-@assert isfile(Cxx.lib) "Call `Pkg.build(\"TreeLas\")`"
-
 
 @testset "TreeLas.Cxx                    " begin
-    @test isfile(cxx_jl)
+    @assert isfile(cxx_jl)
     include(cxx_jl)
+    @assert isfile(Cxx.lib) "Call `Pkg.build(\"TreeLas\")`"
+
     syms = Set((String(m.captures[1])
                 for m in eachmatch(r"(_Z\w+)", read(open(cxx_jl), String))))
 
