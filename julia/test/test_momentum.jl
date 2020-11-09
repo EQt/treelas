@@ -1,10 +1,9 @@
 module TestMomentum
-include("../src/TreeLas.jl")
 
 using Test
 import GraphIdx
-import .TreeLas: Momentum
-import .TreeLas: MGT
+import TreeLas: Momentum
+import TreeLas: MGT
 
 
 include("demo3x7.jl")
