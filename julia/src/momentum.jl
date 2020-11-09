@@ -12,9 +12,12 @@ import TreeLas.GapLas: gaplas, GapMem, gaplas!
 
 struct MomMem{N, WL<:Weights{Float64}}
     learn::Float64
+    mass::Float64
     x::Array{Float64, N}
+    xo::Array{Float64, N}
     z::Array{Float64, N}
     α::Vector{Float64}
+    αo::Vector{Float64}
     gmem::GapMem{N, WL}
     gamma::Vector{Float64}
 end
@@ -27,8 +30,11 @@ function MomMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     x = gmem.x
     z = similar(x)
     α = similar(gmem.alpha)
-    learn = 0.5
-    MomMem(learn, x, z, α, gmem, gamma)
+    xo = zeros(Float64, size(x))
+    αo = zeros(Float64, size(α))
+    learn = 0.85
+    mass = 0.5
+    MomMem(learn, mass, x, xo, z, α, αo, gmem, gamma)
 end
 
 
@@ -49,4 +55,4 @@ function gaplas!(
 end
 
 
-end # CycleGap
+end # module Momentum
