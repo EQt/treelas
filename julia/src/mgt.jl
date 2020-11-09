@@ -175,9 +175,8 @@ function gaplas(
     μ::Weights = Ones{F}();
     args::Args...
 )::Array{F,N} where {F, N, Args}
-    x = copy(y)
-    α = zeros(num_edges(g))
-    error("notimplemented")
+    edge_graph::EdgeGraph = collect(g)
+    gaplas(y, edge_graph, λ; mu=μ, args...)
 end
 
 
