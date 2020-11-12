@@ -7,13 +7,7 @@ module Momentum
 import GraphIdx
 import GraphIdx: Graph, Weights
 import TreeLas: GapLas
-import TreeLas.GapLas: gaplas, GapMem, gaplas!
-
-
-struct Sol{N}
-    x::Array{Float64, N}
-    α::Vector{Float64}
-end
+import TreeLas.GapLas: gaplas, GapMem, gaplas!, Sol
 
 
 struct MomMem{N, WL<:Weights{Float64}}
