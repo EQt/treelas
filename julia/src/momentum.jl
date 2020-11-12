@@ -10,19 +10,14 @@ import TreeLas: GapLas
 import TreeLas.GapLas: gaplas, GapMem, gaplas!, Sol
 
 
-"""
-Compute convex combination of `a` and `b` using factor `c` and store it in `out`.
-"""
-function conv!(out::Sol{N}, a::Sol{N}, c::Number, b::Sol{N}) where {N}
-    @. out.x = c * a.x + (1 - c) * b.x
-    @. out.α = c * a.α + (1 - c) * b.α
-end
+Broadcast.broadcasted(::typeof(identity), s::Sol{N}) where {N} = s
 
 
-conv!(
-    out::Sol{N}, a::Sol{N}, c::Number, b::Tuple{Array{Float64,N}, Vector{Float64}}
-) where {N} =
-    conv!(out, a, c, Sol(b[1], b[2]))
+function Broadcast.materialize!(dest::Sol{N}, src::Sol{N}) where {N}
+    # println("materialize!(::Sol, ::Sol)")
+    dest.x .= src.x
+    dest.α .= src.α
+end    
 
 
 struct MomMem{N, WL<:Weights{Float64}}
@@ -53,8 +48,7 @@ function gaplas!(
     lambda::Weights{Float64},
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
-    mem.sol0.x .= mem.sol.x
-    mem.sol0.α .= mem.sol.α
+    mem.sol0 .= mem.sol
     GapLas.gaplas!(mem.gmem, y, graph, lambda, mu)
     let learn = mem.learn
         @. mem.sol.x = learn * mem.sol.x + (1 - learn) * mem.sol0.x
