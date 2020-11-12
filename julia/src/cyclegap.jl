@@ -15,7 +15,7 @@ import TreeLas.MGT: update_tree!
 import TreeLas: Cycle
 import TreeLas.Cycle: CycleBasis
 import TreeLas: GapLas
-import TreeLas.GapLas: GapMem, gaplas
+import TreeLas.GapLas: GapMem, gaplas, Sol
 
 
 """
@@ -28,7 +28,7 @@ Memory to compute an iteration using the cycle shift idea.
 
 """
 mutable struct CycMem{N, WL<:Weights{Float64}}
-    x::Array{Float64, N}
+    sol::Sol{N}
     gamma::Vector{Float64}
     gap_mem::GapMem{N, WL}
     cycles::CycleBasis
@@ -40,7 +40,7 @@ function CycMem(y::Array{Float64,N}, graph::Graph, lambda::W) where {N, W<:Weigh
     gap_mem = GapMem(y, graph, lambda)
     λ_tree = collect(lambda, GraphIdx.num_nodes(graph))
     return CycMem(
-        gap_mem.x,
+        gap_mem.sol,
         gap_mem.gamma,
         gap_mem,
         CycleBasis(GraphIdx.num_edges(graph), GraphIdx.num_nodes(graph)),
@@ -76,14 +76,14 @@ function GapLas.gaplas!(
     cmem.λ_tree .= tlam
     length(tlam) < 30 && @debug tlam
 
-    tree_dp!(mem.x, mem.y_tree, mem.tree, GraphIdx.Vec(cmem.λ_tree), mu, mem.dp_mem)
-    mem.α_tree .= vec(mem.x) .- vec(mem.y_tree)
+    tree_dp!(mem.sol.x, mem.y_tree, mem.tree, GraphIdx.Vec(cmem.λ_tree), mu, mem.dp_mem)
+    mem.α_tree .= vec(mem.sol.x) .- vec(mem.y_tree)
     dual!(mem.α_tree, mem.dp_mem.proc_order, mem.mst.parent)
 
-    fix_alpha!(mem.α_tree, tlam0, mem.x, mem.mst.parent)
+    fix_alpha!(mem.α_tree, tlam0, mem.sol.x, mem.mst.parent)
 
     update_tree!(
-        mem.alpha,
+        mem.sol.α,
         mem.α_tree,
         mem.mst.selected,
         mem.egraph,

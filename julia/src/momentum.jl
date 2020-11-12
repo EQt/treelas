@@ -10,11 +10,26 @@ import TreeLas: GapLas
 import TreeLas.GapLas: gaplas, GapMem, gaplas!, Sol
 
 
+"""
+Compute convex combination of `a` and `b` using factor `c` and store it in `out`.
+"""
+function conv!(out::Sol{N}, a::Sol{N}, c::Number, b::Sol{N}) where {N}
+    @. out.x = c * a.x + (1 - c) * b.x
+    @. out.α = c * a.α + (1 - c) * b.α
+end
+
+
+conv!(
+    out::Sol{N}, a::Sol{N}, c::Number, b::Tuple{Array{Float64,N}, Vector{Float64}}
+) where {N} =
+    conv!(out, a, c, Sol(b[1], b[2]))
+
+
 struct MomMem{N, WL<:Weights{Float64}}
     learn::Float64
     mass::Float64
-    x::Array{Float64, N}        # overload of `gmem.x` to be compliant in `gaplas!`
-    s::Sol{N}
+    sol::Sol{N}
+    sol0::Sol{N}
     gmem::GapMem{N, WL}
     gamma::Vector{Float64}      # overload of `gmem.gamma` to be compliant in `gaplas!`
 end
@@ -24,13 +39,10 @@ function MomMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     m = GraphIdx.num_edges(graph)
     gmem = GapMem(y, graph, lambda)
     gamma = gmem.gamma
-    x = gmem.x
-    z = similar(x)
-    α = similar(gmem.alpha)
-    s = Sol(z, α)
+    s = Sol(similar(gmem.sol.x), similar(gmem.sol.α))
     learn = 0.85
     mass = 0.5
-    MomMem(learn, mass, x, s, gmem, gamma)
+    MomMem(learn, mass, gmem.sol, s, gmem, gamma)
 end
 
 
@@ -41,12 +53,12 @@ function gaplas!(
     lambda::Weights{Float64},
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
-    mem.s.x .= mem.gmem.x
-    mem.s.α .= mem.gmem.alpha
+    mem.sol0.x .= mem.sol.x
+    mem.sol0.α .= mem.sol.α
     GapLas.gaplas!(mem.gmem, y, graph, lambda, mu)
-    let x = mem.gmem.x, α = mem.gmem.alpha, α0 = mem.s.α, learn = mem.learn, x0 = mem.s.x
-        @. x = learn * x + (1 - learn) * x0
-        @. α = learn * α + (1 - learn) * α0
+    let learn = mem.learn
+        @. mem.sol.x = learn * mem.sol.x + (1 - learn) * mem.sol0.x
+        @. mem.sol.α = learn * mem.sol.α + (1 - learn) * mem.sol0.α
     end
 end
 

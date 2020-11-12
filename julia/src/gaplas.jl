@@ -21,8 +21,7 @@ end
 
 
 struct GapMem{N, WL<:Weights{Float64}}
-    x::Array{Float64,N}
-    alpha::Vector{Float64}
+    sol::Sol{N}
     y_tree::Array{Float64,N}
     α_tree::Vector{Float64}
     λ_tree::WL
@@ -47,8 +46,7 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     lam = Float64[lambda[i] for i=1:m]
     tree = RootedTree(root_node, mst.parent)
     return GapMem(
-        copy(y),                        # x
-        zeros(Float64, m),              # alpha
+        Sol(copy(y), zeros(Float64, m)), # sol
         similar(y),                     # y_tree
         α_tree,
         λ_tree,
@@ -90,7 +88,7 @@ function gaplas(
             end
         end
     end
-    return mem.x
+    return mem.sol.x
 end
 
 """
@@ -124,11 +122,11 @@ function gaplas!(
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
     find_gap_tree!(mem, y, graph, lambda)
-    tree_dp!(mem.x, mem.y_tree, mem.tree, mem.λ_tree, mu, mem.dp_mem)
-    mem.α_tree .= vec(mem.x) .- vec(mem.y_tree)
+    tree_dp!(mem.sol.x, mem.y_tree, mem.tree, mem.λ_tree, mu, mem.dp_mem)
+    mem.α_tree .= vec(mem.sol.x) .- vec(mem.y_tree)
     dual!(mem.α_tree, mem.dp_mem.proc_order, mem.mst.parent)
     update_tree!(
-        mem.alpha,
+        mem.sol.α,
         mem.α_tree,
         mem.mst.selected,
         mem.egraph,
@@ -143,14 +141,14 @@ Determine a tree by choosing edges with high gap value.
 function find_gap_tree!(
     mem::GapMem{N, W1}, y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}
 ) where {N, W1<:Weights{Float64}}
-    gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)
+    gap_vec!(mem.gamma, mem.sol.x, mem.sol.α, mem.wgraph, -1.0)
     prim_mst_edges(mem.gamma, mem.tree.root, mem.mst)
     mem.y_tree .= y
     extract_non_tree!(
         graph,
         mem.mst.parent,
         mem.y_tree,
-        mem.alpha,
+        mem.sol.α,
         mem.λ_tree,
         lambda,
     )
