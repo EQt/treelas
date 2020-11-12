@@ -9,18 +9,7 @@ import GraphIdx: Graph, Weights
 import TreeLas: GapLas
 import TreeLas.GapLas: gaplas, GapMem, gaplas!, Sol
 
-
-Base.similar(sol::Sol{N}) where {N} =
-    Sol(similar(sol.x), similar(sol.α))
-
-
-Broadcast.broadcasted(::typeof(identity), s::Sol{N}) where {N} = s
-
-
-function Broadcast.materialize!(dest::Sol{N}, src::Sol{N}) where {N}
-    dest.x .= src.x
-    dest.α .= src.α
-end    
+include("broadcast.jl")
 
 
 struct MomMem{N, WL<:Weights{Float64}}
@@ -35,8 +24,8 @@ end
 
 
 function MomMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
-    learn = 0.85
-    mass = 0.85
+    learn = 0.5
+    mass = 0.4
     gmem = GapMem(y, graph, lambda)
     sol1 = similar(gmem.sol)
     sol1.x .= 0
