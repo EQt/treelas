@@ -24,14 +24,14 @@ struct GapMem{N, WL<:Weights{Float64}}
     x::Array{Float64,N}
     alpha::Vector{Float64}
     y_tree::Array{Float64,N}
+    α_tree::Vector{Float64}
+    λ_tree::WL
     gamma::Vector{Float64}
-    tree_lam::WL
+    wgraph::WeightedGraph
+    egraph::EdgeGraph
     dp_mem::TreeDPMem
     mst::PrimMstMem
-    wgraph::WeightedGraph
     tree::RootedTree
-    tree_alpha::Vector{Float64}
-    egraph::EdgeGraph
 end
 
 
@@ -40,8 +40,8 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     m = GraphIdx.num_edges(graph)
     n = GraphIdx.num_nodes(graph)
     @assert length(y) == n
-    tree_lam = similar(lambda, n)
-    tree_alpha = Vector{Float64}(undef, n)
+    λ_tree = similar(lambda, n)
+    α_tree = Vector{Float64}(undef, n)
     egraph = collect(graph)
     mst = PrimMstMem(egraph)
     lam = Float64[lambda[i] for i=1:m]
@@ -50,14 +50,14 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
         copy(y),                        # x
         zeros(Float64, m),              # alpha
         similar(y),                     # y_tree
+        α_tree,
+        λ_tree,
         Vector{Float64}(undef, m),      # gamma
-        tree_lam,
+        WeightedGraph(mst.neighbors, lam),
+        egraph,
         TreeDPMem(n),
         mst,
-        WeightedGraph(mst.neighbors, lam),
         tree,
-        tree_alpha,
-        egraph,
     )
 end
 
@@ -69,7 +69,7 @@ General framework for iterated tree optimizer:
 
 !!! note
 
-    `mem` must contain a `gamma` field
+    `mem` must contain a `gamma` and an `x` field
 
 """
 function gaplas(
@@ -124,12 +124,12 @@ function gaplas!(
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
     find_gap_tree!(mem, y, graph, lambda)
-    tree_dp!(mem.x, mem.y_tree, mem.tree, mem.tree_lam, mu, mem.dp_mem)
-    mem.tree_alpha .= vec(mem.x) .- vec(mem.y_tree)
-    dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
+    tree_dp!(mem.x, mem.y_tree, mem.tree, mem.λ_tree, mu, mem.dp_mem)
+    mem.α_tree .= vec(mem.x) .- vec(mem.y_tree)
+    dual!(mem.α_tree, mem.dp_mem.proc_order, mem.mst.parent)
     update_tree!(
         mem.alpha,
-        mem.tree_alpha,
+        mem.α_tree,
         mem.mst.selected,
         mem.egraph,
         mem.mst.parent,
@@ -151,7 +151,7 @@ function find_gap_tree!(
         mem.mst.parent,
         mem.y_tree,
         mem.alpha,
-        mem.tree_lam,
+        mem.λ_tree,
         lambda,
     )
 end
