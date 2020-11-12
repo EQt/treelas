@@ -10,11 +10,14 @@ import TreeLas: GapLas
 import TreeLas.GapLas: gaplas, GapMem, gaplas!, Sol
 
 
+Base.similar(sol::Sol{N}) where {N} =
+    Sol(similar(sol.x), similar(sol.α))
+
+
 Broadcast.broadcasted(::typeof(identity), s::Sol{N}) where {N} = s
 
 
 function Broadcast.materialize!(dest::Sol{N}, src::Sol{N}) where {N}
-    # println("materialize!(::Sol, ::Sol)")
     dest.x .= src.x
     dest.α .= src.α
 end    
@@ -31,13 +34,10 @@ end
 
 
 function MomMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
-    m = GraphIdx.num_edges(graph)
-    gmem = GapMem(y, graph, lambda)
-    gamma = gmem.gamma
-    s = Sol(similar(gmem.sol.x), similar(gmem.sol.α))
     learn = 0.85
     mass = 0.5
-    MomMem(learn, mass, gmem.sol, s, gmem, gamma)
+    gmem = GapMem(y, graph, lambda)
+    MomMem(learn, mass, gmem.sol, similar(gmem.sol), gmem, gmem.gamma)
 end
 
 
