@@ -27,7 +27,8 @@ struct MomMem{N, WL<:Weights{Float64}}
     learn::Float64
     mass::Float64
     sol::Sol{N}
-    sol0::Sol{N}
+    sol1::Sol{N}        # solution, one step before
+    sol2::Sol{N}        # solution, two steps before
     gmem::GapMem{N, WL}
     gamma::Vector{Float64}      # overload of `gmem.gamma` to be compliant in `gaplas!`
 end
@@ -35,9 +36,13 @@ end
 
 function MomMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
     learn = 0.85
-    mass = 0.5
+    mass = 0.85
     gmem = GapMem(y, graph, lambda)
-    MomMem(learn, mass, gmem.sol, similar(gmem.sol), gmem, gmem.gamma)
+    sol1 = similar(gmem.sol)
+    sol1.x .= 0
+    sol1.α .= 0
+    sol2 = similar(gmem.sol)
+    MomMem(learn, mass, gmem.sol, sol1, sol2, gmem, gmem.gamma)
 end
 
 
@@ -48,11 +53,13 @@ function gaplas!(
     lambda::Weights{Float64},
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
-    mem.sol0 .= mem.sol
+    mem.sol2 .= mem.sol1
+    mem.sol1 .= mem.sol
     GapLas.gaplas!(mem.gmem, y, graph, lambda, mu)
-    let learn = mem.learn
-        @. mem.sol.x = learn * mem.sol.x + (1 - learn) * mem.sol0.x
-        @. mem.sol.α = learn * mem.sol.α + (1 - learn) * mem.sol0.α
+    let η = mem.learn, ζ = (1 - η) * mem.mass, ι = (1 - η) * (1 - mem.mass)
+        @assert η + ζ + ι ≈ 1
+        @. mem.sol.x = η * mem.sol.x + ζ * mem.sol1.x + ι * mem.sol2.x
+        @. mem.sol.α = η * mem.sol.α + ζ * mem.sol1.α + ι * mem.sol2.α
     end
 end
 
