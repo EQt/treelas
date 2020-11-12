@@ -18,6 +18,15 @@ import TreeLas: GapLas
 import TreeLas.GapLas: GapMem, gaplas
 
 
+"""
+Memory to compute an iteration using the cycle shift idea.
+
+!!! note
+
+    At the moment, CyclceBasis does not have a `reset!` method or alike, so this has to be
+    `mutable struct`
+
+"""
 mutable struct CycMem{N, WL<:Weights{Float64}}
     x::Array{Float64, N}
     gamma::Vector{Float64}
@@ -26,9 +35,8 @@ mutable struct CycMem{N, WL<:Weights{Float64}}
     λ_tree::Vector{Float64}
 end
 
-function CycMem(
-    y::Array{Float64,N}, graph::Graph, lambda::W
-) where {N, W<:Weights{Float64}}
+
+function CycMem(y::Array{Float64,N}, graph::Graph, lambda::W) where {N, W<:Weights{Float64}}
     gap_mem = GapMem(y, graph, lambda)
     λ_tree = collect(lambda, GraphIdx.num_nodes(graph))
     return CycMem(
