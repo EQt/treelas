@@ -14,10 +14,16 @@ import ..TreeDP: TreeDPMem, tree_dp!
 import ..TreeFlow: extract_non_tree!, update_tree!
 
 
+struct Sol{N}
+    x::Array{Float64, N}
+    α::Vector{Float64}
+end
+
+
 struct GapMem{N, WL<:Weights{Float64}}
     x::Array{Float64,N}
-    y_tree::Array{Float64,N}
     alpha::Vector{Float64}
+    y_tree::Array{Float64,N}
     gamma::Vector{Float64}
     tree_lam::WL
     dp_mem::TreeDPMem
@@ -42,8 +48,8 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     tree = RootedTree(root_node, mst.parent)
     return GapMem(
         copy(y),                        # x
-        similar(y),                     # y_tree
         zeros(Float64, m),              # alpha
+        similar(y),                     # y_tree
         Vector{Float64}(undef, m),      # gamma
         tree_lam,
         TreeDPMem(n),
