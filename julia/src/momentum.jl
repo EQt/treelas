@@ -10,16 +10,19 @@ import TreeLas: GapLas
 import TreeLas.GapLas: gaplas, GapMem, gaplas!
 
 
+struct Sol{N}
+    x::Array{Float64, N}
+    α::Vector{Float64}
+end
+
+
 struct MomMem{N, WL<:Weights{Float64}}
     learn::Float64
     mass::Float64
-    x::Array{Float64, N}
-    xo::Array{Float64, N}
-    z::Array{Float64, N}
-    α::Vector{Float64}
-    αo::Vector{Float64}
+    x::Array{Float64, N}        # overload of `gmem.x` to be compliant in `gaplas!`
+    s::Sol{N}
     gmem::GapMem{N, WL}
-    gamma::Vector{Float64}
+    gamma::Vector{Float64}      # overload of `gmem.gamma` to be compliant in `gaplas!`
 end
 
 
@@ -30,11 +33,10 @@ function MomMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     x = gmem.x
     z = similar(x)
     α = similar(gmem.alpha)
-    xo = zeros(Float64, size(x))
-    αo = zeros(Float64, size(α))
+    s = Sol(z, α)
     learn = 0.85
     mass = 0.5
-    MomMem(learn, mass, x, xo, z, α, αo, gmem, gamma)
+    MomMem(learn, mass, x, s, gmem, gamma)
 end
 
 
@@ -45,12 +47,12 @@ function gaplas!(
     lambda::Weights{Float64},
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
-    mem.z .= mem.gmem.x
-    mem.α .= mem.gmem.alpha
+    mem.s.x .= mem.gmem.x
+    mem.s.α .= mem.gmem.alpha
     GapLas.gaplas!(mem.gmem, y, graph, lambda, mu)
-    let x = mem.gmem.x, α = mem.gmem.alpha, β = mem.α, learn = mem.learn
-        @. x = learn * x + (1 - learn) * mem.z
-        @. α = learn * α + (1 - learn) * β
+    let x = mem.gmem.x, α = mem.gmem.alpha, α0 = mem.s.α, learn = mem.learn, x0 = mem.s.x
+        @. x = learn * x + (1 - learn) * x0
+        @. α = learn * α + (1 - learn) * α0
     end
 end
 
