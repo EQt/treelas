@@ -36,10 +36,10 @@ end
 
 
 function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
+    @assert length(y) == GraphIdx.num_nodes(graph)
     root_node = 1
     m = GraphIdx.num_edges(graph)
     n = GraphIdx.num_nodes(graph)
-    @assert length(y) == n
     λ_tree = similar(lambda, n)
     α_tree = Vector{Float64}(undef, n)
     egraph = collect(graph)
