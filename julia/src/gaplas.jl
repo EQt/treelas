@@ -16,7 +16,7 @@ import ..TreeFlow: extract_non_tree!, update_tree!
 
 struct GapMem{N, WL<:Weights{Float64}}
     x::Array{Float64,N}
-    z::Array{Float64,N}
+    y_tree::Array{Float64,N}
     alpha::Vector{Float64}
     gamma::Vector{Float64}
     tree_lam::WL
@@ -42,7 +42,7 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     tree = RootedTree(root_node, mst.parent)
     return GapMem(
         copy(y),                        # x
-        similar(y),                     # z
+        similar(y),                     # y_tree
         zeros(Float64, m),              # alpha
         Vector{Float64}(undef, m),      # gamma
         tree_lam,
@@ -118,8 +118,8 @@ function gaplas!(
     mu::Weights{Float64},
 ) where {N, W1<:Weights{Float64}}
     find_gap_tree!(mem, y, graph, lambda)
-    tree_dp!(mem.x, mem.z, mem.tree, mem.tree_lam, mu, mem.dp_mem)
-    mem.tree_alpha .= vec(mem.x) .- vec(mem.z)
+    tree_dp!(mem.x, mem.y_tree, mem.tree, mem.tree_lam, mu, mem.dp_mem)
+    mem.tree_alpha .= vec(mem.x) .- vec(mem.y_tree)
     dual!(mem.tree_alpha, mem.dp_mem.proc_order, mem.mst.parent)
     update_tree!(
         mem.alpha,
@@ -139,11 +139,11 @@ function find_gap_tree!(
 ) where {N, W1<:Weights{Float64}}
     gap_vec!(mem.gamma, mem.x, mem.alpha, mem.wgraph, -1.0)
     prim_mst_edges(mem.gamma, mem.tree.root, mem.mst)
-    mem.z .= y
+    mem.y_tree .= y
     extract_non_tree!(
         graph,
         mem.mst.parent,
-        mem.z,
+        mem.y_tree,
         mem.alpha,
         mem.tree_lam,
         lambda,
