@@ -24,14 +24,17 @@ end
 
 
 function MomMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
-    learn = 0.5
-    mass = 0.4
+    learn = 0.75
+    mass = 0.95
     gmem = GapMem(y, graph, lambda)
     sol1 = similar(gmem.sol)
     sol1.x .= 0
     sol1.α .= 0
     sol2 = similar(gmem.sol)
-    MomMem(learn, mass, gmem.sol, sol1, sol2, gmem, gmem.gamma)
+    let η = learn, ζ = (1 - η) * mass, ι = (1 - η) * (1 - mass)
+        @info "steps" η=round(η, digits=4) ζ=round(ζ, digits=4) ι=round(ι, digits=4)
+    end
+    MomMem(float(learn), float(mass), gmem.sol, sol1, sol2, gmem, gmem.gamma)
 end
 
 
