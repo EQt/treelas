@@ -39,13 +39,14 @@ matrix:
 
     - language: julia
       os: linux  # don't need it specifically for osx
-      julia: 1.4
+      julia: 1.5
       before_install:
         - git submodule update --init deps/graphidx
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="deps/graphidx/julia"))'
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="julia"))'
         - julia --color=yes -e 'import Pkg; Pkg.instantiate()'
       install:
+        - julia --color=yes -e 'import Pkg; Pkg.build("CMake")'
         - julia --color=yes -e 'import Pkg; Pkg.build("TreeLas")'
         - julia --color=yes --project=docs/ -e 'import Pkg; Pkg.add("Documenter")'
       script:
