@@ -1,10 +1,9 @@
 language: cpp
-dist: bionic
+dist: focal
+sudo: false
 
 git:
   submodules: false
-
-sudo: false
 
 notifications:
   email:
