@@ -1,16 +1,16 @@
-/*
-  All stuff related to queue, i.e. init (correct order) and merge.
+/**
+  All stuff related to queues, i.e. init (correct order) and merge.
  */
 #pragma once
 #include <algorithm>        // for std::sort
 #include <cstring>          // for std::memmove
 
+#include <graphidx/idx/children.hpp>
 #include <graphidx/utils/timer.hpp>
 #include <graphidx/std/stack.hpp>
 #include <graphidx/std/uvector.hpp>
 
 #include "range.hpp"
-#include <graphidx/idx/children.hpp>
 
 
 /**
@@ -89,6 +89,15 @@ merge(const Range &parent, const Range &child, E *elements)
 }
 
 
+/// For convinience: std::vector instead of pointers
+template <typename E>
+inline Range
+merge(const Range &parent, const Range &child, std::vector<E> &elements)
+{
+    return merge(parent, child, elements.data());
+}
+
+
 template <typename E>
 inline Range
 merge2(const Range &parent, const Range &child, E *elements)
@@ -119,14 +128,7 @@ merge2(const Range &parent, const Range &child, E *elements)
 }
 
 
-template <typename E>
-inline Range
-merge(const Range &parent, const Range &child, std::vector<E> &elements)
-{
-    return merge(parent, child, elements.data());
-}
-
-
+/// For convinience: std::vector instead of pointers
 template <typename E>
 inline Range
 merge2(const Range &parent, const Range &child, std::vector<E> &elements)
