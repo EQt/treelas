@@ -22,14 +22,16 @@
          This makes it possible to measure the time needed for deallocation.
 */
 inline void
-init_queues(const size_t n,
-            uvector<Range> &pq,
-            std::vector<int> &proc_order,
-            const ChildrenIndex &childs,
-            stack<int> &stack,
-            int root = 0)
+init_queues(
+    const size_t n,
+    uvector<Range> &pq,
+    std::vector<int> &proc_order,
+    const ChildrenIndex &childs,
+    stack<int> &stack,
+    int root = 0)
 {
     {
+        // Timer _ ("init_queue: alloc");
         proc_order.reserve(n);
         stack.reserve(n);
         proc_order.clear();
