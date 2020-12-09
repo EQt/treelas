@@ -1,5 +1,10 @@
 ChangeLog
 ---------
+### v0.15.6
+Released 2020-12-09
+- Julia: some experiments regarding momentum method
+- C++: `spantree` computation using Lemon graph library
+
 ### v0.15.5
 Released 2020-09-09
 - Deduce whether to check for zero nodes from type parameter
