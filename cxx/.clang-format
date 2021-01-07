@@ -2,6 +2,7 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
 Language: Cpp
+Standard: Cpp11
 PointerAlignment: Right
 AlignAfterOpenBracket: AlwaysBreak
 AllowAllParametersOfDeclarationOnNextLine: true
@@ -18,4 +19,6 @@ AlwaysBreakAfterReturnType: TopLevel
 AlwaysBreakTemplateDeclarations: Yes
 MaxEmptyLinesToKeep: 2
 ColumnLimit: 88
+AlwaysBreakBeforeMultilineStrings: true
+SpaceBeforeCpp11BracedList: true
 ...
