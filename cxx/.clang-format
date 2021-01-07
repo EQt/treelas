@@ -6,6 +6,7 @@ PointerAlignment: Right
 AlignAfterOpenBracket: AlwaysBreak
 AllowAllParametersOfDeclarationOnNextLine: true
 BinPackArguments: false
+SortIncludes: true
 BinPackParameters: false
 BreakBeforeBraces: Custom
 BraceWrapping:
