@@ -48,7 +48,7 @@ optimize(
             std::string(__FILE__) + ":" + std::to_string(__LINE__) + ": " +
             std::to_string(n) + " != " + std::to_string(y.size()));
     x.resize(n);
-    gaplas(x.data(), y.data(), index, lam, max_iter);
+    gaplas(x.data(), y.data(), index, clam, max_iter);
 }
 
 

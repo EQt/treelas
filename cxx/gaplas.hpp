@@ -71,15 +71,17 @@ gaplas(
     const size_t max_iter = 10,
     const M &mu = Ones<float_t>())
 {
+    constexpr bool merge_sort = false, lazy_sort = false;
+
     mem.init();
     for (size_t it = 0; it < max_iter; it++) {
         mem.find_tree();
         const auto &tree_lam = lam; // FIXME
-        tree_dp(
+        tree_dp<merge_sort, lazy_sort>(
             mem.n,
             mem.x,
             mem.y_tree.data(),
-            mem.parent,
+            mem.parent.data(),
             tree_lam,
             mu,
             mem.root,
