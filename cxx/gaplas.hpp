@@ -3,6 +3,8 @@
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/idx/biadjacent.hpp>
 
+#include "tree_dp.hpp"
+
 
 using GraphIndex = BiAdjacentIndex<int>;
 
@@ -16,6 +18,7 @@ struct GapMem
     const int root;
     std::vector<float_t> y_tree, alpha, alpha_tree, gamma;
     std::vector<int> parent;
+    TreeDPStatus mem_tree;
 
     GapMem(float_t *x, const float_t *y, size_t n, size_t m, int root = 0);
 
@@ -27,7 +30,7 @@ struct GapMem
 
 template <typename float_t>
 GapMem<float_t>::GapMem(float_t *x, const float_t *y, size_t n, size_t m, int root)
-    : n(n), m(m), x(x), y(y), root(root)
+    : n(n), m(m), x(x), y(y), root(root), mem_tree(n)
 {
     y_tree.resize(n);
     alpha.resize(n);
@@ -52,6 +55,11 @@ template <typename float_t>
 void
 GapMem<float_t>::find_tree()
 {
+    // update gamma
+
+    // minimum spanning tree
+
+    // update parent
 }
 
 
@@ -66,6 +74,16 @@ gaplas(
     mem.init();
     for (size_t it = 0; it < max_iter; it++) {
         mem.find_tree();
+        const auto &tree_lam = lam; // FIXME
+        tree_dp(
+            mem.n,
+            mem.x,
+            mem.y_tree.data(),
+            mem.parent,
+            tree_lam,
+            mu,
+            mem.root,
+            mem.mem_tree);
     }
     return -1;
 }
