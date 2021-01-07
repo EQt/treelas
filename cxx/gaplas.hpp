@@ -1,6 +1,5 @@
 #pragma once
 
-#include "graphidx/tree/root.hpp"
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/idx/biadjacent.hpp>
 
@@ -15,12 +14,9 @@ struct GapMem
     float_t *x;
     const float_t *y;
     const int root;
-    std::vector<float_t>
-	y_tree,
-	alpha,
-	alpha_tree,
-	gamma;
+    std::vector<float_t> y_tree, alpha, alpha_tree, gamma;
     std::vector<int> parent;
+
     GapMem(float_t *x, const float_t *y, size_t n, size_t m, int root = 0);
 
     void init();
@@ -46,9 +42,9 @@ void
 GapMem<float_t>::init()
 {
     for (size_t i = 0; i < n; i++)
-	x[i] = y[i];
+        x[i] = y[i];
     for (size_t e = 0; e < m; e++)
-	alpha[e] = 0.0;
+        alpha[e] = 0.0;
 }
 
 
@@ -56,7 +52,6 @@ template <typename float_t>
 void
 GapMem<float_t>::find_tree()
 {
-    
 }
 
 
@@ -70,11 +65,10 @@ gaplas(
 {
     mem.init();
     for (size_t it = 0; it < max_iter; it++) {
-	mem.find_tree();
+        mem.find_tree();
     }
     return -1;
 }
-
 
 
 template <typename float_t = double, typename Wlam, typename Wmu>

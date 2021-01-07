@@ -1,0 +1,19 @@
+﻿---
+BasedOnStyle: LLVM
+IndentWidth: 4
+Language: Cpp
+PointerAlignment: Right
+AlignAfterOpenBracket: AlwaysBreak
+AllowAllParametersOfDeclarationOnNextLine: true
+BinPackParameters: false
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterStruct:     true
+  AfterClass:      true
+  AfterFunction:   true
+AllowShortBlocksOnASingleLine: true
+AlwaysBreakAfterReturnType: TopLevel
+AlwaysBreakTemplateDeclarations: Yes
+MaxEmptyLinesToKeep: 2
+ColumnLimit: 88
+...
