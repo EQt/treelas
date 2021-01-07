@@ -1,3 +1,6 @@
+/**
+   Dynamic programming optimal solver for fused lasso on trees.
+ */
 #pragma once
 
 #include <iostream>
