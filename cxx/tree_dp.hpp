@@ -4,8 +4,8 @@
 #pragma once
 
 #include <iostream>
-#include <stdexcept>
 #include <limits>
+#include <stdexcept>
 
 #include <graphidx/bits/clamp.hpp>
 #include <graphidx/bits/weights.hpp>
@@ -21,11 +21,11 @@
 
 struct TreeDPStatus
 {
-    TreeDPStatus(const size_t n) :
-        childs(n) {
+    TreeDPStatus(const size_t n) : childs(n)
+    {
         lb.reserve(n);
-        elements_.reserve(2*n),
-        pq.reserve(n),
+        elements_.reserve(2*n);
+        pq.reserve(n);
         proc_order.reserve(n);
         dfs_stack.reserve(n);
     }

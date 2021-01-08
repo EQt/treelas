@@ -11,9 +11,11 @@ SortIncludes: true
 BinPackParameters: false
 BreakBeforeBraces: Custom
 BraceWrapping:
-  AfterStruct:     true
-  AfterClass:      true
-  AfterFunction:   true
+  AfterStruct: true
+  AfterClass: true
+  AfterFunction: true
+  AfterNamespace: false
+  AfterExternBlock: false
 AllowShortBlocksOnASingleLine: true
 AlwaysBreakAfterReturnType: TopLevel
 AlwaysBreakTemplateDeclarations: Yes
