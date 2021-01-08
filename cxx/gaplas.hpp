@@ -2,7 +2,9 @@
 
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/idx/biadjacent.hpp>
+#include <graphidx/spanning/prim_mst.hpp>
 
+#include "edges.hpp"
 #include "tree_dp.hpp"
 
 
@@ -24,7 +26,8 @@ struct GapMem
 
     void init();
 
-    void find_tree();
+    template <typename L, typename int_t = int>
+    void find_tree(const GraphIndex &graph, const L &lam);
 };
 
 
@@ -52,11 +55,18 @@ GapMem<float_t>::init()
 
 
 template <typename float_t>
+template <typename L, typename int_t>
 void
-GapMem<float_t>::find_tree()
+GapMem<float_t>::find_tree(const GraphIndex &graph, const L &lam)
 {
     // update gamma
-
+    size_t e = 0;
+    const auto c = -1;
+    edges<int_t>(graph, [&](int_t u, int_t v) {
+        auto diff = x[u] - x[v];
+        gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
+	e++;
+    });
     // minimum spanning tree
 
     // update parent
@@ -67,6 +77,7 @@ template <typename float_t = double, typename L, typename M>
 double
 gaplas(
     GapMem<float_t> &mem,
+    const GraphIndex &graph,
     const L &lam,
     const size_t max_iter = 10,
     const M &mu = Ones<float_t>())
@@ -75,7 +86,7 @@ gaplas(
 
     mem.init();
     for (size_t it = 0; it < max_iter; it++) {
-        mem.find_tree();
+        mem.find_tree(graph, lam);
         const auto &tree_lam = lam; // FIXME
         tree_dp<merge_sort, lazy_sort>(
             mem.n,
@@ -103,7 +114,7 @@ gaplas(
 {
     int root = 0;
     GapMem<float_t> mem(x, y, idx.num_nodes(), idx.num_edges(), root);
-    return gaplas(mem, lam, max_iter, mu);
+    return gaplas(mem, idx, lam, max_iter, mu);
 }
 
 
