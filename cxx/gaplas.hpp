@@ -1,14 +1,14 @@
 #pragma once
 
 #include <graphidx/bits/weights.hpp>
-#include <graphidx/idx/biadjacent.hpp>
+#include <graphidx/idx/incidence.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
 
 #include "edges.hpp"
 #include "tree_dp.hpp"
 
 
-using GraphIndex = BiAdjacentIndex<int>;
+using GraphIndex = IncidenceIndex<int>;
 
 
 template <typename float_t = double>
@@ -26,8 +26,8 @@ struct GapMem
 
     void init();
 
-    template <typename L, typename int_t = int>
-    void find_tree(const GraphIndex &graph, const L &lam);
+    template <typename Tag, typename L, typename int_t = int>
+    void find_tree(const IncidenceIndex<int_t> &graph, const L &lam);
 };
 
 
@@ -55,25 +55,22 @@ GapMem<float_t>::init()
 
 
 template <typename float_t>
-template <typename L, typename int_t>
+template <typename Tag, typename L, typename int_t>
 void
-GapMem<float_t>::find_tree(const GraphIndex &graph, const L &lam)
+GapMem<float_t>::find_tree(const IncidenceIndex<int_t> &graph, const L &lam)
 {
     // update gamma
-    size_t e = 0;
     const auto c = -1;
-    edges<int_t>(graph, [&](int_t u, int_t v) {
+    edges<int_t>(graph, [&](int_t u, int_t v, int_t e) {
         auto diff = x[u] - x[v];
         gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
-	e++;
     });
-    // minimum spanning tree
-
-    // update parent
+    // minimum spanning tree: update parent
+    prim_mst_edges<Tag>(parent.data(), gamma.data(), graph, root);
 }
 
 
-template <typename float_t = double, typename L, typename M>
+template <typename Tag, typename float_t = double, typename L, typename M>
 double
 gaplas(
     GapMem<float_t> &mem,
@@ -86,7 +83,7 @@ gaplas(
 
     mem.init();
     for (size_t it = 0; it < max_iter; it++) {
-        mem.find_tree(graph, lam);
+        mem.template find_tree<Tag>(graph, lam);
         const auto &tree_lam = lam; // FIXME
         tree_dp<merge_sort, lazy_sort>(
             mem.n,
@@ -102,7 +99,7 @@ gaplas(
 }
 
 
-template <typename float_t = double, typename Wlam, typename Wmu>
+template <typename Tag, typename float_t = double, typename Wlam, typename Wmu>
 double
 gaplas(
     float_t *x,
@@ -114,11 +111,11 @@ gaplas(
 {
     int root = 0;
     GapMem<float_t> mem(x, y, idx.num_nodes(), idx.num_edges(), root);
-    return gaplas(mem, idx, lam, max_iter, mu);
+    return gaplas<Tag>(mem, idx, lam, max_iter, mu);
 }
 
 
-template <typename float_t = double, typename Wlam>
+template <typename Tag, typename float_t = double, typename Wlam>
 double
 gaplas(
     float_t *x,
@@ -127,5 +124,5 @@ gaplas(
     const Wlam &lam,
     const size_t max_iter)
 {
-    return gaplas(x, y, idx, lam, Ones<float_t>(), max_iter);
+    return gaplas<Tag>(x, y, idx, lam, Ones<float_t>(), max_iter);
 }

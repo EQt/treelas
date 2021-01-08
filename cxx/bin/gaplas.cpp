@@ -7,24 +7,30 @@
 #include <minih5.hpp>
 
 #include <graphidx/bits/weights.hpp>
-#include <graphidx/idx/biadjacent.hpp>
+#include <graphidx/idx/incidence.hpp>
 #include <graphidx/utils/timer.hpp>
+#ifndef HAVE_LEMON
+#  error need lemon graph library
+#else
+#  include <graphidx/utils/lemon_heap.hpp>
+#endif
 
 #include "../gaplas.hpp"
 
 
 template <typename int_t = int>
-BiAdjacentIndex<int_t>
+IncidenceIndex<int_t>
 read_graph(const char *fname, const char *group = "/")
 {
     HDF5 io(fname, "r");
     io.group(group);
     const auto head = io.read<int_t>("head");
     const auto tail = io.read<int_t>("tail");
-    return BiAdjacentIndex<int_t>(head, tail);
+    return IncidenceIndex<int_t>(head, tail);
 }
 
 
+template <typename Tag>
 void
 optimize(
     const char *fname,
@@ -48,7 +54,7 @@ optimize(
             std::string(__FILE__) + ":" + std::to_string(__LINE__) + ": " +
             std::to_string(n) + " != " + std::to_string(y.size()));
     x.resize(n);
-    gaplas(x.data(), y.data(), index, clam, max_iter);
+    gaplas<Tag>(x.data(), y.data(), index, clam, max_iter);
 }
 
 
@@ -73,7 +79,8 @@ main(int argc, char *argv[])
         const char *x_opt = argc > 2 ? argv[2] : "x_gap";
         const double lam = std::atof(ap.get_option("lam"));
         const int max_iter = std::atoi(ap.get_option("iter"));
-        optimize(fname, lam, x_opt, ap.has_option("force"), max_iter);
+	using Tag = QuadHeapT;
+        optimize<Tag>(fname, lam, x_opt, ap.has_option("force"), max_iter);
     } catch (std::runtime_error &e) {
         fprintf(stderr, "EXCEPTION: %s\n", e.what());
     } catch (const char *msg) {
