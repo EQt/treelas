@@ -22,12 +22,17 @@ struct GapMem
     std::vector<int> parent;
     TreeDPStatus mem_tree;
 
+    GapMem() = delete;
+
     GapMem(float_t *x, const float_t *y, size_t n, size_t m, int root = 0);
 
     void init();
 
-    template <typename Tag, typename L, typename int_t = int>
-    void find_tree(const IncidenceIndex<int_t> &graph, const L &lam);
+    template <typename L, typename int_t = int>
+    void gap_vec(const IncidenceIndex<int_t> &graph, const L &lam);
+
+    template <typename Tag, typename int_t = int>
+    void find_tree(const IncidenceIndex<int_t> &graph);
 };
 
 
@@ -53,11 +58,10 @@ GapMem<float_t>::init()
         alpha[e] = 0.0;
 }
 
-
 template <typename float_t>
-template <typename Tag, typename L, typename int_t>
+template <typename L, typename int_t>
 void
-GapMem<float_t>::find_tree(const IncidenceIndex<int_t> &graph, const L &lam)
+GapMem<float_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam)
 {
     // update gamma
     const auto c = -1;
@@ -65,8 +69,17 @@ GapMem<float_t>::find_tree(const IncidenceIndex<int_t> &graph, const L &lam)
         auto diff = x[u] - x[v];
         gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
     });
+}
+
+
+template <typename float_t>
+template <typename Tag, typename int_t>
+void
+GapMem<float_t>::find_tree(const IncidenceIndex<int_t> &graph)
+{
     // minimum spanning tree: update parent
     prim_mst_edges<Tag>(parent.data(), gamma.data(), graph, root);
+    // TODO: update y_tree, lam_tree
 }
 
 
@@ -83,7 +96,8 @@ gaplas(
 
     mem.init();
     for (size_t it = 0; it < max_iter; it++) {
-        mem.template find_tree<Tag>(graph, lam);
+        mem.gap_vec(graph, lam);
+        mem.template find_tree<Tag>(graph);
         const auto &tree_lam = lam; // FIXME
         tree_dp<merge_sort, lazy_sort>(
             mem.n,
