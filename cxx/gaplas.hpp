@@ -66,6 +66,7 @@ GapMem<float_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam)
     // update gamma
     const auto c = -1;
     edges<int_t>(graph, [&](int_t u, int_t v, int_t e) {
+        std::cerr << "u = " << u << ", v = " << v << std::endl;
         auto diff = x[u] - x[v];
         gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
     });
