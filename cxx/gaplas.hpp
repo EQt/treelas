@@ -9,50 +9,48 @@
 #include "tree_dp.hpp"
 
 
-using GraphIndex = IncidenceIndex<int>;
-
-
-template <typename float_t = double>
+template <typename float_t = double, typename int_t = int>
 struct GapMem
 {
     const size_t n, m;
     float_t *x;
     const float_t *y;
-    const int root;
+    const int_t root;
     std::vector<float_t> alpha, gamma;
-    std::vector<float_t> y_tree;
-    std::vector<int> parent;
+    std::vector<float_t> y_tree, alpha_tree;
+    std::vector<int_t> parent;
     TreeDPStatus mem_tree;
 
     GapMem() = delete;
 
-    GapMem(float_t *x, const float_t *y, size_t n, size_t m, int root = 0);
+    GapMem(float_t *x, const float_t *y, size_t n, size_t m, int_t root = 0);
 
     void init();
 
-    template <typename L, typename int_t = int>
+    template <typename L>
     void gap_vec(const IncidenceIndex<int_t> &graph, const L &lam);
 
-    template <typename Tag, typename int_t = int>
+    template <typename Tag>
     void find_tree(const IncidenceIndex<int_t> &graph);
 };
 
 
-template <typename float_t>
-GapMem<float_t>::GapMem(float_t *x, const float_t *y, size_t n, size_t m, int root)
+template <typename float_t, typename int_t>
+GapMem<float_t, int_t>::GapMem(
+    float_t *x, const float_t *y, size_t n, size_t m, int_t root)
     : n(n), m(m), x(x), y(y), root(root), mem_tree(n)
 {
-    alpha.resize(n);
-    // alpha_tree.resize(m);
-    y_tree.resize(n);
+    alpha.resize(m);
     gamma.resize(m);
+    y_tree.resize(n);
+    alpha_tree.resize(n);
     parent.resize(n);
 }
 
 
-template <typename float_t>
+template <typename float_t, typename int_t>
 void
-GapMem<float_t>::init()
+GapMem<float_t, int_t>::init()
 {
     for (size_t i = 0; i < n; i++)
         x[i] = y[i];
@@ -60,10 +58,10 @@ GapMem<float_t>::init()
         alpha[e] = 0.0;
 }
 
-template <typename float_t>
-template <typename L, typename int_t>
+template <typename float_t, typename int_t>
+template <typename L>
 void
-GapMem<float_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam)
+GapMem<float_t, int_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam)
 {
     // update gamma
     const auto c = -1;
@@ -71,19 +69,21 @@ GapMem<float_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam)
         if (e < 0 || e >= int_t(m))
             throw std::runtime_error(std::to_string(e) + ", m = " + std::to_string(m));
         if (u < 0 || u >= int_t(n))
-            throw std::runtime_error(std::to_string(u) + " = u, n = " + std::to_string(n));
+            throw std::runtime_error(
+                std::to_string(u) + " = u, n = " + std::to_string(n));
         if (v < 0 || v >= int_t(n))
-            throw std::runtime_error(std::to_string(v) + " = v, n = " + std::to_string(n));
+            throw std::runtime_error(
+                std::to_string(v) + " = v, n = " + std::to_string(n));
         auto diff = x[u] - x[v];
         gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
     });
 }
 
 
-template <typename float_t>
-template <typename Tag, typename int_t>
+template <typename float_t, typename int_t>
+template <typename Tag>
 void
-GapMem<float_t>::find_tree(const IncidenceIndex<int_t> &graph)
+GapMem<float_t, int_t>::find_tree(const IncidenceIndex<int_t> &graph)
 {
     // minimum spanning tree: update parent
     prim_mst_edges<Tag>(parent.data(), gamma.data(), graph, root);
@@ -91,11 +91,16 @@ GapMem<float_t>::find_tree(const IncidenceIndex<int_t> &graph)
 }
 
 
-template <typename Tag, typename float_t = double, typename L, typename M>
+template <
+    typename Tag,
+    typename float_t = double,
+    typename int_t = int,
+    typename L,
+    typename M>
 double
 gaplas(
-    GapMem<float_t> &mem,
-    const GraphIndex &graph,
+    GapMem<float_t, int_t> &mem,
+    const IncidenceIndex<int_t> &graph,
     const L &lam,
     const size_t max_iter = 10,
     const M &mu = Ones<float_t>())
@@ -117,33 +122,38 @@ gaplas(
             mem.root,
             mem.mem_tree);
     }
-    return -1;
+    return -1;  // TODO: return runtime
 }
 
 
-template <typename Tag, typename float_t = double, typename Wlam, typename Wmu>
+template <
+    typename Tag,
+    typename float_t = double,
+    typename int_t = int,
+    typename L,
+    typename M>
 double
 gaplas(
     float_t *x,
     const float_t *y,
-    const GraphIndex &idx,
-    const Wlam &lam,
-    const Wmu &mu,
+    const IncidenceIndex<int_t> &idx,
+    const L &lam,
+    const M &mu,
     const size_t max_iter)
 {
     int root = 0;
-    GapMem<float_t> mem(x, y, idx.num_nodes(), idx.num_edges(), root);
+    GapMem<float_t, int_t> mem(x, y, idx.num_nodes(), idx.num_edges(), root);
     return gaplas<Tag>(mem, idx, lam, max_iter, mu);
 }
 
 
-template <typename Tag, typename float_t = double, typename Wlam>
+template <typename Tag, typename float_t = double, typename int_t, typename L>
 double
 gaplas(
     float_t *x,
     const float_t *y,
-    const GraphIndex &idx,
-    const Wlam &lam,
+    const IncidenceIndex<int_t> &idx,
+    const L &lam,
     const size_t max_iter)
 {
     return gaplas<Tag>(x, y, idx, lam, Ones<float_t>(), max_iter);

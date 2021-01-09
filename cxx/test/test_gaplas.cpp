@@ -1,4 +1,3 @@
-#include <algorithm> // for std::equal
 #include <doctest/doctest.h>
 
 #include <graphidx/bits/weights.hpp>
@@ -14,7 +13,6 @@ TEST_CASE("gap: demo3x7")
     GridGraph graph {3, 7};
     IncidenceIndex<int> idx {graph};
     const size_t m = graph.num_edges(), n = graph.num_nodes();
-    // REQUIRE(7 * 2 + 6 * 3 == 32);
     REQUIRE(m == 32);
     REQUIRE(n == 21);
     std::vector<double> y {
