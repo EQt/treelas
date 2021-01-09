@@ -3,6 +3,7 @@
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/grid.hpp>
 #include <graphidx/idx/incidence.hpp>
+#include <graphidx/tree/root.hpp>
 #include <graphidx/utils/lemon_heap.hpp>
 
 #include "../edges.hpp"
@@ -55,6 +56,13 @@ TEST_CASE("gap: demo3x7")
         const std::vector<int> expect = {0, 4, 5,  0,  3,  4,  7,  8,  5,  6, 7,
                                          8, 9, 14, 17, 12, 15, 16, 19, 16, 17};
         mem.template find_tree<Queue>(idx);
+        REQUIRE(find_root(mem.parent) == root);
+        for (size_t i = 0; i < n; i++) {
+            CAPTURE(i);
+            if (i == 1)
+                continue;
+            CHECK(mem.parent[i] == expect[i]);
+        }
         REQUIRE(
             doctest::Approx(tree_costs(mem.parent.data(), gap0, idx)) ==
             tree_costs(expect.data(), gap0, idx));
