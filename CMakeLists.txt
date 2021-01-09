@@ -175,6 +175,7 @@ if (BUILD_TESTS)
         cxx/test/test_tree_dp.cpp
         cxx/test/test_tree_dp_2.cpp
         cxx/test/test_tree_apx.cpp
+	cxx/test/test_gaplas.cpp
     )
     target_link_libraries(doctests PRIVATE
         doctest::doctest
@@ -190,8 +191,4 @@ if (WITH_LEMON)
     add_executable(maxflow cxx/bin/maxflow.cpp)
     target_link_libraries(maxflow PRIVATE lemon)
 endif()
-
-
-# Local Variables:
-# cmake-tab-width: 4
-# End:
+    
