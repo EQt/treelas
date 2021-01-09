@@ -2,10 +2,11 @@
 
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/grid.hpp>
+#include <graphidx/idx/incidence.hpp>
+#include <graphidx/utils/lemon_heap.hpp>
 
 #include "../gaplas.hpp"
 #include "demo3x7.hpp"
-#include "graphidx/idx/incidence.hpp"
 
 
 TEST_CASE("gap: demo3x7")
@@ -35,5 +36,13 @@ TEST_CASE("gap: demo3x7")
             CAPTURE(e);
             CHECK(doctest::Approx(gap0[e]) == mem.gamma[e]);
         }
+    }
+    {
+        using Queue = QuadHeapT;
+        mem.template find_tree<Queue>(idx);
+        REQUIRE(
+            std::vector<int>(mem.parent) ==
+            std::vector<int> {0, 4, 5,  0,  3,  4,  7,  8,  5,  6, 7,
+                              8, 9, 14, 17, 12, 15, 16, 19, 16, 17});
     }
 }
