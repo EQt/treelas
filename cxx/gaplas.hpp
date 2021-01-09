@@ -3,6 +3,7 @@
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/idx/incidence.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
+#include <stdexcept>
 
 #include "edges.hpp"
 #include "tree_dp.hpp"
@@ -18,7 +19,8 @@ struct GapMem
     float_t *x;
     const float_t *y;
     const int root;
-    std::vector<float_t> y_tree, alpha, alpha_tree, gamma;
+    std::vector<float_t> alpha, gamma;
+    std::vector<float_t> y_tree;
     std::vector<int> parent;
     TreeDPStatus mem_tree;
 
@@ -40,9 +42,9 @@ template <typename float_t>
 GapMem<float_t>::GapMem(float_t *x, const float_t *y, size_t n, size_t m, int root)
     : n(n), m(m), x(x), y(y), root(root), mem_tree(n)
 {
-    y_tree.resize(n);
     alpha.resize(n);
-    alpha_tree.resize(m);
+    // alpha_tree.resize(m);
+    y_tree.resize(n);
     gamma.resize(m);
     parent.resize(n);
 }
@@ -66,7 +68,12 @@ GapMem<float_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam)
     // update gamma
     const auto c = -1;
     edges<int_t>(graph, [&](int_t u, int_t v, int_t e) {
-        std::cerr << "u = " << u << ", v = " << v << std::endl;
+        if (e < 0 || e >= int_t(m))
+            throw std::runtime_error(std::to_string(e) + ", m = " + std::to_string(m));
+        if (u < 0 || u >= int_t(n))
+            throw std::runtime_error(std::to_string(u) + " = u, n = " + std::to_string(n));
+        if (v < 0 || v >= int_t(n))
+            throw std::runtime_error(std::to_string(v) + " = v, n = " + std::to_string(n));
         auto diff = x[u] - x[v];
         gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
     });
