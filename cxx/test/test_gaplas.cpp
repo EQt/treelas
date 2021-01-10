@@ -1,12 +1,12 @@
 #include <doctest/doctest.h>
 
 #include <graphidx/bits/weights.hpp>
+#include <graphidx/edges.hpp>
 #include <graphidx/grid.hpp>
 #include <graphidx/idx/incidence.hpp>
 #include <graphidx/tree/root.hpp>
 #include <graphidx/utils/lemon_heap.hpp>
 
-#include "../edges.hpp"
 #include "../gaplas.hpp"
 #include "demo3x7.hpp"
 

@@ -1,11 +1,11 @@
 #pragma once
 
+#include <graphidx/edges.hpp>
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/idx/incidence.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
 #include <stdexcept>
 
-#include "edges.hpp"
 #include "tree_dp.hpp"
 
 
