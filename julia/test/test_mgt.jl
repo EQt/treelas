@@ -107,7 +107,13 @@ end
 
     @testset "call gaplas" begin
         local lam = GraphIdx.Ones{Float64}()
-        x = MGT.gaplas(y, edges, lam, max_iter=5)
+        x = MGT.gaplas(y, edges, lam, max_iter=1, verbose=false)
+        @test rationalize.(x) == [
+            639//800  639//800  547//650  547//650  547//650  547//650  547//650
+            639//800  639//800  547//650  547//650  547//650  547//650  547//650
+            639//800  639//800  639//800  639//800  547//650  547//650  547//650
+        ]
+        x = MGT.gaplas(y, edges, lam, max_iter=5, verbose=true)
         @test mean(x) ≈ mean(y)
     end
 end

@@ -6,6 +6,7 @@
 #include <graphidx/idx/incidence.hpp>
 #include <graphidx/tree/root.hpp>
 #include <graphidx/utils/lemon_heap.hpp>
+#include <graphidx/utils/timer.hpp>
 
 #include "../gaplas.hpp"
 #include "demo3x7.hpp"
@@ -13,6 +14,7 @@
 
 TEST_CASE("gap: demo3x7")
 {
+    TimerQuiet _;
     GridGraph graph {3, 7};
     IncidenceIndex<int> idx {graph};
     const size_t m = graph.num_edges(), n = graph.num_nodes();
@@ -52,6 +54,11 @@ TEST_CASE("gap: demo3x7")
     }
     {
         mem.tree_opt(tlam, mu);
+        const auto expect = (const double *) demo_3x7_x1[0];
+        for (size_t v = 0; v < n; v++) {
+            CAPTURE(v);
+            CHECK(doctest::Approx(mem.x[v]) == expect[v]);
+        }
     }
     {
         mem.update_duals(idx);
