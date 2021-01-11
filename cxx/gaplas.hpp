@@ -1,7 +1,7 @@
 #pragma once
 
-#include <graphidx/edges.hpp>
 #include <graphidx/bits/weights.hpp>
+#include <graphidx/edges.hpp>
 #include <graphidx/idx/incidence.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
 #include <stdexcept>
@@ -30,7 +30,7 @@ struct GapMem
     template <typename L>
     void gap_vec(const IncidenceIndex<int_t> &graph, const L &lam);
 
-    template <typename Tag>
+    template <typename Queue>
     void find_tree(const IncidenceIndex<int_t> &graph);
 };
 
@@ -66,14 +66,17 @@ GapMem<float_t, int_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam
     // update gamma
     const auto c = -1;
     edges<int_t>(graph, [&](int_t u, int_t v, int_t e) {
-        if (e < 0 || e >= int_t(m))
-            throw std::runtime_error(std::to_string(e) + ", m = " + std::to_string(m));
-        if (u < 0 || u >= int_t(n))
-            throw std::runtime_error(
-                std::to_string(u) + " = u, n = " + std::to_string(n));
-        if (v < 0 || v >= int_t(n))
-            throw std::runtime_error(
-                std::to_string(v) + " = v, n = " + std::to_string(n));
+        if (false) {
+            if (e < 0 || e >= int_t(m))
+                throw std::runtime_error(
+                    std::to_string(e) + ", m = " + std::to_string(m));
+            if (u < 0 || u >= int_t(n))
+                throw std::runtime_error(
+                    std::to_string(u) + " = u, n = " + std::to_string(n));
+            if (v < 0 || v >= int_t(n))
+                throw std::runtime_error(
+                    std::to_string(v) + " = v, n = " + std::to_string(n));
+        }
         auto diff = x[u] - x[v];
         gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
     });
@@ -81,18 +84,18 @@ GapMem<float_t, int_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam
 
 
 template <typename float_t, typename int_t>
-template <typename Tag>
+template <typename Queue>
 void
 GapMem<float_t, int_t>::find_tree(const IncidenceIndex<int_t> &graph)
 {
     // minimum spanning tree: update parent
-    prim_mst_edges<Tag>(parent.data(), gamma.data(), graph, root);
+    prim_mst_edges<Queue>(parent.data(), gamma.data(), graph, root);
     // TODO: update y_tree, lam_tree
 }
 
 
 template <
-    typename Tag,
+    typename Queue,
     typename float_t = double,
     typename int_t = int,
     typename L,
@@ -110,7 +113,7 @@ gaplas(
     mem.init();
     for (size_t it = 0; it < max_iter; it++) {
         mem.gap_vec(graph, lam);
-        mem.template find_tree<Tag>(graph);
+        mem.template find_tree<Queue>(graph);
         const auto &tree_lam = lam; // FIXME
         tree_dp<merge_sort, lazy_sort>(
             mem.n,
@@ -122,12 +125,12 @@ gaplas(
             mem.root,
             mem.mem_tree);
     }
-    return -1;  // TODO: return runtime
+    return -1; // TODO: return runtime
 }
 
 
 template <
-    typename Tag,
+    typename Queue,
     typename float_t = double,
     typename int_t = int,
     typename L,
@@ -143,11 +146,11 @@ gaplas(
 {
     int root = 0;
     GapMem<float_t, int_t> mem(x, y, idx.num_nodes(), idx.num_edges(), root);
-    return gaplas<Tag>(mem, idx, lam, max_iter, mu);
+    return gaplas<Queue>(mem, idx, lam, max_iter, mu);
 }
 
 
-template <typename Tag, typename float_t = double, typename int_t, typename L>
+template <typename Queue, typename float_t = double, typename int_t, typename L>
 double
 gaplas(
     float_t *x,
@@ -156,5 +159,5 @@ gaplas(
     const L &lam,
     const size_t max_iter)
 {
-    return gaplas<Tag>(x, y, idx, lam, Ones<float_t>(), max_iter);
+    return gaplas<Queue>(x, y, idx, lam, Ones<float_t>(), max_iter);
 }

@@ -11,18 +11,6 @@
 #include "demo3x7.hpp"
 
 
-double
-tree_costs(const int *parent, const double *weights, const IncidenceIndex<int> &idx)
-{
-    double sum = 0.0;
-    edges<int>(idx, [&](int u, int v, int e) {
-        if (parent[u] == v || parent[v] == u)
-            sum += weights[e];
-    });
-    return sum;
-}
-
-
 TEST_CASE("gap: demo3x7")
 {
     GridGraph graph {3, 7};
@@ -57,14 +45,6 @@ TEST_CASE("gap: demo3x7")
                                          8, 9, 14, 17, 12, 15, 16, 19, 16, 17};
         mem.template find_tree<Queue>(idx);
         REQUIRE(find_root(mem.parent) == root);
-        for (size_t i = 0; i < n; i++) {
-            CAPTURE(i);
-            if (i == 1)
-                continue;
-            CHECK(mem.parent[i] == expect[i]);
-        }
-        REQUIRE(
-            doctest::Approx(tree_costs(mem.parent.data(), gap0, idx)) ==
-            tree_costs(expect.data(), gap0, idx));
+        REQUIRE(mem.parent == expect);
     }
 }
