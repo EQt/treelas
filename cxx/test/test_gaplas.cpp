@@ -41,9 +41,11 @@ TEST_CASE("gap: demo3x7")
     }
     {
         using Queue = QuadHeapT;
+        const auto lam = Ones<double>();
+        auto tlam = Ones<double>();
         const std::vector<int> expect = {0, 4, 5,  0,  3,  4,  7,  8,  5,  6, 7,
                                          8, 9, 14, 17, 12, 15, 16, 19, 16, 17};
-        mem.template find_tree<Queue>(idx);
+        mem.template find_tree<Queue>(idx, tlam, lam);
         REQUIRE(find_root(mem.parent) == root);
         REQUIRE(mem.parent == expect);
     }
