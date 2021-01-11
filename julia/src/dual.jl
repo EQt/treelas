@@ -71,10 +71,8 @@ function dual!(
     cidx::ChildrenIndex,
     alpha_root::F = F(0.0),
 ) where {F,I}
-    for i in 1:length(parent)
-        let v = parent[i]
-            alpha[i] = i > v ? -alpha[i] : +alpha[i]
-        end
+    for (i, v) in enumerate(parent)
+        alpha[i] = i > v ? -alpha[i] : +alpha[i]
     end
     dfs_walk(cidx) do v::Int
         if v >= 0
