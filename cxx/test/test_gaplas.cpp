@@ -18,6 +18,8 @@ TEST_CASE("gap: demo3x7")
     const size_t m = graph.num_edges(), n = graph.num_nodes();
     REQUIRE(m == 32);
     REQUIRE(n == 21);
+    const auto lam = Ones<double>();
+    const auto mu = Ones<double>();
     std::vector<double> y {
         (double *)demo_3x7_y[0], (double *)demo_3x7_y[0] + graph.num_nodes()};
     std::vector<double> x(y.size(), 0.0);
@@ -39,14 +41,19 @@ TEST_CASE("gap: demo3x7")
         CAPTURE(e);
         CHECK(doctest::Approx(gap0[e]) == mem.gamma[e]);
     }
+    auto tlam = lam;
     {
         using Queue = QuadHeapT;
-        const auto lam = Ones<double>();
-        auto tlam = Ones<double>();
         const std::vector<int> expect = {0, 4, 5,  0,  3,  4,  7,  8,  5,  6, 7,
                                          8, 9, 14, 17, 12, 15, 16, 19, 16, 17};
         mem.template find_tree<Queue>(idx, tlam, lam);
         REQUIRE(find_root(mem.parent) == root);
         REQUIRE(mem.parent == expect);
+    }
+    {
+        mem.tree_opt(tlam, mu);
+    }
+    {
+        mem.update_duals(idx);
     }
 }
