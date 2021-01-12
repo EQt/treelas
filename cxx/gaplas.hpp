@@ -48,16 +48,14 @@ tree_dual(
     const float_t *y,
     const int_t *parent,
     float_t *alpha,
-    const std::vector<int> &postorder)
+    const std::vector<int_t> &postorder)
 {
     for (size_t i = 0; i < n; i++) {
         const auto d = x[i] - y[i];
         alpha[i] = i > size_t(parent[i]) ? -d : +d;
     }
-    for (const auto v : postorder) {
-        const auto p = parent[v];
-        alpha[p] += alpha[v];
-    }
+    for (const auto v : postorder)
+        alpha[parent[v]] += alpha[v];
 }
 
 
@@ -67,16 +65,8 @@ void
 GapMem<float_t, int_t>::tree_opt(const L &tree_lam, const M &mu)
 {
     constexpr bool merge_sort = false, lazy_sort = false;
-
-        tree_dp<merge_sort, lazy_sort>(
-            n,
-            x,
-            y_tree.data(),
-            parent.data(),
-            tree_lam,
-            mu,
-            root,
-            mem_tree);
+    tree_dp<merge_sort, lazy_sort>(
+        n, x, y_tree.data(), parent.data(), tree_lam, mu, root, mem_tree);
 }
 
 
