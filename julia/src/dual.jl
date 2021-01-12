@@ -2,8 +2,7 @@ module Dual
 
 include("gap.jl")
 
-import GraphIdx.Tree: ChildrenIndex, dfs_walk
-
+import GraphIdx.Tree: ChildrenIndex, dfs_walk, root_node
 
 function dual(
     x::Array{F,N},
@@ -84,7 +83,7 @@ function dual!(
         end
     end
     if alpha_root != F(0.0)
-        let root = root_node(cidx)
+        let root = root_node(cidx), acc = eps() * length(parent)
             @assert abs(alpha[root]) <= acc "$(abs(alpha[root])) < = $acc"
             alpha[root] = alpha_root
         end
