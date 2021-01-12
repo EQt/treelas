@@ -63,7 +63,7 @@ matrix:
     - &cmake
       language: cpp
       os: linux
-      env: cmake_opts="-DASAN=ON"
+      env: cmake_opts="-DASAN=ON -DWITH_LEMON=ON"
       install: mkdir -p build && cd build && cmake ..
         -DCMAKE_BUILD_TYPE=Debug $cmake_opts
         -DPYTHON_EXECUTABLE:FILEPATH=$(which python3)
@@ -71,7 +71,7 @@ matrix:
 
     - <<: *cmake
       os: osx
-      env: cmake_opts="-DASAN=OFF"
+      env: cmake_opts="-DASAN=OFF -DWITH_LEMON=ON"
 
     - language: python
       python: "3.7"
