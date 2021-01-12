@@ -1,3 +1,4 @@
+#ifdef HAVE_LEMON
 #include <doctest/doctest.h>
 #include <type_traits> // std::remove_const
 
@@ -119,3 +120,5 @@ TEST_CASE("gaplas: demo3x7")
         }
     }
 }
+
+#endif  /* HAVE_LEMON */
