@@ -97,14 +97,8 @@ TEST_CASE("gaplas: demo3x7")
             }
         });
         for (const auto &[e, a] : demo_3x7_alpha1) {
-            const auto [u, v] = e;
-            CAPTURE(e);
-            CAPTURE(u);
-            CAPTURE(v);
-            CAPTURE(parent[u]);
-            CAPTURE(parent[v]);
-            CAPTURE(alpha_tree[parent[u]]);
-            CAPTURE(alpha_tree[parent[v]]);
+            const decltype(e) f {e};
+            CAPTURE(f);
             REQUIRE(doctest::Approx(alpha.at(e)).epsilon(0.01) == a);
         }
     }
@@ -116,6 +110,8 @@ TEST_CASE("gaplas: demo3x7")
                 alpha[{u, v}] = mem.alpha.at(e);
         });
         for (const auto &[e, a] : demo_3x7_alpha1) {
+            const decltype(e) f {e};
+            CAPTURE(f);
             REQUIRE(doctest::Approx(alpha.at(e)).epsilon(0.01) == a);
         }
     }
