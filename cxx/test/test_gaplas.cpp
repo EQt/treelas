@@ -117,4 +117,22 @@ TEST_CASE("gaplas: demo3x7")
     }
 }
 
-#endif  /* HAVE_LEMON */
+
+TEST_CASE("gaplas: demo3x7 iter=5")
+{
+    using Queue = QuadHeapT;
+
+    TimerQuiet _;
+    GridGraph graph {3, 7};
+    const IncidenceIndex<int> idx {graph};
+    const auto lam = Const<double>(0.1);
+    const size_t n = idx.num_nodes();
+    const double *y = (const double *)demo_3x7_y;
+    const size_t max_iter = 5;
+    const bool verbose = true;
+    std::vector<double> x(n);
+    gaplas<Queue>(x.data(), y, idx, lam, max_iter, verbose);
+}
+
+
+#endif /* HAVE_LEMON */

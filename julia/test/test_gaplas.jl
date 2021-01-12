@@ -80,4 +80,9 @@ import GraphIdx
 end
 
 
+@testset "GapLas  : demo 3x7 iter 5      " begin
+    include("demo3x7.jl")
+    graph = GraphIdx.Grid.GridGraph(size(y)...)
+    lam = GraphIdx.Const(0.1);
+    GapLas.gaplas(y, graph, lam; max_iter=5, verbose=false)
 end

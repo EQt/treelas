@@ -5,6 +5,7 @@
 #include <graphidx/idx/incidence.hpp>
 #include <graphidx/spanning/prim_mst.hpp>
 #include <stdexcept>
+#include <type_traits>
 
 #include "tree_dp.hpp"
 
@@ -12,6 +13,8 @@
 template <typename float_t = double, typename int_t = int>
 struct GapMem
 {
+    static_assert(std::is_integral<int_t>::value, "need integers for indexing");
+
     const size_t n, m;
     float_t *x;
     const float_t *y;
@@ -40,7 +43,42 @@ struct GapMem
 
     template <typename Queue, typename L, typename M>
     void next(const IncidenceIndex<int_t> &graph, L &tlam, const L &lam, const M &mu);
+
+    template <typename L, typename M>
+    double
+    primal_obj(const IncidenceIndex<int_t> &idx, const L &lam, const M &mu) const;
+
+    double gap_obj() const;
 };
+
+
+template <typename float_t, typename int_t>
+double
+GapMem<float_t, int_t>::gap_obj() const
+{
+    double sum = 0;
+    for (size_t e = 0; e < m; e++)
+        sum += double(gamma[e]);
+    return -sum;
+}
+
+
+template <typename float_t, typename int_t>
+template <typename L, typename M>
+double
+GapMem<float_t, int_t>::primal_obj(
+    const IncidenceIndex<int_t> &idx, const L &lam, const M &mu) const
+{
+    double sum = 0;
+    for (size_t i = 0; i < n; i++) {
+        const auto diff = double(x[i]) - double(y[i]);
+        sum += mu[i] * diff * diff;
+    }
+    edges<int_t>(idx, [&](int_t u, int_t v, int_t e) {
+        sum += u < v ? lam[e] * std::abs(double(x[u]) - double(x[v])) : 0.0;
+    });
+    return sum;
+}
 
 
 template <typename float_t, typename int_t>
@@ -201,11 +239,15 @@ gaplas(
     const IncidenceIndex<int_t> &graph,
     const L &lam,
     const size_t max_iter = 10,
+    const bool verbose = true,
     const M &mu = Ones<float_t>())
 {
     mem.init();
     L tlam(lam);
     for (size_t it = 0; it < max_iter; it++) {
+        if (verbose)
+            std::cout << it << '\t' << mem.primal_obj(graph, lam, mu) << '\t'
+                      << mem.gap_obj() << std::endl;
         mem.template next<Queue>(graph, tlam, lam, mu);
     }
     return -1; // TODO: return runtime
@@ -225,11 +267,12 @@ gaplas(
     const IncidenceIndex<int_t> &idx,
     const L &lam,
     const M &mu,
-    const size_t max_iter)
+    const size_t max_iter,
+    const bool verbose)
 {
     int root = 0;
     GapMem<float_t, int_t> mem(x, y, idx.num_nodes(), idx.num_edges(), root);
-    return gaplas<Queue>(mem, idx, lam, max_iter, mu);
+    return gaplas<Queue>(mem, idx, lam, max_iter, verbose, mu);
 }
 
 
@@ -240,7 +283,9 @@ gaplas(
     const float_t *y,
     const IncidenceIndex<int_t> &idx,
     const L &lam,
-    const size_t max_iter)
+    const size_t max_iter,
+    const bool verbose = true)
 {
-    return gaplas<Queue>(x, y, idx, lam, Ones<float_t>(), max_iter);
+    const auto mu = Ones<float_t>();
+    return gaplas<Queue>(x, y, idx, lam, mu, max_iter, verbose);
 }
