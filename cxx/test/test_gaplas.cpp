@@ -66,6 +66,11 @@ TEST_CASE("gaplas: demo3x7")
             CHECK(doctest::Approx(mem.x[v]) == expect[v]);
         }
     }
+    SUBCASE("postorder")
+    {
+        const std::vector<int> expect = {11, 10, 18, 19, 20, 13, 14, 17, 16, 15, 12, 9, 6, 7, 8, 2, 5, 1, 4, 3, 0};
+        REQUIRE(mem.mem_tree.proc_order == expect);
+    }
     SUBCASE("duality")
     {
         mem.update_duals(idx);
