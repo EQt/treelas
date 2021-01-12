@@ -9,7 +9,7 @@ function dual(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F = F(0.0),
+    alpha_root::F=F(0.0),
 ) where {F,N,I}
     dual!(Vector{F}(undef, length(post_order)),
           x,
@@ -31,7 +31,7 @@ function dual!(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F = F(0.0),
+    alpha_root::F=F(0.0),
 ) where {F,N,I}
     alpha .= vec(x) .- vec(y)
     dual!(alpha, post_order, parent, alpha_root)
@@ -42,9 +42,9 @@ function dual!(
     alpha::Vector{F},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F = F(0.0),
-) where {F<:Real,I<:Integer}
-    for c in @view post_order[1:end-1]
+    alpha_root::F=F(0.0),
+) where {F <: Real,I <: Integer}
+    for c in @view post_order[1:end - 1]
         let v = parent[c]
             alpha[v] += alpha[c]
         end
@@ -60,7 +60,7 @@ end
 
 
 dual(z::Vector{F}, parent::Vector{I},
-     cidx::ChildrenIndex, alpha_root::F = F(0.0)) where {F,I} =
+     cidx::ChildrenIndex, alpha_root::F=F(0.0)) where {F,I} =
     dual!(copy(z), parent, cidx, alpha_root)
 
 
@@ -68,7 +68,7 @@ function dual!(
     alpha::Vector{F},
     parent::Vector{I},
     cidx::ChildrenIndex,
-    alpha_root::F = F(0.0),
+    alpha_root::F=F(0.0),
 ) where {F,I}
     for (i, v) in enumerate(parent)
         alpha[i] = i > v ? -alpha[i] : +alpha[i]
@@ -112,7 +112,7 @@ function primal_from_dual!(
     x::Array{F,N},
     alpha::Vector{F},
     graph::G,
-)::Array{F,N} where {F<:Real,N,G}
+)::Array{F,N} where {F <: Real,N,G}
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
         x[u] += alpha[ei]
         x[v] -= alpha[ei]
