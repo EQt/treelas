@@ -1,4 +1,5 @@
 #include <doctest/doctest.h>
+#include <type_traits> // std::remove_const
 
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/edges.hpp>
@@ -10,6 +11,7 @@
 
 #include "../gaplas.hpp"
 #include "demo3x7.hpp"
+#include "doctestx.hpp"
 
 
 TEST_CASE("gaplas: demo3x7")
@@ -83,26 +85,26 @@ TEST_CASE("gaplas: demo3x7")
     }
     SUBCASE("duality: general")
     {
-        constexpr size_t m = 32;
-        double alpha[m] = {0};
         const int *parent = mem.parent.data();
         const double *alpha_tree = mem.alpha_tree.data();
-        edges<int>(graph, [&](int u, int v, int e) {
-            if (u >= v)
-                return;
-            if (parent[u] == v) {
-                alpha[e] = u < v ? alpha_tree[v] : -alpha[v];
-                std::cerr << "edge[" << e << "] = " << v << " -> " << u << std::endl;
-            }
-            if (parent[v] == u) {
-                alpha[e] = u < v ? alpha_tree[u] : -alpha[u];
-                std::cerr << "edge[" << e << "] = " << v << " -> " << u << std::endl;
+        std::remove_const<decltype(demo_3x7_alpha1)>::type alpha;
+        edges<int>(graph, [&](int u, int v, int) {
+            if (u < v) {
+                alpha[{u, v}] = parent[u] == v
+                                    ? alpha_tree[u]
+                                    : (parent[v] == u ? -alpha_tree[v] : 0.0);
             }
         });
-        const auto expect = (const double *)demo_3x7_alpha1;
-        for (size_t e = 0; e < m; e++) {
+        for (const auto &[e, a] : demo_3x7_alpha1) {
+            const auto [u, v] = e;
             CAPTURE(e);
-            REQUIRE(doctest::Approx(mem.alpha[e]).epsilon(0.01) == expect[e]);
+            CAPTURE(u);
+            CAPTURE(v);
+            CAPTURE(parent[u]);
+            CAPTURE(parent[v]);
+            CAPTURE(alpha_tree[parent[u]]);
+            CAPTURE(alpha_tree[parent[v]]);
+            REQUIRE(doctest::Approx(alpha.at(e)).epsilon(0.01) == a);
         }
     }
 }

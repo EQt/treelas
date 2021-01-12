@@ -90,11 +90,13 @@ GapMem<float_t, int_t>::update_duals(const IncidenceIndex<int_t> &graph)
         parent.data(),
         mem_tree.proc_order.data());
     edges<int>(graph, [&](int_t u, int_t v, int_t e) {
-        if (parent[u] == v)
-            alpha[e] = u < v ? alpha_tree[v] : -alpha[v];
-        if (parent[v] == u)
-            alpha[e] = u < v ? alpha_tree[u] : -alpha[u];
-        });
+        if (u < v) {
+            if (parent[u] == v)
+                alpha[e] = alpha_tree[u];
+            if (parent[v] == u)
+                alpha[e] = -alpha_tree[v];
+        }
+    });
 }
 
 
