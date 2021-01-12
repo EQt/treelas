@@ -68,17 +68,41 @@ TEST_CASE("gaplas: demo3x7")
     }
     SUBCASE("postorder")
     {
-        const std::vector<int> expect = {11, 10, 18, 19, 20, 13, 14, 17, 16, 15, 12,
-                                         9,  6,  7,  8,  2,  5,  1,  4,  3};
+        const std::vector<int> expect = {11, 10, 18, 19, 20, 13, 14, 17, 16, 15,
+                                         12, 9,  6,  7,  8,  2,  5,  1,  4,  3};
         REQUIRE(mem.mem_tree.proc_order == expect);
     }
-    SUBCASE("duality")
+    mem.update_duals(idx);
+    SUBCASE("duality: tree")
     {
-        mem.update_duals(idx);
         const auto expect = (const double *)demo_3x7_alpha_tree1;
         for (size_t v = 0; v < n; v++) {
             CAPTURE(v);
-            REQUIRE(doctest::Approx(mem.alpha_tree[v]).epsilon(0.01) == expect[v]);
+            CHECK(doctest::Approx(mem.alpha_tree[v]).epsilon(0.01) == expect[v]);
+        }
+    }
+    SUBCASE("duality: general")
+    {
+        constexpr size_t m = 32;
+        double alpha[m] = {0};
+        const int *parent = mem.parent.data();
+        const double *alpha_tree = mem.alpha_tree.data();
+        edges<int>(graph, [&](int u, int v, int e) {
+            if (u >= v)
+                return;
+            if (parent[u] == v) {
+                alpha[e] = u < v ? alpha_tree[v] : -alpha[v];
+                std::cerr << "edge[" << e << "] = " << v << " -> " << u << std::endl;
+            }
+            if (parent[v] == u) {
+                alpha[e] = u < v ? alpha_tree[u] : -alpha[u];
+                std::cerr << "edge[" << e << "] = " << v << " -> " << u << std::endl;
+            }
+        });
+        const auto expect = (const double *)demo_3x7_alpha1;
+        for (size_t e = 0; e < m; e++) {
+            CAPTURE(e);
+            REQUIRE(doctest::Approx(mem.alpha[e]).epsilon(0.01) == expect[e]);
         }
     }
 }
