@@ -42,20 +42,28 @@ struct GapMem
 
 template <typename int_t = int, typename float_t = double>
 void
+tree_dual(const size_t n, float_t *alpha, const int_t *parent, const int_t *postorder)
+{
+    for (size_t i = 0; i < n - 1; i++) {
+        const auto v = postorder[i];
+        alpha[parent[v]] += alpha[v];
+    }
+}
+
+
+template <typename int_t = int, typename float_t = double>
+void
 tree_dual(
     const size_t n,
+    float_t *alpha,
     const float_t *x,
     const float_t *y,
     const int_t *parent,
-    float_t *alpha,
-    const std::vector<int_t> &postorder)
+    const int_t *postorder)
 {
-    for (size_t i = 0; i < n; i++) {
-        const auto d = x[i] - y[i];
-        alpha[i] = i > size_t(parent[i]) ? -d : +d;
-    }
-    for (const auto v : postorder)
-        alpha[parent[v]] += alpha[v];
+    for (size_t i = 0; i < n; i++)
+        alpha[i] = x[i] - y[i];
+    tree_dual(n, alpha, parent, postorder);
 }
 
 
@@ -75,7 +83,12 @@ void
 GapMem<float_t, int_t>::update_duals(const IncidenceIndex<int_t> &graph)
 {
     tree_dual(
-        n, x, y_tree.data(), parent.data(), alpha_tree.data(), mem_tree.proc_order);
+        n,
+        alpha_tree.data(),
+        x,
+        y_tree.data(),
+        parent.data(),
+        mem_tree.proc_order.data());
     edges<int>(graph, [&](int_t u, int_t v, int_t e) {
         if (u < v) {
             if (parent[u] == v)

@@ -175,6 +175,7 @@ if (BUILD_TESTS)
         cxx/test/test_tree_dp.cpp
         cxx/test/test_tree_dp_2.cpp
         cxx/test/test_tree_apx.cpp
+	cxx/test/test_dual.cpp        
 	cxx/test/test_gaplas.cpp
     )
     target_link_libraries(doctests PRIVATE
