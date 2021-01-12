@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../min_cut.hpp"
+#include <graphidx/min_cut.hpp>
 
 
 void
@@ -25,5 +25,5 @@ main()
 }
 
 // Local Variables:
-// compile-command: "cd ../../build && COLOR=0 make  maxflow && ./maxflow"
+// compile-command: "cd ../../build && COLOR=0 make maxflow && ./maxflow"
 // End:
