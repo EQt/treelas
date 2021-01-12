@@ -37,7 +37,23 @@ struct GapMem
 
     template <typename L, typename M>
     void tree_opt(const L &tree_lam, const M &mu);
+
+    template <typename Queue, typename L, typename M>
+    void next(const IncidenceIndex<int_t> &graph, L &tlam, const L &lam, const M &mu);
 };
+
+
+template <typename float_t, typename int_t>
+template <typename Queue, typename L, typename M>
+void
+GapMem<float_t, int_t>::next(
+    const IncidenceIndex<int_t> &graph, L &tlam, const L &lam, const M &mu)
+{
+    gap_vec(graph, lam);
+    find_tree<Queue>(graph, tlam, lam);
+    tree_opt(tlam, mu);
+    update_duals(graph);
+}
 
 
 template <typename int_t = int, typename float_t = double>
@@ -190,10 +206,7 @@ gaplas(
     mem.init();
     L tlam(lam);
     for (size_t it = 0; it < max_iter; it++) {
-        mem.gap_vec(graph, lam);
-        mem.template find_tree<Queue>(graph, tlam, lam);
-        mem.tree_opt(tlam, mu);
-        mem.update_duals(graph);
+        mem.template next<Queue>(graph, tlam, lam, mu);
     }
     return -1; // TODO: return runtime
 }

@@ -107,4 +107,15 @@ TEST_CASE("gaplas: demo3x7")
             REQUIRE(doctest::Approx(alpha.at(e)).epsilon(0.01) == a);
         }
     }
+    SUBCASE("duality: computed in gaplas")
+    {
+        std::remove_const<decltype(demo_3x7_alpha1)>::type alpha;
+        edges<int>(graph, [&](int u, int v, int e) {
+            if (u < v)
+                alpha[{u, v}] = mem.alpha.at(e);
+        });
+        for (const auto &[e, a] : demo_3x7_alpha1) {
+            REQUIRE(doctest::Approx(alpha.at(e)).epsilon(0.01) == a);
+        }
+    }
 }
