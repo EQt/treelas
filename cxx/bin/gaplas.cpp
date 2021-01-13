@@ -68,7 +68,7 @@ main(int argc, char *argv[])
             "\n"
             "Approximate fused lasso by iteratively close the \"gaps\"");
         ap.add_option('l', "lam", "Tuning parameter λ", "num", "nan");
-        ap.add_option('i', "iter", "Random seed [default 2018]", "INT", "10");
+        ap.add_option('i', "iter", "Number of iterations", "INT", "10");
         ap.add_option('g', "group", "HDF5 group [default \"/\"]", "STR", "/");
         ap.add_option('f', "force", "Force to overwrite solution");
         ap.parse(&argc, argv);
