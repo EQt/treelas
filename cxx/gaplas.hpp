@@ -126,6 +126,7 @@ template <typename L, typename M>
 void
 GapMem<float_t, int_t>::tree_opt(const L &tree_lam, const M &mu)
 {
+    TimerQuiet _;
     constexpr bool merge_sort = false, lazy_sort = false;
     tree_dp<merge_sort, lazy_sort>(
         n, x, y_tree.data(), parent.data(), tree_lam, mu, root, mem_tree);
@@ -244,8 +245,9 @@ gaplas(
     const bool verbose = true,
     const M &mu = Ones<float_t>())
 {
-    mem.init();
     L tlam(lam);
+    mem.init();
+    mem.gap_vec(graph, lam);
     for (size_t it = 0; it < max_iter; it++) {
         if (verbose)
             std::cout << it << '\t' << mem.primal_obj(graph, lam, mu) << '\t'
