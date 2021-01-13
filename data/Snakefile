@@ -62,7 +62,7 @@ rule all:
 
 
 rule cmake_init:
-    output: CMAKE_BUILD + "/CMakeCache.txt"
+    output: f"{CMAKE_BUILD}/CMakeCache.txt"
     shell:  "cd {CMAKE_BUILD} && cmake -DCMAKE_BUILD_TYPE=Release .."
 
 
