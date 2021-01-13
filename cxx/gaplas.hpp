@@ -196,8 +196,10 @@ GapMem<float_t, int_t>::gap_vec(const IncidenceIndex<int_t> &graph, const L &lam
                 throw std::runtime_error(
                     std::to_string(v) + " = v, n = " + std::to_string(n));
         }
-        auto diff = x[u] - x[v];
-        gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
+        if (u < v) {
+            auto diff = x[u] - x[v];
+            gamma[e] = c * (lam[e] * std::abs(diff) + alpha[e] * diff);
+        }
     });
 }
 
