@@ -32,7 +32,7 @@ generate(const size_t n1, const size_t n2, const char *outfn)
     }
     {
         Timer _("hdf5 output");
-        HDF5 io(outfn, "w");
+        HDF5 io(outfn, "a+");
         io.owrite("head", head);
         io.owrite("tail", tail);
     }
