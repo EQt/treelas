@@ -2,13 +2,12 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
+
 #include <argparser.hpp>
-#include <minih5.hpp>
-
 #include <graphidx/grid.hpp>
-#include <graphidx/utils/timer.hpp>
 #include <graphidx/utils/thousand.hpp>
-
+#include <graphidx/utils/timer.hpp>
+#include <minih5.hpp>
 
 
 template <typename int_ = int>
@@ -21,20 +20,19 @@ generate(const size_t n1, const size_t n2, const char *outfn)
         throw std::runtime_error(std::string("n2 = ") + std::to_string(n2));
 
     std::vector<int_> head, tail;
-    head.reserve(n1*n2);
-    tail.reserve(n1*n2);
+    head.reserve(n1 * n2);
+    tail.reserve(n1 * n2);
 
     {
-        Timer _ ("generate edges");
-        iter_grid_edges<int_>(int_(n1), int_(n2),
-                              [&](int_ u, int_ v) {
-                                  head.push_back(u);
-                                  tail.push_back(v);
-                              });
+        Timer _("generate edges");
+        iter_grid_edges<int_>(int_(n1), int_(n2), [&](int_ u, int_ v) {
+            head.push_back(u);
+            tail.push_back(v);
+        });
     }
     {
-        Timer _ ("hdf5 output");
-        HDF5 io (outfn, "w");
+        Timer _("hdf5 output");
+        HDF5 io(outfn, "w");
         io.owrite("head", head);
         io.owrite("tail", tail);
     }
@@ -44,11 +42,10 @@ generate(const size_t n1, const size_t n2, const char *outfn)
 int
 main(int argc, char *argv[])
 {
-    ArgParser ap (
+    ArgParser ap(
         "grid\n"
         "\n"
-        "Generate edges of grid graph and store them as HDF5 file"
-    );
+        "Generate edges of grid graph and store them as HDF5 file");
     try {
         ap.add_option('o', "out", "Output file", "FILE", "grid.h5");
         ap.add_option('i', "img", "Take dimensions from HDF5 file", "FILE");
@@ -56,10 +53,10 @@ main(int argc, char *argv[])
         ap.add_option('h', "height", "Height (number of rows)", "INT", "3");
         ap.parse(&argc, argv);
 
-        int n1 = -1, n2 = -2;
+        size_t n1 = 0, n2 = 0;
         if (ap.has_option("img")) {
             const auto fname = ap.get_option("img");
-            HDF5 in5 (fname, "r");
+            HDF5 in5(fname, "r");
             if (!in5.has("y"))
                 throw std::runtime_error(std::string("y needed in ") + fname);
             auto dims = in5.dimensions("y");
@@ -70,8 +67,8 @@ main(int argc, char *argv[])
             n1 = decltype(n1)(dims[0]);
             n2 = decltype(n2)(dims[1]);
         } else {
-            n1 = atoi(ap.get_option("height"));
-            n2 = atoi(ap.get_option("width"));
+            n1 = (size_t)std::atoi(ap.get_option("height"));
+            n2 = (size_t)std::atoi(ap.get_option("width"));
         }
         const char *outfn = ap.get_option("out");
         set_thousand_sep(std::cout);
