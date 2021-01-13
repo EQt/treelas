@@ -155,6 +155,8 @@ HDF5::HDF5(const char *fname, const char *mode, int compress)
         hm = H5F_ACC_RDONLY;
     } else if (!strcmp(mode, "r+")) {
         hm = H5F_ACC_RDWR;
+    } else if (!strcmp(mode, "a+")) {
+        hm = H5F_ACC_RDWR;
     } else if (!strcmp(mode, "w")) {
         hm = H5F_ACC_TRUNC;
         ShutUp _;
