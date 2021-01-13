@@ -13,7 +13,7 @@
 
 template <typename int_ = int>
 void
-generate(const int n1, const int n2, const char *outfn)
+generate(const size_t n1, const size_t n2, const char *outfn)
 {
     if (n1 <= 0)
         throw std::runtime_error(std::string("n1 = ") + std::to_string(n1));
@@ -26,7 +26,7 @@ generate(const int n1, const int n2, const char *outfn)
 
     {
         Timer _ ("generate edges");
-        iter_grid_edges<int_>(n1, n2,
+        iter_grid_edges<int_>(int_(n1), int_(n2),
                               [&](int_ u, int_ v) {
                                   head.push_back(u);
                                   tail.push_back(v);
@@ -94,5 +94,5 @@ main(int argc, char *argv[])
 
 
 // Local Variables:
-// compile-command: "cd ../../build/ && make grid && ./grid 3 4"
+// compile-command: "cd ../../build/ && COLOR=0 make grid && ./grid 3 4"
 // End:

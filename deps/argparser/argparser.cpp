@@ -46,9 +46,8 @@ ArgParser::parse(int *argc, char *argv[])
         }
     }
     *argc = int(unparsed_args.size()+1);
-    for (int i = 1; i < *argc; i++) {
-        argv[i] = unparsed_args[i-1];
-    }
+    for (int i = 1; i < *argc; i++)
+        argv[i] = unparsed_args[size_t(i-1)];
     argv[*argc] = nullptr;
 
     if (this->has_option("help")) {
