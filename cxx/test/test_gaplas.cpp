@@ -5,9 +5,9 @@
 #include <graphidx/bits/weights.hpp>
 #include <graphidx/edges.hpp>
 #include <graphidx/grid.hpp>
+#include <graphidx/heap/lemon_heap.hpp>
 #include <graphidx/idx/incidence.hpp>
 #include <graphidx/tree/root.hpp>
-#include <graphidx/utils/lemon_heap.hpp>
 #include <graphidx/utils/timer.hpp>
 
 #include "../gaplas.hpp"
@@ -17,7 +17,7 @@
 
 TEST_CASE("gaplas: demo3x7")
 {
-    using Queue = QuadHeapT;
+    using Queue = lemo::QuadHeapT;
 
     TimerQuiet _;
     GridGraph graph {3, 7};
@@ -120,7 +120,7 @@ TEST_CASE("gaplas: demo3x7")
 
 TEST_CASE("gaplas: demo3x7 iter=5")
 {
-    using Queue = QuadHeapT;
+    using Queue = lemo::QuadHeapT;
 
     TimerQuiet _;
     GridGraph graph {3, 7};

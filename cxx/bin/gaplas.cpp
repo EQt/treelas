@@ -12,7 +12,7 @@
 #ifndef HAVE_LEMON
 #  error need lemon graph library
 #else
-#  include <graphidx/utils/lemon_heap.hpp>
+#  include <graphidx/heap/lemon_heap.hpp>
 #endif
 
 #include "../gaplas.hpp"
@@ -62,6 +62,8 @@ optimize(
 int
 main(int argc, char *argv[])
 {
+    using Queue = lemo::QuadHeapT;
+
     try {
         ArgParser ap(
             "gaplas [file] [out_id]\n"
@@ -80,8 +82,7 @@ main(int argc, char *argv[])
         const char *x_opt = argc > 2 ? argv[2] : "x_gap";
         const double lam = std::atof(ap.get_option("lam"));
         const int max_iter = std::atoi(ap.get_option("iter"));
-	using Tag = QuadHeapT;
-        optimize<Tag>(fname, lam, x_opt, ap.has_option("force"), max_iter);
+        optimize<Queue>(fname, lam, x_opt, ap.has_option("force"), max_iter);
     } catch (std::runtime_error &e) {
         fprintf(stderr, "EXCEPTION: %s\n", e.what());
     } catch (const char *msg) {
