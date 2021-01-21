@@ -1,6 +1,6 @@
 [submodule "docs/github.io"]
 	path = docs/github.io
-	url = git@github.com:eqt/treelas
+	url = https://github.com/EQt/treelas.git
 	branch = gh-pages
 [submodule "graphidx"]
 	path = deps/graphidx
