@@ -33,11 +33,7 @@ impl LineDP {
         dp
     }
 
-    pub fn clip<F: Bool, W: Weighted<f64>>(
-        &mut self,
-        slope: f64,
-        offset: f64,
-    ) -> f64 {
+    fn clip<F: Bool, W: Weighted<f64>>(&mut self, slope: f64, offset: f64) -> f64 {
         if W::is_const() {
             clip::<F, False>(&mut self.event, &mut self.pq, slope, offset)
         } else {
@@ -62,18 +58,15 @@ impl LineDP {
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: f64 = 0.0;
         for i in 0..n - 1 {
-            self.lb[i] =
-                self.clip::<True, W>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-            self.ub[i] =
-                self.clip::<False, W>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+            self.lb[i] = self.clip::<True, W>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+            self.ub[i] = self.clip::<False, W>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
             lam0 = if mu[i] > EPS {
                 lam[i]
             } else {
                 lam0.min(lam[i])
             };
         }
-        x[n - 1] =
-            self.clip::<True, W>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
+        x[n - 1] = self.clip::<True, W>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
         for i in (0..n - 1).rev() {
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
