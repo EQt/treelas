@@ -1,5 +1,4 @@
 use crate::generics::Bool;
-use std::f64;
 use std::ops::Range;
 
 pub(crate) const EPS: f64 = 1e-9;
@@ -7,9 +6,9 @@ pub(crate) const EPS: f64 = 1e-9;
 const DEBUG: bool = false;
 
 #[derive(Debug, PartialEq, Default)]
-pub struct Event {
-    pub x: f64,
-    pub slope: f64,
+pub(crate) struct Event {
+    pub(crate) x: f64,
+    pub(crate) slope: f64,
 }
 
 impl Event {
@@ -18,7 +17,7 @@ impl Event {
     }
 }
 
-pub fn clip<Forward: Bool, Check: Bool>(
+pub(crate) fn clip<Forward: Bool, Check: Bool>(
     elements: &mut [Event],
     pq: &mut Range<usize>,
     mut slope: f64,
