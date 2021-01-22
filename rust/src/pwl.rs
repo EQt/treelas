@@ -2,16 +2,14 @@ use crate::generics::Bool;
 use std::f64;
 use std::ops::Range;
 
-#[derive(Debug, PartialEq)]
+pub(crate) const EPS: f64 = 1e-9;
+
+const DEBUG: bool = false;
+
+#[derive(Debug, PartialEq, Default)]
 pub struct Event {
     pub x: f64,
     pub slope: f64,
-}
-
-impl Default for Event {
-    fn default() -> Self {
-        Event { x: 0.0, slope: 0.0 }
-    }
 }
 
 impl Event {
@@ -20,23 +18,20 @@ impl Event {
     }
 }
 
-pub const EPS: f64 = 1e-9;
-const DEBUG: bool = false;
-
 pub fn clip<Forward: Bool, Check: Bool>(
     elements: &mut [Event],
     pq: &mut Range<usize>,
     mut slope: f64,
     mut offset: f64,
 ) -> f64 {
+    let dir = || if Forward::is_true() { "f" } else { "b" }; // for debugging
     let mut start: usize = pq.start;
     let mut stop: usize = pq.end - 1;
     let mut e = &elements[if Forward::is_true() { start } else { stop }];
-    let dir = if Forward::is_true() { "f" } else { "b" };
     if DEBUG {
         println!(
             "clip_{}: ({:+}, {:+.3}): {:.3?}\n\t {:.3?}",
-            dir,
+            dir(),
             slope,
             offset,
             e,
@@ -57,7 +52,7 @@ pub fn clip<Forward: Bool, Check: Bool>(
         if DEBUG {
             println!(
                 " lip_{}: ({:+}, {:+.3}): {:.3?} offset: {:.3}\n\t {:.3?}",
-                dir,
+                dir(),
                 slope,
                 offset,
                 e,
@@ -87,7 +82,7 @@ pub fn clip<Forward: Bool, Check: Bool>(
     if DEBUG {
         println!(
             "  ip_{}: ({:+}, {:+.3}):\n\t {:.3?}",
-            dir,
+            dir(),
             slope,
             offset,
             &elements[start..stop + 1],
