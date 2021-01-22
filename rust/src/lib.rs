@@ -3,7 +3,9 @@ use std::time::Instant;
 mod generics;
 pub mod instance;
 pub mod line;
-pub mod pwl;
+pub mod line_32;
+mod pwl;
+mod pwl_32;
 pub mod tree;
 
 /// # Safety

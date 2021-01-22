@@ -5,7 +5,7 @@ authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 edition = "2018"
 
 [dependencies]
-graphidx = { git = "https://github.com/EQt/graphidx.git" }
+graphidx = { git = "https://github.com/EQt/graphidx.git", branch = "develop" }
 toml = "0.5"
 serde = { version = "1.0", features = ["derive"] }
 
