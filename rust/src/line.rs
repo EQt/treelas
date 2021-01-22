@@ -21,16 +21,16 @@ pub struct LineDP {
 
 impl LineDP {
     pub fn new(n: usize) -> Self {
-        let mut dp = LineDP {
-            event: Vec::with_capacity(2 * n),
-            lb: Vec::with_capacity(n - 1),
-            ub: Vec::with_capacity(n - 1),
-            pq: n..n,
-        };
-        dp.event.resize_with(2 * n, Default::default);
-        dp.lb.resize(n - 1, std::f64::NAN);
-        dp.ub.resize(n - 1, std::f64::NAN);
-        dp
+        let mut event = Vec::with_capacity(2 * n);
+        let mut lb = Vec::with_capacity(n - 1);
+        let mut ub = Vec::with_capacity(n - 1);
+        let pq = n..n;
+        unsafe {
+            event.set_len(2 * n);
+            lb.set_len(n - 1);
+            ub.set_len(n - 1);
+        }
+        Self { lb, ub, event, pq }
     }
 
     fn clip<F: Bool, W: Weighted<f64>>(&mut self, slope: f64, offset: f64) -> f64 {
