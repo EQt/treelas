@@ -19,6 +19,9 @@ pub struct LineDP {
     pq: Range<usize>,
 }
 
+type Forward = True;
+type Reverse = False;
+
 impl LineDP {
     pub fn new(n: usize) -> Self {
         let mut event = Vec::with_capacity(2 * n);
@@ -58,15 +61,15 @@ impl LineDP {
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: f64 = 0.0;
         for i in 0..n - 1 {
-            self.lb[i] = self.clip::<True, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-            self.ub[i] = self.clip::<False, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+            self.lb[i] = self.clip::<Forward, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+            self.ub[i] = self.clip::<Reverse, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
             lam0 = if M::is_const() || mu[i] > EPS {
                 lam[i]
             } else {
                 lam0.min(lam[i])
             };
         }
-        x[n - 1] = self.clip::<True, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
+        x[n - 1] = self.clip::<Forward, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
         for i in (0..n - 1).rev() {
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
