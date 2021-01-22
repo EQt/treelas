@@ -5,8 +5,8 @@ use graphidx::weights::Weighted;
 use std::ops::Range;
 
 #[inline]
-fn clamp(x: f64, min: f64, max: f64) -> f64 {
-    let mut x = x;
+fn clamp(mut x: f64, min: f64, max: f64) -> f64 {
+    debug_assert!(min <= max);
     x = if x < min { min } else { x };
     x = if x > max { max } else { x };
     x
@@ -41,10 +41,10 @@ impl LineDP {
         }
     }
 
-    pub fn solve<Wl, W>(&mut self, x: &mut [f64], y: &[f64], lam: &Wl, mu: &W)
+    pub fn solve<L, M>(&mut self, x: &mut [f64], y: &[f64], lam: &L, mu: &M)
     where
-        Wl: graphidx::weights::Weighted<f64>,
-        W: graphidx::weights::Weighted<f64> + std::fmt::Debug,
+        L: graphidx::weights::Weighted<f64>,
+        M: graphidx::weights::Weighted<f64> + std::fmt::Debug,
     {
         let n = y.len();
         assert!(n == x.len());
@@ -58,15 +58,15 @@ impl LineDP {
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: f64 = 0.0;
         for i in 0..n - 1 {
-            self.lb[i] = self.clip::<True, W>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-            self.ub[i] = self.clip::<False, W>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
-            lam0 = if mu[i] > EPS {
+            self.lb[i] = self.clip::<True, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+            self.ub[i] = self.clip::<False, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+            lam0 = if M::is_const() || mu[i] > EPS {
                 lam[i]
             } else {
                 lam0.min(lam[i])
             };
         }
-        x[n - 1] = self.clip::<True, W>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
+        x[n - 1] = self.clip::<True, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0 + 0.0);
         for i in (0..n - 1).rev() {
             x[i] = clamp(x[i + 1], self.lb[i], self.ub[i]);
         }
