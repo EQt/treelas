@@ -5,7 +5,7 @@ use treelars::graphidx::weights as w;
 
 #[test]
 fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
-    use treelars::line::LineDP;
+    use treelars::line_64::LineDP;
 
     let fname = data_dir()?.join("test").join("lines.toml");
     let instances = Instance::from_path(fname, "test")?;

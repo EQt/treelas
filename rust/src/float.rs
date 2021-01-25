@@ -1,8 +1,9 @@
 /// All floating point traits needed to do fused Lasso
-pub(crate) trait Float:
+pub trait Float:
     std::ops::Mul<Output = Self>
     + std::ops::Div<Output = Self>
     + std::ops::Add<Output = Self>
+    + std::ops::Sub<Output = Self>
     + std::ops::Neg<Output = Self>
     + std::cmp::PartialOrd
     + From<i8>
@@ -22,6 +23,23 @@ pub(crate) trait Float:
             -self
         } else {
             self
+        }
+    }
+
+    #[inline]
+    fn clip(mut self, min: Self, max: Self) -> Self {
+        debug_assert!(min <= max);
+        self = if self < min { min } else { self };
+        self = if self > max { max } else { self };
+        self
+    }
+
+    #[inline]
+    fn min(self, other: Self) -> Self {
+        if self < other {
+            self
+        } else {
+            other
         }
     }
 }
