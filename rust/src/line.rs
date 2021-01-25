@@ -9,6 +9,7 @@ pub struct LineDP<F: Float> {
     ub: Vec<F>,
     event: Vec<Event<F>>,
     pq: Range<usize>,
+    startx: Option<F>,
 }
 
 type Forward = True;
@@ -25,7 +26,12 @@ impl<F: Float> LineDP<F> {
             lb.set_len(n - 1);
             ub.set_len(n - 1);
         }
-        Self { lb, ub, event, pq }
+        let startx = None;
+        Self { lb, ub, event, pq, startx}
+    }
+
+    pub fn get_bounds(&self) -> (&[F], &[F]) {
+        (&self.lb[..], &self.ub[..])
     }
 
     fn clip<D: Bool, W: Weighted<F>>(&mut self, slope: F, offset: F) -> F {
@@ -36,13 +42,13 @@ impl<F: Float> LineDP<F> {
         }
     }
 
-    pub fn solve<L, M>(&mut self, x: &mut [F], y: &[F], lam: &L, mu: &M)
+    /// Dynamic Programming Forward Pass.
+    pub fn dp_optimize<L, M>(&mut self, y: &[F], lam: &L, mu: &M) -> F
     where
         L: graphidx::weights::Weighted<F>,
         M: graphidx::weights::Weighted<F> + std::fmt::Debug,
     {
         let n = y.len();
-        assert!(n == x.len());
         assert!(
             mu.len() >= n,
             "mu.len() = {}, n = {}: {:?}",
@@ -50,7 +56,7 @@ impl<F: Float> LineDP<F> {
             n,
             mu
         );
-        assert!(lam.len() >= x.len() - 1);
+        assert!(lam.len() >= n - 1);
         let mut lam0: F = 0.0.into();
         for i in 0..n - 1 {
             self.lb[i] =
@@ -63,8 +69,43 @@ impl<F: Float> LineDP<F> {
                 lam0.min(lam[i])
             };
         }
-        x[n - 1] =
-            self.clip::<Forward, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0);
+        let s = self.clip::<Forward, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0);
+        self.startx = Some(s);
+        s
+    }
+
+    pub fn segments(&self) -> Vec<(Range<usize>, F)> {
+        if let Some(mut x) = self.startx {
+            let mut i = 0;
+            let mut segs = Vec::new();
+            for j in (0..self.lb.len()).rev() {
+                if x > self.ub[j] {
+                    segs.push((i..j, x));
+                    x = self.ub[j];
+                    i = j;
+                } else if x < self.lb[j] {
+                    segs.push((i..j, x));
+                    x = self.lb[j];
+                    i = j;
+                }
+            }
+            segs.push((i..self.lb.len() + 1, x));
+            segs
+        } else {
+            panic!("call LineDP::<_>::dp_optimize(...) first!");
+        }
+    }
+
+    /// Store optimal solution in x
+    pub fn solve<L, M>(&mut self, x: &mut [F], y: &[F], lam: &L, mu: &M)
+    where
+        L: graphidx::weights::Weighted<F>,
+        M: graphidx::weights::Weighted<F> + std::fmt::Debug,
+    {
+        let n = y.len();
+        assert!(n == x.len());
+
+        x[n - 1] = self.dp_optimize(y, lam, mu);
         for i in (0..n - 1).rev() {
             x[i] = x[i + 1].clip(self.lb[i], self.ub[i]);
         }
