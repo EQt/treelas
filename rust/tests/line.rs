@@ -1,7 +1,7 @@
 use treelars::graphidx::lina::l1_diff;
-use treelars::instance::{Instance, data_dir};
-use treelars::instance::Weights as i;
 use treelars::graphidx::weights as w;
+use treelars::instance::Weights as i;
+use treelars::instance::{data_dir, Instance};
 
 #[test]
 fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
@@ -52,34 +52,34 @@ fn lines_toml_32() -> Result<(), Box<dyn std::error::Error>> {
         match (inst.lam, inst.mu) {
             (i::Const(lam), Some(i::Const(mu))) => {
                 let lam = w::Const::new(lam as f32);
-                let mu =  w::Const::new(mu as f32);
+                let mu = w::Const::new(mu as f32);
                 solver.solve(&mut x, &y, &lam, &mu);
-            },
+            }
             (i::Array(lam), Some(i::Const(mu))) => {
                 let lam = w::Array::new(lam.iter().map(|&yi| yi as f32).collect());
-                let mu =  w::Const::new(mu as f32);
+                let mu = w::Const::new(mu as f32);
                 solver.solve(&mut x, &y, &lam, &mu);
-            },
+            }
             (i::Const(lam), Some(i::Array(mu))) => {
                 let lam = w::Const::new(lam as f32);
-                let mu =  w::Array::new(mu.iter().map(|&yi| yi as f32).collect());
+                let mu = w::Array::new(mu.iter().map(|&yi| yi as f32).collect());
                 solver.solve(&mut x, &y, &lam, &mu);
-            },
+            }
             (i::Array(lam), Some(i::Array(mu))) => {
                 let lam = w::Array::new(lam.iter().map(|&yi| yi as f32).collect());
-                let mu =  w::Array::new(mu.iter().map(|&yi| yi as f32).collect());
+                let mu = w::Array::new(mu.iter().map(|&yi| yi as f32).collect());
                 solver.solve(&mut x, &y, &lam, &mu);
-            },
+            }
             (i::Const(lam), None) => {
                 let lam = w::Const::new(lam as f32);
-                let mu =  w::Ones::new();
+                let mu = w::Ones::new();
                 solver.solve(&mut x, &y, &lam, &mu);
-            },
+            }
             (i::Array(lam), None) => {
                 let lam = w::Array::new(lam.iter().map(|&yi| yi as f32).collect());
-                let mu =  w::Ones::new();
+                let mu = w::Ones::new();
                 solver.solve(&mut x, &y, &lam, &mu);
-            },
+            }
         };
         let diff = l1_diff(&x, &x_correct);
         assert!(

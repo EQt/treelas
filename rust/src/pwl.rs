@@ -2,7 +2,7 @@ use crate::float::Float;
 use crate::generics::Bool;
 use std::ops::Range;
 
-const EPS: f32 = 1e-9;
+pub const EPS: f32 = 1e-9;
 
 #[derive(Debug, PartialEq, Default)]
 pub(crate) struct Event<F: Float> {

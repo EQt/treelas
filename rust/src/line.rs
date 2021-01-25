@@ -1,9 +1,8 @@
-use crate::generics::{Bool, False, True};
-use crate::pwl::{clip, Event};
 use crate::float::Float;
+use crate::generics::{Bool, False, True};
+use crate::pwl::{clip, Event, EPS};
 use graphidx::weights::Weighted;
 use std::ops::Range;
-
 
 pub struct LineDP<F: Float> {
     lb: Vec<F>,
@@ -42,8 +41,6 @@ impl<F: Float> LineDP<F> {
         L: graphidx::weights::Weighted<F>,
         M: graphidx::weights::Weighted<F> + std::fmt::Debug,
     {
-        const EPS: f32 = 1e-9;
-
         let n = y.len();
         assert!(n == x.len());
         assert!(
@@ -56,15 +53,18 @@ impl<F: Float> LineDP<F> {
         assert!(lam.len() >= x.len() - 1);
         let mut lam0: F = 0.0.into();
         for i in 0..n - 1 {
-            self.lb[i] = self.clip::<Forward, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-            self.ub[i] = self.clip::<Reverse, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+            self.lb[i] =
+                self.clip::<Forward, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
+            self.ub[i] =
+                self.clip::<Reverse, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
             lam0 = if M::is_const() || mu[i] > EPS.into() {
                 lam[i]
             } else {
                 lam0.min(lam[i])
             };
         }
-        x[n - 1] = self.clip::<Forward, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0);
+        x[n - 1] =
+            self.clip::<Forward, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0);
         for i in (0..n - 1).rev() {
             x[i] = x[i + 1].clip(self.lb[i], self.ub[i]);
         }
@@ -89,6 +89,27 @@ mod tests {
         assert!(
             diff <= 2e-7,
             "diff = {:e}, x = {:?}, lb = {:?}, ub = {:?}",
+            diff,
+            x,
+            solver.lb,
+            solver.ub
+        );
+    }
+
+    #[test]
+    fn test_line_3_f64() {
+        let y = vec![1., 2., 1.];
+        let lam = graphidx::weights::Const::new(0.1);
+        let mu = graphidx::weights::Const::new(1.0);
+        let mut solver = LineDP::new(y.len());
+        let mut x: Vec<f64> = Vec::with_capacity(y.len());
+        x.resize(y.len(), std::f64::NAN);
+        solver.solve(&mut x, &y, &lam, &mu);
+        assert!(graphidx::lina::l1_diff(&x, &[0.0, 0.0, 1.0]) > 1.0);
+        let diff: f64 = graphidx::lina::l1_diff(&x, &[1.1, 1.8, 1.1]);
+        assert!(
+            diff <= 1e-8,
+            "diff = {}, x = {:?}, lb = {:?}, ub = {:?}",
             diff,
             x,
             solver.lb,
