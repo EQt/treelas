@@ -1,6 +1,6 @@
 use crate::generics::{Bool, False, True};
 use crate::instance::{Instance, Weights};
-use crate::pwl::{clip, Event, EPS};
+use crate::pwl::{clip, Event};
 use graphidx::weights::Weighted;
 use std::ops::Range;
 
@@ -15,7 +15,7 @@ fn clamp(mut x: f64, min: f64, max: f64) -> f64 {
 pub struct LineDP {
     lb: Vec<f64>,
     ub: Vec<f64>,
-    event: Vec<Event>,
+    event: Vec<Event<f64>>,
     pq: Range<usize>,
 }
 
@@ -23,6 +23,8 @@ type Forward = True;
 type Reverse = False;
 
 impl LineDP {
+    const EPS: f64 = 1e-9;
+
     pub fn new(n: usize) -> Self {
         let mut event = Vec::with_capacity(2 * n);
         let mut lb = Vec::with_capacity(n - 1);
@@ -36,11 +38,11 @@ impl LineDP {
         Self { lb, ub, event, pq }
     }
 
-    fn clip<F: Bool, W: Weighted<f64>>(&mut self, slope: f64, offset: f64) -> f64 {
+    fn clip<D: Bool, W: Weighted<f64>>(&mut self, slope: f64, offset: f64) -> f64 {
         if W::is_const() {
-            clip::<F, False>(&mut self.event, &mut self.pq, slope, offset)
+            clip::<f64, D, False>(&mut self.event, &mut self.pq, slope, offset)
         } else {
-            clip::<F, True>(&mut self.event, &mut self.pq, slope, offset)
+            clip::<f64, D, True>(&mut self.event, &mut self.pq, slope, offset)
         }
     }
 
@@ -63,7 +65,7 @@ impl LineDP {
         for i in 0..n - 1 {
             self.lb[i] = self.clip::<Forward, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
             self.ub[i] = self.clip::<Reverse, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
-            lam0 = if M::is_const() || mu[i] > EPS {
+            lam0 = if M::is_const() || mu[i] > Self::EPS {
                 lam[i]
             } else {
                 lam0.min(lam[i])

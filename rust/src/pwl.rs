@@ -1,43 +1,31 @@
+use crate::float::Float;
 use crate::generics::Bool;
 use std::ops::Range;
 
-pub(crate) const EPS: f64 = 1e-9;
-
-const DEBUG: bool = false;
+const EPS: f32 = 1e-9;
 
 #[derive(Debug, PartialEq, Default)]
-pub(crate) struct Event {
-    pub(crate) x: f64,
-    pub(crate) slope: f64,
+pub(crate) struct Event<F: Float> {
+    pub(crate) x: F,
+    pub(crate) slope: F,
 }
 
-impl Event {
-    fn offset(&self) -> f64 {
-        -self.x * self.slope
+impl<F: Float> Event<F> {
+    fn offset(&self) -> F {
+        -self.x * self.slope.clone()
     }
 }
 
-pub(crate) fn clip<Forward: Bool, Check: Bool>(
-    elements: &mut [Event],
+pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
+    elements: &mut [Event<F>],
     pq: &mut Range<usize>,
-    mut slope: f64,
-    mut offset: f64,
-) -> f64 {
-    let dir = || if Forward::is_true() { "f" } else { "b" }; // for debugging
+    mut slope: F,
+    mut offset: F,
+) -> F {
     let mut start: usize = pq.start;
     let mut stop: usize = pq.end - 1;
     let mut e = &elements[if Forward::is_true() { start } else { stop }];
-    if DEBUG {
-        println!(
-            "clip_{}: ({:+}, {:+.3}): {:.3?}\n\t {:.3?}",
-            dir(),
-            slope,
-            offset,
-            e,
-            &elements[start..stop + 1],
-        );
-    }
-    while start <= stop && slope * e.x + offset < 0.0 {
+    while start <= stop && slope * e.x + offset < 0.into() {
         offset += e.offset();
         slope += e.slope;
         let next = if Forward::is_true() {
@@ -48,23 +36,12 @@ pub(crate) fn clip<Forward: Bool, Check: Bool>(
             stop
         };
         e = &elements[next];
-        if DEBUG {
-            println!(
-                " lip_{}: ({:+}, {:+.3}): {:.3?} offset: {:.3}\n\t {:.3?}",
-                dir(),
-                slope,
-                offset,
-                e,
-                e.offset(),
-                &elements[start..stop + 1],
-            );
-        }
     }
-    let x = if Check::is_true() && slope.abs() <= EPS {
+    let x = if Check::is_true() && slope.abs() <= EPS.into() {
         if Forward::is_true() {
-            f64::NEG_INFINITY
+            -F::infinity()
         } else {
-            f64::INFINITY
+            F::infinity()
         }
     } else {
         let x = -offset / slope;
@@ -78,15 +55,6 @@ pub(crate) fn clip<Forward: Bool, Check: Bool>(
         elements[prev] = Event { x, slope };
         x
     };
-    if DEBUG {
-        println!(
-            "  ip_{}: ({:+}, {:+.3}):\n\t {:.3?}",
-            dir(),
-            slope,
-            offset,
-            &elements[start..stop + 1],
-        );
-    }
     *pq = start..(stop + 1);
     x
 }
@@ -97,7 +65,7 @@ mod tests {
 
     #[test]
     fn test_event_offset() {
-        let e = Event {
+        let e = Event::<f32> {
             x: -0.15,
             slope: 2.0,
         };

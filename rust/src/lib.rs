@@ -4,8 +4,9 @@ mod generics;
 pub mod instance;
 pub mod line;
 pub mod line_32;
-mod pwl;
 mod pwl_32;
+mod pwl;
+mod float;
 pub mod tree;
 
 /// # Safety
