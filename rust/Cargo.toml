@@ -1,6 +1,6 @@
 [package]
 name = "treelars"
-version = "0.14.0"
+version = "0.15.0"
 authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 edition = "2018"
 
