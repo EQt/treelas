@@ -86,3 +86,6 @@ end
     lam = GraphIdx.Const(0.1);
     GapLas.gaplas(y, graph, lam; max_iter=5, verbose=false)
 end
+
+
+end
