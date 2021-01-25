@@ -43,7 +43,7 @@ impl<F: Float> LineDP<F> {
     }
 
     /// Dynamic Programming Forward Pass.
-    pub fn dp_optimize<L, M>(&mut self, y: &[F], lam: &L, mu: &M) -> F
+    pub fn dp_optimize<L, M>(&mut self, y: &[F], lam: &L, mu: &M) -> &mut Self
     where
         L: graphidx::weights::Weighted<F>,
         M: graphidx::weights::Weighted<F> + std::fmt::Debug,
@@ -71,25 +71,26 @@ impl<F: Float> LineDP<F> {
         }
         let s = self.clip::<Forward, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0);
         self.startx = Some(s);
-        s
+        self
     }
 
     pub fn segments(&self) -> Vec<(Range<usize>, F)> {
         if let Some(mut x) = self.startx {
-            let mut i = 0;
+            let mut i = self.lb.len() + 1;
             let mut segs = Vec::new();
             for j in (0..self.lb.len()).rev() {
                 if x > self.ub[j] {
-                    segs.push((i..j, x));
+                    segs.push((j+1..i, x));
                     x = self.ub[j];
-                    i = j;
+                    i = j + 1;
                 } else if x < self.lb[j] {
-                    segs.push((i..j, x));
+                    segs.push((j+1..i, x));
                     x = self.lb[j];
-                    i = j;
+                    i = j + 1;
                 }
             }
-            segs.push((i..self.lb.len() + 1, x));
+            segs.push((0..i, x));
+            segs.reverse();
             segs
         } else {
             panic!("call LineDP::<_>::dp_optimize(...) first!");
@@ -104,8 +105,9 @@ impl<F: Float> LineDP<F> {
     {
         let n = y.len();
         assert!(n == x.len());
+        self.dp_optimize(y, lam, mu);
 
-        x[n - 1] = self.dp_optimize(y, lam, mu);
+        x[n - 1] = self.startx.unwrap();
         for i in (0..n - 1).rev() {
             x[i] = x[i + 1].clip(self.lb[i], self.ub[i]);
         }
@@ -114,13 +116,14 @@ impl<F: Float> LineDP<F> {
 
 #[cfg(test)]
 mod tests {
+    use graphidx::weights::{Array, Const, Ones};
     use super::*;
 
     #[test]
     fn test_line_3() {
         let y = vec![1., 2., 1.];
-        let lam = graphidx::weights::Const::new(0.1);
-        let mu = graphidx::weights::Const::new(1.0);
+        let lam = Const::new(0.1);
+        let mu = Const::new(1.0);
         let mut solver = LineDP::new(y.len());
         let mut x: Vec<f32> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f32::NAN);
@@ -140,8 +143,8 @@ mod tests {
     #[test]
     fn test_line_3_f64() {
         let y = vec![1., 2., 1.];
-        let lam = graphidx::weights::Const::new(0.1);
-        let mu = graphidx::weights::Const::new(1.0);
+        let lam = Const::new(0.1);
+        let mu = Const::new(1.0);
         let mut solver = LineDP::new(y.len());
         let mut x: Vec<f64> = Vec::with_capacity(y.len());
         x.resize(y.len(), std::f64::NAN);
@@ -156,5 +159,39 @@ mod tests {
             solver.lb,
             solver.ub
         );
+    }
+
+    fn round12(x: f64) -> f64 {
+        let b = 1e12;
+        (x * b).round() / b
+    }
+
+    #[test]
+    fn test_segments_1() {
+        let y = [1.0, 2.0, 1.0];
+        let lam = Const::new(0.1);
+        let mu = Ones::new();
+        let mut segs = LineDP::new(y.len()).dp_optimize(&y, &lam, &mu).segments();
+        segs.iter_mut().for_each(|(_, x)| *x = round12(*x));
+        assert_eq!(segs, [(0..1, 1.1), (1..2, 1.8), (2..3, 1.1)]);
+    }
+
+    #[test]
+    fn test_segments_2() {
+        let y = [0.0, 3.0, 0.0];
+        let lam = Const::new(1.0);
+        let mu = Ones::new();
+        let segs = LineDP::new(y.len()).dp_optimize(&y, &lam, &mu).segments();
+        assert_eq!(segs, [(0..3, 1.0)]);
+    }
+
+    #[test]
+    fn test_segments_3() {
+        let y = [0.0, 0.0, 0.0, 2.0];
+        let mu = Array::new(vec![1.0, 0.0, 0.0, 1.0]);
+        let lam = Array::new(vec![1.0, 0.3, 1.0]);
+        let mut segs = LineDP::new(y.len()).dp_optimize(&y, &lam, &mu).segments();
+        segs.iter_mut().for_each(|(_, x)| *x = round12(*x));
+        assert_eq!(segs, [(0..2, 0.3), (2..4, 1.7)]);
     }
 }
