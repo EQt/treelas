@@ -74,7 +74,7 @@ impl Instance {
 
 /// Directory of the test data.
 pub fn data_dir() -> std::io::Result<PathBuf> {
-    Ok(std::env::current_dir()?.join("..").join("data"))
+    Ok(std::env::current_dir()?.join("data"))
 }
 
 #[cfg(test)]
@@ -156,14 +156,14 @@ mod tests {
 
     #[test]
     fn test_data_test_dir() {
-        let ddir = data_dir().unwrap().join("test");
+        let ddir = data_dir().unwrap();
         assert!(ddir.exists(), "ddir = {:?}", ddir);
         assert!(ddir.is_dir());
     }
 
     #[test]
     fn parse_tree0() -> Result<(), Box<dyn std::error::Error>> {
-        let fname = data_dir()?.join("test").join("tree0.toml");
+        let fname = data_dir()?.join("tree0.toml");
         assert!(fname.exists(), "fname = {:?}", fname);
         let tests: Vec<Instance> = Instance::from_path(fname, "tree")?;
         assert!(tests.len() >= 1, "len = {len}", len = tests.len());
@@ -172,7 +172,7 @@ mod tests {
 
     #[test]
     fn parse_lines() -> Result<(), Box<dyn std::error::Error>> {
-        let fname = data_dir()?.join("test").join("lines.toml");
+        let fname = data_dir()?.join("lines.toml");
         assert!(fname.exists(), "fname = {:?}", fname);
         let tests: Vec<Instance> = Instance::from_path(fname, "test")?;
         assert!(tests.len() >= 5, "len = {len}", len = tests.len());

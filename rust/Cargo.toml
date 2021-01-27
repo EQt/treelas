@@ -3,6 +3,7 @@ name = "treelars"
 version = "0.15.0"
 authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 edition = "2018"
+exclude = ["data/*.h5", "data/*.dimacs"]
 
 [dependencies]
 graphidx = { git = "https://github.com/EQt/graphidx.git", branch = "develop" }

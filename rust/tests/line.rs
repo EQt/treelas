@@ -7,7 +7,7 @@ use treelars::instance::{data_dir, Instance};
 fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
     use treelars::line_64::LineDP;
 
-    let fname = data_dir()?.join("test").join("lines.toml");
+    let fname = data_dir()?.join("lines.toml");
     let instances = Instance::from_path(fname, "test")?;
     assert!(instances.len() >= 5);
     for inst in instances {
@@ -34,7 +34,7 @@ fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
 fn lines_toml_32() -> Result<(), Box<dyn std::error::Error>> {
     use treelars::line_32::LineDP;
 
-    let fname = data_dir()?.join("test").join("lines.toml");
+    let fname = data_dir()?.join("lines.toml");
     let instances = Instance::from_path(fname.clone(), "test")?;
     assert!(instances.len() >= 5);
     for inst in instances {
