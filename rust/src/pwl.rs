@@ -2,8 +2,6 @@ use crate::float::Float;
 use crate::generics::Bool;
 use std::ops::Range;
 
-pub const EPS: f32 = 1e-9;
-
 #[derive(Debug, PartialEq, Default)]
 pub(crate) struct Event<F: Float> {
     pub(crate) x: F,
@@ -37,7 +35,7 @@ pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
         };
         e = &elements[next];
     }
-    let x = if Check::is_true() && slope.abs() <= EPS.into() {
+    let x = if Check::is_true() && slope.abs() <= F::eps() {
         if Forward::is_true() {
             -F::infinity()
         } else {

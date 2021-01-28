@@ -6,12 +6,12 @@ pub trait Float:
     + std::ops::Sub<Output = Self>
     + std::ops::Neg<Output = Self>
     + std::cmp::PartialOrd
-    + From<i8>
-    + From<f32>
     + std::ops::AddAssign
-    + Sized
+    + From<i16>
     + Copy
 {
+    fn eps() -> Self;
+
     #[inline]
     fn infinity() -> Self {
         Self::from(1) / Self::from(0)
@@ -44,6 +44,16 @@ pub trait Float:
     }
 }
 
-impl Float for f32 {}
+impl Float for f32 {
+    #[inline]
+    fn eps() -> Self {
+        1e-9
+    }
+}
 
-impl Float for f64 {}
+impl Float for f64 {
+    #[inline]
+    fn eps() -> Self {
+        1e-9
+    }
+}

@@ -1,6 +1,6 @@
 use crate::float::Float;
 use crate::generics::{Bool, False, True};
-use crate::pwl::{clip, Event, EPS};
+use crate::pwl::{clip, Event};
 use graphidx::weights::Weighted;
 use std::ops::Range;
 
@@ -57,13 +57,13 @@ impl<F: Float> LineDP<F> {
             mu
         );
         assert!(lam.len() >= n - 1);
-        let mut lam0: F = 0.0.into();
+        let mut lam0: F = 0.into();
         for i in 0..n - 1 {
             self.lb[i] =
                 self.clip::<Forward, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
             self.ub[i] =
                 self.clip::<Reverse, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
-            lam0 = if M::is_const() || mu[i] > EPS.into() {
+            lam0 = if M::is_const() || mu[i] > F::eps() {
                 lam[i]
             } else {
                 lam0.min(lam[i])
