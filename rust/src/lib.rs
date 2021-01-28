@@ -7,10 +7,11 @@ pub mod line;
 pub mod line_32;
 pub mod line_64;
 mod pwl;
+pub mod stats;
 pub mod tree;
+
 #[cfg(feature = "mpfr")]
 pub mod mpfr;
-
 
 /// # Safety
 /// Will crash if `x` or `y` do not point to an array of at least `n` times `f64`
