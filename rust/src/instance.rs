@@ -45,10 +45,7 @@ impl Instance {
         Ok(Self::from_map(instances, kind))
     }
 
-    pub fn from_map(
-        mut instances: Map<String, Vec<Self>>,
-        kind: &str,
-    ) -> Vec<Self> {
+    pub fn from_map(mut instances: Map<String, Vec<Self>>, kind: &str) -> Vec<Self> {
         if let Some(mut trees) = instances.remove(kind) {
             for (i, mut t) in trees.iter_mut().enumerate() {
                 t.nr = Some((i + 1) as u32);
@@ -59,10 +56,7 @@ impl Instance {
         }
     }
 
-    pub fn from_str(
-        toml: &str,
-        kind: &str,
-    ) -> Result<Vec<Self>, toml::de::Error> {
+    pub fn from_str(toml: &str, kind: &str) -> Result<Vec<Self>, toml::de::Error> {
         let inst: Map<String, Vec<Self>> = toml::from_str(toml)?;
         Ok(Self::from_map(inst, kind))
     }

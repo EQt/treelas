@@ -27,7 +27,13 @@ impl<F: Float> LineDP<F> {
             ub.set_len(n - 1);
         }
         let startx = None;
-        Self { lb, ub, event, pq, startx}
+        Self {
+            lb,
+            ub,
+            event,
+            pq,
+            startx,
+        }
     }
 
     pub fn get_bounds(&self) -> (&[F], &[F]) {
@@ -59,33 +65,40 @@ impl<F: Float> LineDP<F> {
         assert!(lam.len() >= n - 1);
         let mut lam0: F = 0.into();
         for i in 0..n - 1 {
-            self.lb[i] =
-                self.clip::<Forward, M>(mu[i], -mu[i] * y[i] - lam0 + lam[i]);
-            self.ub[i] =
-                self.clip::<Reverse, M>(-mu[i], mu[i] * y[i] - lam0 + lam[i]);
+            self.lb[i] = self.clip::<Forward, M>(
+                mu[i].clone(),
+                -mu[i].clone() * y[i].clone() - lam0.clone() + lam[i].clone(),
+            );
+            self.ub[i] = self.clip::<Reverse, M>(
+                -mu[i].clone(),
+                mu[i].clone() * y[i].clone() - lam0.clone() + lam[i].clone(),
+            );
             lam0 = if M::is_const() || mu[i] > F::eps() {
-                lam[i]
+                lam[i].clone()
             } else {
-                lam0.min(lam[i])
+                lam0.min(lam[i].clone())
             };
         }
-        let s = self.clip::<Forward, M>(mu[n - 1], -mu[n - 1] * y[n - 1] - lam0);
+        let s = self.clip::<Forward, M>(
+            mu[n - 1].clone(),
+            -mu[n - 1].clone() * y[n - 1].clone() - lam0,
+        );
         self.startx = Some(s);
         self
     }
 
     pub fn segments(&self) -> Vec<(Range<usize>, F)> {
-        if let Some(mut x) = self.startx {
+        if let Some(mut x) = self.startx.clone() {
             let mut i = self.lb.len() + 1;
             let mut segs = Vec::new();
             for j in (0..self.lb.len()).rev() {
                 if x > self.ub[j] {
-                    segs.push((j+1..i, x));
-                    x = self.ub[j];
+                    segs.push((j + 1..i, x));
+                    x = self.ub[j].clone();
                     i = j + 1;
                 } else if x < self.lb[j] {
-                    segs.push((j+1..i, x));
-                    x = self.lb[j];
+                    segs.push((j + 1..i, x));
+                    x = self.lb[j].clone();
                     i = j + 1;
                 }
             }
@@ -107,17 +120,19 @@ impl<F: Float> LineDP<F> {
         assert!(n == x.len());
         self.dp_optimize(y, lam, mu);
 
-        x[n - 1] = self.startx.unwrap();
+        x[n - 1] = self.startx.as_ref().unwrap().clone();
         for i in (0..n - 1).rev() {
-            x[i] = x[i + 1].clip(self.lb[i], self.ub[i]);
+            x[i] = x[i + 1]
+                .clone()
+                .clip(self.lb[i].clone(), self.ub[i].clone());
         }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use graphidx::weights::{Array, Const, Ones};
     use super::*;
+    use graphidx::weights::{Array, Const, Ones};
 
     #[test]
     fn test_line_3() {

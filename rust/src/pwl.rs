@@ -10,7 +10,7 @@ pub(crate) struct Event<F: Float> {
 
 impl<F: Float> Event<F> {
     fn offset(&self) -> F {
-        -self.x * self.slope.clone()
+        -self.x.clone() * self.slope.clone()
     }
 }
 
@@ -23,9 +23,9 @@ pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
     let mut start: usize = pq.start;
     let mut stop: usize = pq.end - 1;
     let mut e = &elements[if Forward::is_true() { start } else { stop }];
-    while start <= stop && slope * e.x + offset < 0.into() {
+    while start <= stop && slope.clone() * e.x.clone() + offset.clone() < 0.into() {
         offset += e.offset();
-        slope += e.slope;
+        slope += e.slope.clone();
         let next = if Forward::is_true() {
             start += 1;
             start
@@ -35,14 +35,14 @@ pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
         };
         e = &elements[next];
     }
-    let x = if Check::is_true() && slope.abs() <= F::eps() {
+    let x = if Check::is_true() && slope.clone().abs() <= F::eps() {
         if Forward::is_true() {
             -F::infinity()
         } else {
             F::infinity()
         }
     } else {
-        let x = -offset / slope;
+        let x = -offset / slope.clone();
         let prev = if Forward::is_true() {
             start -= 1;
             start
@@ -50,7 +50,10 @@ pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
             stop += 1;
             stop
         };
-        elements[prev] = Event { x, slope };
+        elements[prev] = Event {
+            x: x.clone(),
+            slope,
+        };
         x
     };
     *pq = start..(stop + 1);

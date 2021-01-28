@@ -8,7 +8,7 @@ pub trait Float:
     + std::cmp::PartialOrd
     + std::ops::AddAssign
     + From<i16>
-    + Copy
+    + Clone
 {
     fn eps() -> Self;
 
