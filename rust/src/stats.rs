@@ -33,6 +33,26 @@ where
         .unwrap()
 }
 
+pub fn lambda_max_factor<I, J>(y: I, lam: J) -> I::Item
+where
+    I: IntoIterator + Clone,
+    J: IntoIterator<Item = I::Item>,
+    I::Item: Float,
+{
+    let y_mean = welford_mean(y.clone());
+    let zero: I::Item = 0.into();
+    y.into_iter()
+        .map(|yi| (yi.clone() - y_mean.clone()))
+        .scan(zero, |acc, x| {
+            *acc += x;
+            Some(acc.clone())
+        })
+        .zip(lam.into_iter())
+        .map(|(x, l)| x.abs() / l)
+        .max_by(|a, b| a.partial_cmp(b).unwrap())
+        .unwrap()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -71,4 +91,24 @@ mod tests {
         assert_relative_eq!(lambda_max([0.15, 0.15, 0.7, 1.0].iter().cloned()), 0.7);
     }
 
+    #[test]
+    fn test_lam_max_factor_1() {
+        use crate::graphidx::weights::{Array, Ones};
+        use crate::line::LineDP;
+
+        let y = [0.15, 0.15, 0.7, 1.0];
+        let lam = [1.0, 0.3, 1.0];
+        let lam0 = 7.0 / 3.0;
+        assert_relative_eq!(
+            lambda_max_factor(y.iter().cloned(), lam.iter().cloned()),
+            lam0
+        );
+        let mu = Ones::new();
+        let lama = Array::new(lam.iter().map(|&l| l * lam0).collect());
+        let segs = LineDP::new(y.len()).dp_optimize(&y, &lama, &mu).segments();
+        assert_eq!(segs.len(), 1);
+        let lama = Array::new(lam.iter().map(|&l| l * (lam0 - 1e-9)).collect());
+        let segs = LineDP::new(y.len()).dp_optimize(&y, &lama, &mu).segments();
+        assert_eq!(segs.len(), 2);
+    }
 }
