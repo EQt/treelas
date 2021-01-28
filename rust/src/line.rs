@@ -127,6 +127,13 @@ impl<F: Float> LineDP<F> {
                 .clip(self.lb[i].clone(), self.ub[i].clone());
         }
     }
+
+    /// Compute the degrees of freedom of the current solution.
+    /// [LineDP::dp_optimize] must be executed before.
+    /// If not executed before, return `0usize`.
+    pub fn dof(&self) -> usize {
+        self.segments().len()
+    }
 }
 
 #[cfg(test)]
