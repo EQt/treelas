@@ -87,6 +87,32 @@ impl<F: Float> LineDP<F> {
         self
     }
 
+    pub fn segment_iter(&self) -> impl Iterator<Item=(Range<usize>, F)> + '_ {
+        if let Some(mut x) = self.startx.clone() {
+            let n = self.lb.len() + 1;
+            let mut i = n;
+            (0..n).rev().filter_map(move |j| {
+                if j == 0 {
+                    Some((0..i, x.clone()))
+                } else if x > self.ub[j-1] {
+                    let n = (j..i, x.clone());
+                    x = self.ub[j-1].clone();
+                    i = j;
+                    Some(n)
+                } else if x < self.lb[j-1] {
+                    let n = (j..i, x.clone());
+                    x = self.lb[j-1].clone();
+                    i = j;
+                    Some(n)
+                } else {
+                    None
+                }
+            })
+        } else {
+            panic!("call LineDP::<_>::dp_optimize(...) first!");
+        }
+    }
+
     pub fn segments(&self) -> Vec<(Range<usize>, F)> {
         if let Some(mut x) = self.startx.clone() {
             let mut i = self.lb.len() + 1;
@@ -216,4 +242,16 @@ mod tests {
         segs.iter_mut().for_each(|(_, x)| *x = round12(*x));
         assert_eq!(segs, [(0..2, 0.3), (2..4, 1.7)]);
     }
+    #[test]
+    fn test_segments_iter() {
+        let y = [0.0, 0.0, 0.0, 2.0];
+        let mu = Array::new(vec![1.0, 0.0, 0.0, 1.0]);
+        let lam = Array::new(vec![1.0, 0.3, 1.0]);
+        let mut solver = LineDP::new(y.len());
+        solver.dp_optimize(&y, &lam, &mu);
+        let mut segs = solver.segments();
+        segs.reverse();
+        assert_eq!(solver.segment_iter().collect::<Vec<_>>(), segs);
+    }
+
 }
