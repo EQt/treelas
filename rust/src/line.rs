@@ -114,6 +114,12 @@ impl<F: Float> LineDP<F> {
     }
 
     pub fn segments(&self) -> Vec<(Range<usize>, F)> {
+        let mut v: Vec<_> = self.segment_iter().collect();
+        v.reverse();
+        v
+    }
+
+    fn _segments_test(&self) -> Vec<(Range<usize>, F)> {
         if let Some(mut x) = self.startx.clone() {
             let mut i = self.lb.len() + 1;
             let mut segs = Vec::new();
@@ -249,7 +255,7 @@ mod tests {
         let lam = Array::new(vec![1.0, 0.3, 1.0]);
         let mut solver = LineDP::new(y.len());
         solver.dp_optimize(&y, &lam, &mu);
-        let mut segs = solver.segments();
+        let mut segs = solver._segments_test();
         segs.reverse();
         assert_eq!(solver.segment_iter().collect::<Vec<_>>(), segs);
     }
