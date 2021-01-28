@@ -158,7 +158,7 @@ impl<F: Float> LineDP<F> {
     /// [LineDP::dp_optimize] must be executed before.
     /// If not executed before, return `0usize`.
     pub fn dof(&self) -> usize {
-        self.segments().len()
+        self.segment_iter().count()
     }
 }
 
