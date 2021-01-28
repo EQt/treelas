@@ -9,8 +9,12 @@ exclude = ["data/*.h5", "data/*.dimacs"]
 graphidx = { git = "https://github.com/EQt/graphidx.git", branch = "develop" }
 toml = "0.5"
 serde = { version = "1.0", features = ["derive"] }
+rug = { version = "1.11.0", optional = true }
 
 [lib]
 crate-type = [
   "cdylib", "rlib", "staticlib"
 ]
+
+[features]
+mpfr = ["rug"]
