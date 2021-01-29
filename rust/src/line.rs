@@ -12,6 +12,8 @@ pub struct LineDP<F: Float> {
     startx: Option<F>,
 }
 
+pub type Segment<F> = (Range<usize>, F);
+
 type Forward = True;
 type Reverse = False;
 
@@ -87,7 +89,7 @@ impl<F: Float> LineDP<F> {
         self
     }
 
-    pub fn segment_iter(&self) -> impl Iterator<Item = (Range<usize>, F)> + '_ {
+    pub fn segment_iter(&self) -> impl Iterator<Item = Segment<F>> + '_ {
         if let Some(mut x) = self.startx.clone() {
             let n = self.lb.len() + 1;
             let mut i = n;
@@ -113,13 +115,13 @@ impl<F: Float> LineDP<F> {
         }
     }
 
-    pub fn segments(&self) -> Vec<(Range<usize>, F)> {
+    pub fn segments(&self) -> Vec<Segment<F>> {
         let mut v: Vec<_> = self.segment_iter().collect();
         v.reverse();
         v
     }
 
-    fn _segments_test(&self) -> Vec<(Range<usize>, F)> {
+    fn _segments_test(&self) -> Vec<Segment<F>> {
         if let Some(mut x) = self.startx.clone() {
             let mut i = self.lb.len() + 1;
             let mut segs = Vec::new();
