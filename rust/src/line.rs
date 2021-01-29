@@ -87,21 +87,21 @@ impl<F: Float> LineDP<F> {
         self
     }
 
-    pub fn segment_iter(&self) -> impl Iterator<Item=(Range<usize>, F)> + '_ {
+    pub fn segment_iter(&self) -> impl Iterator<Item = (Range<usize>, F)> + '_ {
         if let Some(mut x) = self.startx.clone() {
             let n = self.lb.len() + 1;
             let mut i = n;
             (0..n).rev().filter_map(move |j| {
                 if j == 0 {
                     Some((0..i, x.clone()))
-                } else if x > self.ub[j-1] {
+                } else if x > self.ub[j - 1] {
                     let n = (j..i, x.clone());
-                    x = self.ub[j-1].clone();
+                    x = self.ub[j - 1].clone();
                     i = j;
                     Some(n)
-                } else if x < self.lb[j-1] {
+                } else if x < self.lb[j - 1] {
                     let n = (j..i, x.clone());
-                    x = self.lb[j-1].clone();
+                    x = self.lb[j - 1].clone();
                     i = j;
                     Some(n)
                 } else {
@@ -259,5 +259,4 @@ mod tests {
         segs.reverse();
         assert_eq!(solver.segment_iter().collect::<Vec<_>>(), segs);
     }
-
 }
