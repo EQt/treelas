@@ -1,9 +1,11 @@
 [package]
 name = "treelars"
-version = "0.15.0"
+version = "0.15.1"
 authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 edition = "2018"
 exclude = ["data/*.h5", "data/*.dimacs"]
+licence = "MIT"
+keywords = ["fused-lasso", "total-variation", "algorithm"]
 
 [dependencies]
 graphidx = { git = "https://github.com/EQt/graphidx.git", branch = "develop" }
