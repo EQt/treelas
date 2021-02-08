@@ -67,11 +67,11 @@ impl<F: Float> LineDP<F> {
         assert!(lam.len() >= n - 1);
         let mut lam0: F = 0.into();
         for i in 0..n - 1 {
-            self.lb[i] = self.clip::<Forward, M>(
+            *unsafe { self.lb.get_unchecked_mut(i) } = self.clip::<Forward, M>(
                 mu[i].clone(),
                 -mu[i].clone() * y[i].clone() - lam0.clone() + lam[i].clone(),
             );
-            self.ub[i] = self.clip::<Reverse, M>(
+            *unsafe { self.ub.get_unchecked_mut(i) } = self.clip::<Reverse, M>(
                 -mu[i].clone(),
                 mu[i].clone() * y[i].clone() - lam0.clone() + lam[i].clone(),
             );
