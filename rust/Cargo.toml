@@ -4,7 +4,7 @@ version = "0.15.1"
 authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
 edition = "2018"
 exclude = ["data/*.h5", "data/*.dimacs"]
-licence = "MIT"
+license = "MIT"
 keywords = ["fused-lasso", "total-variation", "algorithm"]
 
 [dependencies]
