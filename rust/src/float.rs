@@ -44,16 +44,19 @@ pub trait Float:
     }
 }
 
-impl Float for f32 {
-    #[inline]
+impl<T> Float for T where
+    T: std::ops::Mul<Output = Self>
+    + std::ops::Div<Output = Self>
+    + std::ops::Add<Output = Self>
+    + std::ops::Sub<Output = Self>
+    + std::ops::Neg<Output = Self>
+    + std::cmp::PartialOrd
+    + std::ops::AddAssign
+    + From<i16>
+    + Clone
+{
     fn eps() -> Self {
-        1e-9
-    }
-}
-
-impl Float for f64 {
-    #[inline]
-    fn eps() -> Self {
-        1e-9
+        let d = Self::from(10_000);
+        Self::from(1) / (d.clone() * d)
     }
 }
