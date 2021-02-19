@@ -22,7 +22,8 @@ pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
 ) -> F {
     let mut start: usize = pq.start;
     let mut stop: usize = pq.end - 1;
-    let mut e = &elements[if Forward::is_true() { start } else { stop }];
+    let idx = if Forward::is_true() { start } else { stop };
+    let mut e = unsafe { elements.get_unchecked(idx) };
     while start <= stop && slope.clone() * e.x.clone() + offset.clone() < 0.into() {
         offset += e.offset();
         slope += e.slope.clone();
@@ -33,7 +34,7 @@ pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
             stop -= 1;
             stop
         };
-        e = &elements[next];
+        e = unsafe { elements.get_unchecked(next) };
     }
     let x = if Check::is_true() && slope.clone().abs() <= F::eps() {
         if Forward::is_true() {
@@ -50,7 +51,7 @@ pub(crate) fn clip<F: Float, Forward: Bool, Check: Bool>(
             stop += 1;
             stop
         };
-        elements[prev] = Event {
+        *unsafe { elements.get_unchecked_mut(prev) } = Event {
             x: x.clone(),
             slope,
         };
