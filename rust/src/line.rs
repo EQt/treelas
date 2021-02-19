@@ -57,6 +57,9 @@ impl<F: Float> LineDP<F> {
         M: graphidx::weights::Weighted<F> + std::fmt::Debug,
     {
         let n = y.len();
+        assert!(self.lb.len() + 1 >= n);
+        assert!(self.ub.len() + 1 >= n);
+        assert!(self.event.len() >= 2 * n);
         assert!(
             mu.len() >= n,
             "mu.len() = {}, n = {}: {:?}",
