@@ -1,7 +1,5 @@
 #include <R.h>
-#include <R_ext/Print.h>
 #include <Rdefines.h>
-#include <Rmath.h>
 
 #include "util.hpp"
 
