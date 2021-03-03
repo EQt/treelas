@@ -1,10 +1,35 @@
 // This is an implementation of the DpSegPen and DpSegN segmentation algorithms
 // given in the paper.
+#include <limits>
 #include <vector>
+#include <numeric>
+#include <cmath> // sqrt
+#include <cstdio> // debug printf
+#include <cstring>  // memcpy
 #include <error.h>
 
-#include "util.hpp"
 #include "L0Seg.hpp"
+
+#define R_PosInf std::numeric_limits<double>::infinity()
+#define R_NegInf -std::numeric_limits<double>::infinity()
+#define error Rf_error;
+
+void Rf_error(const char *, ...);
+
+namespace Util {
+
+template <class T>
+void
+AllocTwoVec(int dim1, int dim2, std::vector<std::vector<T>> *m)
+{
+    m->clear();
+    m->resize(dim1);
+    for (int i = 0; i < dim1; ++i) {
+        (*m)[i].resize(dim2);
+    }
+}
+
+}
 
 namespace L0Seg {
 
@@ -61,7 +86,7 @@ void
 EfamDebugPrintMsg(L0ExpFamMsgElt *inp_segs, int n_inp_segs)
 {
     for (int j = 0; j < n_inp_segs; ++j, ++inp_segs) {
-        Rprintf(
+        printf(
             "%d) x = %g, const = %g, coef1 = %g, coef2 = %g\n",
             j,
             inp_segs->x,
@@ -287,8 +312,8 @@ L0DualBacktrace(
 {
     GaussL0VitMsgMax(final_msg, final_msg_len, fit + (seq_len - 1), NULL);
 
-    if (!R_FINITE(fit[seq_len - 1])) {
-        Rprintf("last elt invalid\n");
+    if (!std::isfinite(fit[seq_len - 1])) {
+        printf("last elt invalid\n");
         return 0;
     }
 
@@ -332,10 +357,10 @@ class L0ByNSegData
 
     L0ExpFamMsgElt *msg_buf_;
     std::vector<L0ExpFamMsgElt *> msgs1_, msgs2_;
-    Util::IntVec msg1_lens_, msg2_lens_;
+    std::vector<int> msg1_lens_, msg2_lens_;
 
-    Util::RealVec2 bp_max_, bp_segs_;
-    Util::IntVec2 bp_posns_, bp_szs_;
+    std::vector<std::vector<double>> bp_max_, bp_segs_;
+    std::vector<std::vector<int>> bp_posns_, bp_szs_;
 
   public:
     L0ByNSegData() { this->Init(); }
