@@ -1,2 +1,4 @@
 useDynLib(seglas)
 export(L0GaussByNseg)
+export(L0DpGaussByNseg)
+export(L0Gauss)
