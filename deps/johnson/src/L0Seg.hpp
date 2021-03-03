@@ -1,4 +1,7 @@
 #pragma once
+#include <vector>
+
+#include "util.hpp"
 
 namespace L0Seg {
 

@@ -1,8 +1,7 @@
 #include <R.h>
-#include <Rdefines.h>
 
-#include "util.hpp"
 #include "L0Seg.hpp"
+#include "util.hpp"
 
 SEXP
 SaveMsg(L0Seg::L0ExpFamMsgElt *inp_segs, int n_inp_segs)
@@ -176,29 +175,19 @@ EfamL0Vit(
     return R_NilValue;
 }
 
-SEXP
-EfamL0VitByNseg(
-    SEXP coef_sxp,
-    SEXP num_segments_sxp,
-    SEXP retPath,
-    SEXP max_msg_sz_sxp,
-    SEXP avg_num_bpsegs_sxp)
+void
+_EfamL0VitByNseg(
+    const int n_levels,
+    const int avg_num_bpsegs,
+    const int max_segs,
+    const int n_obs,
+    double *x,
+    double *retPath)
 {
-    using namespace L0Seg;
-
-    double *x = REAL(coef_sxp);
-    int n_levels = Util::GetInt(num_segments_sxp, 0, 0);
-
-    int max_segs = Util::GetInt(max_msg_sz_sxp, 0, NULL);
     double param_bd[2] = {R_NegInf, R_PosInf};
-    int n_obs = LENGTH(coef_sxp) / 2;
 
-    L0ByNSegData s;
-    s.Alloc(
-        n_levels,
-        n_obs,
-        Util::GetInt(avg_num_bpsegs_sxp, 0, NULL),
-        Util::GetInt(max_msg_sz_sxp, 0, NULL));
+    L0Seg::L0ByNSegData s;
+    s.Alloc(n_levels, n_obs, avg_num_bpsegs, max_segs);
 
     for (int seg_idx = 0; seg_idx < s.n_levels_; ++seg_idx) {
         InitL0Msg(s.msgs1_[seg_idx], param_bd[0], 0.0, x[0], x[1]);
@@ -260,8 +249,29 @@ EfamL0VitByNseg(
         }
     }
 
-    s.BackTrace(REAL(retPath));
+    s.BackTrace(retPath);
     s.Cleanup();
+}
+
+SEXP
+EfamL0VitByNseg(
+    SEXP coef_sxp,
+    SEXP num_segments_sxp,
+    SEXP retPath_sxp,
+    SEXP max_msg_sz_sxp,
+    SEXP avg_num_bpsegs_sxp)
+{
+    using namespace L0Seg;
+
+    const int n_levels = Util::GetInt(num_segments_sxp, 0, 0);
+    const int avg_num_bpsegs = Util::GetInt(avg_num_bpsegs_sxp, 0, NULL);
+    const int max_segs = Util::GetInt(max_msg_sz_sxp, 0, NULL);
+    const int n_obs = LENGTH(coef_sxp) / 2;
+    double *x = REAL(coef_sxp);
+    double *retPath = REAL(retPath_sxp);
+
+    _EfamL0VitByNseg(n_levels, avg_num_bpsegs, max_segs, n_obs, x, retPath);
+
     return R_NilValue;
 }
 
