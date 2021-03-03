@@ -330,7 +330,7 @@ public:
   int n_levels_, n_obs_, avg_n_bpsegs_, msg_size_;
 
   L0ExpFamMsgElt * msg_buf_;
-  vector<L0ExpFamMsgElt *> msgs1_, msgs2_;
+  std::vector<L0ExpFamMsgElt *> msgs1_, msgs2_;
   IntVec msg1_lens_, msg2_lens_;
 
   RealVec2 bp_max_, bp_segs_;
