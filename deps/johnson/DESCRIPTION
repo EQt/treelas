@@ -1,0 +1,6 @@
+Package: seglas
+Title: L0 Segmentation
+Version: 1.0.0
+Author: Nicolas A. Johnson
+Maintainer: Elias Kuthe <elias.kuthe@tu-dortmund.de>
+License: BSD

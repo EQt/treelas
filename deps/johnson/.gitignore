@@ -1,7 +1,4 @@
-/r
-/c
-/johnson.zip
 /lib/
-/scripts/
-/load.r
-/readme.txt
+/src/*.o
+/src/seglas.*
+seglas_*.tar.gz
