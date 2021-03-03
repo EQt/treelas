@@ -175,84 +175,6 @@ EfamL0Vit(
     return R_NilValue;
 }
 
-void
-_EfamL0VitByNseg(
-    const int n_levels,
-    const int avg_num_bpsegs,
-    const int max_segs,
-    const int n_obs,
-    double *x,
-    double *retPath)
-{
-    double param_bd[2] = {R_NegInf, R_PosInf};
-
-    L0Seg::L0ByNSegData s;
-    s.Alloc(n_levels, n_obs, avg_num_bpsegs, max_segs);
-
-    for (int seg_idx = 0; seg_idx < s.n_levels_; ++seg_idx) {
-        InitL0Msg(s.msgs1_[seg_idx], param_bd[0], 0.0, x[0], x[1]);
-    }
-
-    for (int i = 1; i < n_obs; ++i) {
-        for (int seg_idx = n_levels - 1; seg_idx >= 0; --seg_idx) {
-            double y_str = 0;
-            double water_level = R_NegInf;
-
-            if (seg_idx > 0 && seg_idx <= i) {
-                GaussL0VitMsgMax(
-                    s.msgs1_[seg_idx - 1],
-                    s.msg1_lens_[seg_idx - 1],
-                    &s.bp_max_[seg_idx][i],
-                    &y_str);
-
-                if (y_str == R_NegInf) {
-                    s.Cleanup();
-                    error("Viterbi msg invalid (iter %d)\n", i);
-                }
-                water_level = y_str;
-            }
-
-            s.bp_posns_[seg_idx][i] =
-                s.bp_posns_[seg_idx][i - 1] + 2 * s.bp_szs_[seg_idx][i - 1];
-
-            if (s.bp_posns_[seg_idx][i] < 0)
-                error("xxx");
-
-            int r1 = 1;
-            if (seg_idx == i) {
-                s.InitMsg(seg_idx, water_level, param_bd);
-            } else {
-                r1 = L0FloodSegments(
-                    s.msgs1_[seg_idx],
-                    s.msg1_lens_[seg_idx],
-                    water_level,
-                    param_bd,
-                    s.msgs2_[seg_idx],
-                    &s.msg2_lens_[seg_idx],
-                    s.msg_size_,
-                    &s.bp_segs_[seg_idx][s.bp_posns_[seg_idx][i]],
-                    &s.bp_szs_[seg_idx][i]);
-            }
-
-            if (r1 < 0) {
-                s.Cleanup();
-                if (r1 == -1)
-                    error("Numerical error.  (index %d)\n", i);
-                if (r1 < -1)
-                    error("Allocate more memory. (index %d)\n", i);
-            }
-
-            s.MemoryCheck(seg_idx, i);
-            L0AddTerms(
-                s.msgs2_[seg_idx], s.msg2_lens_[seg_idx], x[2 * i], x[2 * i + 1]);
-            s.SwapMsg(seg_idx);
-        }
-    }
-
-    s.BackTrace(retPath);
-    s.Cleanup();
-}
-
 SEXP
 EfamL0VitByNseg(
     SEXP coef_sxp,
@@ -261,8 +183,6 @@ EfamL0VitByNseg(
     SEXP max_msg_sz_sxp,
     SEXP avg_num_bpsegs_sxp)
 {
-    using namespace L0Seg;
-
     const int n_levels = Util::GetInt(num_segments_sxp, 0, 0);
     const int avg_num_bpsegs = Util::GetInt(avg_num_bpsegs_sxp, 0, NULL);
     const int max_segs = Util::GetInt(max_msg_sz_sxp, 0, NULL);
@@ -270,7 +190,7 @@ EfamL0VitByNseg(
     double *x = REAL(coef_sxp);
     double *retPath = REAL(retPath_sxp);
 
-    _EfamL0VitByNseg(n_levels, avg_num_bpsegs, max_segs, n_obs, x, retPath);
+    L0Seg::EfamL0VitByNseg(n_levels, avg_num_bpsegs, max_segs, n_obs, x, retPath);
 
     return R_NilValue;
 }

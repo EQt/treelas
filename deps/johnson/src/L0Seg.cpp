@@ -314,6 +314,7 @@ L0DualBacktrace(
     return 1;
 }
 
+
 void
 L0VitCleanup(EfamL0CleanupStruct *s)
 {
@@ -322,5 +323,243 @@ L0VitCleanup(EfamL0CleanupStruct *s)
     delete s->int_buf_;
 }
 
+
+
+class L0ByNSegData
+{
+  public:
+    int n_levels_, n_obs_, avg_n_bpsegs_, msg_size_;
+
+    L0ExpFamMsgElt *msg_buf_;
+    std::vector<L0ExpFamMsgElt *> msgs1_, msgs2_;
+    Util::IntVec msg1_lens_, msg2_lens_;
+
+    Util::RealVec2 bp_max_, bp_segs_;
+    Util::IntVec2 bp_posns_, bp_szs_;
+
+  public:
+    L0ByNSegData() { this->Init(); }
+
+    void Cleanup()
+    {
+        delete msg_buf_;
+        msg_buf_ = NULL;
+        this->Init();
+    }
+
+    void Init()
+    {
+        msg_buf_ = NULL;
+        msg1_lens_.clear();
+        msg2_lens_.clear();
+        msgs1_.clear();
+        msgs2_.clear();
+
+        bp_max_.clear();
+        bp_segs_.clear();
+        bp_posns_.clear();
+        bp_szs_.clear();
+
+        n_levels_ = n_obs_ = msg_size_ = avg_n_bpsegs_ = 0;
+    }
+
+    void SwapMsg(int seg_idx)
+    {
+        L0ExpFamMsgElt *tmp_msg = msgs1_[seg_idx];
+        msgs1_[seg_idx] = msgs2_[seg_idx];
+        msgs2_[seg_idx] = tmp_msg;
+
+        if (msg1_lens_[seg_idx] < 0 || msg2_lens_[seg_idx] < 0) {
+            error("invalid message lengths (segment index = %d\n", seg_idx);
+        }
+        int tmp_len = msg1_lens_[seg_idx];
+        msg1_lens_[seg_idx] = msg2_lens_[seg_idx];
+        msg2_lens_[seg_idx] = tmp_len;
+    }
+
+    void Alloc(int n_levels, int n_obs, int avg_n_bpsegs, int msg_size)
+    {
+        int sz2 = msg_size * 2;
+        if (sz2 < msg_size + 20)
+            sz2 = msg_size + 20;
+
+        msg_size_ = msg_size;
+        n_obs_ = n_obs;
+        n_levels_ = n_levels;
+        avg_n_bpsegs_ = avg_n_bpsegs;
+
+        msg_buf_ = NULL;
+
+        int tot_knots = sz2 * 2 * n_levels_;
+        msg_buf_ = new L0ExpFamMsgElt[tot_knots];
+        L0ExpFamMsgElt *msg_buf_cur = msg_buf_;
+
+        msgs1_.clear();
+        msgs2_.clear();
+
+        for (int seg_idx = 0; seg_idx < n_levels_; ++seg_idx) {
+            msgs1_.push_back(msg_buf_cur);
+            msg_buf_cur += sz2;
+            msgs2_.push_back(msg_buf_cur);
+            msg_buf_cur += sz2;
+        }
+
+        Util::AllocTwoVec(n_levels_, n_obs_, &bp_max_);
+        Util::AllocTwoVec(n_levels_, avg_n_bpsegs_ * n_obs_, &bp_segs_);
+        Util::AllocTwoVec(n_levels_, n_obs_, &bp_posns_);
+        Util::AllocTwoVec(n_levels_, n_obs_, &bp_szs_);
+
+        msg1_lens_.clear();
+        msg2_lens_.clear();
+        msg1_lens_.reserve(n_levels_);
+        msg2_lens_.reserve(n_levels_);
+
+        for (int seg_idx = 0; seg_idx < n_levels_; ++seg_idx) {
+            bp_posns_[seg_idx][0] = bp_posns_[seg_idx][0] = 0;
+
+            msg1_lens_.push_back(1);
+            msg2_lens_.push_back(-1);
+        }
+    }
+
+    void InitMsg(int seg_idx, double val, double *param_bd)
+    {
+        InitL0Msg(msgs1_[seg_idx], param_bd[0], val, 0.0, 0.0);
+        InitL0Msg(msgs2_[seg_idx], param_bd[0], val, 0.0, 0.0);
+        msg1_lens_[seg_idx] = msg2_lens_[seg_idx] = 1;
+
+        bp_szs_[seg_idx][seg_idx] = 1;
+        bp_segs_[seg_idx][bp_posns_[seg_idx][seg_idx]] = param_bd[0];
+        bp_segs_[seg_idx][bp_posns_[seg_idx][seg_idx] + 1] = param_bd[1];
+    }
+
+    void MemoryCheck(int seg_idx, int obs_idx)
+    {
+        int next_posn = bp_posns_[seg_idx][obs_idx] + 2 * bp_szs_[seg_idx][obs_idx];
+        int max_posn = avg_n_bpsegs_ * n_obs_;
+
+        if (next_posn >= max_posn || msg2_lens_[seg_idx] >= msg_size_) {
+            this->Cleanup();
+            error("Allocate more memory.\n");
+        }
+    }
+
+    void BackTrace(double *path)
+    {
+        int jump_idx = n_levels_ - 1;
+        GaussL0VitMsgMax(
+            msgs1_[jump_idx], msg1_lens_[jump_idx], path + (n_obs_ - 1), NULL);
+
+        double last_val = path[n_obs_ - 1];
+
+        for (int i = n_obs_ - 2; i >= 0; --i) {
+            double *bp = &bp_segs_[jump_idx][bp_posns_[jump_idx][i + 1]];
+            int n_sg = bp_szs_[jump_idx][i + 1];
+
+            int in_seg = 0;
+            for (int k = 0; k < n_sg; k++) {
+                if (bp[2 * k] > last_val) {
+                    break;
+                } else if (bp[2 * k] <= last_val && bp[2 * k + 1] >= last_val) {
+                    in_seg = 1;
+                    break;
+                }
+            }
+            if (in_seg) {
+                if (jump_idx) {
+                    last_val = path[i] = bp_max_[jump_idx][i + 1];
+                    --jump_idx;
+                } else {
+                    this->Cleanup();
+                    error("invalid jump at index %d\n", i);
+                }
+            } else {
+                last_val = path[i] = path[i + 1];
+            }
+        }
+    }
+
+
+    ~L0ByNSegData() { this->Cleanup(); }
+};
+
+
+void
+EfamL0VitByNseg(
+    const int n_levels,
+    const int avg_num_bpsegs,
+    const int max_segs,
+    const int n_obs,
+    double *x,
+    double *retPath)
+{
+    double param_bd[2] = {R_NegInf, R_PosInf};
+
+    L0Seg::L0ByNSegData s;
+    s.Alloc(n_levels, n_obs, avg_num_bpsegs, max_segs);
+
+    for (int seg_idx = 0; seg_idx < s.n_levels_; ++seg_idx) {
+        InitL0Msg(s.msgs1_[seg_idx], param_bd[0], 0.0, x[0], x[1]);
+    }
+
+    for (int i = 1; i < n_obs; ++i) {
+        for (int seg_idx = n_levels - 1; seg_idx >= 0; --seg_idx) {
+            double y_str = 0;
+            double water_level = R_NegInf;
+
+            if (seg_idx > 0 && seg_idx <= i) {
+                GaussL0VitMsgMax(
+                    s.msgs1_[seg_idx - 1],
+                    s.msg1_lens_[seg_idx - 1],
+                    &s.bp_max_[seg_idx][i],
+                    &y_str);
+
+                if (y_str == R_NegInf) {
+                    s.Cleanup();
+                    error("Viterbi msg invalid (iter %d)\n", i);
+                }
+                water_level = y_str;
+            }
+
+            s.bp_posns_[seg_idx][i] =
+                s.bp_posns_[seg_idx][i - 1] + 2 * s.bp_szs_[seg_idx][i - 1];
+
+            if (s.bp_posns_[seg_idx][i] < 0)
+                error("xxx");
+
+            int r1 = 1;
+            if (seg_idx == i) {
+                s.InitMsg(seg_idx, water_level, param_bd);
+            } else {
+                r1 = L0FloodSegments(
+                    s.msgs1_[seg_idx],
+                    s.msg1_lens_[seg_idx],
+                    water_level,
+                    param_bd,
+                    s.msgs2_[seg_idx],
+                    &s.msg2_lens_[seg_idx],
+                    s.msg_size_,
+                    &s.bp_segs_[seg_idx][s.bp_posns_[seg_idx][i]],
+                    &s.bp_szs_[seg_idx][i]);
+            }
+
+            if (r1 < 0) {
+                s.Cleanup();
+                if (r1 == -1)
+                    error("Numerical error.  (index %d)\n", i);
+                if (r1 < -1)
+                    error("Allocate more memory. (index %d)\n", i);
+            }
+
+            s.MemoryCheck(seg_idx, i);
+            L0AddTerms(
+                s.msgs2_[seg_idx], s.msg2_lens_[seg_idx], x[2 * i], x[2 * i + 1]);
+            s.SwapMsg(seg_idx);
+        }
+    }
+
+    s.BackTrace(retPath);
+    s.Cleanup();
+}
 
 } // namespace L0Seg
