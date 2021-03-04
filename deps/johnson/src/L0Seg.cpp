@@ -1,5 +1,6 @@
 // This is an implementation of the DpSegPen and DpSegN segmentation algorithms
 // given in the paper.
+#include <cstddef>
 #include <limits>
 #include <vector>
 #include <numeric>
@@ -20,11 +21,11 @@ namespace Util {
 
 template <class T>
 void
-AllocTwoVec(int dim1, int dim2, std::vector<std::vector<T>> *m)
+AllocTwoVec(size_t dim1, size_t dim2, std::vector<std::vector<T>> *m)
 {
     m->clear();
     m->resize(dim1);
-    for (int i = 0; i < dim1; ++i) {
+    for (size_t i = 0; i < dim1; ++i) {
         (*m)[i].resize(dim2);
     }
 }
@@ -520,7 +521,7 @@ EfamL0VitByNseg(
 {
     double param_bd[2] = {R_NegInf, R_PosInf};
 
-    L0Seg::L0ByNSegData s;
+    L0ByNSegData s;
     s.Alloc(n_levels, n_obs, avg_num_bpsegs, max_segs);
 
     for (int seg_idx = 0; seg_idx < s.n_levels_; ++seg_idx) {
