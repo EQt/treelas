@@ -2,7 +2,7 @@
 name = "treelars"
 version = "0.16.0"
 authors = ["Elias Kuthe <elias.kuthe@tu-dortmund.de>"]
-edition = "2018"
+edition = "2021"
 exclude = ["data/*.h5", "data/*.dimacs"]
 license = "MIT"
 keywords = ["fused-lasso", "total-variation", "algorithm"]
