@@ -44,16 +44,17 @@ pub trait Float:
     }
 }
 
-impl<T> Float for T where
+impl<T> Float for T
+where
     T: std::ops::Mul<Output = Self>
-    + std::ops::Div<Output = Self>
-    + std::ops::Add<Output = Self>
-    + std::ops::Sub<Output = Self>
-    + std::ops::Neg<Output = Self>
-    + std::cmp::PartialOrd
-    + std::ops::AddAssign
-    + From<i16>
-    + Clone
+        + std::ops::Div<Output = Self>
+        + std::ops::Add<Output = Self>
+        + std::ops::Sub<Output = Self>
+        + std::ops::Neg<Output = Self>
+        + std::cmp::PartialOrd
+        + std::ops::AddAssign
+        + From<i16>
+        + Clone,
 {
     fn eps() -> Self {
         let d = Self::from(10_000);
