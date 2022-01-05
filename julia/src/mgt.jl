@@ -144,20 +144,18 @@ end
 
 
 @deprecate(
-    gaplas(y::Array, edges, λ::Array{Float64}; args::Args...) where {Args},
+    gaplas(y::Array, edges, λ::Array{Float64}; args...),
     gaplas(y, edges, GraphIdx.Vec(λ); args...),
 )
 
 
 @deprecate(
-    gaplas(y::Array, edges, λ::Float64; args::Args...) where {Args},
+    gaplas(y::Array, edges, λ::Float64; args...),
     gaplas(y, edges, GraphIdx.Const(λ); args...),
 )
 
 
-gaplas(
-    y::Array, edges::Vector{Edge{Int}}, λ::Weights{Float64}; args::Args...
-) where {Args} =
+gaplas(y::Array, edges::Vector{Edge{Int}}, λ::Weights{Float64}; args...) =
     gaplas(y, EdgeGraph(length(y), edges), λ; args...)
 
 
@@ -173,8 +171,8 @@ function gaplas(
     g::Graph,
     λ::Weights,
     μ::Weights = Ones{F}();
-    args::Args...
-)::Array{F,N} where {F, N, Args}
+    args...
+)::Array{F,N} where {F, N}
     edge_graph::EdgeGraph = collect(g)
     gaplas(y, edge_graph, λ; mu=μ, args...)
 end
