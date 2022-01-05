@@ -1,7 +1,11 @@
+module Demo3x7
 """Demo 3x7 test case"""
 y = [0.62 0.73  0.71 1.50 1.17 0.43 1.08
      0.62 1.73  0.95 1.46 1.60 1.16 0.38
      0.90 0.32 -0.48 0.95 1.08 0.02 0.40]
+end
+
+y = Demo3x7.y
 
 function write_hpp(fname)
     open(fname, "w") do io
