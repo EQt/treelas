@@ -2,6 +2,7 @@ module Dual
 
 include("gap.jl")
 
+import GraphIdx: Graph
 import GraphIdx.Tree: ChildrenIndex, dfs_walk, root_node
 
 function dual(
@@ -98,7 +99,7 @@ end
 If ``D`` is the oriented incidence matrix of `graph`,
 return ``y + D'*α``.
 """
-primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::G) where {F,N,G} =
+primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::Graph) where {F, N} =
     primal_from_dual!(copy(y), alpha, graph)
 
 
@@ -109,10 +110,10 @@ primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::G) where {F,N,G} =
 Similar to [`primal_from_dual`](@ref) but store the result in y.
 """
 function primal_from_dual!(
-    x::Array{F,N},
+    x::Array{F, N},
     alpha::Vector{F},
-    graph::G,
-)::Array{F,N} where {F <: Real,N,G}
+    graph::Graph,
+)::Array{F, N} where {F<:Real, N}
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
         x[u] += alpha[ei]
         x[v] -= alpha[ei]
