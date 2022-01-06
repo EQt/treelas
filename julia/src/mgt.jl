@@ -169,8 +169,8 @@ Graph has to implement several methods:
 function gaplas(
     y::Array{F,N},
     g::Graph,
-    λ::Weights,
-    μ::Weights = Ones{F}();
+    λ::Weights{F},
+    μ::Weights{F} = Ones{F}();
     args...
 )::Array{F,N} where {F, N}
     edge_graph::EdgeGraph = collect(g)
