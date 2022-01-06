@@ -79,6 +79,6 @@ For the sake of benchmarks the implementation by [Laurent Condat][condat] and th
 [docs-python]: https://img.shields.io/badge/docs-python-0298c3.svg
 [appveyor-img]: https://ci.appveyor.com/api/projects/status/feofb7j476jagsbb?svg=true
 [license-img]: https://img.shields.io/badge/license-MIT-brightgreen.svg
-[travis-img]: https://travis-ci.com/EQt/treelas.svg?token=WXPT4d6dD68rQ9ty7yDf&branch=master
+[travis-img]: https://app.travis-ci.com/EQt/treelas.svg?branch=main
 [logo]: https://eqt.github.io/treelas/imgs/treelas.png
 [formula]: https://latex.codecogs.com/svg.latex?\fn_cm&space;\large&space;\displaystyle&space;f(x)&space;=&space;\frac{1}{2}&space;\sum_{i=1}^n&space;\mu_i&space;(x_i&space;-&space;y_i)^2&space;&plus;&space;\sum_{(i,j)&space;\in&space;E}&space;\lambda_{ij}&space;|x_i&space;-&space;x_j|
