@@ -38,7 +38,7 @@ matrix:
 
     - language: julia
       os: linux  # don't need it specifically for osx
-      julia: 1.5
+      julia: 1.7
       before_install:
         - git submodule update --init deps/graphidx
         - julia --color=yes -e 'import Pkg; Pkg.develop(Pkg.PackageSpec(path="deps/graphidx/julia"))'
