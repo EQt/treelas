@@ -72,13 +72,13 @@ General framework for iterated tree optimizer:
 """
 function gaplas(
     y::Array{Float64,N},
-    graph::GraphT,
+    graph::Graph,
     lambda::Weights{Float64},
-    mu::W2,
+    mu::Weights{Float64},
     ::Type{Mem} = GapMem;
     max_iter::Int = 5,
     verbose::Bool = true,
-)::Array{Float64,N} where {N, GraphT<:Graph, W2<:Weights{Float64}, Mem}
+)::Array{Float64,N} where {N, Mem}
     mem = Mem(y, graph, lambda)
     for it in 1:max_iter
         gaplas!(mem, y, graph, lambda, mu)
