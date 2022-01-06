@@ -54,14 +54,14 @@ function gaplas(
     graph::EdgeGraph,
     lambda::Weights{Float64};
     root_node::Int = 1,
-    mu::Wmu = Ones{Float64}(),
-    max_iter::I = 3,
+    mu::Weights{Float64} = Ones{Float64}(),
+    max_iter::Integer = 3,
     verbose::Bool = true,
     process::Fu1 = x->nothing,
     dprocess::Fu2 = α->nothing,
     tprocess::Fu3 = (t,w)->nothing,
     learn::Float64 = 1.0,
-)::Array{Float64,N} where {N, I<:Integer, Fu1<:Function, Fu2<:Function, Fu3<:Function, Wmu}
+)::Array{Float64,N} where {N, Fu1<:Function, Fu2<:Function, Fu3<:Function}
     local m = num_edges(graph)
     local n = length(y)
     @assert n == num_nodes(graph)
