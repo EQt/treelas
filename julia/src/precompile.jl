@@ -12,13 +12,13 @@ precompile(
 )
 precompile(
     Pwl.QueueUnion.merge,
-    (Array{TreeLas.Pwl.Event,1}, Array{TreeLas.Pwl.QueueUnion.Range,1}, Int64, Int64),
+    (Array{Pwl.Event,1}, Array{Pwl.QueueUnion.Range,1}, Int64, Int64),
 )
 precompile(
     Pwl.clip,
     (
-        Array{TreeLas.Pwl.Event,1},
-        GraphIdx.Utils.MutRef{TreeLas.Pwl.QueueUnion.Range},
+        Array{Pwl.Event,1},
+        GraphIdx.Utils.MutRef{Pwl.QueueUnion.Range},
         Float64,
         Float64,
         Base.Val{false},
@@ -28,8 +28,8 @@ precompile(
 precompile(
     Pwl.clip,
     (
-        Array{TreeLas.Pwl.Event,1},
-        GraphIdx.Utils.MutRef{TreeLas.Pwl.QueueUnion.Range},
+        Array{Pwl.Event,1},
+        GraphIdx.Utils.MutRef{Pwl.QueueUnion.Range},
         Float64,
         Float64,
         Base.Val{true},
@@ -44,7 +44,7 @@ precompile(
         GraphIdx.Tree.RootedTree,
         GraphIdx.Vec{Float64},
         GraphIdx.Ones{Float64},
-        TreeLas.TreeDP.TreeDPMem{Float64,Int64},
+        TreeDP.TreeDPMem{Float64,Int64},
     ),
 )
 precompile(
