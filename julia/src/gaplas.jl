@@ -13,12 +13,10 @@ import ..Dual: dual!, gap_vec!
 import ..TreeDP: TreeDPMem, tree_dp!
 import ..TreeFlow: extract_non_tree!, update_tree!
 
-
 struct Sol{N}
     x::Array{Float64, N}
     α::Vector{Float64}
 end
-
 
 struct GapMem{N, WL<:Weights{Float64}}
     sol::Sol{N}
@@ -33,7 +31,11 @@ struct GapMem{N, WL<:Weights{Float64}}
     tree::RootedTree
 end
 
+"""
+    GapMem(y, graph, λ)
 
+Allocate all temporary variables needed in `gaplas!`.
+"""
 function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) where {N}
     @assert length(y) == GraphIdx.num_nodes(graph)
     root_node = 1
@@ -59,16 +61,18 @@ function GapMem(y::Array{Float64,N}, graph::Graph, lambda::Weights{Float64}) whe
     )
 end
 
-
 """
+    gaplas(y, graph, λ, [μ], [MemType = GapMem])
+
 General framework for iterated tree optimizer:
 1. Allocate memory (of type `Mem`)
 2. Call `gaplas!(mem, y, graph, λ, μ)` in every iteration (`max_iter` many times).
 
 !!! note
 
-    `mem` must contain a `gamma` and an `x` field
+    `MemType` must contain a `gamma` and an `x` field
 
+Optional: Node weights `μ` are set to `GraphIdx.Ones{Float64}` if not defined explicit.
 """
 function gaplas(
     y::Array{Float64,N},
@@ -91,10 +95,6 @@ function gaplas(
     return mem.sol.x
 end
 
-"""
-
-Optional: node weights `μ` are set to `GraphIdx.Ones{Float64}`
-"""
 function gaplas(
     y::Array{Float64,N},
     graph::Graph,
@@ -108,11 +108,10 @@ function gaplas(
     )
 end
 
-
-
 """
-Called in every iteration.
-Implements the actual optimization, i.e.
+    gaplas!(mem, y, graph, λ, μ)
+
+The actual optimization; called in every iteration.
 """
 function gaplas!(
     mem::GapMem{N, W1},
@@ -134,8 +133,9 @@ function gaplas!(
     )
 end
 
-
 """
+    find_gap_tree!(mem, y, graph, λ)
+
 Determine a tree by choosing edges with high gap value.
 """
 function find_gap_tree!(
@@ -153,6 +153,5 @@ function find_gap_tree!(
         lambda,
     )
 end
-
 
 end
