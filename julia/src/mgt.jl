@@ -47,7 +47,12 @@ import ..TreeFlow: update_tree!, extract_non_tree!
 Optimize in each iteration along a tree.
 
 The `learn` parameter controls how much of the new tree
-solution should be taken (should be between ``0`` and ``1.0``).
+solution should be taken (should be between `0` and `1.0`).
+
+To analyze/record intermediate results, you can use the following functions:
+- `process(x)`: current primal solution
+- `dprocess(α)`: current dual solution
+- `tprocess(γ, parent)`: gap values and computed tree
 """
 function gaplas(
     y::Array{Float64,N},
