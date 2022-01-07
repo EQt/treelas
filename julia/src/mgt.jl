@@ -85,7 +85,6 @@ function gaplas(
     local alpha_new::Array{Float64} = learn >= 1.0 ? alpha : copy(alpha)
     if verbose
         local γ_sorted = similar(γ)
-        local x2 = similar(x)
     end
 
     for it in 1:max_iter
@@ -96,23 +95,23 @@ function gaplas(
                 tree_gamma_check(γ, alpha, tlam, selected,
                                  x, z, dp_mem.proc_order, parent)
             end
-            local quant = Statistics.quantile!(γ_sorted .= γ .* -1,
-                                               [0.90, 0.95, 0.98])
             local gap = -sum(γ)
             local dual_obj = 0.5*sum2(x)
             local prim_obj = primal_objective(x, y, wgraph)
-            primal_from_dual!(x2 .= y, alpha, wgraph)
-            # @assert x ≈ x2 "‖x - x2‖_∞ = $(maximum(abs.(x - x2)))"
+            @static if false
+                local x2 = similar(x)
+                primal_from_dual!(x2 .= y, alpha, wgraph)
+                @assert x ≈ x2 "‖x - x2‖_∞ = $(maximum(abs.(x - x2)))"
+            end
             @assert prim_obj + dual_obj - gap ≈ 0.5sum2(y)
-
-            print(@sprintf("%4d %12.4f %12.4f %12.4f",
-                           it,
-                           gap,
-                           dual_obj,
-                           prim_obj,
-                           ))
-
-            if false
+            print(@sprintf(
+                "%4d %12.4f %12.4f %12.4f",
+                it, gap, dual_obj, prim_obj
+            ))
+            @static if false
+                quant = Statistics.quantile!(
+                    γ_sorted .= γ .* -1, [0.90, 0.95, 0.98]
+                )
                 print(@sprintf("%8f %8f %8f", quant...))
             end
             println()
