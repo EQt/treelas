@@ -64,10 +64,10 @@ end
 function GapLas.gaplas!(
     cmem::CycMem{N, W1},
     y::Array{Float64,N},
-    graph::GraphT,
+    graph::Graph,
     lambda::Weights{Float64},
-    mu::W2,
-) where {N, GraphT<:Graph, W1<:Weights{Float64}, W2<:Weights{Float64}}
+    mu::Weights{Float64},
+) where {N, W1<:Weights{Float64}}
     mem = cmem.gap_mem
     GapLas.find_gap_tree!(mem, y, graph, lambda)
 
