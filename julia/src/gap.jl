@@ -1,5 +1,5 @@
 import GraphIdx.LinA: IncMat
-import GraphIdx: enumerate_edges, WeightedGraph
+import GraphIdx: enumerate_edges, WeightedGraph, Graph
 import GraphIdx.Tree: WeightedTree
 import GraphIdx.Grid: GridGraph
 
@@ -19,14 +19,15 @@ function gap_vec!(
     γ::Vector{F},
     x::Array{F},
     α::Vector{F},
-    g::Union{WeightedGraph, WeightedTree},
+    g::Union{WeightedGraph,WeightedTree},
     c::F = F(1.0),
 ) where {F<:Real}
     enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
         let diff = x[u] - x[v]
-            γ[ei] = c * (lam*abs(diff) + α[ei] * diff)
+            γ[ei] = c * (lam * abs(diff) + α[ei] * diff)
         end
     end
+    γ
 end
 
 function gap_vec!(
@@ -38,9 +39,10 @@ function gap_vec!(
 ) where {F<:Real}
     enumerate_edges(g, weighted=true) do ei::Int, u::Int, v::Int, lam::Float64
         let diff = x[u] - x[v]
-            γ[ei] = c * (lam*abs(diff) + α[ei] * diff)
+            γ[ei] = c * (lam * abs(diff) + α[ei] * diff)
         end
     end
+    γ
 end
 
 
@@ -62,7 +64,7 @@ function gap_vec!(
     D::IncMat,
     Dt::IncMat,
     α::Vector{Float64},
-    c::Float64 = Float64(1.0),
+    c::Float64 = 1.0,
 )
     mul!(x, Dt, α)
     x .-= y
@@ -84,8 +86,8 @@ function wolfe_gap_step(
     α0::Vector{F},
     x1::Array{F},
     α1::Vector{F},
-    g::Graph
-)::F where {F<:Real,Graph}
+    g::Graph,
+)::F where {F<:Real}
     θ::F = 0
     m = num_edges(g)
     d0 = Vector{F}(undef, m)
