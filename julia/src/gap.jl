@@ -21,7 +21,7 @@ function gap_vec!(
     α::Vector{F},
     g::Union{WeightedGraph, WeightedTree},
     c::F = F(1.0),
-) where {F<:Real,Graph}
+) where {F<:Real}
     enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
         let diff = x[u] - x[v]
             γ[ei] = c * (lam*abs(diff) + α[ei] * diff)
@@ -35,7 +35,7 @@ function gap_vec!(
     α::Vector{F},
     g::GridGraph,
     c::F = F(1.0),
-) where {F<:Real,Graph}
+) where {F<:Real}
     enumerate_edges(g, weighted=true) do ei::Int, u::Int, v::Int, lam::Float64
         let diff = x[u] - x[v]
             γ[ei] = c * (lam*abs(diff) + α[ei] * diff)
@@ -87,12 +87,13 @@ function wolfe_gap_step(
     g::Graph
 )::F where {F<:Real,Graph}
     θ::F = 0
-    local m = num_edges(g)
+    m = num_edges(g)
     d0 = Vector{F}(undef, m)
     d1 = Vector{F}(undef, m)
     enumerate_edges(g) do ei::Int, u::Int, v::Int, lam::Float64
         d0[ei] = x0[u] - x0[v]
         d1[ei] = x1[u] - x1[v]
     end
+    error("todo: not implemented, yet")
     return θ
 end
