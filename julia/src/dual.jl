@@ -10,14 +10,9 @@ function dual(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F=F(0.0),
-) where {F,N,I}
-    dual!(Vector{F}(undef, length(post_order)),
-          x,
-          y,
-          post_order,
-          parent,
-          alpha_root)
+    alpha_root::F = F(0.0),
+) where {F,N,I<:Integer}
+    dual!(Vector{F}(undef, length(post_order)), x, y, post_order, parent, alpha_root)
 end
 
 
@@ -32,8 +27,8 @@ function dual!(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F=F(0.0),
-) where {F,N,I}
+    alpha_root::F = F(0.0),
+) where {F,N,I<:Integer}
     alpha .= vec(x) .- vec(y)
     dual!(alpha, post_order, parent, alpha_root)
 end
@@ -43,9 +38,9 @@ function dual!(
     alpha::Vector{F},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F=F(0.0),
-) where {F <: Real,I <: Integer}
-    for c in @view post_order[1:end - 1]
+    alpha_root::F = F(0.0),
+) where {F<:Real,I<:Integer}
+    for c in @view post_order[1:end-1]
         let v = parent[c]
             alpha[v] += alpha[c]
         end
@@ -60,17 +55,20 @@ function dual!(
 end
 
 
-dual(z::Vector{F}, parent::Vector{I},
-     cidx::ChildrenIndex, alpha_root::F=F(0.0)) where {F,I} =
-    dual!(copy(z), parent, cidx, alpha_root)
+dual(
+    z::Vector{F},
+    parent::Vector{I},
+    cidx::ChildrenIndex,
+    alpha_root::F = F(0.0),
+) where {F,I} = dual!(copy(z), parent, cidx, alpha_root)
 
 
 function dual!(
     alpha::Vector{F},
     parent::Vector{I},
     cidx::ChildrenIndex,
-    alpha_root::F=F(0.0),
-) where {F,I}
+    alpha_root::F = F(0.0),
+) where {F<:Real,I<:Integer}
     for (i, v) in enumerate(parent)
         alpha[i] = i > v ? -alpha[i] : +alpha[i]
     end
@@ -99,7 +97,7 @@ end
 If ``D`` is the oriented incidence matrix of `graph`,
 return ``y + D'*α``.
 """
-primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::Graph) where {F, N} =
+primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::Graph) where {F,N} =
     primal_from_dual!(copy(y), alpha, graph)
 
 
@@ -110,10 +108,10 @@ primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::Graph) where {F, N} =
 Similar to [`primal_from_dual`](@ref) but store the result in y.
 """
 function primal_from_dual!(
-    x::Array{F, N},
+    x::Array{F,N},
     alpha::Vector{F},
     graph::Graph,
-)::Array{F, N} where {F<:Real, N}
+)::Array{F,N} where {F<:Real,N}
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
         x[u] += alpha[ei]
         x[v] -= alpha[ei]
