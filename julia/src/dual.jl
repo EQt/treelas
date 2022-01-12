@@ -2,7 +2,7 @@ module Dual
 
 include("gap.jl")
 
-import GraphIdx: Graph
+import GraphIdx: Graph, WeightedGraph
 import GraphIdx.Tree: ChildrenIndex, dfs_walk, root_node
 
 function dual(
@@ -100,7 +100,6 @@ return ``y + D'*α``.
 primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::Graph) where {F,N} =
     primal_from_dual!(copy(y), alpha, graph)
 
-
 """
 
     primal_from_dual!(y, α, graph)
@@ -110,14 +109,25 @@ Similar to [`primal_from_dual`](@ref) but store the result in y.
 function primal_from_dual!(
     x::Array{F,N},
     alpha::Vector{F},
-    graph::Graph,
+    graph::WeightedGraph,
 )::Array{F,N} where {F<:Real,N}
-    enumerate_edges(graph) do ei::Int, u::Int, v::Int, lam::Float64
+    enumerate_edges(graph) do ei::Int, u::Int, v::Int, _::Float64
         x[u] += alpha[ei]
         x[v] -= alpha[ei]
     end
     return x
 end
 
+function primal_from_dual!(
+    x::Array{F,N},
+    alpha::Vector{F},
+    graph::Graph,
+)::Array{F,N} where {F<:Real,N}
+    enumerate_edges(graph) do ei::Int, u::Int, v::Int
+        x[u] += alpha[ei]
+        x[v] -= alpha[ei]
+    end
+    return x
+end
 
 end
