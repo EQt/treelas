@@ -23,7 +23,7 @@ where
     let y_mean = welford_mean(y.clone());
     let zero: I::Item = 0.into();
     y.into_iter()
-        .map(|yi| (yi.clone() - y_mean.clone()))
+        .map(|yi| (yi - y_mean.clone()))
         .scan(zero, |acc, x| {
             *acc += x;
             Some(acc.clone())
@@ -42,7 +42,7 @@ where
     let y_mean = welford_mean(y.clone());
     let zero: I::Item = 0.into();
     y.into_iter()
-        .map(|yi| (yi.clone() - y_mean.clone()))
+        .map(|yi| (yi - y_mean.clone()))
         .scan(zero, |acc, x| {
             *acc += x;
             Some(acc.clone())
