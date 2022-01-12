@@ -10,7 +10,7 @@ function dual(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F = F(0.0),
+    alpha_root::F = zero(F)
 ) where {F,N,I<:Integer}
     dual!(Vector{F}(undef, length(post_order)), x, y, post_order, parent, alpha_root)
 end
@@ -27,7 +27,7 @@ function dual!(
     y::Array{F,N},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F = F(0.0),
+    alpha_root::F = zero(F),
 ) where {F,N,I<:Integer}
     alpha .= vec(x) .- vec(y)
     dual!(alpha, post_order, parent, alpha_root)
@@ -38,14 +38,14 @@ function dual!(
     alpha::Vector{F},
     post_order::Vector{I},
     parent::Vector{I},
-    alpha_root::F = F(0.0),
+    alpha_root::F = zero(F),
 ) where {F<:Real,I<:Integer}
     for c in @view post_order[1:end-1]
         let v = parent[c]
             alpha[v] += alpha[c]
         end
     end
-    if alpha_root != F(0.0)
+    if alpha_root != zero(F)
         let root = post_order[end], acc = eps() * length(parent)
             @assert abs(alpha[root]) <= acc "$(abs(alpha[root])) < = $acc"
             alpha[root] = alpha_root
@@ -54,20 +54,20 @@ function dual!(
     return alpha
 end
 
-
-dual(
+function dual(
     z::Vector{F},
     parent::Vector{I},
     cidx::ChildrenIndex,
-    alpha_root::F = F(0.0),
-) where {F,I} = dual!(copy(z), parent, cidx, alpha_root)
-
+    alpha_root::F = zero(F),
+) where {F<:Real,I<:Integer}
+    dual!(copy(z), parent, cidx, alpha_root)
+end
 
 function dual!(
     alpha::Vector{F},
     parent::Vector{I},
     cidx::ChildrenIndex,
-    alpha_root::F = F(0.0),
+    alpha_root::F = zero(F),
 ) where {F<:Real,I<:Integer}
     for (i, v) in enumerate(parent)
         alpha[i] = i > v ? -alpha[i] : +alpha[i]
@@ -81,7 +81,7 @@ function dual!(
             end
         end
     end
-    if alpha_root != F(0.0)
+    if alpha_root != zero(F)
         let root = root_node(cidx), acc = eps() * length(parent)
             @assert abs(alpha[root]) <= acc "$(abs(alpha[root])) < = $acc"
             alpha[root] = alpha_root
