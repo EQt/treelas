@@ -97,7 +97,7 @@ end
 If ``D`` is the oriented incidence matrix of `graph`,
 return ``y + D'*α``.
 """
-primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::Graph) where {F,N} =
+primal_from_dual(y::Array{F}, alpha::Vector{F}, graph::Graph) where {F} =
     primal_from_dual!(copy(y), alpha, graph)
 
 """
@@ -107,10 +107,10 @@ primal_from_dual(y::Array{F,N}, alpha::Vector{F}, graph::Graph) where {F,N} =
 Similar to [`primal_from_dual`](@ref) but store the result in y.
 """
 function primal_from_dual!(
-    x::Array{F,N},
+    x::Array{F},
     alpha::Vector{F},
     graph::WeightedGraph,
-)::Array{F,N} where {F<:Real,N}
+)::Array{F,N} where {F<:Real}
     enumerate_edges(graph) do ei::Int, u::Int, v::Int, _::Float64
         x[u] += alpha[ei]
         x[v] -= alpha[ei]
@@ -119,10 +119,10 @@ function primal_from_dual!(
 end
 
 function primal_from_dual!(
-    x::Array{F,N},
+    x::Array{F},
     alpha::Vector{F},
     graph::Graph,
-)::Array{F,N} where {F<:Real,N}
+)::Array{F} where {F<:Real}
     enumerate_edges(graph) do ei::Int, u::Int, v::Int
         x[u] += alpha[ei]
         x[v] -= alpha[ei]
