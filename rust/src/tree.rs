@@ -9,7 +9,7 @@ impl TreeDP {
         W2: graphidx::weights::Weighted<f64>,
     {
         let n = y.len();
-        assert!(n == x.len());
+        assert_eq!(n, x.len());
         assert!(mu.len() >= n);
         assert!(std::cmp::min(lam.len(), std::usize::MAX - 1) + 1 >= n);
         for &v in &self.post_order {
