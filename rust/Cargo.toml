@@ -16,6 +16,4 @@ serde = { version = "1.0", features = ["derive"] }
 approx = "0.5"
 
 [lib]
-crate-type = [
-  "cdylib", "rlib", "staticlib"
-]
+crate-type = ["cdylib", "lib"]
