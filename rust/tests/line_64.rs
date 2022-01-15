@@ -1,10 +1,14 @@
-use crate::line;
+use treelars::line;
 
 pub type LineDP = line::LineDP<f64>;
 use crate::instance::{Instance, Weights};
 
-impl LineDP {
-    pub fn solve_instance(&mut self, x: &mut [f64], inst: &Instance) {
+trait SolveInstance {
+    fn solve_instance(&mut self, x: &mut [f64], inst: &Instance);
+}
+
+impl SolveInstance for LineDP {
+    fn solve_instance(&mut self, x: &mut [f64], inst: &Instance) {
         use graphidx::weights::{ArrayRef, Const, Ones};
 
         let mu: Option<&Weights<f64>> = inst.mu.as_ref();

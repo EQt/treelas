@@ -1,11 +1,13 @@
+mod instance;
+mod line_64;
 use treelars::graphidx::lina::l1_diff;
 use treelars::graphidx::weights as w;
-use treelars::instance::Weights as i;
-use treelars::instance::{data_dir, Instance};
+use crate::instance::Weights as i;
+use crate::instance::{data_dir, Instance};
 
 #[test]
 fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
-    use treelars::line_64::LineDP;
+    use crate::line_64::LineDP;
 
     let fname = data_dir()?.join("lines.toml");
     let instances = Instance::from_path(fname, "test")?;
@@ -32,7 +34,7 @@ fn lines_toml() -> Result<(), Box<dyn std::error::Error>> {
 
 #[test]
 fn lines_toml_32() -> Result<(), Box<dyn std::error::Error>> {
-    use treelars::line_32::LineDP;
+    use treelars::line::LineDP;
 
     let fname = data_dir()?.join("lines.toml");
     let instances = Instance::from_path(fname.clone(), "test")?;

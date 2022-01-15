@@ -2,10 +2,10 @@ pub use graphidx;
 use std::time::Instant;
 pub mod float;
 mod generics;
-pub mod instance;
+// pub mod instance;
 pub mod line;
-pub mod line_32;
-pub mod line_64;
+// pub mod line_32;
+// pub mod line_64;
 mod pwl;
 pub mod stats;
 pub mod tree;
@@ -19,7 +19,7 @@ pub unsafe extern "C" fn line_las(n: usize, x: *mut f64, y: *const f64, lam: f64
     let y = std::slice::from_raw_parts(y, n);
     let lam = graphidx::weights::Const::new(lam);
     let mu = graphidx::weights::Ones::<f64>::new();
-    let mut solver = line_64::LineDP::new(y.len());
+    let mut solver = line::LineDP::<f64>::new(y.len());
     let start_time = Instant::now();
     solver.solve(x, y, &lam, &mu);
     start_time.elapsed().as_secs_f64()
@@ -34,7 +34,7 @@ pub unsafe extern "C" fn line_las_f32(n: usize, x: *mut f32, y: *const f32, lam:
     let y = std::slice::from_raw_parts(y, n);
     let lam = graphidx::weights::Const::new(lam);
     let mu = graphidx::weights::Ones::<f32>::new();
-    let mut solver = line_32::LineDP::new(y.len());
+    let mut solver = line::LineDP::<f32>::new(y.len());
     let start_time = Instant::now();
     solver.solve(x, y, &lam, &mu);
     start_time.elapsed().as_secs_f64()
