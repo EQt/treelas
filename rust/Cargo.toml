@@ -9,11 +9,11 @@ keywords = ["fused-lasso", "total-variation", "algorithm"]
 
 [dependencies]
 graphidx = { git = "https://github.com/EQt/graphidx.git", rev = "25d6593" }
-toml = "0.5"
-serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]
 approx = "0.5"
+toml = "0.5"
+serde = { version = "1.0", features = ["derive"] }
 
 [lib]
 crate-type = ["cdylib", "lib"]
