@@ -61,6 +61,7 @@ impl Instance {
         Ok(Self::from_map(inst, kind))
     }
 
+    #[allow(dead_code)]
     pub fn len(&self) -> usize {
         self.y.len()
     }
@@ -155,5 +156,50 @@ mod tests {
         let tests: Vec<Instance> = Instance::from_path(fname, "test")?;
         assert!(tests.len() >= 5, "len = {len}", len = tests.len());
         Ok(())
+    }
+}
+
+pub(crate) trait SolveInstance {
+    fn solve_instance(&mut self, x: &mut [f64], inst: &Instance);
+}
+
+impl SolveInstance for treelars::line::LineDP<f64> {
+    fn solve_instance(&mut self, x: &mut [f64], inst: &Instance) {
+        use graphidx::weights::{ArrayRef, Const, Ones};
+
+        let mu: Option<&Weights<f64>> = inst.mu.as_ref();
+        let lam: &Weights<f64> = &inst.lam;
+        match (lam, mu) {
+            (Weights::Const(lam), Some(Weights::Const(mu))) => {
+                let lam: Const<_> = lam.into();
+                let mu: Const<_> = mu.into();
+                self.solve(x, &inst.y, &lam, &mu);
+            }
+            (Weights::Array(lam), Some(Weights::Const(mu))) => {
+                let lam: ArrayRef<_> = lam.into();
+                let mu: Const<_> = mu.into();
+                self.solve(x, &inst.y, &lam, &mu);
+            }
+            (Weights::Const(lam), Some(Weights::Array(mu))) => {
+                let lam: Const<_> = lam.into();
+                let mu: ArrayRef<_> = mu.into();
+                self.solve(x, &inst.y, &lam, &mu);
+            }
+            (Weights::Array(lam), Some(Weights::Array(mu))) => {
+                let mu: ArrayRef<_> = mu.into();
+                let lam: ArrayRef<_> = lam.into();
+                self.solve(x, &inst.y, &lam, &mu);
+            }
+            (Weights::Array(lam), None) => {
+                let mu: Ones<f64> = Ones::default();
+                let lam: ArrayRef<_> = lam.into();
+                self.solve(x, &inst.y, &lam, &mu);
+            }
+            (Weights::Const(lam), None) => {
+                let mu: Ones<f64> = Ones::default();
+                let lam: Const<_> = lam.into();
+                self.solve(x, &inst.y, &lam, &mu);
+            }
+        };
     }
 }
