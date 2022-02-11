@@ -7,9 +7,10 @@ from . import _treelas as _tl
 
 
 class TreeInstance(Tree):
-    """Fused lasso tree instance (including all weight-parameters)"""
+    """Fused lasso tree instance (including all weight-parameters)."""
 
     def __init__(self, y, parent, lam, mu=1.0, root=-1):
+        """Create new instance with given parameters."""
         assert isinstance(lam, float) or (
             isinstance(lam, np.ndarray) and lam.dtype == np.float64
         ), f"{type(lam)}"
@@ -35,7 +36,7 @@ class TreeInstance(Tree):
 parent = {repr(self.parent)})"""
 
     def solve(self, verbose=False, x=None, **args):
-        """Compute a primal solution self.x (return self)"""
+        """Compute a primal solution self.x (return self)."""
         if isinstance(self.lam, float) and isinstance(self.mu, float):
             assert self.mu > 0
             self.x = _tl.tree_dp(
@@ -207,7 +208,7 @@ parent = {repr(self.parent)})"""
 
     @staticmethod
     def _load_h5(fname: str, group: str = "/") -> TreeInstance:
-        """Load a tree instance from a HDF5 file"""
+        """Load a tree instance from a HDF5 file."""
         import h5py
 
         with h5py.File(fname) as io:
