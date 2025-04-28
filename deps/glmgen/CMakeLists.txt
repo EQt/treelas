@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 set(GLMGEN https://raw.githubusercontent.com/statsmaths/glmgen)
 set(tf_dpc ${CMAKE_CURRENT_SOURCE_DIR}/tf_dp.c)

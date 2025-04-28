@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 
 set(CONDAT_WEB https://lcondat.github.io)
 set(tvc ${CMAKE_CURRENT_SOURCE_DIR}/condat_tv_v2_.c)
